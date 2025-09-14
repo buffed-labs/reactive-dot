@@ -2,6 +2,7 @@ import { chainIdKey, configKey, signerKey } from "../keys.js";
 import { withSetup } from "../test-utils.js";
 import { useContractMutation } from "./use-contract-mutation.js";
 import { defineConfig, defineContract } from "@reactive-dot/core";
+import { getInkContractTx } from "@reactive-dot/core/internal/actions.js";
 import type { TxEvent } from "polkadot-api";
 import { from, of, throwError } from "rxjs";
 import { concatMap, delay } from "rxjs/operators";
@@ -79,6 +80,45 @@ it("sign submit and watch", async () => {
   expect(result.data.value).toMatchObject({ type: "txBestBlocksState" });
 
   vi.advanceTimersByTime(1000);
+
+  expect(result.data.value).toMatchObject({ type: "finalized" });
+});
+
+it("accepts variables", async () => {
+  const { result } = withSetup(
+    () =>
+      useContractMutation((mutate, variables: { message: string }) =>
+        mutate(testContract, "0x", variables.message, {}),
+      ),
+    {
+      [configKey]: defineConfig({ chains: {} }),
+      [chainIdKey]: "test_chain",
+      [signerKey]: {},
+    },
+  );
+
+  expect(result.status.value).toBe("idle");
+
+  result.execute({ variables: { message: "test_message" } });
+
+  expect(result.status.value).toBe("pending");
+
+  vi.advanceTimersByTime(1000);
+
+  await vi.waitUntil(() => result.status.value === "success", {
+    timeout: 3000,
+  });
+
+  expect(getInkContractTx).toHaveBeenCalledWith(
+    undefined,
+    undefined,
+    {},
+    "0x",
+    "test_message",
+    {},
+  );
+
+  vi.advanceTimersByTime(4000);
 
   expect(result.data.value).toMatchObject({ type: "finalized" });
 });

@@ -30,6 +30,8 @@ import { inject, toValue } from "vue";
 export function useContractMutation<
   TAction extends (
     builder: InkMutationBuilder,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    variables: any,
   ) => PatchedReturnType<InkMutationBuilder>,
 >(
   action: TAction,
@@ -56,11 +58,19 @@ export function useContractMutation<
     true,
   );
 
+  type SubmitOptions = {
+    signer?: PolkadotSigner;
+    txOptions?: TxOptionsOf<Awaited<ReturnType<TAction>>>;
+  } & (Parameters<TAction>["length"] extends 2
+    ? { variables: Parameters<TAction>[1] }
+    : { variables?: Parameters<TAction>[1] });
+
   return useAsyncAction(
-    (submitOptions?: {
-      signer: PolkadotSigner;
-      txOptions: TxOptionsOf<Awaited<ReturnType<TAction>>>;
-    }) => {
+    (
+      ...[submitOptions]: Parameters<TAction>["length"] extends 2
+        ? [submitOptions: SubmitOptions]
+        : [submitOptions?: SubmitOptions]
+    ) => {
       const signer =
         submitOptions?.signer ?? toValue(options?.signer) ?? injectedSigner;
 
@@ -70,17 +80,19 @@ export function useContractMutation<
 
       return from(
         Promise.resolve(
-          // @ts-expect-error TODO: fix this
-          action(async (contract, contractAddress, message, body) =>
-            getInkContractTx(
-              await toValue(typedApiPromise),
-              await toValue(getInkClient(contract, cache)),
-              signer,
-              contractAddress,
-              // @ts-expect-error TODO: fix this
-              message,
-              body,
-            ),
+          action(
+            // @ts-expect-error TODO: fix this
+            async (contract, contractAddress, message, body) =>
+              getInkContractTx(
+                await toValue(typedApiPromise),
+                await toValue(getInkClient(contract, cache)),
+                signer,
+                contractAddress,
+                // @ts-expect-error TODO: fix this
+                message,
+                body,
+              ),
+            submitOptions?.variables,
           ),
         ),
       ).pipe(

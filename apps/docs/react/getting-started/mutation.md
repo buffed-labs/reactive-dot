@@ -83,6 +83,16 @@ function Component() {
 }
 ```
 
+You can also pass variables to the mutation builder callback using a second argument.
+
+```ts
+const [remarkState, submit] = useMutation((tx, message: string) =>
+  tx.System.remark({ remark: Binary.fromText(message) }),
+);
+
+submit({ variables: "Hello, world!" });
+```
+
 ## Watching transactions
 
 It’s common to watch for all transactions throughout the application to display an appropriate loading state or toast. This can be easily achieved with the [`useMutationEffect`](/api/react/function/useMutationEffect) hook.

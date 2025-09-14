@@ -8,6 +8,7 @@ import {
   idle,
   pending,
 } from "@reactive-dot/core";
+import { getInkContractTx } from "@reactive-dot/core/internal/actions.js";
 import { act, renderHook } from "@testing-library/react";
 import { atom } from "jotai";
 import type { PolkadotSigner, TxEvent } from "polkadot-api";
@@ -95,6 +96,49 @@ it("sign submit and watch", async () => {
   expect(result.current[0]).toMatchObject({ type: "txBestBlocksState" });
 
   await act(() => vi.advanceTimersByTime(1000));
+
+  expect(result.current[0]).toMatchObject({ type: "finalized" });
+});
+
+it("accepts variables", async () => {
+  const { result } = await act(() =>
+    renderHook(
+      () =>
+        useContractMutation((mutate, x: bigint) =>
+          mutate(testContract, "0x", "test_message", { value: x }),
+        ),
+      {
+        wrapper: ({ children }) => (
+          <ReactiveDotProvider config={defineConfig({ chains: {} })}>
+            <ChainProvider chainId="test_chain">
+              <SignerProvider signer={{} as PolkadotSigner}>
+                {children}
+              </SignerProvider>
+            </ChainProvider>
+          </ReactiveDotProvider>
+        ),
+      },
+    ),
+  );
+
+  expect(result.current[0]).toBe(idle);
+
+  await act(() => result.current[1]({ variables: 123n }));
+
+  expect(getInkContractTx).toHaveBeenCalledWith(
+    undefined,
+    undefined,
+    {},
+    "0x",
+    "test_message",
+    {
+      value: 123n,
+    },
+  );
+
+  expect(result.current[0]).toBe(pending);
+
+  await act(() => vi.advanceTimersByTime(4000));
 
   expect(result.current[0]).toMatchObject({ type: "finalized" });
 });
