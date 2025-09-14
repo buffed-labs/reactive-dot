@@ -10,15 +10,17 @@ import { computed } from "vue";
 
 const mockSignSubmitAndWatch = vi.fn();
 
+const testCall = vi.fn(() => ({
+  signSubmitAndWatch: mockSignSubmitAndWatch,
+}));
+
 vi.mock("./use-typed-api.js", () => ({
   useTypedApiPromise: vi.fn(() =>
     computed(() =>
       Promise.resolve({
         tx: {
           TestPallet: {
-            testCall: vi.fn(() => ({
-              signSubmitAndWatch: mockSignSubmitAndWatch,
-            })),
+            testCall,
           },
         },
       }),
@@ -82,6 +84,31 @@ it("sign submit and watch", async () => {
   vi.advanceTimersByTime(1000);
 
   expect(result.data.value).toMatchObject({ type: "finalized" });
+});
+
+it("accepts variables", async () => {
+  const { result } = withSetup(
+    () =>
+      useMutation((tx, x: number) =>
+        // @ts-expect-error mocked call
+        tx.TestPallet!.testCall(x),
+      ),
+    {
+      [configKey]: defineConfig({ chains: {} }),
+      [chainIdKey]: "test_chain",
+      [signerKey]: {},
+    },
+  );
+
+  expect(result.status.value).toBe("idle");
+
+  result.execute({ variables: 42 });
+
+  await vi.waitUntil(() => result.status.value === "success", {
+    timeout: 3000,
+  });
+
+  expect(testCall).toHaveBeenCalledWith(42);
 });
 
 it("catches error", async () => {

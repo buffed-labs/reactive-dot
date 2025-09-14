@@ -32,6 +32,8 @@ import { switchMap } from "rxjs/operators";
 export function useContractMutation<
   TAction extends (
     builder: InkMutationBuilder,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    variables: any,
   ) => PatchedReturnType<InkMutationBuilder>,
 >(
   action: TAction,
@@ -51,15 +53,21 @@ export function useContractMutation<
   const contextSigner = use(SignerContext);
   const mutationEventSubject = use(MutationEventSubjectContext);
 
+  type SubmitOptions = {
+    signer?: PolkadotSigner;
+    txOptions?: TxOptionsOf<Awaited<ReturnType<TAction>>>;
+  } & (Parameters<TAction>["length"] extends 2
+    ? { variables: Parameters<TAction>[1] }
+    : { variables?: Parameters<TAction>[1] });
+
   return useAsyncAction(
     useAtomCallback(
       (
         get,
         _,
-        submitOptions?: {
-          signer?: PolkadotSigner;
-          txOptions?: TxOptionsOf<Awaited<ReturnType<TAction>>>;
-        },
+        ...[submitOptions]: Parameters<TAction>["length"] extends 2
+          ? [submitOptions: SubmitOptions]
+          : [submitOptions?: SubmitOptions]
       ) => {
         const signer =
           submitOptions?.signer ?? options?.signer ?? contextSigner;
@@ -70,19 +78,21 @@ export function useContractMutation<
 
         return from(
           Promise.resolve(
-            // @ts-expect-error TODO: fix this
-            action(async (contract, address, message, body) =>
-              getInkContractTx(
-                ...(await Promise.all([
-                  get(typedApiAtom(config, chainId)),
-                  get(inkClientAtom(contract)),
-                ])),
-                signer,
-                address,
-                // @ts-expect-error TODO: fix this
-                message,
-                body,
-              ),
+            action(
+              // @ts-expect-error TODO: fix this
+              async (contract, address, message, body) =>
+                getInkContractTx(
+                  ...(await Promise.all([
+                    get(typedApiAtom(config, chainId)),
+                    get(inkClientAtom(contract)),
+                  ])),
+                  signer,
+                  address,
+                  // @ts-expect-error TODO: fix this
+                  message,
+                  body,
+                ),
+              submitOptions?.variables,
             ),
           ),
         ).pipe(

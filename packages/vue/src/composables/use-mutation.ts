@@ -26,6 +26,8 @@ import { inject, type MaybeRefOrGetter, toValue } from "vue";
 export function useMutation<
   TAction extends (
     tx: TypedApi<ChainDescriptorOf<TChainId>>["tx"],
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    variables: any,
   ) => // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Transaction<any, any, any, any>,
   TChainId extends ChainId | undefined,
@@ -54,11 +56,19 @@ export function useMutation<
     true,
   );
 
+  type SubmitOptions = {
+    signer?: PolkadotSigner;
+    txOptions?: TxOptionsOf<ReturnType<TAction>>;
+  } & (Parameters<TAction>["length"] extends 2
+    ? { variables: Parameters<TAction>[1] }
+    : { variables?: Parameters<TAction>[1] });
+
   return useAsyncAction(
-    (submitOptions?: {
-      signer: PolkadotSigner;
-      txOptions: TxOptionsOf<ReturnType<TAction>>;
-    }) => {
+    (
+      ...[submitOptions]: Parameters<TAction>["length"] extends 2
+        ? [submitOptions: SubmitOptions]
+        : [submitOptions?: SubmitOptions]
+    ) => {
       const signer =
         submitOptions?.signer ?? toValue(options?.signer) ?? injectedSigner;
 
@@ -70,7 +80,7 @@ export function useMutation<
 
       return from(typedApiPromise.value).pipe(
         switchMap((typedApi) => {
-          const transaction = action(typedApi.tx);
+          const transaction = action(typedApi.tx, submitOptions?.variables);
 
           const eventProps = {
             id,

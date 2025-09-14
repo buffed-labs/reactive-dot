@@ -12,14 +12,16 @@ import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
 const mockSignSubmitAndWatch = vi.fn();
 
+const testCall = vi.fn().mockReturnValue({
+  signSubmitAndWatch: mockSignSubmitAndWatch,
+});
+
 vi.mock("./use-typed-api.js", () => ({
   typedApiAtom: vi.fn(() =>
     atom({
       tx: {
         TestPallet: {
-          testCall: vi.fn().mockReturnValue({
-            signSubmitAndWatch: mockSignSubmitAndWatch,
-          }),
+          testCall,
         },
       },
     }),
@@ -40,7 +42,7 @@ beforeEach(() =>
 );
 
 afterEach(() => {
-  vi.restoreAllMocks();
+  vi.clearAllMocks();
 });
 
 it("sign submit and watch", async () => {
@@ -84,6 +86,45 @@ it("sign submit and watch", async () => {
   expect(result.current[0]).toMatchObject({ type: "txBestBlocksState" });
 
   await act(() => vi.advanceTimersByTime(1000));
+
+  expect(result.current[0]).toMatchObject({ type: "finalized" });
+});
+
+it("accepts variables", async () => {
+  const { result } = await act(() =>
+    renderHook(
+      () =>
+        useMutation((tx, variables: string) =>
+          // @ts-expect-error mocked call
+          tx.TestPallet!.testCall(variables),
+        ),
+      {
+        wrapper: ({ children }) => (
+          <ReactiveDotProvider config={defineConfig({ chains: {} })}>
+            <ChainProvider chainId="test_chain">
+              <SignerProvider signer={{} as PolkadotSigner}>
+                {children}
+              </SignerProvider>
+            </ChainProvider>
+          </ReactiveDotProvider>
+        ),
+      },
+    ),
+  );
+
+  expect(result.current[0]).toBe(idle);
+
+  await act(() =>
+    result.current[1]({
+      variables: "foo",
+    }),
+  );
+
+  expect(result.current[0]).toBe(pending);
+
+  await act(() => vi.advanceTimersByTime(4000));
+
+  expect(testCall).toHaveBeenCalledWith("foo");
 
   expect(result.current[0]).toMatchObject({ type: "finalized" });
 });

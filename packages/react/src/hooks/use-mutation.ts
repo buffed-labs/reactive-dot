@@ -29,6 +29,8 @@ import { switchMap } from "rxjs/operators";
 export function useMutation<
   TAction extends (
     tx: TypedApi<ChainDescriptorOf<TChainId>>["tx"],
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    variables: any,
   ) => // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Transaction<any, any, any, any>,
   TChainId extends ChainId | undefined,
@@ -50,16 +52,22 @@ export function useMutation<
   const mutationEventSubject = use(MutationEventSubjectContext);
   const contextSigner = use(SignerContext);
 
+  type SubmitOptions = {
+    signer?: PolkadotSigner;
+    txOptions?: TxOptionsOf<ReturnType<TAction>>;
+  } & (Parameters<TAction>["length"] extends 2
+    ? { variables: Parameters<TAction>[1] }
+    : { variables?: Parameters<TAction>[1] });
+
   return useAsyncAction(
     useAtomCallback(
       useCallback(
         (
           get,
           _set,
-          submitOptions?: {
-            signer?: PolkadotSigner;
-            txOptions?: TxOptionsOf<ReturnType<TAction>>;
-          },
+          ...[submitOptions]: Parameters<TAction>["length"] extends 2
+            ? [submitOptions: SubmitOptions]
+            : [submitOptions?: SubmitOptions]
         ) => {
           const signer =
             submitOptions?.signer ?? options?.signer ?? contextSigner;
@@ -70,7 +78,7 @@ export function useMutation<
 
           return from(Promise.resolve(get(typedApiAtom(config, chainId)))).pipe(
             switchMap((typedApi) => {
-              const transaction = action(typedApi.tx);
+              const transaction = action(typedApi.tx, submitOptions?.variables);
 
               return transaction
                 .signSubmitAndWatch(
