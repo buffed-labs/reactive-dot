@@ -1,5 +1,11 @@
 # @reactive-dot/vue
 
+## 0.47.0
+
+### Minor Changes
+
+- [#845](https://github.com/buffed-labs/reactive-dot/pull/845) [`dd2c26e`](https://github.com/buffed-labs/reactive-dot/commit/dd2c26e2df9bf05429fa3ae046bae11d0b92c61c) Thanks [@tien](https://github.com/tien)! - Added support for passing variables directly to mutation hooks and composables.
+
 ## 0.46.0
 
 ### Patch Changes

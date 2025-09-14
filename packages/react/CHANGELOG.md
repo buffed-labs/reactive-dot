@@ -1,5 +1,15 @@
 # @reactive-dot/react
 
+## 0.47.0
+
+### Minor Changes
+
+- [#845](https://github.com/buffed-labs/reactive-dot/pull/845) [`dd2c26e`](https://github.com/buffed-labs/reactive-dot/commit/dd2c26e2df9bf05429fa3ae046bae11d0b92c61c) Thanks [@tien](https://github.com/tien)! - Added support for passing variables directly to mutation hooks and composables.
+
+### Patch Changes
+
+- [#846](https://github.com/buffed-labs/reactive-dot/pull/846) [`75a1754`](https://github.com/buffed-labs/reactive-dot/commit/75a1754ab9b003ee1abef5251c19385f789530d2) Thanks [@tien](https://github.com/tien)! - Bumped dependencies.
+
 ## 0.46.3
 
 ### Patch Changes
