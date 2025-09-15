@@ -1,5 +1,11 @@
 # @reactive-dot/react
 
+## 0.47.1
+
+### Patch Changes
+
+- [#849](https://github.com/buffed-labs/reactive-dot/pull/849) [`fab5844`](https://github.com/buffed-labs/reactive-dot/commit/fab5844738da579616a704d1062f13f629803e47) Thanks [@tien](https://github.com/tien)! - Fixed data from multichain queries not being flattened.
+
 ## 0.47.0
 
 ### Minor Changes
