@@ -47,6 +47,36 @@ describe("useLazyLoadQuery", () => {
     expect(current).toMatchInlineSnapshot(`"test-value"`);
   });
 
+  it("fetches multi query options", async () => {
+    const {
+      result: { current },
+    } = await act(() =>
+      renderHook(
+        () =>
+          useLazyLoadQuery([
+            { chainId: undefined, query: singleQuery },
+            { chainId: undefined, query: singleQuery },
+          ]),
+        {
+          wrapper: ({ children }) => (
+            <ReactiveDotProvider config={defineConfig({ chains: {} })}>
+              <ChainProvider chainId="test-chain">
+                <Suspense>{children}</Suspense>
+              </ChainProvider>
+            </ReactiveDotProvider>
+          ),
+        },
+      ),
+    );
+
+    expect(current).toMatchInlineSnapshot(`
+      [
+        "test-value",
+        "test-value",
+      ]
+    `);
+  });
+
   it("fetches single contract queries", async () => {
     const {
       result: { current },

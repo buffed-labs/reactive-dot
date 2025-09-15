@@ -148,7 +148,7 @@ export function useLazyLoadQuery(
 
     return !Array.isArray(queryOrOptions)
       ? flatHead(unflattenedData)
-      : unflattenedData;
+      : unflattenedData.map(flatHead);
   }, [options, partialData, queryOrOptions]);
 }
 
