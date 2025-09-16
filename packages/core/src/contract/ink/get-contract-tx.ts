@@ -1,10 +1,8 @@
-import type { ExtractExactProperties, StringKeyOf } from "../types.js";
-import { toH160Bytes } from "./address.js";
-import type {
-  GenericInkDescriptors,
-  InkCompatApi,
-  InkTxBody,
-} from "./types.js";
+import { toH160Bytes } from "../../contract/address.js";
+import type { ExtractExactProperties, StringKeyOf } from "../../types.js";
+import { omitUndefinedProperties } from "../../utils/omit-undefined-properties.js";
+import type { ContractCompatApi } from "../types.js";
+import type { GenericInkDescriptors, InkTxBody } from "./types.js";
 import type { InkClient } from "@polkadot-api/ink-contracts";
 import { AccountId, type PolkadotSigner } from "polkadot-api";
 
@@ -17,7 +15,7 @@ export async function getInkContractTx<
     >
   >,
 >(
-  api: InkCompatApi,
+  api: ContractCompatApi,
   inkClient: InkClient<GenericInkDescriptors>,
   signer: PolkadotSigner,
   contract: string,
@@ -58,7 +56,7 @@ export async function getInkContractTx<
     undefined,
     undefined,
     data,
-    !options?.signal ? {} : { signal: options?.signal },
+    omitUndefinedProperties({ signal: options?.signal }),
   );
 
   return api.tx.Revive.call({

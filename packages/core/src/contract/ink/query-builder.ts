@@ -1,14 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { BaseInstruction, MultiInstruction } from "../query-builder.js";
-import type { pending } from "../symbols.js";
+import type { ContractAddress } from "../../contract/types.js";
+import type { BaseInstruction, MultiInstruction } from "../../query-builder.js";
+import type { pending } from "../../symbols.js";
 import type {
   ExcludeProperties,
   Finality,
   FlatHead,
   StringKeyOf,
-} from "../types.js";
+} from "../../types.js";
 import type { UnwrapResult } from "./result.js";
-import type { ContractAddress, GenericInkDescriptors } from "./types.js";
+import type { GenericInkDescriptors } from "./types.js";
 
 type StorageReadInstruction = BaseInstruction<"read-storage"> & {
   path: string;

@@ -1,4 +1,4 @@
-import type { ContractAddress } from "./types.js";
+import type { ContractAddress } from "../contract/types.js";
 import { keccak_256 } from "@noble/hashes/sha3.js";
 import { AccountId, FixedSizeBinary } from "polkadot-api";
 

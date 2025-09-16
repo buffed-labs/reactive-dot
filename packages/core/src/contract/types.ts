@@ -1,17 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 import type {
-  ExtractExactProperties,
-  StringKeyOf,
-  UndefinedToOptional,
-} from "../types.js";
-import type {
-  Event,
-  InkCallableDescriptor,
-  InkDescriptors,
-  InkStorageDescriptor,
-} from "@polkadot-api/ink-contracts";
-import type {
   ApisTypedef,
   Binary,
   Enum,
@@ -38,7 +27,7 @@ export type StorageError = Enum<{
   MigrationInProgress: undefined;
 }>;
 
-export type InkApis<TEvent = any, TError = any> = ApisTypedef<{
+export type ContractApis<TEvent = any, TError = any> = ApisTypedef<{
   ReviveApi: {
     /**
      * Perform a call from a specified account to a given contract.
@@ -108,7 +97,7 @@ export type InkApis<TEvent = any, TError = any> = ApisTypedef<{
   };
 }>;
 
-export type InkPallets = PalletsTypedef<
+export type ContractPallets = PalletsTypedef<
   {
     Revive: {
       /**
@@ -225,38 +214,6 @@ export type GenericDefinition<TPallet, TApis> = {
   genesis: any;
 };
 
-export type GenericInkDescriptors = InkDescriptors<
-  InkStorageDescriptor,
-  InkCallableDescriptor,
-  InkCallableDescriptor,
-  Event
+export type ContractCompatApi = TypedApi<
+  GenericDefinition<ContractPallets, ContractApis>
 >;
-
-export type InkCompatApi = TypedApi<GenericDefinition<InkPallets, InkApis>>;
-
-export type MessageOfDescriptor<
-  T extends GenericInkDescriptors,
-  TMessageName extends string,
-> = T["__types"]["messages"][TMessageName];
-
-export type InkTxBody<
-  TDescriptor extends GenericInkDescriptors,
-  TMessageName extends StringKeyOf<
-    ExtractExactProperties<
-      TDescriptor["__types"]["messages"],
-      { mutates: true }
-    >
-  >,
-> = UndefinedToOptional<{
-  data: {} extends MessageOfDescriptor<TDescriptor, TMessageName>["message"]
-    ? undefined
-    : MessageOfDescriptor<TDescriptor, TMessageName>["message"];
-  value: MessageOfDescriptor<TDescriptor, TMessageName>["payable"] extends true
-    ? bigint
-    : Extract<
-          MessageOfDescriptor<TDescriptor, TMessageName>["payable"],
-          false | undefined
-        > extends never
-      ? undefined
-      : bigint | undefined;
-}>;

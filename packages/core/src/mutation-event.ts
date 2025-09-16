@@ -1,5 +1,5 @@
 import type { ChainId } from "./chains.js";
-import type { Contract } from "./ink/contract.js";
+import type { Contract } from "./contract/contract.js";
 import type { GenericTransaction } from "./transaction.js";
 
 export type MutationEvent = {

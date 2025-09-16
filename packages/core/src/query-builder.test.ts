@@ -1,6 +1,6 @@
-import { defineContract } from "./ink/contract.js";
-import type { InkQuery } from "./ink/query-builder.js";
-import type { GenericInkDescriptors } from "./ink/types.js";
+import { defineContract } from "./contract/contract.js";
+import type { InkQuery } from "./contract/ink/query-builder.js";
+import type { GenericInkDescriptors } from "./contract/ink/types.js";
 import { Query } from "./query-builder.js";
 import { expect, it } from "vitest";
 
@@ -146,7 +146,10 @@ it("should append a multi call-api instruction using runtimeApis", () => {
 
 const mockContractDescriptor = {} as unknown as GenericInkDescriptors;
 
-const mockContract = defineContract({ descriptor: mockContractDescriptor });
+const mockContract = defineContract({
+  type: "ink",
+  descriptor: mockContractDescriptor,
+});
 
 const mockInkQueryBuilder = (
   query: InkQuery<typeof mockContractDescriptor, []>,

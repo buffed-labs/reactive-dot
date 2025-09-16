@@ -1,8 +1,8 @@
-import { getContractConfig } from "./contract.js";
-import type { Contract } from "./contract.js";
+import type { InkContract } from "../contract.js";
+import { getContractConfig } from "../contract.js";
 import { getInkClient } from "./get-ink-client.js";
 import { getInkClient as importedPolkaGetInkClient } from "polkadot-api/ink";
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 vi.mock("./contract.js", () => ({
   getContractConfig: vi.fn(),
@@ -20,7 +20,7 @@ describe("getInkClient", () => {
   });
 
   it("imports polkadot-api/ink and invokes its getInkClient with the contract descriptor", async () => {
-    const fakeContract = {} as Contract;
+    const fakeContract = {} as InkContract;
     const descriptor = { some: "descriptor" };
     const fakeClient = { client: true };
 
@@ -39,7 +39,7 @@ describe("getInkClient", () => {
   });
 
   it("propagates errors thrown by the imported getInkClient", async () => {
-    const fakeContract = {} as Contract;
+    const fakeContract = {} as InkContract;
     const descriptor = {};
     const error = new Error("fail");
 

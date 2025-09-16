@@ -1,4 +1,4 @@
-import { QueryError } from "../errors.js";
+import { QueryError } from "../../errors.js";
 import type { SimpleInkQueryInstruction } from "./query-builder.js";
 import { queryInk } from "./query.js";
 import { beforeEach, expect, it, vi } from "vitest";

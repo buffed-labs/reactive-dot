@@ -1,22 +1,19 @@
-import { QueryError } from "../errors.js";
-import { toH160Bytes, toSs58Address } from "./address.js";
+import { toH160Bytes, toSs58Address } from "../../contract/address.js";
+import { QueryError } from "../../errors.js";
+import type { ContractAddress, ContractCompatApi } from "../types.js";
 import type {
   InferQueryInstructionPayload,
   SimpleInkQueryInstruction,
 } from "./query-builder.js";
 import { unwrapResult } from "./result.js";
-import type {
-  ContractAddress,
-  GenericInkDescriptors,
-  InkCompatApi,
-} from "./types.js";
+import type { GenericInkDescriptors } from "./types.js";
 import type { InkClient } from "@polkadot-api/ink-contracts";
 
 export async function queryInk<
   Descriptor extends GenericInkDescriptors,
   Instruction extends SimpleInkQueryInstruction,
 >(
-  api: InkCompatApi,
+  api: ContractCompatApi,
   client: InkClient<GenericInkDescriptors>,
   address: ContractAddress,
   instruction: Instruction,

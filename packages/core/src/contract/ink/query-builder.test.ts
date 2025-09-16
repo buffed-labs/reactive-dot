@@ -1,4 +1,4 @@
-import type { Finality } from "../types.js";
+import type { Finality } from "../../types.js";
 import { InkQuery } from "./query-builder.js";
 import { describe, expect, it } from "vitest";
 

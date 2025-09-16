@@ -17,9 +17,8 @@ export type MaybeAsync<T> = T | Promise<T> | Observable<T>;
 
 export type Gettable<T> = MaybePromise<T> | (() => MaybePromise<T>);
 
-export type FlatHead<TArray extends unknown[]> = TArray extends [infer Head]
-  ? Head
-  : TArray;
+export type FlatHead<TArray extends readonly unknown[]> =
+  TArray extends readonly [infer Head] ? Head : TArray;
 
 export type Flatten<T extends unknown[]> = T extends [
   infer First,

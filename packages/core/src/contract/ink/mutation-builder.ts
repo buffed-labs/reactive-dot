@@ -1,10 +1,10 @@
-import type { GenericTransaction } from "../transaction.js";
+import type { GenericTransaction } from "../../transaction.js";
 import type {
+  StringKeyOf,
   ExtractExactProperties,
   MaybePromise,
-  StringKeyOf,
-} from "../types.js";
-import type { Contract } from "./contract.js";
+} from "../../types.js";
+import type { InkContract } from "../contract.js";
 import type { GenericInkDescriptors, InkTxBody } from "./types.js";
 
 export type InkMutationBuilder = <
@@ -16,7 +16,7 @@ export type InkMutationBuilder = <
     >
   >,
 >(
-  contract: Contract<TDescriptor>,
+  contract: InkContract<TDescriptor>,
   address: string,
   message: TMessageName,
   ...[body]: InkTxBody<TDescriptor, TMessageName> extends Record<string, never>
