@@ -161,6 +161,7 @@ it("should append a multi call-api instruction using runtimeApis", () => {
 const mockContractDescriptor = {} as unknown as GenericInkDescriptors;
 
 const mockContract = defineContract({
+  type: "ink",
   descriptor: mockContractDescriptor,
 });
 
