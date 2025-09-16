@@ -3,7 +3,7 @@ import { getInkClient } from "./get-ink-client.js";
 import { getInkClient as importedPolkaGetInkClient } from "polkadot-api/ink";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-vi.mock("./contract.js", () => ({
+vi.mock("../contract.js", () => ({
   getContractConfig: vi.fn(),
 }));
 vi.mock("polkadot-api/ink", () => ({

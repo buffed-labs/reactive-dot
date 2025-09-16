@@ -2,7 +2,7 @@ import { getInkContractTx } from "./get-contract-tx.js";
 import type { PolkadotSigner } from "polkadot-api";
 import { expect, it, vi } from "vitest";
 
-vi.mock("./address.js", () => ({
+vi.mock("../address.js", () => ({
   toH160Bytes: vi.fn(() => "destBytes"),
 }));
 
