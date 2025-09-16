@@ -1,5 +1,11 @@
 # @reactive-dot/core
 
+## 0.47.4
+
+### Patch Changes
+
+- [#860](https://github.com/buffed-labs/reactive-dot/pull/860) [`76f8e8e`](https://github.com/buffed-labs/reactive-dot/commit/76f8e8e864c5e0cdb55ca58e28c17dbd5c5c24d4) Thanks [@tien](https://github.com/tien)! - Fixed `defineConfig` returns type.
+
 ## 0.47.3
 
 ### Patch Changes
