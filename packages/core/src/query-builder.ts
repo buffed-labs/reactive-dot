@@ -1,11 +1,11 @@
 import type { CommonDescriptor } from "./chains.js";
-import type { Contract, DescriptorOfContract } from "./ink/contract.js";
+import type { Contract, DescriptorOfContract } from "./contract/contract.js";
 import {
   type InferInkInstructionsPayload,
   InkQuery,
   type InkQueryInstruction,
-} from "./ink/query-builder.js";
-import type { GenericInkDescriptors } from "./ink/types.js";
+} from "./contract/ink/query-builder.js";
+import type { GenericInkDescriptors } from "./contract/ink/types.js";
 import type { pending } from "./symbols.js";
 import type { At, Finality, FlatHead, Flatten, StringKeyOf } from "./types.js";
 import type { ChainDefinition, TypedApi } from "polkadot-api";

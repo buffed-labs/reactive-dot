@@ -1,10 +1,9 @@
-import { getContractConfig } from "./contract.js";
-import type { Contract } from "./contract.js";
+import { type Contract, getContractConfig } from "../contract.js";
 import { getInkClient } from "./get-ink-client.js";
 import { getInkClient as importedPolkaGetInkClient } from "polkadot-api/ink";
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
-vi.mock("./contract.js", () => ({
+vi.mock("../contract.js", () => ({
   getContractConfig: vi.fn(),
 }));
 vi.mock("polkadot-api/ink", () => ({

@@ -5,7 +5,7 @@ import {
   getContractConfig,
   type DescriptorOfContract,
 } from "./contract.js";
-import type { GenericInkDescriptors } from "./types.js";
+import type { GenericInkDescriptors } from "./ink/types.js";
 import { describe, it, expect, vi, beforeEach, type Mock } from "vitest";
 
 describe("Contract class", () => {

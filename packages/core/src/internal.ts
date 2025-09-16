@@ -1,10 +1,10 @@
 export type { ChainDescriptorOf, Chains } from "./chains.js";
-export { Contract, getContractConfig } from "./ink/contract.js";
-export type { InkMutationBuilder } from "./ink/mutation-builder.js";
+export { getContractConfig, type Contract } from "./contract/contract.js";
+export type { InkMutationBuilder } from "./contract/ink/mutation-builder.js";
 export type {
   InkQueryInstruction,
   SimpleInkQueryInstruction,
-} from "./ink/query-builder.js";
+} from "./contract/ink/query-builder.js";
 export type { MutationEvent } from "./mutation-event.js";
 export type {
   InferQueryPayload,

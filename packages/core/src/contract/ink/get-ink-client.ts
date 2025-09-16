@@ -1,4 +1,4 @@
-import { type Contract, getContractConfig } from "./contract.js";
+import { type Contract, getContractConfig } from "../../contract/contract.js";
 
 export function getInkClient(contract: Contract) {
   return import("polkadot-api/ink").then(({ getInkClient }) =>

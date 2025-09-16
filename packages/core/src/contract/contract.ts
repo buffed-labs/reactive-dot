@@ -1,5 +1,5 @@
 import { BaseError } from "../errors.js";
-import type { GenericInkDescriptors } from "./types.js";
+import type { GenericInkDescriptors } from "./ink/types.js";
 
 type ContractConfig<T extends GenericInkDescriptors = GenericInkDescriptors> = {
   descriptor: T;
