@@ -40,9 +40,7 @@
   "dependencies": {
     "@noble/hashes": "^2.0.0",
     "@reactive-dot/utils": "workspace:^",
-    "@substrate/smoldot-discovery": "^2.0.2",
-    "abitype": "^1.0.8",
-    "ox": "^0.8.7"
+    "@substrate/smoldot-discovery": "^2.0.2"
   },
   "devDependencies": {
     "@reactive-dot/eslint-config": "workspace:^",
