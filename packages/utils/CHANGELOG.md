@@ -1,5 +1,11 @@
 # @reactive-dot/utils
 
+## 0.10.1
+
+### Patch Changes
+
+- [#857](https://github.com/buffed-labs/reactive-dot/pull/857) [`db1931a`](https://github.com/buffed-labs/reactive-dot/commit/db1931a9da858dcac527f1a0e492b9d5207df9c8) Thanks [@tien](https://github.com/tien)! - Fixed mismatched dependencies range.
+
 ## 0.10.0
 
 ### Minor Changes

@@ -1,5 +1,14 @@
 # @reactive-dot/vue
 
+## 0.47.3
+
+### Patch Changes
+
+- [#857](https://github.com/buffed-labs/reactive-dot/pull/857) [`db1931a`](https://github.com/buffed-labs/reactive-dot/commit/db1931a9da858dcac527f1a0e492b9d5207df9c8) Thanks [@tien](https://github.com/tien)! - Fixed mismatched dependencies range.
+
+- Updated dependencies [[`db1931a`](https://github.com/buffed-labs/reactive-dot/commit/db1931a9da858dcac527f1a0e492b9d5207df9c8)]:
+  - @reactive-dot/core@0.47.3
+
 ## 0.47.0
 
 ### Minor Changes
