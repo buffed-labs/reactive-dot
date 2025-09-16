@@ -1,5 +1,11 @@
 # @reactive-dot/core
 
+## 0.47.2
+
+### Patch Changes
+
+- [#855](https://github.com/buffed-labs/reactive-dot/pull/855) [`4e96786`](https://github.com/buffed-labs/reactive-dot/commit/4e967862223edd5a320513d519c1df2f9a369c25) Thanks [@tien](https://github.com/tien)! - `defineConfig` will now returns the entire immutable config object.
+
 ## 0.46.3
 
 ### Patch Changes
