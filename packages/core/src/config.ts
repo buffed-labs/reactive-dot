@@ -29,6 +29,9 @@ export type Config<
   readonly ssr?: boolean;
 };
 
-export function defineConfig<const TConfig extends Config>(config: TConfig) {
+export function defineConfig<
+  const TChains extends Readonly<Record<string, ChainConfig>>,
+  const TTargetChainIds extends Extract<keyof TChains, string>[],
+>(config: Config<TChains, TTargetChainIds>) {
   return config;
 }
