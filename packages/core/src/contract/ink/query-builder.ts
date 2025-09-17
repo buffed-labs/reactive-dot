@@ -1,7 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { ContractAddress } from "../../contract/types.js";
-import type { BaseInstruction, MultiInstruction } from "../../query-builder.js";
-import type { pending } from "../../symbols.js";
+import type {
+  BaseInstruction,
+  InstructionResponseWithDirectives,
+  MultiInstruction,
+} from "../../query-builder.js";
 import type {
   ExcludeProperties,
   Finality,
@@ -63,30 +66,22 @@ export type InkQueryInstruction =
   | MultiStorageReadInstruction
   | MultiMessageSendInstruction;
 
+type InferQueryInstructionPayloadPreDirectives<
+  TInstruction extends InkQueryInstruction,
+  TDescriptor extends GenericInkDescriptors,
+> = TInstruction extends StorageReadInstruction | MultiStorageReadInstruction
+  ? InferStorageReadInstructionPayload<TInstruction, TDescriptor>
+  : TInstruction extends MessageSendInstruction | MultiMessageSendInstruction
+    ? InferMessageSendInstructionPayload<TInstruction, TDescriptor>
+    : never;
+
 export type InferQueryInstructionPayload<
   TInstruction extends InkQueryInstruction,
   TDescriptor extends GenericInkDescriptors,
-> = TInstruction extends MultiStorageReadInstruction
-  ? Array<
-      true extends TInstruction["directives"]["stream"]
-        ?
-            | InferStorageReadInstructionPayload<TInstruction, TDescriptor>
-            | typeof pending
-        : InferStorageReadInstructionPayload<TInstruction, TDescriptor>
-    >
-  : TInstruction extends StorageReadInstruction
-    ? InferStorageReadInstructionPayload<TInstruction, TDescriptor>
-    : TInstruction extends MultiMessageSendInstruction
-      ? Array<
-          true extends TInstruction["directives"]["stream"]
-            ?
-                | InferMessageSendInstructionPayload<TInstruction, TDescriptor>
-                | typeof pending
-            : InferMessageSendInstructionPayload<TInstruction, TDescriptor>
-        >
-      : TInstruction extends MessageSendInstruction
-        ? InferMessageSendInstructionPayload<TInstruction, TDescriptor>
-        : never;
+> = InstructionResponseWithDirectives<
+  TInstruction,
+  InferQueryInstructionPayloadPreDirectives<TInstruction, TDescriptor>
+>;
 
 export type InferInkInstructionsPayload<
   TInstructions extends InkQueryInstruction[],
