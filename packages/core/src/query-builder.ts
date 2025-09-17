@@ -66,20 +66,23 @@ export type BaseInstruction<TName extends string> = {
   instruction: TName;
 };
 
-export type MultiInstruction<
-  TInstruction extends BaseInstruction<string>,
-  TMultiProperty extends string = "args",
-  TMultiPropertyToName extends string = TMultiProperty,
-> = Omit<TInstruction, TMultiProperty> & {
+export type BaseMultiInstruction = {
   multi: true;
   directives: {
     stream: boolean | undefined;
   };
-} & {
-  [P in TMultiProperty as TMultiPropertyToName]: TMultiProperty extends keyof TInstruction
-    ? TInstruction[TMultiProperty][]
-    : never;
 };
+
+export type MultiInstruction<
+  TInstruction extends BaseInstruction<string>,
+  TMultiProperty extends string = "args",
+  TMultiPropertyToName extends string = TMultiProperty,
+> = Omit<TInstruction, TMultiProperty> &
+  BaseMultiInstruction & {
+    [P in TMultiProperty as TMultiPropertyToName]: TMultiProperty extends keyof TInstruction
+      ? TInstruction[TMultiProperty][]
+      : never;
+  };
 
 export type ConstantFetchInstruction = BaseInstruction<"get-constant"> & {
   pallet: string;
@@ -172,38 +175,42 @@ type InferContractReadResponse<
   DescriptorOfContract<T["contract"]>
 >;
 
-export type InferInstructionResponse<
+type InferInstructionResponsePreDirectives<
   TInstruction extends QueryInstruction,
   TDescriptor extends ChainDefinition = CommonDescriptor,
 > = TInstruction extends ConstantFetchInstruction
   ? ConstantFetchPayload<TInstruction, TDescriptor>
-  : TInstruction extends MultiInstruction<StorageReadInstruction>
-    ? Array<
-        true extends TInstruction["directives"]["stream"]
-          ? StorageReadResponse<TInstruction, TDescriptor> | typeof pending
-          : StorageReadResponse<TInstruction, TDescriptor>
-      >
-    : TInstruction extends StorageReadInstruction
-      ? StorageReadResponse<TInstruction, TDescriptor>
-      : TInstruction extends StorageEntriesReadInstruction
-        ? StorageEntriesReadResponse<TInstruction, TDescriptor>
-        : TInstruction extends MultiInstruction<ApiCallInstruction>
-          ? Array<
-              true extends TInstruction["directives"]["stream"]
-                ? ApiCallResponse<TInstruction, TDescriptor> | typeof pending
-                : ApiCallResponse<TInstruction, TDescriptor>
-            >
-          : TInstruction extends ApiCallInstruction
-            ? ApiCallResponse<TInstruction, TDescriptor>
-            : TInstruction extends MultiContractReadInstruction
-              ? Array<
-                  true extends TInstruction["directives"]["stream"]
-                    ? InferContractReadResponse<TInstruction> | typeof pending
-                    : InferContractReadResponse<TInstruction>
-                >
-              : TInstruction extends ContractReadInstruction
-                ? InferContractReadResponse<TInstruction>
-                : never;
+  : TInstruction extends StorageReadInstruction
+    ? StorageReadResponse<TInstruction, TDescriptor>
+    : TInstruction extends StorageEntriesReadInstruction
+      ? StorageEntriesReadResponse<TInstruction, TDescriptor>
+      : TInstruction extends ApiCallInstruction
+        ? ApiCallResponse<TInstruction, TDescriptor>
+        : TInstruction extends
+              | ContractReadInstruction
+              | MultiContractReadInstruction
+          ? InferContractReadResponse<TInstruction>
+          : never;
+
+export type InstructionResponseWithDirectives<
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  TInstruction extends BaseInstruction<any>,
+  TResponse,
+> = TInstruction extends BaseMultiInstruction
+  ? Array<
+      true extends TInstruction["directives"]["stream"]
+        ? TResponse | typeof pending
+        : TResponse
+    >
+  : TResponse;
+
+export type InferInstructionResponse<
+  TInstruction extends QueryInstruction,
+  TDescriptor extends ChainDefinition = CommonDescriptor,
+> = InstructionResponseWithDirectives<
+  TInstruction,
+  InferInstructionResponsePreDirectives<TInstruction, TDescriptor>
+>;
 
 type ResponsePayload<T> =
   T extends Promise<infer Payload>
