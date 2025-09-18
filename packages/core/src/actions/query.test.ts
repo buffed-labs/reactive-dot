@@ -59,6 +59,9 @@ describe("preflight", () => {
       api: "foo",
       args: [],
       at: undefined,
+      directives: {
+        defer: undefined,
+      },
     } as SimpleQueryInstruction;
 
     expect(preflight(instruction)).toBe("promise");
@@ -71,6 +74,9 @@ describe("preflight", () => {
       storage: "foo",
       args: [],
       at: undefined,
+      directives: {
+        defer: undefined,
+      },
     } as SimpleQueryInstruction;
 
     expect(preflight(instruction)).toBe("observable");
@@ -83,6 +89,9 @@ describe("preflight", () => {
       storage: "foo",
       args: [],
       at: undefined,
+      directives: {
+        defer: undefined,
+      },
     } as SimpleQueryInstruction;
 
     expect(preflight(instruction)).toBe("observable");
@@ -95,6 +104,9 @@ describe("preflight", () => {
       storage: "foo",
       args: [1],
       at: "0x1234",
+      directives: {
+        defer: undefined,
+      },
     } as SimpleQueryInstruction;
 
     expect(preflight(instruction)).toBe("promise");
@@ -136,6 +148,9 @@ it('should handle "read-storage" instruction with at starting with "0x" (using g
     storage: "foo",
     args: [3],
     at: "0xabc",
+    directives: {
+      defer: undefined,
+    },
   } as SimpleQueryInstruction;
 
   const result = await query(fakeApi, instruction);
@@ -170,6 +185,9 @@ it('should handle "read-storage-entries" instruction with at starting with "0x" 
     storage: "foo",
     args: [3],
     at: "0xabc",
+    directives: {
+      defer: undefined,
+    },
   } as SimpleQueryInstruction;
 
   const result = await query(fakeApi, instruction);

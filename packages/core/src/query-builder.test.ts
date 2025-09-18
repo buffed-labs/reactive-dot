@@ -14,6 +14,9 @@ it("should append a get-constant instruction", () => {
     instruction: "get-constant",
     pallet: "TestPallet",
     constant: "TestConstant",
+    directives: {
+      defer: undefined,
+    },
   });
 });
 
@@ -31,6 +34,9 @@ it("should append a read-storage instruction", () => {
         "arg1",
       ],
       "at": "finalized",
+      "directives": {
+        "defer": undefined,
+      },
       "instruction": "read-storage",
       "pallet": "TestPallet",
       "storage": "TestStorage",
@@ -59,6 +65,7 @@ it("should append a multi read-storage instruction using storages", () => {
       ],
       "at": undefined,
       "directives": {
+        "defer": undefined,
         "stream": undefined,
       },
       "instruction": "read-storage",
@@ -83,6 +90,9 @@ it("should append a read-storage-entries instruction", () => {
         "arg1",
       ],
       "at": "best",
+      "directives": {
+        "defer": undefined,
+      },
       "instruction": "read-storage-entries",
       "pallet": "TestPallet",
       "storage": "TestStorage",
@@ -105,6 +115,9 @@ it("should append a call-api instruction", () => {
         "arg1",
       ],
       "at": "best",
+      "directives": {
+        "defer": undefined,
+      },
       "instruction": "call-api",
       "pallet": "TestPallet",
     }
@@ -135,6 +148,7 @@ it("should append a multi call-api instruction using runtimeApis", () => {
       ],
       "at": "finalized",
       "directives": {
+        "defer": undefined,
         "stream": undefined,
       },
       "instruction": "call-api",
@@ -170,11 +184,17 @@ it("should append a read-contract instruction", () => {
     {
       "address": "contractAddress123",
       "contract": Contract {},
+      "directives": {
+        "defer": undefined,
+      },
       "instruction": "read-contract",
       "instructions": [
         {
           "at": undefined,
           "body": {},
+          "directives": {
+            "defer": undefined,
+          },
           "instruction": "send-message",
           "name": "testMessage",
           "origin": undefined,
@@ -202,6 +222,7 @@ it("should append a multi read-contract instruction using contracts", () => {
       ],
       "contract": Contract {},
       "directives": {
+        "defer": undefined,
         "stream": undefined,
       },
       "instruction": "read-contract",
@@ -209,6 +230,9 @@ it("should append a multi read-contract instruction using contracts", () => {
         {
           "at": undefined,
           "body": {},
+          "directives": {
+            "defer": undefined,
+          },
           "instruction": "send-message",
           "name": "testMessage",
           "origin": undefined,

@@ -4,6 +4,34 @@ sidebar_position: 3
 
 # Incremental loading
 
+## `defer`
+
+The `defer` directive may be specified on a query to imply de-prioritization, that causes the data to be in [`pending`](/api/core#pending) state in the initial response, and delivered as a subsequent response afterward.
+
+:::info
+
+When you pass `{ defer: true }` to the query, the result will now be either:
+
+- A resolved value (the response you expect), or
+- A special [`pending`](/api/core#pending) symbol from `@reactive-dot/core`, indicating that the data hasn’t arrived yet.
+
+:::
+
+```vue
+<script setup lang="ts">
+import { useLazyLoadQuery } from "@reactive-dot/vue";
+
+const { data: tvl } = await useLazyLoadQuery((query) =>
+  query.storage("NominationPools", "TotalValueLocked", [], { defer: true }),
+);
+</script>
+
+<template>
+  <progress v-if="tvl === pending" />
+  <p v-else>Total staked: {{ totalStaked }}</p>
+</template>
+```
+
 ## `stream`
 
 For multi-entry queries like `storages`, `runtimeApis`, etc., the `stream` directive allows the client to receive partial results as they become available, before the entire response is ready.

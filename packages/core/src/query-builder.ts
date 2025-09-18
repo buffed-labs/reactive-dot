@@ -64,6 +64,9 @@ type InferPapiConstantEntry<T> = T extends {
 
 export type BaseInstruction<TName extends string> = {
   instruction: TName;
+  directives: {
+    defer: boolean | undefined;
+  };
 };
 
 export type BaseMultiInstruction = {
@@ -196,13 +199,23 @@ export type InstructionResponseWithDirectives<
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   TInstruction extends BaseInstruction<any>,
   TResponse,
-> = TInstruction extends BaseMultiInstruction
-  ? Array<
-      true extends TInstruction["directives"]["stream"]
-        ? TResponse | typeof pending
-        : TResponse
-    >
-  : TResponse;
+> = true extends TInstruction["directives"]["defer"]
+  ?
+      | typeof pending
+      | (TInstruction extends BaseMultiInstruction
+          ? Array<
+              true extends TInstruction["directives"]["stream"]
+                ? TResponse | typeof pending
+                : TResponse
+            >
+          : TResponse)
+  : TInstruction extends BaseMultiInstruction
+    ? Array<
+        true extends TInstruction["directives"]["stream"]
+          ? TResponse | typeof pending
+          : TResponse
+      >
+    : TResponse;
 
 export type InferInstructionResponse<
   TInstruction extends QueryInstruction,
@@ -280,11 +293,15 @@ export class Query<
     const TConstant extends StringKeyOf<
       TypedApi<TDescriptor>["constants"][TPallet]
     >,
-  >(pallet: TPallet, constant: TConstant) {
+    const TDefer extends boolean = false,
+  >(pallet: TPallet, constant: TConstant, options?: { defer?: TDefer }) {
     return this.#append({
       instruction: "get-constant",
       pallet,
       constant,
+      directives: {
+        defer: options?.defer as NoInfer<TDefer>,
+      },
     });
   }
 
@@ -296,6 +313,7 @@ export class Query<
   storage<
     const TPallet extends StringKeyOf<TypedApi<TDescriptor>["query"]>,
     const TStorage extends StringKeyOf<TypedApi<TDescriptor>["query"][TPallet]>,
+    const TDefer extends boolean = false,
   >(
     pallet: TPallet,
     storage: TStorage,
@@ -306,13 +324,13 @@ export class Query<
           args?: InferPapiStorageEntry<
             TypedApi<TDescriptor>["query"][TPallet][TStorage]
           >["args"],
-          options?: { at?: At },
+          options?: { at?: At; defer?: TDefer },
         ]
       : [
           args: InferPapiStorageEntry<
             TypedApi<TDescriptor>["query"][TPallet][TStorage]
           >["args"],
-          options?: { at?: At },
+          options?: { at?: At; defer?: TDefer },
         ]
   ) {
     return this.#append({
@@ -321,6 +339,9 @@ export class Query<
       storage,
       args: args ?? [],
       at: options?.at,
+      directives: {
+        defer: options?.defer as NoInfer<TDefer>,
+      },
     } satisfies StorageReadInstruction);
   }
 
@@ -332,6 +353,7 @@ export class Query<
   storages<
     const TPallet extends StringKeyOf<TypedApi<TDescriptor>["query"]>,
     const TStorage extends StringKeyOf<TypedApi<TDescriptor>["query"][TPallet]>,
+    const TDefer extends boolean = false,
     const TStream extends boolean = false,
   >(
     pallet: TPallet,
@@ -341,7 +363,7 @@ export class Query<
         TypedApi<TDescriptor>["query"][TPallet][TStorage]
       >["args"]
     >,
-    options?: { at?: At; stream?: TStream },
+    options?: { at?: At; defer?: TDefer; stream?: TStream },
   ) {
     return this.#append({
       instruction: "read-storage",
@@ -351,6 +373,7 @@ export class Query<
       at: options?.at,
       multi: true,
       directives: {
+        defer: options?.defer as NoInfer<TDefer>,
         stream: options?.stream as NoInfer<TStream>,
       },
     } satisfies MultiInstruction<StorageReadInstruction>);
@@ -364,13 +387,14 @@ export class Query<
   storageEntries<
     const TPallet extends StringKeyOf<TypedApi<TDescriptor>["query"]>,
     const TStorage extends StringKeyOf<TypedApi<TDescriptor>["query"][TPallet]>,
+    const TDefer extends boolean = false,
   >(
     pallet: TPallet,
     storage: TStorage,
     args?: InferPapiStorageEntries<
       TypedApi<TDescriptor>["query"][TPallet][TStorage]
     >["args"],
-    options?: { at?: At },
+    options?: { at?: At; defer?: TDefer },
   ) {
     return this.#append({
       instruction: "read-storage-entries",
@@ -378,6 +402,9 @@ export class Query<
       storage,
       args: args ?? [],
       at: options?.at,
+      directives: {
+        defer: options?.defer as NoInfer<TDefer>,
+      },
     } satisfies StorageEntriesReadInstruction);
   }
 
@@ -389,6 +416,7 @@ export class Query<
   runtimeApi<
     const TPallet extends StringKeyOf<TypedApi<TDescriptor>["apis"]>,
     const TApi extends StringKeyOf<TypedApi<TDescriptor>["apis"][TPallet]>,
+    const TDefer extends boolean = false,
   >(
     pallet: TPallet,
     api: TApi,
@@ -399,13 +427,13 @@ export class Query<
           args?: InferPapiRuntimeCall<
             TypedApi<TDescriptor>["apis"][TPallet][TApi]
           >["args"],
-          options?: { at?: Finality },
+          options?: { at?: Finality; defer?: TDefer },
         ]
       : [
           args: InferPapiRuntimeCall<
             TypedApi<TDescriptor>["apis"][TPallet][TApi]
           >["args"],
-          options?: { at?: Finality },
+          options?: { at?: Finality; defer?: TDefer },
         ]
   ) {
     return this.#append({
@@ -414,6 +442,7 @@ export class Query<
       api,
       args: args ?? [],
       at: options?.at,
+      directives: { defer: options?.defer as NoInfer<TDefer> },
     } satisfies ApiCallInstruction);
   }
 
@@ -425,6 +454,7 @@ export class Query<
   runtimeApis<
     const TPallet extends StringKeyOf<TypedApi<TDescriptor>["apis"]>,
     const TApi extends StringKeyOf<TypedApi<TDescriptor>["apis"][TPallet]>,
+    const TDefer extends boolean = false,
     const TStream extends boolean = false,
   >(
     pallet: TPallet,
@@ -432,7 +462,7 @@ export class Query<
     args: Array<
       InferPapiRuntimeCall<TypedApi<TDescriptor>["apis"][TPallet][TApi]>["args"]
     >,
-    options?: { at?: Finality; stream?: TStream },
+    options?: { at?: Finality; defer?: TDefer; stream?: TStream },
   ) {
     return this.#append({
       instruction: "call-api",
@@ -442,6 +472,7 @@ export class Query<
       at: options?.at,
       multi: true,
       directives: {
+        defer: options?.defer as NoInfer<TDefer>,
         stream: options?.stream as NoInfer<TStream>,
       },
     } satisfies MultiInstruction<ApiCallInstruction>);
@@ -456,18 +487,21 @@ export class Query<
   contract<
     TContractDescriptor extends GenericInkDescriptors,
     TContractInstructions extends InkQueryInstruction[],
+    const TDefer extends boolean = false,
   >(
     contract: Contract<TContractDescriptor>,
     address: string,
     builder: (
       query: InkQuery<TContractDescriptor, []>,
     ) => InkQuery<TContractDescriptor, TContractInstructions>,
+    options?: { defer?: TDefer },
   ) {
     return this.#append({
       instruction: "read-contract",
       contract,
       address,
       instructions: builder(new InkQuery()).instructions,
+      directives: { defer: options?.defer as NoInfer<TDefer> },
     } satisfies ContractReadInstruction);
   }
 
@@ -475,6 +509,7 @@ export class Query<
   contracts<
     TContractDescriptor extends GenericInkDescriptors,
     TContractInstructions extends InkQueryInstruction[],
+    const TDefer extends boolean = false,
     const TStream extends boolean = false,
   >(
     contract: Contract<TContractDescriptor>,
@@ -483,6 +518,7 @@ export class Query<
       query: InkQuery<TContractDescriptor, []>,
     ) => InkQuery<TContractDescriptor, TContractInstructions>,
     options?: {
+      defer?: TDefer;
       stream?: TStream;
     },
   ) {
@@ -490,6 +526,7 @@ export class Query<
       instruction: "read-contract",
       multi: true,
       directives: {
+        defer: options?.defer as NoInfer<TDefer>,
         stream: options?.stream as NoInfer<TStream>,
       },
       contract,

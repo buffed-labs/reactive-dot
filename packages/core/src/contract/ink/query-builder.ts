@@ -120,12 +120,16 @@ export class InkQuery<
   }
 
   /** @experimental */
-  rootStorage(options?: { at?: Finality }) {
+  rootStorage<TDefer extends boolean = false>(options?: {
+    at?: Finality;
+    defer?: TDefer;
+  }) {
     return this.#append({
       instruction: "read-storage",
       path: "" as const,
       key: undefined,
       at: options?.at,
+      directives: { defer: options?.defer as NoInfer<TDefer> },
     } satisfies StorageReadInstruction);
   }
 
@@ -135,6 +139,7 @@ export class InkQuery<
       StringKeyOf<TDescriptor["__types"]["storage"]>,
       ""
     >,
+    const TDefer extends boolean = false,
   >(
     path: TPath,
     ...[
@@ -143,11 +148,11 @@ export class InkQuery<
     ]: TDescriptor["__types"]["storage"][TPath]["key"] extends undefined
       ? [
           key?: TDescriptor["__types"]["storage"][TPath]["key"],
-          options?: { at?: Finality },
+          options?: { at?: Finality; defer?: TDefer },
         ]
       : [
           key: TDescriptor["__types"]["storage"][TPath]["key"],
-          options?: { at?: Finality },
+          options?: { at?: Finality; defer?: TDefer },
         ]
   ) {
     return this.#append({
@@ -155,6 +160,7 @@ export class InkQuery<
       path,
       key: key as any,
       at: options?.at,
+      directives: { defer: options?.defer as NoInfer<TDefer> },
     } satisfies StorageReadInstruction);
   }
 
@@ -164,16 +170,18 @@ export class InkQuery<
       StringKeyOf<TDescriptor["__types"]["storage"]>,
       ""
     >,
+    const TDefer extends boolean = false,
     const TStream extends boolean = false,
   >(
     path: TPath,
     keys: Array<TDescriptor["__types"]["storage"][TPath]["key"]>,
-    options?: { at?: Finality; stream?: TStream },
+    options?: { at?: Finality; defer?: TDefer; stream?: TStream },
   ) {
     return this.#append({
       instruction: "read-storage",
       multi: true,
       directives: {
+        defer: options?.defer as NoInfer<TDefer>,
         stream: options?.stream as NoInfer<TStream>,
       },
       path,
@@ -187,6 +195,7 @@ export class InkQuery<
     const TName extends StringKeyOf<
       ExcludeProperties<TDescriptor["__types"]["messages"], { mutates: true }>
     >,
+    const TDefer extends boolean = false,
   >(
     name: TName,
     ...[body, options]: Extract<
@@ -196,11 +205,11 @@ export class InkQuery<
     > extends never
       ? [
           body: TDescriptor["__types"]["messages"][TName]["message"],
-          options?: { origin?: ContractAddress; at?: Finality },
+          options?: { origin?: ContractAddress; at?: Finality; defer?: TDefer },
         ]
       : [
           body?: TDescriptor["__types"]["messages"][TName]["message"],
-          options?: { origin?: ContractAddress; at?: Finality },
+          options?: { origin?: ContractAddress; at?: Finality; defer?: TDefer },
         ]
   ) {
     return this.#append({
@@ -210,6 +219,7 @@ export class InkQuery<
       body,
       origin: options?.origin,
       at: options?.at,
+      directives: { defer: options?.defer as NoInfer<TDefer> },
     } satisfies MessageSendInstruction);
   }
 
@@ -218,16 +228,23 @@ export class InkQuery<
     const TName extends StringKeyOf<
       ExcludeProperties<TDescriptor["__types"]["messages"], { mutates: true }>
     >,
+    const TDefer extends boolean = false,
     const TStream extends boolean = false,
   >(
     name: TName,
     bodies: Array<TDescriptor["__types"]["messages"][TName]["message"]>,
-    options?: { origin?: ContractAddress; at?: Finality; stream?: TStream },
+    options?: {
+      origin?: ContractAddress;
+      at?: Finality;
+      defer?: TDefer;
+      stream?: TStream;
+    },
   ) {
     return this.#append({
       instruction: "send-message",
       multi: true,
       directives: {
+        defer: options?.defer as NoInfer<TDefer>,
         stream: options?.stream as NoInfer<TStream>,
       },
       // TODO: this is needed for some reason

@@ -96,6 +96,9 @@ describe("useLazyLoadQuery", () => {
       [
         "contract-0x",
         {
+          "directives": {
+            "defer": undefined,
+          },
           "instruction": "read-storage",
           "path": "",
         },
@@ -135,6 +138,9 @@ describe("useLazyLoadQuery", () => {
           [
             "contract-0x",
             {
+              "directives": {
+                "defer": undefined,
+              },
               "instruction": "read-storage",
               "path": "",
             },
@@ -142,6 +148,9 @@ describe("useLazyLoadQuery", () => {
           [
             "contract-0x",
             {
+              "directives": {
+                "defer": undefined,
+              },
               "instruction": "read-storage",
               "key": "test_key",
               "path": "test_storage",
@@ -151,6 +160,10 @@ describe("useLazyLoadQuery", () => {
             [
               "contract-0x",
               {
+                "directives": {
+                  "defer": undefined,
+                  "stream": undefined,
+                },
                 "instruction": "read-storage",
                 "key": "test_key1",
                 "path": "test_storage",
@@ -159,6 +172,10 @@ describe("useLazyLoadQuery", () => {
             [
               "contract-0x",
               {
+                "directives": {
+                  "defer": undefined,
+                  "stream": undefined,
+                },
                 "instruction": "read-storage",
                 "key": "test_key2",
                 "path": "test_storage",
@@ -171,6 +188,9 @@ describe("useLazyLoadQuery", () => {
               "body": {
                 "data": "test-data",
               },
+              "directives": {
+                "defer": undefined,
+              },
               "instruction": "send-message",
               "name": "test_message",
             },
@@ -182,6 +202,10 @@ describe("useLazyLoadQuery", () => {
                 "body": {
                   "data": "test-data1",
                 },
+                "directives": {
+                  "defer": undefined,
+                  "stream": undefined,
+                },
                 "instruction": "send-message",
                 "name": "test_message",
               },
@@ -191,6 +215,10 @@ describe("useLazyLoadQuery", () => {
               {
                 "body": {
                   "data": "test-data2",
+                },
+                "directives": {
+                  "defer": undefined,
+                  "stream": undefined,
                 },
                 "instruction": "send-message",
                 "name": "test_message",
@@ -204,6 +232,10 @@ describe("useLazyLoadQuery", () => {
                 "body": {
                   "data": "test-data1",
                 },
+                "directives": {
+                  "defer": undefined,
+                  "stream": undefined,
+                },
                 "instruction": "send-message",
                 "name": "test_message",
               },
@@ -213,6 +245,10 @@ describe("useLazyLoadQuery", () => {
               {
                 "body": {
                   "data": "test-data2",
+                },
+                "directives": {
+                  "defer": undefined,
+                  "stream": undefined,
                 },
                 "instruction": "send-message",
                 "name": "test_message",
@@ -225,6 +261,9 @@ describe("useLazyLoadQuery", () => {
             [
               "contract-0x",
               {
+                "directives": {
+                  "defer": undefined,
+                },
                 "instruction": "read-storage",
                 "path": "",
               },
@@ -232,6 +271,9 @@ describe("useLazyLoadQuery", () => {
             [
               "contract-0x",
               {
+                "directives": {
+                  "defer": undefined,
+                },
                 "instruction": "read-storage",
                 "key": "test_key",
                 "path": "test_storage",
@@ -241,6 +283,10 @@ describe("useLazyLoadQuery", () => {
               [
                 "contract-0x",
                 {
+                  "directives": {
+                    "defer": undefined,
+                    "stream": undefined,
+                  },
                   "instruction": "read-storage",
                   "key": "test_key1",
                   "path": "test_storage",
@@ -249,6 +295,10 @@ describe("useLazyLoadQuery", () => {
               [
                 "contract-0x",
                 {
+                  "directives": {
+                    "defer": undefined,
+                    "stream": undefined,
+                  },
                   "instruction": "read-storage",
                   "key": "test_key2",
                   "path": "test_storage",
@@ -261,6 +311,9 @@ describe("useLazyLoadQuery", () => {
                 "body": {
                   "data": "test-data",
                 },
+                "directives": {
+                  "defer": undefined,
+                },
                 "instruction": "send-message",
                 "name": "test_message",
               },
@@ -272,6 +325,10 @@ describe("useLazyLoadQuery", () => {
                   "body": {
                     "data": "test-data1",
                   },
+                  "directives": {
+                    "defer": undefined,
+                    "stream": undefined,
+                  },
                   "instruction": "send-message",
                   "name": "test_message",
                 },
@@ -281,6 +338,10 @@ describe("useLazyLoadQuery", () => {
                 {
                   "body": {
                     "data": "test-data2",
+                  },
+                  "directives": {
+                    "defer": undefined,
+                    "stream": undefined,
                   },
                   "instruction": "send-message",
                   "name": "test_message",
@@ -292,6 +353,9 @@ describe("useLazyLoadQuery", () => {
             [
               "contract-0x1",
               {
+                "directives": {
+                  "defer": undefined,
+                },
                 "instruction": "read-storage",
                 "path": "",
               },
@@ -299,6 +363,9 @@ describe("useLazyLoadQuery", () => {
             [
               "contract-0x1",
               {
+                "directives": {
+                  "defer": undefined,
+                },
                 "instruction": "read-storage",
                 "key": "test_key",
                 "path": "test_storage",
@@ -308,6 +375,10 @@ describe("useLazyLoadQuery", () => {
               [
                 "contract-0x1",
                 {
+                  "directives": {
+                    "defer": undefined,
+                    "stream": undefined,
+                  },
                   "instruction": "read-storage",
                   "key": "test_key1",
                   "path": "test_storage",
@@ -316,6 +387,10 @@ describe("useLazyLoadQuery", () => {
               [
                 "contract-0x1",
                 {
+                  "directives": {
+                    "defer": undefined,
+                    "stream": undefined,
+                  },
                   "instruction": "read-storage",
                   "key": "test_key2",
                   "path": "test_storage",
@@ -328,6 +403,9 @@ describe("useLazyLoadQuery", () => {
                 "body": {
                   "data": "test-data",
                 },
+                "directives": {
+                  "defer": undefined,
+                },
                 "instruction": "send-message",
                 "name": "test_message",
               },
@@ -339,6 +417,10 @@ describe("useLazyLoadQuery", () => {
                   "body": {
                     "data": "test-data1",
                   },
+                  "directives": {
+                    "defer": undefined,
+                    "stream": undefined,
+                  },
                   "instruction": "send-message",
                   "name": "test_message",
                 },
@@ -348,6 +430,10 @@ describe("useLazyLoadQuery", () => {
                 {
                   "body": {
                     "data": "test-data2",
+                  },
+                  "directives": {
+                    "defer": undefined,
+                    "stream": undefined,
                   },
                   "instruction": "send-message",
                   "name": "test_message",
@@ -375,24 +461,32 @@ describe("useLazyLoadQuery", () => {
 
     expect(result.current).toMatchInlineSnapshot(`
       [
+        Symbol(pending),
+        Symbol(pending),
+        [
+          Symbol(pending),
+          Symbol(pending),
+        ],
+        Symbol(pending),
+        Symbol(pending),
         [
           Symbol(pending),
           Symbol(pending),
         ],
         [
           Symbol(pending),
-          Symbol(pending),
-        ],
-        [
           [
             Symbol(pending),
             Symbol(pending),
           ],
+          Symbol(pending),
           [
             Symbol(pending),
             Symbol(pending),
           ],
         ],
+        Symbol(pending),
+        Symbol(pending),
         [
           Symbol(pending),
           Symbol(pending),
@@ -409,9 +503,19 @@ describe("useLazyLoadQuery", () => {
 
     expect(result.current).toMatchInlineSnapshot(`
       [
+        "storage-value",
         [
           "storage-value",
           "storage-value",
+        ],
+        [
+          "storage-value",
+          "storage-value",
+        ],
+        "api-value-Symbol(delay)",
+        [
+          "api-value-Symbol(delay)",
+          "api-value-Symbol(delay)",
         ],
         [
           "api-value-Symbol(delay)",
@@ -419,9 +523,23 @@ describe("useLazyLoadQuery", () => {
         ],
         [
           [
+            "contract-0x",
+            {
+              "directives": {
+                "defer": true,
+              },
+              "instruction": "read-storage",
+              "key": Symbol(delay),
+              "path": "test_storage",
+            },
+          ],
+          [
             [
               "contract-0x",
               {
+                "directives": {
+                  "defer": true,
+                },
                 "instruction": "read-storage",
                 "key": Symbol(delay),
                 "path": "test_storage",
@@ -430,6 +548,9 @@ describe("useLazyLoadQuery", () => {
             [
               "contract-0x",
               {
+                "directives": {
+                  "defer": true,
+                },
                 "instruction": "read-storage",
                 "key": Symbol(delay),
                 "path": "test_storage",
@@ -437,10 +558,24 @@ describe("useLazyLoadQuery", () => {
             ],
           ],
           [
+            "contract-0x",
+            {
+              "body": Symbol(delay),
+              "directives": {
+                "defer": true,
+              },
+              "instruction": "send-message",
+              "name": "test_message",
+            },
+          ],
+          [
             [
               "contract-0x",
               {
                 "body": Symbol(delay),
+                "directives": {
+                  "defer": true,
+                },
                 "instruction": "send-message",
                 "name": "test_message",
               },
@@ -449,6 +584,9 @@ describe("useLazyLoadQuery", () => {
               "contract-0x",
               {
                 "body": Symbol(delay),
+                "directives": {
+                  "defer": true,
+                },
                 "instruction": "send-message",
                 "name": "test_message",
               },
@@ -457,9 +595,25 @@ describe("useLazyLoadQuery", () => {
         ],
         [
           [
+            "contract-0x",
+            {
+              "directives": {
+                "defer": true,
+              },
+              "instruction": "read-storage",
+              "key": Symbol(delay),
+              "path": "test_storage",
+            },
+          ],
+        ],
+        [
+          [
             [
               "contract-0x",
               {
+                "directives": {
+                  "defer": true,
+                },
                 "instruction": "read-storage",
                 "key": Symbol(delay),
                 "path": "test_storage",
@@ -470,6 +624,37 @@ describe("useLazyLoadQuery", () => {
             [
               "contract-0x",
               {
+                "directives": {
+                  "defer": true,
+                },
+                "instruction": "read-storage",
+                "key": Symbol(delay),
+                "path": "test_storage",
+              },
+            ],
+          ],
+        ],
+        [
+          [
+            [
+              "contract-0x",
+              {
+                "directives": {
+                  "defer": true,
+                },
+                "instruction": "read-storage",
+                "key": Symbol(delay),
+                "path": "test_storage",
+              },
+            ],
+          ],
+          [
+            [
+              "contract-0x",
+              {
+                "directives": {
+                  "defer": true,
+                },
                 "instruction": "read-storage",
                 "key": Symbol(delay),
                 "path": "test_storage",
@@ -483,6 +668,9 @@ describe("useLazyLoadQuery", () => {
               [
                 "contract-0x",
                 {
+                  "directives": {
+                    "defer": true,
+                  },
                   "instruction": "read-storage",
                   "key": Symbol(delay),
                   "path": "test_storage",
@@ -493,6 +681,9 @@ describe("useLazyLoadQuery", () => {
               [
                 "contract-0x",
                 {
+                  "directives": {
+                    "defer": true,
+                  },
                   "instruction": "read-storage",
                   "key": Symbol(delay),
                   "path": "test_storage",
@@ -505,6 +696,9 @@ describe("useLazyLoadQuery", () => {
               [
                 "contract-0x",
                 {
+                  "directives": {
+                    "defer": true,
+                  },
                   "instruction": "read-storage",
                   "key": Symbol(delay),
                   "path": "test_storage",
@@ -515,6 +709,9 @@ describe("useLazyLoadQuery", () => {
               [
                 "contract-0x",
                 {
+                  "directives": {
+                    "defer": true,
+                  },
                   "instruction": "read-storage",
                   "key": Symbol(delay),
                   "path": "test_storage",

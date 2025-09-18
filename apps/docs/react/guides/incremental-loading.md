@@ -4,6 +4,36 @@ sidebar_position: 4
 
 # Incremental loading
 
+## `defer`
+
+The `defer` directive may be specified on a query to imply de-prioritization, that causes the data to be in [`pending`](/api/core#pending) state in the initial response, and delivered as a subsequent response afterward. For React, this can also be used to opt-out of suspending.
+
+:::info
+
+When you pass `{ defer: true }` to the query, the result will now be either:
+
+- A resolved value (the response you expect), or
+- A special [`pending`](/api/core#pending) symbol from `@reactive-dot/core`, indicating that the data hasn’t arrived yet.
+
+:::
+
+```tsx
+import { pending } from "@reactive-dot/core";
+import { useLazyLoadQuery } from "@reactive-dot/react";
+
+export function Tvl() {
+  const tvl = useLazyLoadQuery((query) =>
+    query.storage("NominationPools", "TotalValueLocked", [], { defer: true }),
+  );
+
+  if (tvl === pending) {
+    return <progress />;
+  }
+
+  return <p>Total value locked: {tvl}</p>;
+}
+```
+
 ## `stream`
 
 For multi-entry queries like `storages`, `runtimeApis`, etc., the `stream` directive allows the client to receive partial results as they become available, before the entire response is ready.
@@ -35,7 +65,7 @@ This works well for a small number of accounts, where results load quickly. But 
 When you pass `{ stream: true }` to the query, each item in the result array will now be either:
 
 - A resolved value (the response you expect), or
-- A special `pending` symbol from `@reactive-dot/core`, indicating that the data for that item hasn’t arrived yet.
+- A special [`pending`](/api/core#pending) symbol from `@reactive-dot/core`, indicating that the data for that item hasn’t arrived yet.
 
 :::
 
