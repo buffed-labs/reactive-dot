@@ -21,6 +21,9 @@ describe("rootStorage", () => {
       [
         {
           "at": undefined,
+          "directives": {
+            "defer": undefined,
+          },
           "instruction": "read-storage",
           "key": undefined,
           "path": "",
@@ -35,6 +38,9 @@ describe("rootStorage", () => {
       [
         {
           "at": "finalized",
+          "directives": {
+            "defer": undefined,
+          },
           "instruction": "read-storage",
           "key": undefined,
           "path": "",
@@ -51,6 +57,9 @@ describe("storage", () => {
       [
         {
           "at": undefined,
+          "directives": {
+            "defer": undefined,
+          },
           "instruction": "read-storage",
           "key": undefined,
           "path": "test-path",
@@ -65,6 +74,9 @@ describe("storage", () => {
       [
         {
           "at": undefined,
+          "directives": {
+            "defer": undefined,
+          },
           "instruction": "read-storage",
           "key": "key-value",
           "path": "test-path",
@@ -81,6 +93,9 @@ describe("storage", () => {
       [
         {
           "at": "finalized",
+          "directives": {
+            "defer": undefined,
+          },
           "instruction": "read-storage",
           "key": "key-value",
           "path": "test-path",
@@ -98,6 +113,7 @@ describe("storages", () => {
         {
           "at": undefined,
           "directives": {
+            "defer": undefined,
             "stream": undefined,
           },
           "instruction": "read-storage",
@@ -121,6 +137,7 @@ describe("storages", () => {
         {
           "at": "finalized",
           "directives": {
+            "defer": undefined,
             "stream": undefined,
           },
           "instruction": "read-storage",
@@ -144,6 +161,9 @@ describe("message", () => {
         {
           "at": undefined,
           "body": undefined,
+          "directives": {
+            "defer": undefined,
+          },
           "instruction": "send-message",
           "name": "test-message",
           "origin": undefined,
@@ -160,6 +180,9 @@ describe("message", () => {
           "at": undefined,
           "body": {
             "foo": "bar",
+          },
+          "directives": {
+            "defer": undefined,
           },
           "instruction": "send-message",
           "name": "test-message",
@@ -181,6 +204,9 @@ describe("message", () => {
           "at": "finalized",
           "body": {
             "foo": "bar",
+          },
+          "directives": {
+            "defer": undefined,
           },
           "instruction": "send-message",
           "name": "test-message",
@@ -210,6 +236,7 @@ describe("messages", () => {
             },
           ],
           "directives": {
+            "defer": undefined,
             "stream": undefined,
           },
           "instruction": "send-message",
@@ -240,6 +267,7 @@ describe("messages", () => {
             },
           ],
           "directives": {
+            "defer": undefined,
             "stream": undefined,
           },
           "instruction": "send-message",
@@ -265,6 +293,9 @@ describe("chaining", () => {
     expect(query.instructions[0]).toMatchInlineSnapshot(`
       {
         "at": undefined,
+        "directives": {
+          "defer": undefined,
+        },
         "instruction": "read-storage",
         "key": "key1",
         "path": "path1",
@@ -273,6 +304,9 @@ describe("chaining", () => {
     expect(query.instructions[4]).toMatchInlineSnapshot(`
       {
         "at": "finalized",
+        "directives": {
+          "defer": undefined,
+        },
         "instruction": "read-storage",
         "key": undefined,
         "path": "",

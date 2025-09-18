@@ -123,20 +123,42 @@ export const multiQueries = new Query()
   ) as Query;
 
 export const streamingQueries = new Query()
+  .storage("test_pallet", "test_storage", [delayKey], { defer: true })
+  .storages("test_pallet", "test_storage", [[delayKey], [delayKey]], {
+    defer: true,
+  })
   .storages("test_pallet", "test_storage", [[delayKey], [delayKey]], {
     stream: true,
+  })
+  .runtimeApi("test_pallet", "test_api", [delayKey], { defer: true })
+  .runtimeApis("test_pallet", "test_api", [[delayKey], [delayKey]], {
+    defer: true,
   })
   .runtimeApis("test_pallet", "test_api", [[delayKey], [delayKey]], {
     stream: true,
   })
   .contract(testContract, "0x", (query) =>
     query
+      .storage("test_storage", delayKey, { defer: true })
       .storages("test_storage", [delayKey, delayKey], {
         stream: true,
       })
+      .message("test_message", delayKey, { defer: true })
       .messages("test_message", [delayKey, delayKey], {
         stream: true,
       }),
+  )
+  .contract(
+    testContract,
+    "0x",
+    (query) => query.storages("test_storage", [delayKey]),
+    { defer: true },
+  )
+  .contracts(
+    testContract,
+    ["0x", "0x"],
+    (query) => query.storages("test_storage", [delayKey]),
+    { defer: true },
   )
   .contracts(
     testContract,

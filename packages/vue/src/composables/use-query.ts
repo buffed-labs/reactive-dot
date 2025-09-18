@@ -82,129 +82,144 @@ export function useQueryObservable<
     }
 
     return queryValue.instructions.map((instruction) => {
-      if (instruction.instruction === "read-contract") {
-        const contract = instruction.contract;
+      const response = (() => {
+        if (instruction.instruction === "read-contract") {
+          const contract = instruction.contract;
 
-        const processInkInstructions = (
-          address: string,
-          instructions: InkQueryInstruction[],
-        ) =>
-          flatHead(
-            instructions.map((instruction) => {
-              if (!("multi" in instruction)) {
-                return queryInkInstruction(
-                  chainId,
-                  typedApiPromise,
-                  contract,
-                  address,
-                  instruction,
-                  cache,
+          const processInkInstructions = (
+            address: string,
+            instructions: InkQueryInstruction[],
+          ) =>
+            flatHead(
+              instructions.map((instruction) => {
+                const response = (() => {
+                  if (!("multi" in instruction)) {
+                    return queryInkInstruction(
+                      chainId,
+                      typedApiPromise,
+                      contract,
+                      address,
+                      instruction,
+                      cache,
+                    );
+                  }
+
+                  const { multi, ...rest } = instruction;
+
+                  switch (rest.instruction) {
+                    case "read-storage": {
+                      const { keys, ..._rest } = rest;
+
+                      const responses = keys.map((key) =>
+                        queryInkInstruction(
+                          chainId,
+                          typedApiPromise,
+                          contract,
+                          address,
+                          { ..._rest, key },
+                          cache,
+                        ),
+                      );
+
+                      if (!_rest.directives.stream) {
+                        return responses;
+                      }
+
+                      return responses.map(asDeferred);
+                    }
+                    case "send-message": {
+                      const { bodies, ..._rest } = rest;
+
+                      const responses = bodies.map((body) =>
+                        queryInkInstruction(
+                          chainId,
+                          typedApiPromise,
+                          contract,
+                          address,
+                          { ..._rest, body },
+                          cache,
+                        ),
+                      );
+
+                      if (!_rest.directives.stream) {
+                        return responses;
+                      }
+
+                      return responses.map(asDeferred);
+                    }
+                  }
+                })();
+
+                return maybeDeferInstructionResponse(
+                  response,
+                  instruction.directives.defer,
                 );
-              }
+              }),
+            );
 
-              const { multi, directives, ...rest } = instruction;
+          if (!("multi" in instruction)) {
+            return processInkInstructions(
+              instruction.address,
+              instruction.instructions,
+            );
+          }
 
-              switch (rest.instruction) {
-                case "read-storage": {
-                  const { keys, ..._rest } = rest;
+          const { addresses, ...rest } = instruction;
 
-                  const responses = keys.map((key) =>
-                    queryInkInstruction(
-                      chainId,
-                      typedApiPromise,
-                      contract,
-                      address,
-                      { ..._rest, key },
-                      cache,
-                    ),
-                  );
+          return addresses.map((address) => {
+            const response = processInkInstructions(address, rest.instructions);
 
-                  if (!directives.stream) {
-                    return responses;
-                  }
+            if (!rest.directives.stream) {
+              return response;
+            }
 
-                  return responses.map(asStream);
-                }
-                case "send-message": {
-                  const { bodies, ..._rest } = rest;
-
-                  const responses = bodies.map((body) =>
-                    queryInkInstruction(
-                      chainId,
-                      typedApiPromise,
-                      contract,
-                      address,
-                      { ..._rest, body },
-                      cache,
-                    ),
-                  );
-
-                  if (!directives.stream) {
-                    return responses;
-                  }
-
-                  return responses.map(asStream);
-                }
-              }
-            }),
-          );
-
-        if (!("multi" in instruction)) {
-          return processInkInstructions(
-            instruction.address,
-            instruction.instructions,
-          );
+            return asDeferred(
+              refreshable(
+                computed(() =>
+                  combineLatestNested(
+                    response as unknown as ComputedRef<
+                      Promise<unknown> | Observable<unknown>
+                    >[],
+                  ),
+                ),
+                () =>
+                  recursiveRefresh(
+                    response as unknown as Refreshable<
+                      ComputedRef<Promise<unknown> | Observable<unknown>>
+                    >[],
+                  ),
+              ),
+            );
+          });
         }
 
-        const { addresses, directives, ...rest } = instruction;
+        if (!("multi" in instruction)) {
+          return queryInstruction(instruction, chainId, typedApiPromise, cache);
+        }
 
-        return addresses.map((address) => {
-          const response = processInkInstructions(address, rest.instructions);
+        return instruction.args.map((args) => {
+          const { multi, ...rest } = instruction;
 
-          if (!directives.stream) {
+          const response = queryInstruction(
+            { ...rest, args },
+            chainId,
+            typedApiPromise,
+            cache,
+          );
+
+          if (!rest.directives.stream) {
             return response;
           }
 
-          return asStream(
-            refreshable(
-              computed(() =>
-                combineLatestNested(
-                  response as unknown as ComputedRef<
-                    Promise<unknown> | Observable<unknown>
-                  >[],
-                ),
-              ),
-              () =>
-                recursiveRefresh(
-                  response as unknown as Refreshable<
-                    ComputedRef<Promise<unknown> | Observable<unknown>>
-                  >[],
-                ),
-            ),
-          );
+          return asDeferred(response);
         });
-      }
+      })();
 
-      if (!("multi" in instruction)) {
-        return queryInstruction(instruction, chainId, typedApiPromise, cache);
-      }
-
-      return instruction.args.map((args) => {
-        const { multi, directives, ...rest } = instruction;
-
-        const response = queryInstruction(
-          { ...rest, args },
-          chainId,
-          typedApiPromise,
-          cache,
-        );
-
-        if (!directives.stream) {
-          return response;
-        }
-
-        return asStream(response);
-      });
+      return maybeDeferInstructionResponse(
+        // @ts-expect-error complex types
+        response,
+        instruction.directives.defer,
+      );
     });
   });
 
@@ -305,9 +320,24 @@ function queryInkInstruction(
   );
 }
 
-// const streams = new WeakSet<Promise<unknown> | Observable<unknown>>();
+function maybeDeferInstructionResponse<T>(
+  originalAtom:
+    | Refreshable<ComputedRef<Promise<T> | Observable<T>>>
+    | Refreshable<ComputedRef<Promise<T> | Observable<T>>>[],
+  defer: boolean | undefined,
+) {
+  if (!defer) {
+    return originalAtom;
+  }
 
-function asStream<T>(
+  if (!Array.isArray(originalAtom)) {
+    return asDeferred(originalAtom);
+  }
+
+  return combineLatestNested(originalAtom).pipe(startWith(pending));
+}
+
+function asDeferred<T>(
   promiseOrObservable: Refreshable<ComputedRef<Promise<T> | Observable<T>>>,
 ) {
   return mapLazyValue(promiseOrObservable, (promiseOrObservable) =>

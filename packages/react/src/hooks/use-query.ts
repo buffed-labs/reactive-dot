@@ -290,111 +290,130 @@ export function getQueryInstructionPayloadAtoms(
   query: Query,
 ) {
   return query.instructions.map((instruction) => {
-    if (instruction.instruction === "read-contract") {
-      const processInkInstructions = (
-        address: string,
-        instructions: InkQueryInstruction[],
-      ) => {
-        return flatHead(
-          instructions.map((instruction) => {
-            if (!("multi" in instruction)) {
-              return inkInstructionPayloadAtom(
-                config,
-                chainId,
-                contract,
-                address,
-                instruction,
+    const responseAtom = (() => {
+      if (instruction.instruction === "read-contract") {
+        const processInkInstructions = (
+          address: string,
+          instructions: InkQueryInstruction[],
+        ) => {
+          return flatHead(
+            instructions.map((instruction) => {
+              const responseAtom = (() => {
+                if (!("multi" in instruction)) {
+                  return inkInstructionPayloadAtom(
+                    config,
+                    chainId,
+                    contract,
+                    address,
+                    instruction,
+                  );
+                }
+
+                const { multi, ...rest } = instruction;
+
+                switch (rest.instruction) {
+                  case "read-storage": {
+                    const { keys, ..._rest } = rest;
+
+                    return keys.map((key) => {
+                      const atom = inkInstructionPayloadAtom(
+                        config,
+                        chainId,
+                        contract,
+                        address,
+                        {
+                          ..._rest,
+                          key,
+                        },
+                      );
+
+                      return _rest.directives.stream ? asDeferred(atom) : atom;
+                    });
+                  }
+                  case "send-message": {
+                    const { bodies, ..._rest } = rest;
+
+                    return bodies.map((body) => {
+                      const atom = inkInstructionPayloadAtom(
+                        config,
+                        chainId,
+                        contract,
+                        address,
+                        {
+                          ..._rest,
+                          body,
+                        },
+                      );
+
+                      return _rest.directives.stream ? asDeferred(atom) : atom;
+                    });
+                  }
+                }
+              })();
+
+              return maybeDeferInstructionResponse(
+                responseAtom,
+                instruction.directives.defer,
               );
-            }
+            }),
+          );
+        };
 
-            const { multi, directives, ...rest } = instruction;
+        const { contract } = instruction;
 
-            switch (rest.instruction) {
-              case "read-storage": {
-                const { keys, ..._rest } = rest;
+        if (!("multi" in instruction)) {
+          return processInkInstructions(
+            instruction.address,
+            instruction.instructions,
+          );
+        }
 
-                return keys.map((key) => {
-                  const atom = inkInstructionPayloadAtom(
-                    config,
-                    chainId,
-                    contract,
-                    address,
-                    {
-                      ..._rest,
-                      key,
-                    },
-                  );
+        const { addresses, multi, ...rest } = instruction;
 
-                  return directives.stream ? asStream(atom) : atom;
-                });
-              }
-              case "send-message": {
-                const { bodies, ..._rest } = rest;
+        return addresses.map((address) => {
+          const atoms = processInkInstructions(address, rest.instructions);
 
-                return bodies.map((body) => {
-                  const atom = inkInstructionPayloadAtom(
-                    config,
-                    chainId,
-                    contract,
-                    address,
-                    {
-                      ..._rest,
-                      body,
-                    },
-                  );
+          if (!rest.directives.stream) {
+            return atoms;
+          }
 
-                  return directives.stream ? asStream(atom) : atom;
-                });
-              }
-            }
-          }),
-        );
-      };
+          if (!Array.isArray(atoms)) {
+            return asDeferred(atoms);
+          }
 
-      const { contract } = instruction;
+          return asDeferred({
+            promiseAtom: atom((get) => getNestedAtoms(get, atoms, false)),
+            observableAtom: atom((get) => getNestedAtoms(get, atoms, true)),
+          });
+        });
+      }
 
       if (!("multi" in instruction)) {
-        return processInkInstructions(
-          instruction.address,
-          instruction.instructions,
-        );
+        return instructionPayloadAtom(config, chainId, instruction);
       }
 
-      const { addresses, multi, directives, ...rest } = instruction;
+      return instruction.args.map((args) => {
+        const { multi, directives, ...rest } = instruction;
 
-      return addresses.map((address) => {
-        const atoms = processInkInstructions(address, rest.instructions);
+        const atom = instructionPayloadAtom(config, chainId, {
+          ...rest,
+          args,
+          directives,
+        });
 
         if (!directives.stream) {
-          return atoms;
+          return atom;
         }
 
-        if (!Array.isArray(atoms)) {
-          return asStream(atoms);
-        }
-
-        return asStream({
-          promiseAtom: atom((get) => getNestedAtoms(get, atoms, false)),
-          observableAtom: atom((get) => getNestedAtoms(get, atoms, true)),
-        });
+        return asDeferred(atom);
       });
-    }
+    })();
 
-    if (!("multi" in instruction)) {
-      return instructionPayloadAtom(config, chainId, instruction);
-    }
-
-    return instruction.args.map((args) => {
-      const { multi, directives, ...rest } = instruction;
-
-      const atom = instructionPayloadAtom(config, chainId, { ...rest, args });
-
-      if (!directives.stream) {
-        return atom;
-      }
-
-      return asStream(atom);
-    });
+    return maybeDeferInstructionResponse(
+      // @ts-expect-error complex types
+      responseAtom,
+      instruction.directives.defer,
+    );
   });
 }
 
@@ -470,11 +489,29 @@ function getNestedAtoms<T extends unknown[]>(
   ) as UnwrapObservableOrPromiseAtoms<T>;
 }
 
-function asStream<
-  TAtom extends
-    ObservableAndPromiseAtom<// eslint-disable-next-line @typescript-eslint/no-explicit-any
-    any>,
->(atom: TAtom) {
+function maybeDeferInstructionResponse(
+  originalAtom:
+    | ObservableAndPromiseAtom<unknown>
+    | ObservableAndPromiseAtom<unknown>[],
+  defer: boolean | undefined,
+) {
+  if (!defer) {
+    return originalAtom;
+  }
+
+  if (!Array.isArray(originalAtom)) {
+    return asDeferred(originalAtom);
+  }
+
+  return asDeferred({
+    promiseAtom: atom((get) => getNestedAtoms(get, originalAtom, false)),
+    observableAtom: atom((get) => getNestedAtoms(get, originalAtom, true)),
+  });
+}
+
+function asDeferred<TAtom extends ObservableAndPromiseAtom<unknown>>(
+  atom: TAtom,
+) {
   return mapAtomWithObservableAndPromise(atom, (atom) =>
     unwrap(atom, () => pending),
   );
