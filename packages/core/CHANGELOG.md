@@ -1,5 +1,11 @@
 # @reactive-dot/core
 
+## 0.48.0
+
+### Minor Changes
+
+- [#864](https://github.com/buffed-labs/reactive-dot/pull/864) [`6def43b`](https://github.com/buffed-labs/reactive-dot/commit/6def43b8942dff05a14a9bc73e99da12c05d212e) Thanks [@tien](https://github.com/tien)! - Introduced the `defer` directive to enable incremental loading for single queries, improving performance and user experience by allowing partial data to be rendered as it becomes available.
+
 ## 0.47.4
 
 ### Patch Changes
