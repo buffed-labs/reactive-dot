@@ -137,3 +137,13 @@ const accounts = await useAccounts();
   </section>
 </template>
 ```
+
+:::info
+By default the `useAccounts` composable will only return accounts that are compatible with the current chain (i.e. as set by `provideChain`).
+If you want to get all accounts regardless of the current chain, you can pass `null` as the `chainId` option to the `useAccounts` hook:
+
+```tsx
+useAccounts({ chainId: null });
+```
+
+:::

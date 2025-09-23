@@ -18,12 +18,17 @@ import { useAtomValue } from "jotai";
  * @param options - Additional options
  * @returns The currently connected accounts
  */
-export function useAccounts(options?: ChainHookOptions) {
+export function useAccounts(options?: ChainHookOptions | { chainId: null }) {
   return useAtomValue(
     useSsrValue(
       accountsAtom(
         useConfig(),
-        internal_useChainId({ ...options, optionalChainId: true }),
+        options?.chainId === null
+          ? undefined
+          : internal_useChainId({
+              ...options,
+              optionalChainId: true,
+            }),
       ),
       emptyArrayAtom,
     ),
