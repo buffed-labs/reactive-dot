@@ -5,7 +5,7 @@ import { useChainSpecDataPromise } from "./use-chain-spec-data.js";
 import { useLazyValue } from "./use-lazy-value.js";
 import { useConnectedWalletsObservable } from "./use-wallets.js";
 import { getAccounts } from "@reactive-dot/core/internal/actions.js";
-import { computed } from "vue";
+import { computed, type MaybeRefOrGetter, toValue } from "vue";
 
 /**
  * Composable for getting currently connected accounts.
@@ -13,19 +13,42 @@ import { computed } from "vue";
  * @param options - Additional options
  * @returns The currently connected accounts
  */
-export function useAccounts(options?: ChainComposableOptions) {
+export function useAccounts(
+  options?: ChainComposableOptions | { chainId: MaybeRefOrGetter<null> },
+) {
   return useAsyncData(useAccountsPromise(options));
 }
 
-function useAccountsPromise(options?: ChainComposableOptions) {
-  const chainId = internal_useChainId({ ...options, optionalChainId: true });
+function useAccountsPromise(
+  options?: ChainComposableOptions | { chainId: MaybeRefOrGetter<null> },
+) {
+  const safeOptions = {
+    ...options,
+    chainId: computed(() => toValue(options?.chainId) ?? undefined),
+  };
+
+  const chainId = internal_useChainId({
+    ...safeOptions,
+    optionalChainId: true,
+  });
+
+  const safeChainId = computed(() =>
+    toValue(options?.chainId) === null ? undefined : toValue(chainId),
+  );
+
   const connectedWalletsObservable = useConnectedWalletsObservable();
-  const chainSpecPromise = useChainSpecDataPromise(options);
+  const chainSpecPromise = useChainSpecDataPromise(safeOptions);
 
   return useLazyValue(
     computed(() =>
-      chainId.value === undefined ? ["accounts"] : ["accounts", chainId.value],
+      safeChainId.value === undefined
+        ? ["accounts"]
+        : ["accounts", safeChainId.value],
     ),
-    () => getAccounts(connectedWalletsObservable.value, chainSpecPromise.value),
+    () =>
+      getAccounts(
+        connectedWalletsObservable.value,
+        safeChainId.value === undefined ? undefined : chainSpecPromise.value,
+      ),
   );
 }

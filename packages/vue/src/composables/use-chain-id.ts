@@ -44,7 +44,7 @@ export function internal_useChainId<TOptionalChainId extends boolean = false>({
   const injectedChainId = inject(chainIdKey);
 
   return computed(() => {
-    const chainId = options?.chainId ?? toValue(injectedChainId);
+    const chainId = toValue(options?.chainId) ?? toValue(injectedChainId);
 
     if (!optionalChainId && chainId === undefined) {
       throw new BaseError("No chain ID provided");
