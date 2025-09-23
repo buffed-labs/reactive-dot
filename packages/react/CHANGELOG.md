@@ -1,5 +1,11 @@
 # @reactive-dot/react
 
+## 0.49.0
+
+### Minor Changes
+
+- [#874](https://github.com/buffed-labs/reactive-dot/pull/874) [`0e0d617`](https://github.com/buffed-labs/reactive-dot/commit/0e0d617f33e773c4243f6393e79c7f754f73b0e5) Thanks [@tien](https://github.com/tien)! - Added an option to explicitly ignore filtering accounts by supported chain when setting `chainId` to `null`.
+
 ## 0.48.0
 
 ### Minor Changes
