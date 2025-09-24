@@ -1,4 +1,8 @@
-import type { BaseInstruction, MultiInstruction } from "../../query-builder.js";
+import type {
+  BaseInstruction,
+  InstructionResponseWithDirectives,
+  MultiInstruction,
+} from "../../query-builder.js";
 import type { Finality, FlatHead } from "../../types.js";
 import type {
   Abi,
@@ -32,14 +36,20 @@ export type SolidityQueryInstruction =
   | SimpleSolidityQueryInstruction
   | MultiInstruction<FunctionCallInstruction>;
 
-export type InferSolidityInstructionPayload<
+type InferSolidityInstructionPayloadPreDirectives<
   TInstruction extends SolidityQueryInstruction,
   TAbi extends Abi,
 > = TInstruction extends FunctionCallInstruction
   ? InferFunctionCallInstructionPayload<TInstruction, TAbi>
-  : TInstruction extends MultiInstruction<FunctionCallInstruction>
-    ? InferFunctionCallInstructionPayload<TInstruction, TAbi>[]
-    : never;
+  : never;
+
+export type InferSolidityInstructionPayload<
+  TInstruction extends SolidityQueryInstruction,
+  TAbi extends Abi,
+> = InstructionResponseWithDirectives<
+  TInstruction,
+  InferSolidityInstructionPayloadPreDirectives<TInstruction, TAbi>
+>;
 
 export type InferSolidityInstructionsPayload<
   TInstructions extends SolidityQueryInstruction[],
@@ -79,17 +89,19 @@ export class SolidityQuery<
       ExtractAbiFunction<TAbi, TName>["inputs"],
       "inputs"
     >,
+    TDefer extends boolean = false,
   >(
     name: TName,
     ...[args, options]: TArguments["length"] extends 0
-      ? [args?: TArguments, options?: { at?: Finality }]
-      : [args: TArguments, options?: { at?: Finality }]
+      ? [args?: TArguments, options?: { at?: Finality; defer?: TDefer }]
+      : [args: TArguments, options?: { at?: Finality; defer?: TDefer }]
   ) {
     return this.#append({
       instruction: "call-function",
       name,
       args: (args ?? []) as unknown as unknown[],
       at: options?.at,
+      directives: { defer: options?.defer as NoInfer<TDefer> },
     });
   }
 
@@ -99,13 +111,23 @@ export class SolidityQuery<
       ExtractAbiFunction<TAbi, TName>["inputs"],
       "inputs"
     >,
-  >(name: TName, args: TArguments[], options?: { at?: Finality }) {
+    TDefer extends boolean = false,
+    TStream extends boolean = false,
+  >(
+    name: TName,
+    args: TArguments[],
+    options?: { at?: Finality; defer?: TDefer; stream?: TStream },
+  ) {
     return this.#append({
       instruction: "call-function",
       name,
       args,
       at: options?.at,
       multi: true,
+      directives: {
+        defer: options?.defer as NoInfer<TDefer>,
+        stream: options?.stream as NoInfer<TStream>,
+      },
     });
   }
 
