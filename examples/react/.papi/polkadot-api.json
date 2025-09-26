@@ -41,6 +41,12 @@
       "wsUrl": "wss://rpc2.paseo.popnetwork.xyz",
       "metadata": ".papi/metadata/pop_testnet.scale",
       "genesis": "0xe8b2d197b82a0da1fffca832c050894ebe343b289c61ef439aa694bdcef78aa1"
+    },
+    "passet_hub": {
+      "wsUrl": "wss://testnet-passet-hub.polkadot.io",
+      "metadata": ".papi/metadata/passet_hub.scale",
+      "genesis": "0xfd974cf9eaf028f5e44b9fdd1949ab039c6cf9cc54449b0b60d71b042e79aeb6",
+      "codeHash": "0x3e088e61b3cb51e74c67cb3634a699109bf3ded14fbd35ed731968d0aa82a441"
     }
   },
   "ink": {

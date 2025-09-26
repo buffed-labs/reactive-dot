@@ -1,8 +1,9 @@
 import { config } from "./config";
-import { Contracts } from "./contract";
+import { InkContracts } from "./ink-contract";
 import { MultichainQuery } from "./multichain-query";
 import { Mutation } from "./mutation";
 import { Query } from "./query";
+import { SolidityContracts } from "./solidity-contract";
 import { WalletConnection } from "./wallet-connection";
 import { MutationError, pending } from "@reactive-dot/core";
 import {
@@ -34,7 +35,13 @@ export function App() {
       <ChainProvider chainId="pop_testnet">
         <Suspense fallback={<h2>Loading Pop Testnet...</h2>}>
           <h2>Pop Testnet</h2>
-          <Contracts />
+          <InkContracts />
+        </Suspense>
+      </ChainProvider>
+      <ChainProvider chainId="passet_hub">
+        <Suspense fallback={<h2>Loading Passet Hub...</h2>}>
+          <h2>Passet Hub</h2>
+          <SolidityContracts />
         </Suspense>
       </ChainProvider>
       <Toaster />

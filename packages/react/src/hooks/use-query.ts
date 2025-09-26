@@ -32,16 +32,20 @@ import {
 import {
   type Contract,
   flatHead,
+  InkContract,
   type InkQueryInstruction,
   omit,
   type SimpleInkQueryInstruction,
   type SimpleQueryInstruction,
+  type SimpleSolidityQueryInstruction,
+  type SolidityQueryInstruction,
   stringify,
 } from "@reactive-dot/core/internal.js";
 import {
   preflight,
   query,
   queryInk,
+  querySolidity,
 } from "@reactive-dot/core/internal/actions.js";
 import { atom, type Getter } from "jotai";
 import { soon, soonAll } from "jotai-eager";
@@ -205,26 +209,43 @@ export function useLazyLoadQueryWithRefresh(
   return [data, refresh];
 }
 
-const inkInstructionPayloadAtom = atomFamilyWithErrorCatcher(
+const contractInstructionPayloadAtom = atomFamilyWithErrorCatcher(
   (
     withErrorCatcher,
     config: Config,
     chainId: ChainId,
     contract: Contract,
     address: string,
-    instruction: SimpleInkQueryInstruction,
+    instruction: SimpleInkQueryInstruction | SimpleSolidityQueryInstruction,
   ) => {
     const promiseAtom = withErrorCatcher(
-      atomWithPromise((get, { signal }) =>
-        soon(
-          soonAll([
-            get(typedApiAtom(config, chainId)),
-            get(inkClientAtom(contract)),
-          ]),
-          ([api, inkClient]) =>
-            queryInk(api, inkClient, address, instruction, { signal }),
-        ),
-      ),
+      atomWithPromise((get, { signal }) => {
+        const typedApiPromise = get(typedApiAtom(config, chainId));
+
+        if (contract instanceof InkContract) {
+          return soon(
+            soonAll([typedApiPromise, get(inkClientAtom(contract))]),
+            ([api, inkClient]) =>
+              queryInk(
+                api,
+                inkClient,
+                address,
+                instruction as SimpleInkQueryInstruction,
+                { signal },
+              ),
+          );
+        }
+
+        return soon(typedApiPromise, (api) =>
+          querySolidity(
+            api,
+            contract.abi,
+            address,
+            instruction as SimpleSolidityQueryInstruction,
+            { signal },
+          ),
+        );
+      }),
     );
 
     return { promiseAtom, observableAtom: promiseAtom };
@@ -233,7 +254,7 @@ const inkInstructionPayloadAtom = atomFamilyWithErrorCatcher(
     [
       objectId(config),
       chainId,
-      contract.valueOf(),
+      contract.id,
       address,
       stringify(omit(instruction, ["directives" as keyof typeof instruction])),
     ].join(),
@@ -292,15 +313,15 @@ export function getQueryInstructionPayloadAtoms(
   return query.instructions.map((instruction) => {
     const responseAtom = (() => {
       if (instruction.instruction === "read-contract") {
-        const processInkInstructions = (
+        const processContractInstructions = (
           address: string,
-          instructions: InkQueryInstruction[],
+          instructions: InkQueryInstruction[] | SolidityQueryInstruction[],
         ) => {
           return flatHead(
             instructions.map((instruction) => {
               const responseAtom = (() => {
                 if (!("multi" in instruction)) {
-                  return inkInstructionPayloadAtom(
+                  return contractInstructionPayloadAtom(
                     config,
                     chainId,
                     contract,
@@ -316,7 +337,7 @@ export function getQueryInstructionPayloadAtoms(
                     const { keys, ..._rest } = rest;
 
                     return keys.map((key) => {
-                      const atom = inkInstructionPayloadAtom(
+                      const atom = contractInstructionPayloadAtom(
                         config,
                         chainId,
                         contract,
@@ -334,7 +355,7 @@ export function getQueryInstructionPayloadAtoms(
                     const { bodies, ..._rest } = rest;
 
                     return bodies.map((body) => {
-                      const atom = inkInstructionPayloadAtom(
+                      const atom = contractInstructionPayloadAtom(
                         config,
                         chainId,
                         contract,
@@ -342,6 +363,24 @@ export function getQueryInstructionPayloadAtoms(
                         {
                           ..._rest,
                           body,
+                        },
+                      );
+
+                      return _rest.directives.stream ? asDeferred(atom) : atom;
+                    });
+                  }
+                  case "call-function": {
+                    const { args, ..._rest } = rest;
+
+                    return args.map((args) => {
+                      const atom = contractInstructionPayloadAtom(
+                        config,
+                        chainId,
+                        contract,
+                        address,
+                        {
+                          ..._rest,
+                          args,
                         },
                       );
 
@@ -362,7 +401,7 @@ export function getQueryInstructionPayloadAtoms(
         const { contract } = instruction;
 
         if (!("multi" in instruction)) {
-          return processInkInstructions(
+          return processContractInstructions(
             instruction.address,
             instruction.instructions,
           );
@@ -371,7 +410,7 @@ export function getQueryInstructionPayloadAtoms(
         const { addresses, multi, ...rest } = instruction;
 
         return addresses.map((address) => {
-          const atoms = processInkInstructions(address, rest.instructions);
+          const atoms = processContractInstructions(address, rest.instructions);
 
           if (!rest.directives.stream) {
             return atoms;

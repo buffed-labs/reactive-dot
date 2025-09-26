@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { psp22 } from "./contracts";
+import { psp22 } from "./config.js";
 import { useQuery } from "@reactive-dot/vue";
 import { toRefs } from "vue";
 

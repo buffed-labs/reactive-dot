@@ -1,5 +1,4 @@
 import type { InkContract } from "../contract.js";
-import { getContractConfig } from "../contract.js";
 import { getInkClient } from "./get-ink-client.js";
 import { getInkClient as importedPolkaGetInkClient } from "polkadot-api/ink";
 import { beforeEach, describe, expect, it, vi } from "vitest";
@@ -11,7 +10,6 @@ vi.mock("polkadot-api/ink", () => ({
   getInkClient: vi.fn(),
 }));
 
-const mockedGetContractConfig = vi.mocked(getContractConfig);
 const mockedPolkaGetInkClient = vi.mocked(importedPolkaGetInkClient);
 
 describe("getInkClient", () => {
@@ -31,8 +29,6 @@ describe("getInkClient", () => {
 
     const result = await getInkClient(fakeContract);
 
-    expect(mockedGetContractConfig).toHaveBeenCalledOnce();
-    expect(mockedGetContractConfig).toHaveBeenCalledWith(fakeContract);
     expect(mockedPolkaGetInkClient).toHaveBeenCalledOnce();
     expect(mockedPolkaGetInkClient).toHaveBeenCalledWith(descriptor);
     expect(result).toBe(fakeClient);

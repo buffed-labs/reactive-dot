@@ -1,9 +1,8 @@
 export type { ChainDescriptorOf, Chains } from "./chains.js";
 export {
-  getContractConfig,
   type Contract,
-  type InkContract,
-  type SolidityContract,
+  InkContract,
+  SolidityContract,
 } from "./contract/contract.js";
 export type { InkMutationBuilder } from "./contract/ink/mutation-builder.js";
 export type {

@@ -1,13 +1,23 @@
 import type { CommonDescriptor } from "./chains.js";
-import type { Contract, DescriptorOfContract } from "./contract/contract.js";
+import {
+  type Contract,
+  InkContract,
+  type SolidityContract,
+} from "./contract/contract.js";
 import {
   type InferInkInstructionsPayload,
   InkQuery,
   type InkQueryInstruction,
 } from "./contract/ink/query-builder.js";
 import type { GenericInkDescriptors } from "./contract/ink/types.js";
+import {
+  type InferSolidityInstructionsPayload,
+  SolidityQuery,
+  type SolidityQueryInstruction,
+} from "./contract/solidity/query-builder.js";
 import type { pending } from "./symbols.js";
 import type { At, Finality, FlatHead, Flatten, StringKeyOf } from "./types.js";
+import type { Abi } from "ox/Abi";
 import type { ChainDefinition, TypedApi } from "polkadot-api";
 import type { Observable } from "rxjs";
 
@@ -114,11 +124,21 @@ export type ApiCallInstruction = BaseInstruction<"call-api"> & {
   at: Finality | undefined;
 };
 
-export type ContractReadInstruction = BaseInstruction<"read-contract"> & {
-  contract: Contract;
+type InkContractReadInstruction = BaseInstruction<"read-contract"> & {
+  contract: InkContract;
   address: string;
   instructions: InkQuery["instructions"];
 };
+
+type SolidityContractReadInstruction = BaseInstruction<"read-contract"> & {
+  contract: SolidityContract;
+  address: string;
+  instructions: SolidityQuery["instructions"];
+};
+
+export type ContractReadInstruction =
+  | InkContractReadInstruction
+  | SolidityContractReadInstruction;
 
 export type MultiContractReadInstruction = MultiInstruction<
   ContractReadInstruction,
@@ -173,10 +193,11 @@ type ApiCallResponse<
 
 type InferContractReadResponse<
   T extends ContractReadInstruction | MultiContractReadInstruction,
-> = InferInkInstructionsPayload<
-  T["instructions"],
-  DescriptorOfContract<T["contract"]>
->;
+> = T extends InkContractReadInstruction
+  ? InferInkInstructionsPayload<T["instructions"], T["contract"]["descriptor"]>
+  : T extends SolidityContractReadInstruction
+    ? InferSolidityInstructionsPayload<T["instructions"], T["contract"]["abi"]>
+    : never;
 
 type InferInstructionResponsePreDirectives<
   TInstruction extends QueryInstruction,
@@ -483,25 +504,81 @@ export class Query<
    */
   callApis = this.runtimeApis;
 
-  /** @experimental */
   contract<
     TContractDescriptor extends GenericInkDescriptors,
     TContractInstructions extends InkQueryInstruction[],
     const TDefer extends boolean = false,
   >(
-    contract: Contract<TContractDescriptor>,
+    contract: InkContract<TContractDescriptor>,
     address: string,
     builder: (
       query: InkQuery<TContractDescriptor, []>,
     ) => InkQuery<TContractDescriptor, TContractInstructions>,
     options?: { defer?: TDefer },
-  ) {
+  ): Query<
+    [
+      ...TInstructions,
+      {
+        instruction: "read-contract";
+        contract: InkContract<TContractDescriptor>;
+        address: string;
+        instructions: TContractInstructions;
+        directives: {
+          defer: NoInfer<TDefer>;
+        };
+      },
+    ],
+    TDescriptor
+  >;
+  contract<
+    TAbi extends Abi,
+    TContractInstructions extends SolidityQueryInstruction[],
+    const TDefer extends boolean = false,
+  >(
+    contract: SolidityContract<TAbi>,
+    address: string,
+    builder: (
+      query: SolidityQuery<TAbi, []>,
+    ) => SolidityQuery<TAbi, TContractInstructions>,
+    options?: { defer?: TDefer },
+  ): Query<
+    [
+      ...TInstructions,
+      {
+        instruction: "read-contract";
+        contract: SolidityContract<TAbi>;
+        address: string;
+        instructions: TContractInstructions;
+        directives: {
+          defer: NoInfer<TDefer>;
+        };
+      },
+    ],
+    TDescriptor
+  >;
+  contract(
+    contract: Contract,
+    address: string,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    builder: (query: any) => any,
+    options: { defer?: boolean },
+  ): Query {
+    if (contract instanceof InkContract) {
+      return this.#append({
+        instruction: "read-contract",
+        contract,
+        address,
+        instructions: builder(new InkQuery()).instructions,
+        directives: { defer: options?.defer },
+      } satisfies ContractReadInstruction);
+    }
+
     return this.#append({
       instruction: "read-contract",
       contract,
       address,
-      instructions: builder(new InkQuery()).instructions,
-      directives: { defer: options?.defer as NoInfer<TDefer> },
+      instructions: builder(new SolidityQuery()).instructions,
+      directives: { defer: options?.defer },
     } satisfies ContractReadInstruction);
   }
 
@@ -512,7 +589,7 @@ export class Query<
     const TDefer extends boolean = false,
     const TStream extends boolean = false,
   >(
-    contract: Contract<TContractDescriptor>,
+    contract: InkContract<TContractDescriptor>,
     addresses: string[],
     builder: (
       query: InkQuery<TContractDescriptor, []>,
@@ -521,17 +598,86 @@ export class Query<
       defer?: TDefer;
       stream?: TStream;
     },
-  ) {
+  ): Query<
+    [
+      ...TInstructions,
+      {
+        instruction: "read-contract";
+        multi: true;
+        directives: {
+          defer: NoInfer<TDefer>;
+          stream: NoInfer<TStream>;
+        };
+        contract: InkContract<TContractDescriptor>;
+        addresses: string[];
+        instructions: TContractInstructions;
+      },
+    ],
+    TDescriptor
+  >;
+  contracts<
+    TAbi extends Abi,
+    TContractInstructions extends SolidityQueryInstruction[],
+    const TDefer extends boolean = false,
+    const TStream extends boolean = false,
+  >(
+    contract: SolidityContract<TAbi>,
+    addresses: string[],
+    builder: (
+      query: SolidityQuery<TAbi, []>,
+    ) => SolidityQuery<TAbi, TContractInstructions>,
+    options?: {
+      defer?: TDefer;
+      stream?: TStream;
+    },
+  ): Query<
+    [
+      ...TInstructions,
+      {
+        instruction: "read-contract";
+        multi: true;
+        directives: {
+          defer: NoInfer<TDefer>;
+          stream: NoInfer<TStream>;
+        };
+        contract: SolidityContract<TAbi>;
+        addresses: string[];
+        instructions: TContractInstructions;
+      },
+    ],
+    TDescriptor
+  >;
+  contracts(
+    contract: Contract,
+    addresses: string[],
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    builder: (query: any) => any,
+    options: { defer?: boolean; stream?: boolean },
+  ): Query {
+    if (contract instanceof InkContract) {
+      return this.#append({
+        instruction: "read-contract",
+        multi: true,
+        directives: {
+          defer: options?.defer,
+          stream: options?.stream,
+        },
+        contract,
+        addresses,
+        instructions: builder(new InkQuery()).instructions,
+      } satisfies MultiContractReadInstruction);
+    }
+
     return this.#append({
       instruction: "read-contract",
       multi: true,
       directives: {
-        defer: options?.defer as NoInfer<TDefer>,
-        stream: options?.stream as NoInfer<TStream>,
+        defer: options?.defer,
+        stream: options?.stream,
       },
       contract,
       addresses,
-      instructions: builder(new InkQuery()).instructions,
+      instructions: builder(new SolidityQuery()).instructions,
     } satisfies MultiContractReadInstruction);
   }
 

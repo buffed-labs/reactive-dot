@@ -8,7 +8,7 @@ import {
 } from "@reactive-dot/react";
 import { useEffect, useState, useTransition } from "react";
 
-export function Contracts() {
+export function InkContracts() {
   return (
     <section>
       <Psp22TokenInfo address="0xE7Fc69D1cE67F2902845F5Ffd2b454597ded5547" />

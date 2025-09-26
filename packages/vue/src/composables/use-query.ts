@@ -21,16 +21,20 @@ import { type ChainId, pending, Query } from "@reactive-dot/core";
 import {
   type Contract,
   flatHead,
+  InkContract,
   type InkQueryInstruction,
   omit,
   type SimpleInkQueryInstruction,
   type SimpleQueryInstruction,
+  type SimpleSolidityQueryInstruction,
+  type SolidityQueryInstruction,
   stringify,
 } from "@reactive-dot/core/internal.js";
 import {
   query as executeQuery,
   preflight,
   queryInk,
+  querySolidity,
 } from "@reactive-dot/core/internal/actions.js";
 import type { ChainDefinition, TypedApi } from "polkadot-api";
 import { combineLatest, from, isObservable, type Observable, of } from "rxjs";
@@ -86,15 +90,15 @@ export function useQueryObservable<
         if (instruction.instruction === "read-contract") {
           const contract = instruction.contract;
 
-          const processInkInstructions = (
+          const processContractInstructions = (
             address: string,
-            instructions: InkQueryInstruction[],
+            instructions: InkQueryInstruction[] | SolidityQueryInstruction[],
           ) =>
             flatHead(
               instructions.map((instruction) => {
                 const response = (() => {
                   if (!("multi" in instruction)) {
-                    return queryInkInstruction(
+                    return queryContractInstruction(
                       chainId,
                       typedApiPromise,
                       contract,
@@ -111,7 +115,7 @@ export function useQueryObservable<
                       const { keys, ..._rest } = rest;
 
                       const responses = keys.map((key) =>
-                        queryInkInstruction(
+                        queryContractInstruction(
                           chainId,
                           typedApiPromise,
                           contract,
@@ -131,12 +135,32 @@ export function useQueryObservable<
                       const { bodies, ..._rest } = rest;
 
                       const responses = bodies.map((body) =>
-                        queryInkInstruction(
+                        queryContractInstruction(
                           chainId,
                           typedApiPromise,
                           contract,
                           address,
                           { ..._rest, body },
+                          cache,
+                        ),
+                      );
+
+                      if (!_rest.directives.stream) {
+                        return responses;
+                      }
+
+                      return responses.map(asDeferred);
+                    }
+                    case "call-function": {
+                      const { args, ..._rest } = rest;
+
+                      const responses = args.map((args) =>
+                        queryContractInstruction(
+                          chainId,
+                          typedApiPromise,
+                          contract,
+                          address,
+                          { ..._rest, args },
                           cache,
                         ),
                       );
@@ -158,7 +182,7 @@ export function useQueryObservable<
             );
 
           if (!("multi" in instruction)) {
-            return processInkInstructions(
+            return processContractInstructions(
               instruction.address,
               instruction.instructions,
             );
@@ -167,7 +191,10 @@ export function useQueryObservable<
           const { addresses, ...rest } = instruction;
 
           return addresses.map((address) => {
-            const response = processInkInstructions(address, rest.instructions);
+            const response = processContractInstructions(
+              address,
+              rest.instructions,
+            );
 
             if (!rest.directives.stream) {
               return response;
@@ -292,32 +319,55 @@ function queryInstruction(
   );
 }
 
-function queryInkInstruction(
+function queryContractInstruction(
   chainId: MaybeRefOrGetter<ChainId>,
   typedApiPromise: MaybeRefOrGetter<Promise<TypedApi<ChainDefinition>>>,
   contract: Contract,
   address: MaybeRefOrGetter<string>,
-  instruction: SimpleInkQueryInstruction,
+  instruction: SimpleInkQueryInstruction | SimpleSolidityQueryInstruction,
   cache: MaybeRefOrGetter<Map<string, ShallowRef<unknown>>>,
 ) {
-  const inkClient = getInkClient(contract, cache);
+  if (contract instanceof InkContract) {
+    const inkClient = getInkClient(contract, cache);
 
-  return lazyValue(
-    computed(() => [
-      "ink-query",
-      toValue(chainId),
-      contract.valueOf(),
-      stringify(omit(instruction, ["directives" as keyof typeof instruction])),
-    ]),
-    async () =>
-      queryInk(
-        await toValue(typedApiPromise),
-        await toValue(inkClient),
-        toValue(address),
-        instruction,
-      ),
-    cache,
-  );
+    return lazyValue(
+      computed(() => [
+        "ink-query",
+        toValue(chainId),
+        contract.id,
+        stringify(
+          omit(instruction, ["directives" as keyof typeof instruction]),
+        ),
+      ]),
+      async () =>
+        queryInk(
+          await toValue(typedApiPromise),
+          await toValue(inkClient),
+          toValue(address),
+          instruction as SimpleInkQueryInstruction,
+        ),
+      cache,
+    );
+  } else {
+    return lazyValue(
+      computed(() => [
+        "solidity-query",
+        toValue(chainId),
+        contract.id,
+        stringify(
+          omit(instruction, ["directives" as keyof typeof instruction]),
+        ),
+      ]),
+      async () =>
+        querySolidity(
+          await toValue(typedApiPromise),
+          contract.abi,
+          toValue(address),
+          instruction as SimpleSolidityQueryInstruction,
+        ),
+      cache,
+    );
+  }
 }
 
 function maybeDeferInstructionResponse<T>(

@@ -1,6 +1,8 @@
 import {
+  contracts,
   kusama,
   kusama_asset_hub,
+  passet_hub,
   polkadot,
   polkadot_asset_hub,
   polkadot_people,
@@ -8,7 +10,7 @@ import {
   westend,
   westend_asset_hub,
 } from "@polkadot-api/descriptors";
-import { defineConfig } from "@reactive-dot/core";
+import { defineConfig, defineContract } from "@reactive-dot/core";
 import { createLightClientProvider } from "@reactive-dot/core/providers/light-client.js";
 import { InjectedWalletProvider } from "@reactive-dot/core/wallets.js";
 import { LedgerWallet } from "@reactive-dot/wallet-ledger";
@@ -56,13 +58,17 @@ export const config = defineConfig({
     },
     pop_testnet: {
       descriptor: pop_testnet,
-      provider: () => getWsProvider("wss://rpc2.paseo.popnetwork.xyz"),
+      provider: () => getWsProvider("wss://rpc1.paseo.popnetwork.xyz"),
+    },
+    passet_hub: {
+      descriptor: passet_hub,
+      provider: () => getWsProvider("wss://testnet-passet-hub.polkadot.io"),
     },
   },
   targetChains: ["polkadot", "kusama", "westend"],
   wallets: [
-    new InjectedWalletProvider({ originName: "ReactiveDOT Vue Example" }),
-    new MimirWalletProvider({ originName: "ReactiveDOT Vue Example" }),
+    new InjectedWalletProvider({ originName: "ReactiveDOT React Example" }),
+    new MimirWalletProvider({ originName: "ReactiveDOT React Example" }),
     new LedgerWallet(),
     new WalletConnect({
       projectId: "68f5b7e972a51cf379b127f51a791c34",
@@ -80,5 +86,41 @@ export const config = defineConfig({
         "polkadot:e143f23803ac50e8f6f8e62695d1ce9e", // Westend
       ],
     }),
+  ],
+});
+
+export const psp22 = defineContract({ descriptor: contracts.psp22 });
+
+export const flipper = defineContract({ descriptor: contracts.flipper });
+
+export const solidityStorage = defineContract({
+  type: "solidity",
+  abi: [
+    {
+      inputs: [],
+      name: "retrieve",
+      outputs: [
+        {
+          internalType: "uint256",
+          name: "",
+          type: "uint256",
+        },
+      ],
+      stateMutability: "view",
+      type: "function",
+    },
+    {
+      inputs: [
+        {
+          internalType: "uint256",
+          name: "num",
+          type: "uint256",
+        },
+      ],
+      name: "store",
+      outputs: [],
+      stateMutability: "nonpayable",
+      type: "function",
+    },
   ],
 });
