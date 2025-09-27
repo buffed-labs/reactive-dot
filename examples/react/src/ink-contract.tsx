@@ -1,11 +1,7 @@
-import { AccountSelect } from "./account-select.js";
+import { AccountGuard } from "./account-guard.js";
 import { flipper, psp22 } from "./config.js";
 import { pending } from "@reactive-dot/core";
-import {
-  SignerProvider,
-  useContractMutation,
-  useLazyLoadQuery,
-} from "@reactive-dot/react";
+import { useContractMutation, useLazyLoadQuery } from "@reactive-dot/react";
 import { useEffect, useState, useTransition } from "react";
 
 export function InkContracts() {
@@ -74,18 +70,14 @@ function Flipper({ address }: ContractProps) {
       <p>
         Flipped: {flipped ? "true" : "false"} {inTransition && `(updating)`}
       </p>
-      <AccountSelect>
-        {(selectedAccount) => (
-          <SignerProvider signer={selectedAccount.polkadotSigner}>
-            <Flip
-              address={address}
-              onFlipped={() =>
-                startTransition(() => setFetchKey((count) => count + 1))
-              }
-            />
-          </SignerProvider>
-        )}
-      </AccountSelect>
+      <AccountGuard>
+        <Flip
+          address={address}
+          onFlipped={() =>
+            startTransition(() => setFetchKey((count) => count + 1))
+          }
+        />
+      </AccountGuard>
     </article>
   );
 }

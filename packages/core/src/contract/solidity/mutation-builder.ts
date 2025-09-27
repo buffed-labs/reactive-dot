@@ -11,5 +11,7 @@ export type SolidityMutationBuilder = <
   contract: SolidityContract<TAbi>,
   address: string,
   functionName: TFunctionName,
-  data: SolidityTxBody<TAbi, TFunctionName>,
+  ...[body]: SolidityTxBody<TAbi, TFunctionName> extends readonly []
+    ? [body?: SolidityTxBody<TAbi, TFunctionName>]
+    : [body: SolidityTxBody<TAbi, TFunctionName>]
 ) => MaybePromise<GenericTransaction>;

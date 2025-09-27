@@ -8,10 +8,14 @@ import { useLazyValuesCache } from "./use-lazy-value.js";
 import { useSigner } from "./use-signer.js";
 import { useTypedApiPromise } from "./use-typed-api.js";
 import { MutationError } from "@reactive-dot/core";
-import type {
-  InkMutationBuilder,
-  PatchedReturnType,
-  TxOptionsOf,
+import {
+  getSolidityContractTx,
+  InkContract,
+  type MutationBuilder,
+  type InkMutationBuilder,
+  type PatchedReturnType,
+  type SolidityMutationBuilder,
+  type TxOptionsOf,
 } from "@reactive-dot/core/internal.js";
 import { getInkContractTx } from "@reactive-dot/core/internal/actions.js";
 import type { PolkadotSigner } from "polkadot-api";
@@ -29,10 +33,10 @@ import { inject, toValue } from "vue";
  */
 export function useContractMutation<
   TAction extends (
-    builder: InkMutationBuilder,
+    builder: MutationBuilder,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     variables: any,
-  ) => PatchedReturnType<InkMutationBuilder>,
+  ) => PatchedReturnType<MutationBuilder>,
 >(
   action: TAction,
   options?: ChainComposableOptions & {
@@ -78,20 +82,52 @@ export function useContractMutation<
         throw new MutationError("No signer provided");
       }
 
+      const inkMutationBuilder: InkMutationBuilder = async (
+        contract,
+        address,
+        message,
+        ...[body]
+      ) =>
+        getInkContractTx(
+          ...(await Promise.all([
+            await toValue(typedApiPromise),
+            await toValue(getInkClient(contract, cache)),
+          ])),
+          signer,
+          address,
+          message,
+          body,
+        );
+
+      const solidityMutationBuilder: SolidityMutationBuilder = async (
+        contract,
+        address,
+        functionName,
+        ...[body]
+      ) =>
+        getSolidityContractTx(
+          await toValue(typedApiPromise),
+          contract.abi,
+          signer,
+          address,
+          functionName,
+          body,
+        );
+
       return from(
         Promise.resolve(
           action(
             // @ts-expect-error TODO: fix this
-            async (contract, contractAddress, message, body) =>
-              getInkContractTx(
-                await toValue(typedApiPromise),
-                await toValue(getInkClient(contract, cache)),
-                signer,
-                contractAddress,
-                // @ts-expect-error TODO: fix this
-                message,
-                body,
-              ),
+            (
+              ...args: Parameters<InkMutationBuilder | SolidityMutationBuilder>
+            ) =>
+              args[0] instanceof InkContract
+                ? inkMutationBuilder(
+                    ...(args as Parameters<InkMutationBuilder>),
+                  )
+                : solidityMutationBuilder(
+                    ...(args as Parameters<SolidityMutationBuilder>),
+                  ),
             submitOptions?.variables,
           ),
         ),

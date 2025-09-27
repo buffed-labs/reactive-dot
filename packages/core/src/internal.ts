@@ -1,17 +1,20 @@
 export type { ChainDescriptorOf, Chains } from "./chains.js";
 export {
-  type Contract,
   InkContract,
   SolidityContract,
+  type Contract,
 } from "./contract/contract.js";
 export type { InkMutationBuilder } from "./contract/ink/mutation-builder.js";
 export type {
   InkQueryInstruction,
   SimpleInkQueryInstruction,
 } from "./contract/ink/query-builder.js";
+export type { MutationBuilder } from "./contract/mutation-builder.js";
+export { getSolidityContractTx } from "./contract/solidity/get-contract-tx.js";
+export type { SolidityMutationBuilder } from "./contract/solidity/mutation-builder.js";
 export type {
-  SolidityQueryInstruction,
   SimpleSolidityQueryInstruction,
+  SolidityQueryInstruction,
 } from "./contract/solidity/query-builder.js";
 export type { MutationEvent } from "./mutation-event.js";
 export type {

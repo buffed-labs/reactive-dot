@@ -14,7 +14,7 @@ export async function getSolidityContractTx<
   signer: PolkadotSigner,
   contract: string,
   functionName: TFunctionName,
-  body: SolidityTxBody<TAbi, TFunctionName>,
+  body: SolidityTxBody<TAbi, TFunctionName> | undefined,
   options?: { signal?: AbortSignal },
 ) {
   const origin = toSs58(signer.publicKey);
@@ -26,12 +26,12 @@ export async function getSolidityContractTx<
   const data = Binary.fromHex(
     AbiFunction.encodeData(
       AbiFunction.fromAbi(abi, functionName as `0x${string}`),
-      "args" in body ? body.args : undefined,
+      body !== undefined && "args" in body ? body.args : undefined,
     ),
   );
 
   const value =
-    "value" in body
+    body !== undefined && "value" in body
       ? // TODO: fix this
         (body.value as bigint)
       : 0n;
