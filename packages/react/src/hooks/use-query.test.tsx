@@ -442,6 +442,143 @@ describe("useLazyLoadQuery", () => {
             ],
           ],
         ],
+        [
+          [
+            "contract-0x",
+            {
+              "args": [
+                "test-data",
+              ],
+              "directives": {
+                "defer": undefined,
+              },
+              "instruction": "call-function",
+              "name": "test_func",
+            },
+          ],
+          [
+            [
+              "contract-0x",
+              {
+                "args": [
+                  "test-data1",
+                ],
+                "directives": {
+                  "defer": undefined,
+                  "stream": undefined,
+                },
+                "instruction": "call-function",
+                "name": "test_func",
+              },
+            ],
+            [
+              "contract-0x",
+              {
+                "args": [
+                  "test-data2",
+                ],
+                "directives": {
+                  "defer": undefined,
+                  "stream": undefined,
+                },
+                "instruction": "call-function",
+                "name": "test_func",
+              },
+            ],
+          ],
+        ],
+        [
+          [
+            [
+              "contract-0x",
+              {
+                "args": [
+                  "test-data",
+                ],
+                "directives": {
+                  "defer": undefined,
+                },
+                "instruction": "call-function",
+                "name": "test_func",
+              },
+            ],
+            [
+              [
+                "contract-0x",
+                {
+                  "args": [
+                    "test-data1",
+                  ],
+                  "directives": {
+                    "defer": undefined,
+                    "stream": undefined,
+                  },
+                  "instruction": "call-function",
+                  "name": "test_func",
+                },
+              ],
+              [
+                "contract-0x",
+                {
+                  "args": [
+                    "test-data2",
+                  ],
+                  "directives": {
+                    "defer": undefined,
+                    "stream": undefined,
+                  },
+                  "instruction": "call-function",
+                  "name": "test_func",
+                },
+              ],
+            ],
+          ],
+          [
+            [
+              "contract-0x1",
+              {
+                "args": [
+                  "test-data",
+                ],
+                "directives": {
+                  "defer": undefined,
+                },
+                "instruction": "call-function",
+                "name": "test_func",
+              },
+            ],
+            [
+              [
+                "contract-0x1",
+                {
+                  "args": [
+                    "test-data1",
+                  ],
+                  "directives": {
+                    "defer": undefined,
+                    "stream": undefined,
+                  },
+                  "instruction": "call-function",
+                  "name": "test_func",
+                },
+              ],
+              [
+                "contract-0x1",
+                {
+                  "args": [
+                    "test-data2",
+                  ],
+                  "directives": {
+                    "defer": undefined,
+                    "stream": undefined,
+                  },
+                  "instruction": "call-function",
+                  "name": "test_func",
+                },
+              ],
+            ],
+          ],
+        ],
       ]
     `);
   });

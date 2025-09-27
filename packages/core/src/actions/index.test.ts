@@ -7,6 +7,7 @@ it("should match inline snapshot", () =>
       "getInkContractTx",
       "getInkClient",
       "queryInk",
+      "querySolidity",
       "aggregateWallets",
       "connectWallet",
       "disconnectWallet",

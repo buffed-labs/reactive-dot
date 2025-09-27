@@ -161,6 +161,7 @@ it("should append a multi call-api instruction using runtimeApis", () => {
 const mockContractDescriptor = {} as unknown as GenericInkDescriptors;
 
 const mockContract = defineContract({
+  id: "mock-contract",
   type: "ink",
   descriptor: mockContractDescriptor,
 });
@@ -184,7 +185,10 @@ it("should append a read-contract instruction", () => {
   expect(instructions[0]).toMatchInlineSnapshot(`
     {
       "address": "contractAddress123",
-      "contract": Contract {},
+      "contract": InkContract {
+        "descriptor": {},
+        "id": "mock-contract",
+      },
       "directives": {
         "defer": undefined,
       },
@@ -221,7 +225,10 @@ it("should append a multi read-contract instruction using contracts", () => {
         "address1",
         "address2",
       ],
-      "contract": Contract {},
+      "contract": InkContract {
+        "descriptor": {},
+        "id": "mock-contract",
+      },
       "directives": {
         "defer": undefined,
         "stream": undefined,

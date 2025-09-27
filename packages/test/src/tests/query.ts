@@ -1,5 +1,8 @@
 import { defineContract, Query } from "@reactive-dot/core";
-import type { SimpleInkQueryInstruction } from "@reactive-dot/core/internal.js";
+import type {
+  SimpleInkQueryInstruction,
+  SimpleSolidityQueryInstruction,
+} from "@reactive-dot/core/internal.js";
 import { from, of } from "rxjs";
 import { map } from "rxjs";
 import { vi } from "vitest";
@@ -8,8 +11,19 @@ export const delay = Promise.withResolvers<void>();
 
 export const delayKey = Symbol("delay");
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const testContract = defineContract({ descriptor: {} as any });
+const testInkContract = defineContract({
+  id: "ink-contract",
+  type: "ink",
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  descriptor: {} as any,
+});
+
+const testSolidityContract = defineContract({
+  id: "solidity-contract",
+  type: "solidity",
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  abi: [] as any,
+});
 
 export const mockedTypedApi = {
   constants: {
@@ -74,6 +88,27 @@ export function mockInternals() {
           ];
         },
       ),
+      querySolidity: vi.fn(
+        async (
+          _,
+          __,
+          address: string,
+          instruction: SimpleSolidityQueryInstruction,
+        ) => {
+          if (Object.values(instruction.args).includes(delayKey)) {
+            await delay.promise;
+          }
+
+          return [
+            `contract-${address}`,
+            Object.fromEntries(
+              Object.entries(instruction).filter(
+                ([_, value]) => value !== undefined,
+              ),
+            ),
+          ];
+        },
+      ),
     }),
   );
 }
@@ -84,7 +119,7 @@ export const singleQuery = new Query().constant(
 ) as Query;
 
 export const singleContractQuery = new Query().contract(
-  testContract,
+  testInkContract,
   "0x",
   (query) => query.rootStorage(),
 ) as Query;
@@ -95,7 +130,7 @@ export const multiQueries = new Query()
   .storages("test_pallet", "test_storage", [["key1"], ["key2"]])
   .runtimeApi("test_pallet", "test_api", ["key"])
   .runtimeApis("test_pallet", "test_api", [["key1"], ["key2"]])
-  .contract(testContract, "0x", (query) =>
+  .contract(testInkContract, "0x", (query) =>
     query
       .rootStorage()
       .storage("test_storage", "test_key")
@@ -110,7 +145,7 @@ export const multiQueries = new Query()
         { data: "test-data2" },
       ]),
   )
-  .contracts(testContract, ["0x", "0x1"], (query) =>
+  .contracts(testInkContract, ["0x", "0x1"], (query) =>
     query
       .rootStorage()
       .storage("test_storage", "test_key")
@@ -120,6 +155,16 @@ export const multiQueries = new Query()
         { data: "test-data1" },
         { data: "test-data2" },
       ]),
+  )
+  .contract(testSolidityContract, "0x", (query) =>
+    query
+      .func("test_func", ["test-data"])
+      .funcs("test_func", [["test-data1"], ["test-data2"]]),
+  )
+  .contracts(testSolidityContract, ["0x", "0x1"], (query) =>
+    query
+      .func("test_func", ["test-data"])
+      .funcs("test_func", [["test-data1"], ["test-data2"]]),
   ) as Query;
 
 export const streamingQueries = new Query()
@@ -137,7 +182,7 @@ export const streamingQueries = new Query()
   .runtimeApis("test_pallet", "test_api", [[delayKey], [delayKey]], {
     stream: true,
   })
-  .contract(testContract, "0x", (query) =>
+  .contract(testInkContract, "0x", (query) =>
     query
       .storage("test_storage", delayKey, { defer: true })
       .storages("test_storage", [delayKey, delayKey], {
@@ -149,25 +194,25 @@ export const streamingQueries = new Query()
       }),
   )
   .contract(
-    testContract,
+    testInkContract,
     "0x",
     (query) => query.storages("test_storage", [delayKey]),
     { defer: true },
   )
   .contracts(
-    testContract,
+    testInkContract,
     ["0x", "0x"],
     (query) => query.storages("test_storage", [delayKey]),
     { defer: true },
   )
   .contracts(
-    testContract,
+    testInkContract,
     ["0x", "0x"],
     (query) => query.storages("test_storage", [delayKey]),
     { stream: true },
   )
   .contracts(
-    testContract,
+    testInkContract,
     ["0x", "0x"],
     (query) =>
       query

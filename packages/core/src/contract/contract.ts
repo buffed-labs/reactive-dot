@@ -25,19 +25,26 @@ export type Contract = InkContract | SolidityContract;
 
 /** @experimental */
 export function defineContract<T extends GenericInkDescriptors>(config: {
-  type?: "ink";
+  id?: string;
+  descriptor: T;
+}): InkContract<T>;
+export function defineContract<T extends GenericInkDescriptors>(config: {
+  id?: string;
+  type: "ink";
   descriptor: T;
 }): InkContract<T>;
 export function defineContract<const T extends Abi>(config: {
+  id?: string;
   type: "solidity";
   abi: T;
 }): SolidityContract<T>;
 export function defineContract(
-  config:
+  config: { id?: string } & (
     | { type?: "ink"; descriptor: GenericInkDescriptors }
-    | { type: "solidity"; abi: Abi },
+    | { type: "solidity"; abi: Abi }
+  ),
 ) {
-  const id = globalThis.crypto.randomUUID();
+  const id = config.id ?? globalThis.crypto.randomUUID();
 
   switch (config.type) {
     case "solidity":
