@@ -44,7 +44,7 @@ import {
   queryInk,
 } from "@reactive-dot/core/internal/actions.js";
 import { atom, type Getter } from "jotai";
-import { soon, soonAll } from "jotai-derive";
+import { soon, soonAll } from "jotai-eager";
 import { unwrap } from "jotai/utils";
 import { useMemo } from "react";
 import { from, type Observable } from "rxjs";
