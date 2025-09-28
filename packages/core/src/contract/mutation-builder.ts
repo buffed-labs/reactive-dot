@@ -39,7 +39,7 @@ export type MutationBuilder = {
     contract: SolidityContract<TAbi>,
     address: string,
     functionName: TFunctionName,
-    ...[body]: SolidityTxBody<TAbi, TFunctionName> extends readonly []
+    ...[body]: SolidityTxBody<TAbi, TFunctionName> extends Record<string, never>
       ? [body?: SolidityTxBody<TAbi, TFunctionName>]
       : [body: SolidityTxBody<TAbi, TFunctionName>]
   ): MaybePromise<GenericTransaction>;
