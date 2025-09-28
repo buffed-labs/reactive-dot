@@ -33,13 +33,7 @@ export type InferStorageReadInstructionPayload<
 
 type MessageSendInstruction = BaseInstruction<"send-message"> & {
   name: string;
-  body:
-    | {
-        [Sym: symbol]: never;
-        [Num: number]: never;
-        [Str: string]: unknown;
-      }
-    | undefined;
+  body: unknown;
   origin: ContractAddress | undefined;
   at: Finality | undefined;
 };

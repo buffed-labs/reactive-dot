@@ -47,11 +47,11 @@
     "@tsconfig/recommended": "^1.0.10",
     "@tsconfig/strictest": "^2.0.5",
     "eslint": "^9.35.0",
-    "polkadot-api": "^1.17.2",
+    "polkadot-api": "^1.19.0",
     "typescript": "^5.9.2",
     "vitest": "^3.2.4"
   },
   "peerDependencies": {
-    "polkadot-api": ">=1.11.x"
+    "polkadot-api": ">=1.19.x"
   }
 }
