@@ -8,10 +8,14 @@ import { useConfig } from "./use-config.js";
 import { inkClientAtom } from "./use-ink-client.js";
 import { typedApiAtom } from "./use-typed-api.js";
 import { MutationError } from "@reactive-dot/core";
-import type {
-  InkMutationBuilder,
-  PatchedReturnType,
-  TxOptionsOf,
+import {
+  getSolidityContractTx,
+  InkContract,
+  type PatchedReturnType,
+  type InkMutationBuilder,
+  type MutationBuilder,
+  type SolidityMutationBuilder,
+  type TxOptionsOf,
 } from "@reactive-dot/core/internal.js";
 import { getInkContractTx } from "@reactive-dot/core/internal/actions.js";
 import { useAtomCallback } from "jotai/utils";
@@ -31,10 +35,10 @@ import { switchMap } from "rxjs/operators";
  */
 export function useContractMutation<
   TAction extends (
-    builder: InkMutationBuilder,
+    builder: MutationBuilder,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     variables: any,
-  ) => PatchedReturnType<InkMutationBuilder>,
+  ) => PatchedReturnType<MutationBuilder>,
 >(
   action: TAction,
   options?: ChainHookOptions & {
@@ -76,22 +80,54 @@ export function useContractMutation<
           throw new MutationError("No signer provided");
         }
 
+        const inkMutationBuilder: InkMutationBuilder = async (
+          contract,
+          address,
+          message,
+          ...[body]
+        ) =>
+          getInkContractTx(
+            ...(await Promise.all([
+              get(typedApiAtom(config, chainId)),
+              get(inkClientAtom(contract)),
+            ])),
+            signer,
+            address,
+            message,
+            body,
+          );
+
+        const solidityMutationBuilder: SolidityMutationBuilder = async (
+          contract,
+          address,
+          functionName,
+          ...[body]
+        ) =>
+          getSolidityContractTx(
+            await get(typedApiAtom(config, chainId)),
+            contract.abi,
+            signer,
+            address,
+            functionName,
+            body,
+          );
+
         return from(
           Promise.resolve(
             action(
               // @ts-expect-error TODO: fix this
-              async (contract, address, message, body) =>
-                getInkContractTx(
-                  ...(await Promise.all([
-                    get(typedApiAtom(config, chainId)),
-                    get(inkClientAtom(contract)),
-                  ])),
-                  signer,
-                  address,
-                  // @ts-expect-error TODO: fix this
-                  message,
-                  body,
-                ),
+              (
+                ...args: Parameters<
+                  InkMutationBuilder | SolidityMutationBuilder
+                >
+              ) =>
+                args[0] instanceof InkContract
+                  ? inkMutationBuilder(
+                      ...(args as Parameters<InkMutationBuilder>),
+                    )
+                  : solidityMutationBuilder(
+                      ...(args as Parameters<SolidityMutationBuilder>),
+                    ),
               submitOptions?.variables,
             ),
           ),

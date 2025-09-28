@@ -1,47 +1,57 @@
-import { BaseError } from "../errors.js";
 import type { GenericInkDescriptors } from "./ink/types.js";
+import type { Abi } from "abitype";
 
-type ContractConfig<T extends GenericInkDescriptors = GenericInkDescriptors> = {
-  descriptor: T;
-};
-
-const configs = new Map<string, ContractConfig>();
-
-export class Contract<
-  TDescriptor extends GenericInkDescriptors = GenericInkDescriptors,
+export class InkContract<
+  T extends GenericInkDescriptors = GenericInkDescriptors,
 > {
-  readonly #id: string;
-
-  constructor(id: string) {
-    void (undefined as unknown as TDescriptor);
-    this.#id = id;
-  }
-
-  valueOf() {
-    return this.#id;
-  }
+  constructor(
+    /** @internal */
+    readonly id: string,
+    /** @internal */
+    readonly descriptor: T,
+  ) {}
 }
 
-export type DescriptorOfContract<TContract extends Contract> =
-  TContract extends Contract<infer TDescriptor> ? TDescriptor : never;
+export class SolidityContract<T extends Abi = Abi> {
+  constructor(
+    /** @internal */
+    readonly id: string,
+    /** @internal */
+    readonly abi: T,
+  ) {}
+}
+
+export type Contract = InkContract | SolidityContract;
 
 /** @experimental */
-export function defineContract<TDescriptor extends GenericInkDescriptors>(
-  config: ContractConfig<TDescriptor>,
+export function defineContract<T extends GenericInkDescriptors>(config: {
+  id?: string;
+  descriptor: T;
+}): InkContract<T>;
+export function defineContract<T extends GenericInkDescriptors>(config: {
+  id?: string;
+  type: "ink";
+  descriptor: T;
+}): InkContract<T>;
+export function defineContract<const T extends Abi>(config: {
+  id?: string;
+  type: "solidity";
+  abi: T;
+}): SolidityContract<T>;
+export function defineContract(
+  config: { id?: string } & (
+    | { type?: "ink"; descriptor: GenericInkDescriptors }
+    | { type: "solidity"; abi: Abi }
+  ),
 ) {
-  const id = globalThis.crypto.randomUUID();
+  const id = config.id ?? globalThis.crypto.randomUUID();
 
-  configs.set(id, config);
-
-  return new Contract<TDescriptor>(id);
-}
-
-export function getContractConfig(contract: Contract) {
-  const config = configs.get(contract.valueOf());
-
-  if (config === undefined) {
-    throw new BaseError(`Contract ${contract.valueOf()} not found`);
+  switch (config.type) {
+    case "solidity":
+      return new SolidityContract(id, config.abi);
+    case undefined:
+    case "ink":
+    default:
+      return new InkContract(id, config.descriptor);
   }
-
-  return config;
 }

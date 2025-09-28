@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { flipper } from "./contracts";
+import { flipper } from "./config.js";
 import { useContractMutation } from "@reactive-dot/vue";
 import { watchEffect } from "vue";
 

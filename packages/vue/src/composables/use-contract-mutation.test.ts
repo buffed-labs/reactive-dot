@@ -41,8 +41,11 @@ afterEach(() => {
   vi.restoreAllMocks();
 });
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const testContract = defineContract({ descriptor: {} as any });
+const testContract = defineContract({
+  id: "mock-contract",
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  descriptor: {} as any,
+});
 
 it("sign submit and watch", async () => {
   const { result } = withSetup(

@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import ContractsSection from "./contracts-section.vue";
+import InkContracts from "./ink-contracts.vue";
 import MutationSection from "./mutation-section.vue";
 import QuerySection from "./query-section.vue";
+import SolidityContracts from "./solidity-contracts.vue";
 import WalletConnection from "./wallet-connection.vue";
 import type { ChainId } from "@reactive-dot/core";
 import {
@@ -58,7 +59,11 @@ watchMutationEffect((event) => console.log(event));
     <template #fallback><p>Loading chain...</p></template>
   </Suspense>
   <Suspense>
-    <ContractsSection />
-    <template #fallback><p>Loading contracts...</p></template>
+    <InkContracts />
+    <template #fallback><p>Loading Ink! contracts...</p></template>
+  </Suspense>
+  <Suspense>
+    <SolidityContracts />
+    <template #fallback><p>Loading Solidity contracts...</p></template>
   </Suspense>
 </template>

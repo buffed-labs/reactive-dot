@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import AccountGuard from "./account-guard.vue";
-import { flipper } from "./contracts";
+import { flipper } from "./config.js";
 import FlipperContractMutation from "./flipper-contract-mutation.vue";
 import { useQuery } from "@reactive-dot/vue";
 
