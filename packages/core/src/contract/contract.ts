@@ -23,7 +23,7 @@ export class SolidityContract<T extends Abi = Abi> {
 
 export type Contract = InkContract | SolidityContract;
 
-/** @experimental */
+/** @deprecated Specify the contract type explicitly */
 export function defineContract<T extends GenericInkDescriptors>(config: {
   id?: string;
   descriptor: T;

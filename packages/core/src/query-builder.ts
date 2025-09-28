@@ -582,7 +582,6 @@ export class Query<
     } satisfies ContractReadInstruction);
   }
 
-  /** @experimental */
   contracts<
     TContractDescriptor extends GenericInkDescriptors,
     TContractInstructions extends InkQueryInstruction[],

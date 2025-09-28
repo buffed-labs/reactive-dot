@@ -1,14 +1,14 @@
 ---
-sidebar_position: 6
+sidebar_position: 1
 ---
 
-# Smart contract
+# Ink!
 
-ReactiveDOT works with [Ink! contracts](https://use.ink) on chains with PolkaVM support, such as [Polkadot Asset Hub](https://polkadot.com/platform/hub) or [Pop Network](https://pop.r0gue.io/network).
+ReactiveDOT works with [Ink! contracts](https://use.ink) on chains with PolkaVM support, such as [Polkadot Asset Hub](https://polkadot.com/platform/hub).
 
 :::warning
 
-Contract support via PolkaVM on Polkadot is still in alpha.
+Contract support via PolkaVM on Polkadot is still in development.
 
 :::
 
@@ -41,6 +41,7 @@ import { contracts } from "@polkadot-api/descriptor";
 import { defineContract } from "@reactive-dot/core";
 
 export const myContract = defineContract({
+  type: "ink",
   descriptor: contracts.myContract,
 });
 ```

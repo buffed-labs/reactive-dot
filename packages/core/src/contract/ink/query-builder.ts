@@ -113,7 +113,6 @@ export class InkQuery<
     return Object.freeze(this.#instructions.slice()) as TInstructions;
   }
 
-  /** @experimental */
   rootStorage<TDefer extends boolean = false>(options?: {
     at?: Finality;
     defer?: TDefer;
@@ -127,7 +126,6 @@ export class InkQuery<
     } satisfies StorageReadInstruction);
   }
 
-  /** @experimental */
   storage<
     const TPath extends Exclude<
       StringKeyOf<TDescriptor["__types"]["storage"]>,
@@ -158,7 +156,6 @@ export class InkQuery<
     } satisfies StorageReadInstruction);
   }
 
-  /** @experimental */
   storages<
     const TPath extends Exclude<
       StringKeyOf<TDescriptor["__types"]["storage"]>,
@@ -184,7 +181,6 @@ export class InkQuery<
     } satisfies MultiStorageReadInstruction);
   }
 
-  /** @experimental */
   message<
     const TName extends StringKeyOf<
       ExcludeProperties<TDescriptor["__types"]["messages"], { mutates: true }>
@@ -217,7 +213,6 @@ export class InkQuery<
     } satisfies MessageSendInstruction);
   }
 
-  /** @experimental */
   messages<
     const TName extends StringKeyOf<
       ExcludeProperties<TDescriptor["__types"]["messages"], { mutates: true }>
