@@ -5,7 +5,7 @@ import { internal_useChainId } from "./use-chain-id.js";
 import { clientAtom } from "./use-client.js";
 import { useConfig } from "./use-config.js";
 import type { ChainId, Config } from "@reactive-dot/core";
-import { derive } from "jotai-derive";
+import { derive } from "jotai-eager";
 
 /**
  * Hook for fetching the [JSON-RPC spec](https://paritytech.github.io/json-rpc-interface-spec/api/chainSpec.html).

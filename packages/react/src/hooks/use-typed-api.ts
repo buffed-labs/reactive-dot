@@ -7,7 +7,7 @@ import { useConfig } from "./use-config.js";
 import { BaseError, type ChainId, type Config } from "@reactive-dot/core";
 import type { ChainDescriptorOf } from "@reactive-dot/core/internal.js";
 import { atom } from "jotai";
-import { soon } from "jotai-derive";
+import { soon } from "jotai-eager";
 import type { TypedApi } from "polkadot-api";
 
 /**
