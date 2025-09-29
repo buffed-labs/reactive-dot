@@ -134,7 +134,7 @@ const myContract = defineContract({
 
 function Component() {
   const [status, mint] = useContractMutation((mutate) =>
-    mutate(myContract, "mint", {
+    mutate(myContract, CONTRACT_ADDRESS, "mint", {
       args: [1n],
     }),
   );

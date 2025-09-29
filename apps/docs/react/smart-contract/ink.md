@@ -123,7 +123,7 @@ import { useContractMutation } from "@reactive-dot/react";
 
 function Component() {
   const [status, mint] = useContractMutation((mutate) =>
-    mutate(myContract, "mint", {
+    mutate(myContract, CONTRACT_ADDRESS, "mint", {
       data: { id: 1 },
       value: 10_000n,
     }),
