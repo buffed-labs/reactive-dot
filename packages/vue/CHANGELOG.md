@@ -1,5 +1,16 @@
 # @reactive-dot/vue
 
+## 0.50.0
+
+### Minor Changes
+
+- [#853](https://github.com/buffed-labs/reactive-dot/pull/853) [`b981d30`](https://github.com/buffed-labs/reactive-dot/commit/b981d307cf6fa86d03d36a55de268bea705a4ae4) Thanks [@tien](https://github.com/tien)! - Added support for Solidity contracts running on PolkaVM
+
+### Patch Changes
+
+- Updated dependencies [[`b981d30`](https://github.com/buffed-labs/reactive-dot/commit/b981d307cf6fa86d03d36a55de268bea705a4ae4)]:
+  - @reactive-dot/core@0.50.0
+
 ## 0.49.0
 
 ### Minor Changes

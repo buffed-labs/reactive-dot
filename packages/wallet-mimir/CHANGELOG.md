@@ -1,5 +1,12 @@
 # @reactive-dot/wallet-mimir
 
+## 0.1.19
+
+### Patch Changes
+
+- Updated dependencies [[`b981d30`](https://github.com/buffed-labs/reactive-dot/commit/b981d307cf6fa86d03d36a55de268bea705a4ae4)]:
+  - @reactive-dot/core@0.50.0
+
 ## 0.1.18
 
 ### Patch Changes
