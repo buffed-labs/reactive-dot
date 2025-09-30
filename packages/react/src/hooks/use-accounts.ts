@@ -9,7 +9,9 @@ import { useSsrValue } from "./use-ssr-value.js";
 import { connectedWalletsAtom } from "./use-wallets.js";
 import { type ChainId, type Config } from "@reactive-dot/core";
 import { getAccounts } from "@reactive-dot/core/internal/actions.js";
+import type { WalletAccount } from "@reactive-dot/core/wallets.js";
 import { useAtomValue } from "jotai";
+import { unwrap } from "jotai/utils";
 
 /**
  * Hook for getting currently connected accounts.
@@ -18,21 +20,25 @@ import { useAtomValue } from "jotai";
  * @param options - Additional options
  * @returns The currently connected accounts
  */
-export function useAccounts(options?: ChainHookOptions | { chainId: null }) {
+export function useAccounts<TDefer extends boolean = false>(
+  options?: (ChainHookOptions | { chainId: null }) & { defer?: TDefer },
+) {
+  const accountsAtomInstance = accountsAtom(
+    useConfig(),
+    options?.chainId === null
+      ? undefined
+      : internal_useChainId({
+          ...options,
+          optionalChainId: true,
+        }),
+  );
+
   return useAtomValue(
     useSsrValue(
-      accountsAtom(
-        useConfig(),
-        options?.chainId === null
-          ? undefined
-          : internal_useChainId({
-              ...options,
-              optionalChainId: true,
-            }),
-      ),
+      options?.defer ? unwrap(accountsAtomInstance) : accountsAtomInstance,
       emptyArrayAtom,
     ),
-  );
+  ) as true extends TDefer ? WalletAccount[] | undefined : WalletAccount[];
 }
 
 /**

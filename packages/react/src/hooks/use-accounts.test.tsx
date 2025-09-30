@@ -98,3 +98,36 @@ it("ignores context chainId when chainId is null", async () => {
 
   expect(getAccounts).toHaveBeenCalledWith(expect.anything(), undefined);
 });
+
+it("returns undefined when defer is true and accounts are not ready", async () => {
+  const wallets = [
+    new MockWallet(
+      [
+        {
+          id: "1",
+          polkadotSigner: { publicKey: new Uint8Array() } as PolkadotSigner,
+        },
+        {
+          id: "2",
+          polkadotSigner: { publicKey: new Uint8Array() } as PolkadotSigner,
+        },
+      ],
+      true,
+      1000,
+    ),
+  ];
+
+  const config = defineConfig({ chains: {}, wallets });
+
+  const { result } = await act(() =>
+    renderHook(() => useAccounts({ defer: true }), {
+      wrapper: ({ children }) => (
+        <ReactiveDotProvider config={config}>
+          <Suspense>{children}</Suspense>
+        </ReactiveDotProvider>
+      ),
+    }),
+  );
+
+  expect(result.current).toBeUndefined();
+});

@@ -3,7 +3,7 @@ import {
   Wallet,
 } from "@reactive-dot/core/wallets.js";
 import { BehaviorSubject } from "rxjs";
-import { map } from "rxjs/operators";
+import { delay, map } from "rxjs/operators";
 
 export class MockWallet extends Wallet {
   readonly id = "mock";
@@ -14,16 +14,21 @@ export class MockWallet extends Wallet {
 
   readonly connected$ = new BehaviorSubject(false);
 
+  #delay = 0;
+
   readonly accounts$ = this.connected$.pipe(
-    map((connected) => (connected ? this.#accounts : [])),
+    delay(this.#delay),
+    map((connected) => (connected ? this.accounts : [])),
   );
 
-  readonly #accounts: PolkadotSignerAccount[];
-
-  constructor(accounts: PolkadotSignerAccount[], connected = false) {
+  constructor(
+    readonly accounts: PolkadotSignerAccount[],
+    connected = false,
+    delay = 0,
+  ) {
     super();
-    this.#accounts = accounts;
     this.connected$.next(connected);
+    this.#delay = delay;
   }
 
   initialize() {
