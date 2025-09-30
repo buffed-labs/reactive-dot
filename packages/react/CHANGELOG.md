@@ -1,5 +1,11 @@
 # @reactive-dot/react
 
+## 0.51.0
+
+### Minor Changes
+
+- [#893](https://github.com/buffed-labs/reactive-dot/pull/893) [`1c6c155`](https://github.com/buffed-labs/reactive-dot/commit/1c6c1557c17ecb5cb02fdd97e73bd30386f9c3d4) Thanks [@tien](https://github.com/tien)! - Added an option to defer loading accounts when using the `useAccounts` hook.
+
 ## 0.50.0
 
 ### Minor Changes
