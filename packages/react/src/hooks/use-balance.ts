@@ -1,10 +1,16 @@
-import type { ChainHookOptions } from "./types.js";
-import { useNativeTokenAmountFromPlanck } from "./use-native-token-amount.js";
+import type { ChainHookOptions, DeferOptions } from "./types.js";
+import { internal_useChainId } from "./use-chain-id.js";
+import { chainSpecDataAtom } from "./use-chain-spec-data.js";
+import { useConfig } from "./use-config.js";
 import { useLazyLoadQuery } from "./use-query.js";
+import { pending } from "@reactive-dot/core";
+import { nativeTokenInfoFromChainSpecData } from "@reactive-dot/core/internal.js";
 import { spendableBalance } from "@reactive-dot/core/internal/maths.js";
-import { type DenominatedNumber } from "@reactive-dot/utils";
+import { DenominatedNumber } from "@reactive-dot/utils";
+import { useAtomValue } from "jotai";
+import { unwrap } from "jotai/utils";
 import type { SS58String } from "polkadot-api";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 
 type SystemAccount = {
   nonce: number;
@@ -19,9 +25,10 @@ type SystemAccount = {
   };
 };
 
-type Options = ChainHookOptions & {
-  includesExistentialDeposit?: boolean;
-};
+type Options<TDefer extends boolean> = ChainHookOptions &
+  DeferOptions<TDefer> & {
+    includesExistentialDeposit?: boolean;
+  };
 
 /**
  * Hook for getting an account's spendable balance.
@@ -31,10 +38,10 @@ type Options = ChainHookOptions & {
  * @param options - Additional options
  * @returns The account's spendable balance
  */
-export function useSpendableBalance(
+export function useSpendableBalance<TDefer extends boolean = false>(
   address: SS58String,
-  options?: Options,
-): DenominatedNumber;
+  options?: Options<TDefer>,
+): true extends TDefer ? DenominatedNumber | undefined : DenominatedNumber;
 /**
  * Hook for getting accounts’ spendable balances.
  *
@@ -43,34 +50,61 @@ export function useSpendableBalance(
  * @param options - Additional options
  * @returns The accounts’ spendable balances
  */
-export function useSpendableBalance(
+export function useSpendableBalance<TDefer extends boolean = false>(
   addresses: SS58String[],
-  options?: Options,
-): DenominatedNumber[];
+  options?: Options<TDefer>,
+): true extends TDefer ? DenominatedNumber[] | undefined : DenominatedNumber[];
 export function useSpendableBalance(
   addressOrAddresses: SS58String | SS58String[],
-  { includesExistentialDeposit = false, ...options }: Options = {},
-): DenominatedNumber | DenominatedNumber[] {
+  { includesExistentialDeposit = false, ...options }: Options<boolean> = {},
+): DenominatedNumber | DenominatedNumber[] | undefined {
   const addresses = Array.isArray(addressOrAddresses)
     ? addressOrAddresses
     : [addressOrAddresses];
 
   const [existentialDeposit, accounts] = useLazyLoadQuery(
     (builder) =>
-      builder.constant("Balances", "ExistentialDeposit").storages(
-        "System",
-        "Account",
-        addresses.map((address) => [address] as const),
-      ),
+      builder
+        .constant("Balances", "ExistentialDeposit", {
+          defer: options.defer ?? false,
+        })
+        .storages(
+          "System",
+          "Account",
+          addresses.map((address) => [address] as const),
+          {
+            defer: options.defer ?? false,
+          },
+        ),
     options,
-  ) as [bigint, SystemAccount[]];
+  ) as [bigint | typeof pending, SystemAccount[] | typeof pending];
 
-  const nativeTokenFromPlanck = useNativeTokenAmountFromPlanck(options);
+  const chainSpecDataAtomInstance = chainSpecDataAtom(
+    useConfig(),
+    internal_useChainId(options),
+  );
 
-  const balances = useMemo(
-    () =>
-      accounts.map(({ data: { free, reserved, frozen } }) =>
-        nativeTokenFromPlanck(
+  const chainSpecFallback = useCallback(() => pending, []);
+  const chainSpecData = useAtomValue(
+    options.defer
+      ? unwrap(chainSpecDataAtomInstance, chainSpecFallback)
+      : chainSpecDataAtomInstance,
+  );
+
+  const balances = useMemo(() => {
+    if (
+      accounts === pending ||
+      existentialDeposit === pending ||
+      chainSpecData === pending
+    ) {
+      return undefined;
+    }
+
+    const nativeTokenInfo = nativeTokenInfoFromChainSpecData(chainSpecData);
+
+    return accounts.map(
+      ({ data: { free, reserved, frozen } }) =>
+        new DenominatedNumber(
           spendableBalance({
             free,
             reserved,
@@ -78,17 +112,13 @@ export function useSpendableBalance(
             existentialDeposit,
             includesExistentialDeposit,
           }),
+          nativeTokenInfo.decimals ?? 0,
+          nativeTokenInfo.code,
         ),
-      ),
-    [
-      accounts,
-      existentialDeposit,
-      includesExistentialDeposit,
-      nativeTokenFromPlanck,
-    ],
-  );
+    );
+  }, [accounts, chainSpecData, existentialDeposit, includesExistentialDeposit]);
 
-  return Array.isArray(addressOrAddresses) ? balances : balances[0]!;
+  return Array.isArray(addressOrAddresses) ? balances : balances?.[0];
 }
 
 /**
@@ -98,9 +128,9 @@ export function useSpendableBalance(
  * @param options - Additional options
  * @returns The accounts’ spendable balances
  */
-export function useSpendableBalances(
+export function useSpendableBalances<TDefer extends boolean = false>(
   addresses: SS58String[],
-  options?: Options,
+  options?: Options<TDefer>,
 ) {
-  return useSpendableBalance(addresses, options);
+  return useSpendableBalance<TDefer>(addresses, options);
 }

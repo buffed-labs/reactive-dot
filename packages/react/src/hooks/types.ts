@@ -28,6 +28,11 @@ export type QueryArgument<TChainId extends ChainId | undefined> =
     ) => Query<QueryInstruction[], ChainDescriptorOf<TChainId>> | Falsy)
   | Falsy;
 
+export type DeferOptions<TDefer extends boolean> = {
+  /** Return fallback instead of suspending when the data is not ready */
+  defer?: TDefer;
+};
+
 export type InferQueryArgumentResult<
   TChainId extends ChainId | undefined,
   TQuery extends QueryArgument<TChainId>,
