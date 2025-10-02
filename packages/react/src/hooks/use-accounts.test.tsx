@@ -100,6 +100,8 @@ it("ignores context chainId when chainId is null", async () => {
 });
 
 it("returns undefined when defer is true and accounts are not ready", async () => {
+  vi.useFakeTimers();
+
   const wallets = [
     new MockWallet(
       [
@@ -130,4 +132,11 @@ it("returns undefined when defer is true and accounts are not ready", async () =
   );
 
   expect(result.current).toBeUndefined();
+
+  await act(() => vi.advanceTimersByTime(1000));
+
+  expect(result.current).toEqual([
+    expect.objectContaining({ id: "1" }),
+    expect.objectContaining({ id: "2" }),
+  ]);
 });

@@ -1,7 +1,7 @@
 import { emptyArrayAtom } from "../constants/empty-array-atom.js";
 import { atomFamilyWithErrorCatcher } from "../utils/jotai/atom-family-with-error-catcher.js";
 import { atomWithObservable } from "../utils/jotai/atom-with-observable.js";
-import type { ChainHookOptions } from "./types.js";
+import type { ChainHookOptions, DeferOptions } from "./types.js";
 import { internal_useChainId } from "./use-chain-id.js";
 import { chainSpecDataAtom } from "./use-chain-spec-data.js";
 import { useConfig } from "./use-config.js";
@@ -21,7 +21,7 @@ import { unwrap } from "jotai/utils";
  * @returns The currently connected accounts
  */
 export function useAccounts<TDefer extends boolean = false>(
-  options?: (ChainHookOptions | { chainId: null }) & { defer?: TDefer },
+  options?: (ChainHookOptions | { chainId: null }) & DeferOptions<TDefer>,
 ) {
   const accountsAtomInstance = accountsAtom(
     useConfig(),
