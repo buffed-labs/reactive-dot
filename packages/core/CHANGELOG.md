@@ -1,5 +1,11 @@
 # @reactive-dot/core
 
+## 0.51.1
+
+### Patch Changes
+
+- [#899](https://github.com/buffed-labs/reactive-dot/pull/899) [`82408fe`](https://github.com/buffed-labs/reactive-dot/commit/82408feda112327f3dad1b591f4c64a4b1f4324e) Thanks [@tien](https://github.com/tien)! - Cache `PolkadotChain` client per `ChainConfig`.
+
 ## 0.50.0
 
 ### Minor Changes
