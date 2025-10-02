@@ -88,3 +88,14 @@ it("should execute a zero-argument provider function and use createClient when r
   expect(createClient).toHaveBeenCalledWith(fakeRpcProvider);
   expect(client).toEqual({ client: "rpc", provider: fakeRpcProvider });
 });
+
+it("caches clients per ChainConfig", async () => {
+  const chainConfig = {
+    provider: () => Promise.resolve(fakeRpcProvider),
+  } as unknown as ChainConfig;
+
+  const client1 = await getClient(chainConfig);
+  const client2 = await getClient(chainConfig);
+
+  expect(client1).toBe(client2);
+});
