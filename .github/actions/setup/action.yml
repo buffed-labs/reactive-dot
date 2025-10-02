@@ -5,6 +5,14 @@ description: Checkout repository & install dependencies
 runs:
   using: composite
   steps:
-    - uses: volta-cli/action@v4
+    # https://github.com/actions/setup-node/issues/899
+    - run: corepack enable
+      shell: bash
+
+    - uses: actions/setup-node@v5
+      with:
+        node-version-file: package.json
+        cache: yarn
+
     - run: yarn install --immutable
       shell: bash
