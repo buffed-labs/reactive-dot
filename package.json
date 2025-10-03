@@ -16,10 +16,10 @@
   "repository": "github:buffed-labs/reactive-dot",
   "private": true,
   "type": "module",
-  "packageManager": "yarn@4.8.1",
+  "packageManager": "yarn@4.10.3",
   "volta": {
-    "node": "22.15.0",
-    "yarn": "4.9.1"
+    "node": "22.20.0",
+    "yarn": "4.10.3"
   },
   "engines": {
     "node": "22.x"
