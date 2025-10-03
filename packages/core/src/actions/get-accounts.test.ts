@@ -228,3 +228,40 @@ it("should handle account.polkadotSigner as a function and return undefined if i
 
   expect(accounts.length).toBe(0);
 });
+
+it("handles EVM and Substrate accounts", async () => {
+  const mockWallet = {
+    accounts$: of([
+      {
+        id: 1,
+        polkadotSigner: {
+          sign: vi.fn(),
+          publicKey: new Uint8Array([
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+            20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
+          ]),
+        },
+      },
+      {
+        id: 2,
+        polkadotSigner: {
+          sign: vi.fn(),
+          publicKey: new Uint8Array([
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+            20,
+          ]),
+        },
+      },
+    ]),
+  } as unknown as Wallet;
+
+  const accounts = await firstValueFrom(getAccounts([mockWallet]));
+
+  expect(accounts.length).toBe(2);
+  expect(accounts[0]?.address).toMatchInlineSnapshot(
+    `"5C62W7ELLAAfjCQeBU3me9ykaYomD8XTg2B9Hk6ki6Cm3v58"`,
+  );
+  expect(accounts[1]?.address).toMatchInlineSnapshot(
+    `"0x0102030405060708090a0b0c0d0e0f1011121314"`,
+  );
+});

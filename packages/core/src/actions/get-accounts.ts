@@ -4,7 +4,7 @@ import { toObservable } from "../utils/to-observable.js";
 import type { WalletAccount } from "../wallets/account.js";
 import type { Wallet } from "../wallets/wallet.js";
 import type { ChainSpecData } from "@polkadot-api/substrate-client";
-import { AccountId } from "polkadot-api";
+import { AccountId, Binary } from "polkadot-api";
 import { combineLatest, of } from "rxjs";
 import { map, switchMap } from "rxjs/operators";
 
@@ -60,15 +60,18 @@ export function getAccounts(
                     return undefined;
                   }
 
-                  // TODO: EVM accounts are getting mixed in here, which is not expected.
-                  if (polkadotSigner.publicKey.length === 20) {
-                    return undefined;
-                  }
+                  const type =
+                    polkadotSigner.publicKey.length === 20
+                      ? "evm"
+                      : "substrate";
 
                   return {
                     ...account,
                     polkadotSigner,
-                    address: ss58AccountId.dec(polkadotSigner.publicKey),
+                    address:
+                      type === "substrate"
+                        ? ss58AccountId.dec(polkadotSigner.publicKey)
+                        : Binary.fromBytes(polkadotSigner.publicKey).asHex(),
                     wallet,
                   };
                 })
