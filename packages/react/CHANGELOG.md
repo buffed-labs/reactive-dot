@@ -1,5 +1,11 @@
 # @reactive-dot/react
 
+## 0.52.0
+
+### Minor Changes
+
+- [#897](https://github.com/buffed-labs/reactive-dot/pull/897) [`ca4ce86`](https://github.com/buffed-labs/reactive-dot/commit/ca4ce862eb411cf159ef505a5c20cd77b6530ddc) Thanks [@tien](https://github.com/tien)! - Added an option to defer loading balance(s) when using the `useSpendableBalance(s)` hook.
+
 ## 0.51.2
 
 ### Patch Changes
