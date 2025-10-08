@@ -3,13 +3,15 @@ import { internal_useChainId } from "./use-chain-id.js";
 import { chainSpecDataAtom } from "./use-chain-spec-data.js";
 import { useConfig } from "./use-config.js";
 import { useLazyLoadQuery } from "./use-query.js";
-import { pending } from "@reactive-dot/core";
-import { nativeTokenInfoFromChainSpecData } from "@reactive-dot/core/internal.js";
+import { type Address, pending } from "@reactive-dot/core";
+import {
+  nativeTokenInfoFromChainSpecData,
+  toSs58String,
+} from "@reactive-dot/core/internal.js";
 import { spendableBalance } from "@reactive-dot/core/internal/maths.js";
 import { DenominatedNumber } from "@reactive-dot/utils";
 import { useAtomValue } from "jotai";
 import { unwrap } from "jotai/utils";
-import type { SS58String } from "polkadot-api";
 import { useCallback, useMemo } from "react";
 
 type SystemAccount = {
@@ -39,7 +41,7 @@ type Options<TDefer extends boolean> = ChainHookOptions &
  * @returns The account's spendable balance
  */
 export function useSpendableBalance<TDefer extends boolean = false>(
-  address: SS58String,
+  address: Address,
   options?: Options<TDefer>,
 ): true extends TDefer ? DenominatedNumber | undefined : DenominatedNumber;
 /**
@@ -51,16 +53,21 @@ export function useSpendableBalance<TDefer extends boolean = false>(
  * @returns The accounts’ spendable balances
  */
 export function useSpendableBalance<TDefer extends boolean = false>(
-  addresses: SS58String[],
+  addresses: Address[],
   options?: Options<TDefer>,
 ): true extends TDefer ? DenominatedNumber[] | undefined : DenominatedNumber[];
 export function useSpendableBalance(
-  addressOrAddresses: SS58String | SS58String[],
+  addressOrAddresses: Address | Address[],
   { includesExistentialDeposit = false, ...options }: Options<boolean> = {},
 ): DenominatedNumber | DenominatedNumber[] | undefined {
-  const addresses = Array.isArray(addressOrAddresses)
-    ? addressOrAddresses
-    : [addressOrAddresses];
+  const addresses = useMemo(
+    () =>
+      (Array.isArray(addressOrAddresses)
+        ? addressOrAddresses
+        : [addressOrAddresses]
+      ).map((address) => toSs58String(address)),
+    [addressOrAddresses],
+  );
 
   const [existentialDeposit, accounts] = useLazyLoadQuery(
     (builder) =>
@@ -129,7 +136,7 @@ export function useSpendableBalance(
  * @returns The accounts’ spendable balances
  */
 export function useSpendableBalances<TDefer extends boolean = false>(
-  addresses: SS58String[],
+  addresses: Address[],
   options?: Options<TDefer>,
 ) {
   return useSpendableBalance<TDefer>(addresses, options);

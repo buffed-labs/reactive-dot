@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-empty-object-type */
+import type { Address } from "../address.js";
 import type {
   ApisTypedef,
   Binary,
@@ -14,7 +15,7 @@ import type {
   TypedApi,
 } from "polkadot-api";
 
-export type ContractAddress = SS58String | `0x${string}` | FixedSizeBinary<20>;
+export type ContractAddress = Address | FixedSizeBinary<20>;
 
 export type Gas = {
   ref_time: bigint;

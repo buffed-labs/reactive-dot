@@ -7,9 +7,10 @@ import { internal_useChainId } from "./use-chain-id.js";
 import { useLazyValue } from "./use-lazy-value.js";
 import { useNativeTokenPromise } from "./use-native-token.js";
 import { useQueryObservable } from "./use-query.js";
+import type { Address } from "@reactive-dot/core";
+import { toSs58String } from "@reactive-dot/core/internal.js";
 import { spendableBalance } from "@reactive-dot/core/internal/maths.js";
 import { type DenominatedNumber } from "@reactive-dot/utils";
-import type { SS58String } from "polkadot-api";
 import { combineLatest, from } from "rxjs";
 import { map } from "rxjs/operators";
 import { computed, type MaybeRefOrGetter, toValue } from "vue";
@@ -39,7 +40,7 @@ type Options = ChainComposableOptions & {
  * @returns The account's spendable balance
  */
 export function useSpendableBalance(
-  address: MaybeRefOrGetter<SS58String>,
+  address: MaybeRefOrGetter<Address>,
   options?: Options,
 ): PromiseLikeAsyncState<DenominatedNumber>;
 /**
@@ -51,20 +52,22 @@ export function useSpendableBalance(
  * @returns The accounts’ spendable balances
  */
 export function useSpendableBalance(
-  addresses: MaybeRefOrGetter<SS58String[]>,
+  addresses: MaybeRefOrGetter<Address[]>,
   options?: Options,
 ): PromiseLikeAsyncState<DenominatedNumber[]>;
 export function useSpendableBalance(
-  addressOrAddresses: MaybeRefOrGetter<SS58String | SS58String[]>,
+  addressOrAddresses: MaybeRefOrGetter<Address | Address[]>,
   options?: Options,
 ): PromiseLikeAsyncState<DenominatedNumber | DenominatedNumber[]> {
   const chainId = internal_useChainId(options);
 
   const addresses = computed(() => {
     const addressOrAddressesValue = toValue(addressOrAddresses);
-    return Array.isArray(addressOrAddressesValue)
-      ? toValue(addressOrAddressesValue)
-      : [toValue(addressOrAddressesValue)];
+    return (
+      Array.isArray(addressOrAddressesValue)
+        ? toValue(addressOrAddressesValue)
+        : [toValue(addressOrAddressesValue)]
+    ).map((address) => toSs58String(address));
   });
 
   const includesExistentialDeposit = computed(
@@ -131,7 +134,7 @@ export function useSpendableBalance(
  * @returns The accounts’ spendable balances
  */
 export function useSpendableBalances(
-  addresses: MaybeRefOrGetter<SS58String[]>,
+  addresses: MaybeRefOrGetter<Address[]>,
   options?: Options,
 ) {
   return useSpendableBalance(addresses, options);

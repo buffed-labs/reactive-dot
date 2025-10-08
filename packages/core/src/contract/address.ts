@@ -1,3 +1,4 @@
+import { toSs58String } from "../address.js";
 import type { ContractAddress } from "../contract/types.js";
 import { keccak_256 } from "@noble/hashes/sha3.js";
 import { AccountId, FixedSizeBinary } from "polkadot-api";
@@ -29,14 +30,5 @@ export function toSs58Address(
     return accountId.dec(address.asBytes());
   }
 
-  if (address.startsWith("0x")) {
-    return accountId.dec(
-      new Uint8Array([
-        ...FixedSizeBinary.fromHex(address).asBytes().slice(0, 20),
-        ...Array.from<number>({ length: 12 }).fill(padInt),
-      ]),
-    );
-  }
-
-  return accountId.dec(accountId.enc(address));
+  return toSs58String(address, ss58Format, padInt);
 }
