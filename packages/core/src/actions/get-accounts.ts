@@ -4,6 +4,7 @@ import { toObservable } from "../utils/to-observable.js";
 import type { WalletAccount } from "../wallets/account.js";
 import type { Wallet } from "../wallets/wallet.js";
 import type { ChainSpecData } from "@polkadot-api/substrate-client";
+import { checksum } from "ox/Address";
 import { AccountId, Binary } from "polkadot-api";
 import { combineLatest, of } from "rxjs";
 import { map, switchMap } from "rxjs/operators";
@@ -71,7 +72,9 @@ export function getAccounts(
                     address:
                       type === "substrate"
                         ? ss58AccountId.dec(polkadotSigner.publicKey)
-                        : Binary.fromBytes(polkadotSigner.publicKey).asHex(),
+                        : checksum(
+                            Binary.fromBytes(polkadotSigner.publicKey).asHex(),
+                          ),
                     wallet,
                   };
                 })
