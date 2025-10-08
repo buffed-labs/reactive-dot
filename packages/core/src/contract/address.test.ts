@@ -8,7 +8,7 @@ const h160HexForAliceSs58Derived = "0x9621dde636de098b43efb0fa9b61facfe328f99d";
 const genericH160Hex = "0x1234567890123456789012345678901234567890";
 const genericH160FixedBinary = FixedSizeBinary.fromHex(genericH160Hex);
 
-const genericPaddedBytes = new Uint8Array(32);
+const genericPaddedBytes = new Uint8Array(32).fill(0xee);
 genericPaddedBytes.set(genericH160FixedBinary.asBytes()); // First 20 bytes
 
 const ss58Format42ForGenericH160 = AccountId(42).dec(genericPaddedBytes);
