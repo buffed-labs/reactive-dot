@@ -262,6 +262,6 @@ it("handles EVM and Substrate accounts", async () => {
     `"5C62W7ELLAAfjCQeBU3me9ykaYomD8XTg2B9Hk6ki6Cm3v58"`,
   );
   expect(accounts[1]?.address).toMatchInlineSnapshot(
-    `"0x0102030405060708090a0b0c0d0e0f1011121314"`,
+    `"0x0102030405060708090a0B0c0d0e0f1011121314"`,
   );
 });
