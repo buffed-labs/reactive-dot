@@ -1,3 +1,4 @@
+export { toSs58String } from "./address.js";
 export type { ChainDescriptorOf, Chains } from "./chains.js";
 export {
   InkContract,

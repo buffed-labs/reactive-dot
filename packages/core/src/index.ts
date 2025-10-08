@@ -12,6 +12,7 @@ export type { Register } from "./register.js";
 export { Storage } from "./storage.js";
 export { idle, pending } from "./symbols.js";
 export { defineContract } from "./contract/contract.js";
+export type { Address } from "./address.js";
 
 export {
   /**
