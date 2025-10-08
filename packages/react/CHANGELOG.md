@@ -1,5 +1,12 @@
 # @reactive-dot/react
 
+## 0.53.0
+
+### Patch Changes
+
+- Updated dependencies [[`4c34540`](https://github.com/buffed-labs/reactive-dot/commit/4c34540c1dab6b3329d2564325bc3445d896ddb0)]:
+  - @reactive-dot/core@0.53.0
+
 ## 0.52.0
 
 ### Minor Changes
