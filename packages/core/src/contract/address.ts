@@ -21,7 +21,7 @@ export function toH160Bytes(address: ContractAddress): FixedSizeBinary<20> {
 export function toSs58Address(
   address: ContractAddress,
   ss58Format?: number,
-  padInt = 0,
+  padInt = 0xee,
 ) {
   const accountId = AccountId(ss58Format);
 

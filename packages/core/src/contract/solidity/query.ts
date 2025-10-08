@@ -34,7 +34,7 @@ export async function querySolidity<
       );
 
       const response = await api.apis.ReviveApi.call(
-        toSs58Address(origin, undefined, 238),
+        toSs58Address(origin),
         toH160Bytes(address),
         0n,
         undefined,
