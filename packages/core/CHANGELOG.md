@@ -1,5 +1,11 @@
 # @reactive-dot/core
 
+## 0.53.0
+
+### Minor Changes
+
+- [#909](https://github.com/buffed-labs/reactive-dot/pull/909) [`4c34540`](https://github.com/buffed-labs/reactive-dot/commit/4c34540c1dab6b3329d2564325bc3445d896ddb0) Thanks [@tien](https://github.com/tien)! - Accept EVM accounts returned by Polkadot wallets.
+
 ## 0.51.1
 
 ### Patch Changes
