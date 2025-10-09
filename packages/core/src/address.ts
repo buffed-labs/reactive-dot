@@ -12,6 +12,10 @@ export function toSs58String(
   ss58Format?: number,
   padInt = 0xee,
 ) {
+  if (!address.startsWith("0x") && ss58Format === undefined) {
+    return address;
+  }
+
   const accountId = AccountId(ss58Format);
 
   if (address.startsWith("0x")) {
@@ -38,6 +42,10 @@ export function toH160Bytes(address: Address): FixedSizeBinary<20> {
   );
 }
 
-export function toH160Hex(address: Address) {
+export function toH160Hex(address: Address): `0x${string}` {
+  if (address.startsWith("0x")) {
+    return address as `0x${string}`;
+  }
+
   return toH160Bytes(address).asHex() as `0x${string}`;
 }
