@@ -118,17 +118,51 @@ const {
   refresh,
   status,
 } = await useQuery((builder) =>
-  builder.runtimeApi("NominationPoolsApi", "pending_rewards", [
-    ACCOUNT_ADDRESS,
-  ]),
+  builder
+    .runtimeApi("NominationPoolsApi", "pending_rewards", [ACCOUNT_ADDRESS_1])
+    .runtimeApi("NominationPoolsApi", "pending_rewards", [ACCOUNT_ADDRESS_2]),
 );
 </script>
 
 <template>
-  <div>
-    <p>{{ pendingRewards.toLocaleString() }}</p>
-    <button @click="refresh()" :disabled="status === 'pending'">Refresh</button>
-  </div>
+  <p>{{ pendingRewards.toLocaleString() }}</p>
+  <button @click="refresh()" :disabled="status === 'pending'">Refresh</button>
+</template>
+```
+
+The above will refresh all refreshable data in the query. If you want to target specific data to refresh, the [`useStore`](/api/vue/function/useStore) composable can be used instead.
+
+```vue
+<script setup lang="ts">
+import { useQuery, useStore } from "@reactive-dot/vue";
+
+const store = useStore();
+const {
+  data: pendingRewards,
+  refresh,
+  status,
+} = await useQuery((builder) =>
+  builder
+    .runtimeApi("NominationPoolsApi", "pending_rewards", [ACCOUNT_ADDRESS_1])
+    .runtimeApi("NominationPoolsApi", "pending_rewards", [ACCOUNT_ADDRESS_2]),
+);
+</script>
+
+<template>
+  <!-- ... -->
+  <button
+    @click="
+      // Only the 2nd account rewards will be refreshed
+      store.invalidateQuery((builder) =>
+        builder.runtimeApi('NominationPoolsApi', 'pending_rewards', [
+          ACCOUNT_ADDRESS_2,
+        ]),
+      )
+    "
+    :disabled="status === 'pending'"
+  >
+    Refresh
+  </button>
 </template>
 ```
 

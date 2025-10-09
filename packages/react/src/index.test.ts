@@ -29,6 +29,7 @@ it("should match inline snapshot", () =>
       "useLazyLoadQuery",
       "useLazyLoadQueryWithRefresh",
       "useSigner",
+      "useStore",
       "useTypedApi",
       "useWalletConnector",
       "useWalletDisconnector",

@@ -19,6 +19,7 @@ it("should match inline snapshot", () =>
       "useQueryErrorResetter",
       "useQuery",
       "useSigner",
+      "useStore",
       "useTypedApi",
       "useWalletConnector",
       "useWalletDisconnector",

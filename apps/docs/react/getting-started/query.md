@@ -145,6 +145,7 @@ if (conditionalReturn === idle || conditionalFunction === idle) {
 Certain query, like runtime API calls doesn't create any subscriptions. In order to get the latest data, they must be manually refreshed using `options.fetchKey`.
 
 ```tsx
+import { useLazyLoadQuery } from "@reactive-dot/react";
 import { useState, useTransition } from "react";
 
 function QueryWithRefresh() {
@@ -175,20 +176,19 @@ function QueryWithRefresh() {
 }
 ```
 
-The above will refresh all refreshable data in the query. If you want to target specific data to refresh, a separate [`useQueryRefresher`](/api/react/function/useQueryRefresher) hook can be used.
+The above will refresh all refreshable data in the query. If you want to target specific data to refresh, the [`useStore`](/api/react/function/useStore) hook can be used instead.
 
 ```tsx
+import { useLazyLoadQuery, useStore } from "@reactive-dot/react";
+import { useTransition } from "react";
+
 function QueryWithRefresh() {
+  const store = useStore();
   const [isPending, startTransition] = useTransition();
   const [account1Rewards, account2Rewards] = useLazyLoadQuery((builder) =>
     builder
       .runtimeApi("NominationPoolsApi", "pending_rewards", [ACCOUNT_ADDRESS_1])
       .runtimeApi("NominationPoolsApi", "pending_rewards", [ACCOUNT_ADDRESS_2]),
-  );
-  const refreshAccount2Rewards = useQueryRefresher((builder) =>
-    builder.runtimeApi("NominationPoolsApi", "pending_rewards", [
-      ACCOUNT_ADDRESS_2,
-    ]),
   );
 
   return (
@@ -196,7 +196,15 @@ function QueryWithRefresh() {
       {/* ... */}
       <button
         // Only the 2nd account rewards will be refreshed
-        onClick={() => startTransition(() => refreshAccount2Rewards())}
+        onClick={() =>
+          startTransition(() =>
+            store.invalidateQuery((builder) =>
+              builder.runtimeApi("NominationPoolsApi", "pending_rewards", [
+                ACCOUNT_ADDRESS_2,
+              ]),
+            ),
+          )
+        }
         disabled={isPending}
       >
         Refresh

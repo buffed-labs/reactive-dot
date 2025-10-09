@@ -17,6 +17,7 @@ export type {
   SimpleSolidityQueryInstruction,
   SolidityQueryInstruction,
 } from "./contract/solidity/query-builder.js";
+export type { DataStore } from "./data-store.js";
 export type { MutationEvent } from "./mutation-event.js";
 export type {
   InferQueryPayload,
