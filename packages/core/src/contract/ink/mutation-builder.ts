@@ -1,3 +1,4 @@
+import type { Address } from "../../address.js";
 import type { GenericTransaction } from "../../transaction.js";
 import type {
   StringKeyOf,
@@ -17,7 +18,7 @@ export type InkMutationBuilder = <
   >,
 >(
   contract: InkContract<TDescriptor>,
-  address: string,
+  address: Address,
   message: TMessageName,
   ...[body]: InkTxBody<TDescriptor, TMessageName> extends Record<string, never>
     ? [body?: InkTxBody<TDescriptor, TMessageName>]

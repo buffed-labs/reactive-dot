@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import type { ContractAddress } from "../../contract/types.js";
+import type { Address } from "../../address.js";
 import type {
   BaseInstruction,
   InstructionResponseWithDirectives,
@@ -34,7 +34,7 @@ export type InferStorageReadInstructionPayload<
 type MessageSendInstruction = BaseInstruction<"send-message"> & {
   name: string;
   body: unknown;
-  origin: ContractAddress | undefined;
+  origin: Address | undefined;
   at: Finality | undefined;
 };
 
@@ -195,11 +195,11 @@ export class InkQuery<
     > extends never
       ? [
           body: TDescriptor["__types"]["messages"][TName]["message"],
-          options?: { origin?: ContractAddress; at?: Finality; defer?: TDefer },
+          options?: { origin?: Address; at?: Finality; defer?: TDefer },
         ]
       : [
           body?: TDescriptor["__types"]["messages"][TName]["message"],
-          options?: { origin?: ContractAddress; at?: Finality; defer?: TDefer },
+          options?: { origin?: Address; at?: Finality; defer?: TDefer },
         ]
   ) {
     return this.#append({
@@ -223,7 +223,7 @@ export class InkQuery<
     name: TName,
     bodies: Array<TDescriptor["__types"]["messages"][TName]["message"]>,
     options?: {
-      origin?: ContractAddress;
+      origin?: Address;
       at?: Finality;
       defer?: TDefer;
       stream?: TStream;

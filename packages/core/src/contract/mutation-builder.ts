@@ -1,3 +1,4 @@
+import type { Address } from "../address.js";
 import type { GenericTransaction } from "../transaction.js";
 import type {
   ExtractExactProperties,
@@ -20,7 +21,7 @@ export type MutationBuilder = {
     >,
   >(
     contract: InkContract<TDescriptor>,
-    address: string,
+    address: Address,
     message: TMessageName,
     ...[body]: InkTxBody<TDescriptor, TMessageName> extends Record<
       string,
@@ -37,7 +38,7 @@ export type MutationBuilder = {
     >,
   >(
     contract: SolidityContract<TAbi>,
-    address: string,
+    address: Address,
     functionName: TFunctionName,
     ...[body]: SolidityTxBody<TAbi, TFunctionName> extends Record<string, never>
       ? [body?: SolidityTxBody<TAbi, TFunctionName>]

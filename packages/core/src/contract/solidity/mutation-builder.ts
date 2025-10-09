@@ -1,3 +1,4 @@
+import type { Address } from "../../address.js";
 import type { GenericTransaction } from "../../transaction.js";
 import type { MaybePromise } from "../../types.js";
 import type { SolidityContract } from "../contract.js";
@@ -9,7 +10,7 @@ export type SolidityMutationBuilder = <
   TFunctionName extends ExtractAbiFunctionNames<TAbi, "nonpayable" | "payable">,
 >(
   contract: SolidityContract<TAbi>,
-  address: string,
+  address: Address,
   functionName: TFunctionName,
   ...[body]: SolidityTxBody<TAbi, TFunctionName> extends readonly []
     ? [body?: SolidityTxBody<TAbi, TFunctionName>]

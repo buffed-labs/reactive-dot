@@ -17,7 +17,7 @@ import {
   useLazyValuesCache,
 } from "./use-lazy-value.js";
 import { useTypedApiPromise } from "./use-typed-api.js";
-import { type ChainId, pending, Query } from "@reactive-dot/core";
+import { type Address, type ChainId, pending, Query } from "@reactive-dot/core";
 import {
   type Contract,
   flatHead,
@@ -91,7 +91,7 @@ export function useQueryObservable<
           const contract = instruction.contract;
 
           const processContractInstructions = (
-            address: string,
+            address: Address,
             instructions: InkQueryInstruction[] | SolidityQueryInstruction[],
           ) =>
             flatHead(

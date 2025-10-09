@@ -1,7 +1,7 @@
+import { toH160Bytes, toSs58String, type Address } from "../../address.js";
 import { QueryError } from "../../errors.js";
 import { flatHead } from "../../internal.js";
-import { toH160Bytes, toSs58Address } from "../address.js";
-import type { ContractAddress, ContractCompatApi } from "../types.js";
+import type { ContractCompatApi } from "../types.js";
 import type { SimpleSolidityQueryInstruction } from "./query-builder.js";
 import type { Abi } from "abitype";
 import { Binary } from "polkadot-api";
@@ -12,7 +12,7 @@ export async function querySolidity<
 >(
   api: ContractCompatApi,
   abi: TAbi,
-  address: ContractAddress,
+  address: Address,
   instruction: Instruction,
   options?: { signal?: AbortSignal },
 ) {
@@ -34,7 +34,7 @@ export async function querySolidity<
       );
 
       const response = await api.apis.ReviveApi.call(
-        toSs58Address(origin),
+        toSs58String(origin),
         toH160Bytes(address),
         0n,
         undefined,

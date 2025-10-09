@@ -1,6 +1,10 @@
 import { MimirWallet } from "./mimir-wallet.js";
 import { MimirPAPISigner } from "@mimirdev/papi-signer";
-import { BaseError, Storage as WalletStorage } from "@reactive-dot/core";
+import {
+  type Address,
+  BaseError,
+  Storage as WalletStorage,
+} from "@reactive-dot/core";
 import { firstValueFrom } from "rxjs";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -97,7 +101,7 @@ describe("$accounts", () => {
       subscribeAccounts: subscribeAccountsMock,
       getPolkadotSigner: vi
         .fn()
-        .mockImplementation((address: string) => ({ address })),
+        .mockImplementation((address: Address) => ({ address })),
     };
 
     vi.mocked(MimirPAPISigner).mockImplementation(

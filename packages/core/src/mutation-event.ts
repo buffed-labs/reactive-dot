@@ -1,3 +1,4 @@
+import type { Address } from "./address.js";
 import type { ChainId } from "./chains.js";
 import type { Contract } from "./contract/contract.js";
 import type { GenericTransaction } from "./transaction.js";
@@ -11,7 +12,7 @@ export type MutationEvent = {
 export type ContractMutationEvent = MutationEvent & {
   contractCalls: Array<{
     contract: Contract;
-    address: string;
+    address: Address;
     message: string;
   }>;
 };

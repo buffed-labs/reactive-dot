@@ -1,4 +1,4 @@
-import { toH160Bytes } from "../../contract/address.js";
+import { type Address, toH160Bytes } from "../../address.js";
 import type { ExtractExactProperties, StringKeyOf } from "../../types.js";
 import { omitUndefinedProperties } from "../../utils/omit-undefined-properties.js";
 import type { ContractCompatApi } from "../types.js";
@@ -18,7 +18,7 @@ export async function getInkContractTx<
   api: ContractCompatApi,
   inkClient: InkClient<GenericInkDescriptors>,
   signer: PolkadotSigner,
-  contract: string,
+  contract: Address,
   messageName: TMessageName,
   body?: InkTxBody<TDescriptor, TMessageName> | undefined,
   options?: { signal?: AbortSignal },

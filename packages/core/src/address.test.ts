@@ -1,8 +1,9 @@
-import { toSs58String } from "./address.js";
-import { FixedSizeBinary, AccountId } from "polkadot-api";
-import { describe, it, expect } from "vitest";
+import { toH160Hex, toSs58String } from "./address.js";
+import { AccountId, FixedSizeBinary } from "polkadot-api";
+import { describe, expect, it } from "vitest";
 
 const ss58Alice = "5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY"; // Alice's address (default/format 42)
+const h160HexForAliceSs58Derived = "0x9621dde636de098b43efb0fa9b61facfe328f99d";
 
 const genericH160Hex = "0x1234567890123456789012345678901234567890";
 const genericH160FixedBinary = FixedSizeBinary.fromHex(genericH160Hex);
@@ -34,5 +35,21 @@ describe("toSs58String", () => {
     expect(toSs58String(ss58Alice, 2)).toBe(
       accountId.dec(accountId.enc(ss58Alice)),
     );
+  });
+});
+
+describe("toH160Hex", () => {
+  it("leaves hex string as is", () => {
+    const input = genericH160Hex;
+    const result = toH160Hex(input);
+
+    expect(result).toBe(genericH160Hex);
+  });
+
+  it("converts an SS58 address string to H160 FixedSizeBinary", () => {
+    const input = ss58Alice;
+    const result = toH160Hex(input);
+
+    expect(result).toBe(h160HexForAliceSs58Derived);
   });
 });

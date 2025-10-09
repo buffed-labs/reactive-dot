@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { toH160Bytes } from "../address.js";
+import { toH160Bytes } from "../../address.js";
 import type { ContractCompatApi } from "../types.js";
 import { getSolidityContractTx } from "./get-contract-tx.js";
 import type { SolidityTxBody } from "./types.js";

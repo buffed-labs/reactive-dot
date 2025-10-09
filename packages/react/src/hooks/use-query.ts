@@ -23,6 +23,7 @@ import { useQueryRefresher } from "./use-query-refresher.js";
 import { useRenderEffect } from "./use-render-effect.js";
 import { typedApiAtom } from "./use-typed-api.js";
 import {
+  type Address,
   type ChainId,
   type Config,
   idle,
@@ -215,7 +216,7 @@ const contractInstructionPayloadAtom = atomFamilyWithErrorCatcher(
     config: Config,
     chainId: ChainId,
     contract: Contract,
-    address: string,
+    address: Address,
     instruction: SimpleInkQueryInstruction | SimpleSolidityQueryInstruction,
   ) => {
     const promiseAtom = withErrorCatcher(
@@ -314,7 +315,7 @@ export function getQueryInstructionPayloadAtoms(
     const responseAtom = (() => {
       if (instruction.instruction === "read-contract") {
         const processContractInstructions = (
-          address: string,
+          address: Address,
           instructions: InkQueryInstruction[] | SolidityQueryInstruction[],
         ) => {
           return flatHead(
