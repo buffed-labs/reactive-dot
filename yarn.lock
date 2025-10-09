@@ -4765,16 +4765,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polkadot-api/cli@npm:0.15.0":
-  version: 0.15.0
-  resolution: "@polkadot-api/cli@npm:0.15.0"
+"@polkadot-api/cli@npm:0.15.2":
+  version: 0.15.2
+  resolution: "@polkadot-api/cli@npm:0.15.2"
   dependencies:
     "@commander-js/extra-typings": "npm:^14.0.0"
-    "@polkadot-api/codegen": "npm:0.19.0"
+    "@polkadot-api/codegen": "npm:0.19.1"
     "@polkadot-api/ink-contracts": "npm:0.4.0"
     "@polkadot-api/json-rpc-provider": "npm:0.0.4"
     "@polkadot-api/known-chains": "npm:0.9.11"
-    "@polkadot-api/legacy-provider": "npm:0.3.1"
+    "@polkadot-api/legacy-provider": "npm:0.3.2"
     "@polkadot-api/metadata-compatibility": "npm:0.3.6"
     "@polkadot-api/observable-client": "npm:0.15.1"
     "@polkadot-api/polkadot-sdk-compat": "npm:2.3.3"
@@ -4784,7 +4784,7 @@ __metadata:
     "@polkadot-api/substrate-client": "npm:0.4.7"
     "@polkadot-api/utils": "npm:0.2.0"
     "@polkadot-api/wasm-executor": "npm:^0.2.1"
-    "@polkadot-api/ws-provider": "npm:0.6.0"
+    "@polkadot-api/ws-provider": "npm:0.6.2"
     "@types/node": "npm:^24.5.2"
     commander: "npm:^14.0.1"
     execa: "npm:^9.6.0"
@@ -4799,20 +4799,20 @@ __metadata:
   bin:
     papi: dist/main.js
     polkadot-api: dist/main.js
-  checksum: 10c0/61fb5ff24963a2d6cf60dcdbf384ad0f27fee3bdab34a2ca1c8805dfb15040dc6764ac4ea6f5be88afa602da9d853f2546da59686d6be7ac5a7561d60692fe27
+  checksum: 10c0/b7ecf45845f223caeee0b8ffd9b67a17f11b579ed6cc818678809db3b55f2ed9a32ba07bbf9a5af6760b1d00e99327b9d34d1631c014e0043d71ee80c27e389c
   languageName: node
   linkType: hard
 
-"@polkadot-api/codegen@npm:0.19.0":
-  version: 0.19.0
-  resolution: "@polkadot-api/codegen@npm:0.19.0"
+"@polkadot-api/codegen@npm:0.19.1":
+  version: 0.19.1
+  resolution: "@polkadot-api/codegen@npm:0.19.1"
   dependencies:
     "@polkadot-api/ink-contracts": "npm:0.4.0"
     "@polkadot-api/metadata-builders": "npm:0.13.5"
     "@polkadot-api/metadata-compatibility": "npm:0.3.6"
     "@polkadot-api/substrate-bindings": "npm:0.16.3"
     "@polkadot-api/utils": "npm:0.2.0"
-  checksum: 10c0/6abbe7246b70c4bfc02e8cf49e2c30fa2e08d560c80bb98db285078f2aea00c2e62de65f87070c7b75d5c61e461ad9bea702f181f8cc111bdcb0e1c745462378
+  checksum: 10c0/030a82b13b82d954ef3b207beacb5358cfb9dc7577f50d8e9792578076fccdfb58900e422d03bed99ea9b38d63fa42fb5c927820a91ea72388edb8c11ce5bd61
   languageName: node
   linkType: hard
 
@@ -4879,9 +4879,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polkadot-api/legacy-provider@npm:0.3.1":
-  version: 0.3.1
-  resolution: "@polkadot-api/legacy-provider@npm:0.3.1"
+"@polkadot-api/legacy-provider@npm:0.3.2":
+  version: 0.3.2
+  resolution: "@polkadot-api/legacy-provider@npm:0.3.2"
   dependencies:
     "@polkadot-api/json-rpc-provider": "npm:0.0.4"
     "@polkadot-api/raw-client": "npm:0.1.1"
@@ -4889,7 +4889,7 @@ __metadata:
     "@polkadot-api/utils": "npm:0.2.0"
   peerDependencies:
     rxjs: ">=7.8.0"
-  checksum: 10c0/7c7a93e8d34e02b25ce75726e46d50e4b9cb338d3e96db39cfff3a912eb6f7313e513f10ddc508c3249de2617a25cb68ff563e037a715606014f20720473d39e
+  checksum: 10c0/6b6215025a30ba2fbbbc7a1735ec15615505a793576422bb11b51e6fa8664e6abc969188344efc6809b206e48d01289936807e3778d021deaed499d12357745f
   languageName: node
   linkType: hard
 
@@ -5070,15 +5070,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@polkadot-api/ws-provider@npm:0.6.0":
-  version: 0.6.0
-  resolution: "@polkadot-api/ws-provider@npm:0.6.0"
+"@polkadot-api/ws-provider@npm:0.6.2":
+  version: 0.6.2
+  resolution: "@polkadot-api/ws-provider@npm:0.6.2"
   dependencies:
     "@polkadot-api/json-rpc-provider": "npm:0.0.4"
     "@polkadot-api/json-rpc-provider-proxy": "npm:0.2.4"
     "@types/ws": "npm:^8.18.1"
     ws: "npm:^8.18.3"
-  checksum: 10c0/ed0b1b0202475556d2024e2ac294fc176267a28f57649cf57f09034b42fcf72f04c443211314939808508c6ca9e4c640712182a88ef11d4d1a6b81acff47dc30
+  checksum: 10c0/e8117158f91461e6b698f389c8c1e246a24b735b3cb3d54310e21548bf768f348b3e3a13839a7a5883cf929fcfd144919c10a01b6f0d0dff4b532139ab8814df
   languageName: node
   linkType: hard
 
@@ -5095,7 +5095,7 @@ __metadata:
     abitype: "npm:^1.1.1"
     eslint: "npm:^9.36.0"
     ox: "npm:^0.9.7"
-    polkadot-api: "npm:^1.19.0"
+    polkadot-api: "npm:^1.19.2"
     typescript: "npm:^5.9.2"
     vitest: "npm:^3.2.4"
   peerDependencies:
@@ -5162,7 +5162,7 @@ __metadata:
     date-fns: "npm:^4.1.0"
     eslint: "npm:^9.36.0"
     jotai-devtools: "npm:^0.13.0"
-    polkadot-api: "npm:^1.19.0"
+    polkadot-api: "npm:^1.19.2"
     react: "npm:^19.1.1"
     react-dom: "npm:^19.1.1"
     react-error-boundary: "npm:^6.0.0"
@@ -5183,7 +5183,7 @@ __metadata:
     "@tsconfig/strictest": "npm:^2.0.6"
     "@vitejs/plugin-vue": "npm:^6.0.1"
     eslint: "npm:^9.36.0"
-    polkadot-api: "npm:^1.19.0"
+    polkadot-api: "npm:^1.19.2"
     typescript: "npm:^5.9.2"
     vite: "npm:^7.1.7"
     vue: "npm:^3.5.22"
@@ -16855,11 +16855,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"polkadot-api@npm:^1.19.0":
-  version: 1.19.0
-  resolution: "polkadot-api@npm:1.19.0"
+"polkadot-api@npm:^1.19.2":
+  version: 1.19.2
+  resolution: "polkadot-api@npm:1.19.2"
   dependencies:
-    "@polkadot-api/cli": "npm:0.15.0"
+    "@polkadot-api/cli": "npm:0.15.2"
     "@polkadot-api/ink-contracts": "npm:0.4.0"
     "@polkadot-api/json-rpc-provider": "npm:0.0.4"
     "@polkadot-api/known-chains": "npm:0.9.11"
@@ -16876,14 +16876,14 @@ __metadata:
     "@polkadot-api/substrate-bindings": "npm:0.16.3"
     "@polkadot-api/substrate-client": "npm:0.4.7"
     "@polkadot-api/utils": "npm:0.2.0"
-    "@polkadot-api/ws-provider": "npm:0.6.0"
+    "@polkadot-api/ws-provider": "npm:0.6.2"
     "@rx-state/core": "npm:^0.1.4"
   peerDependencies:
     rxjs: ">=7.8.0"
   bin:
     papi: bin/cli.mjs
     polkadot-api: bin/cli.mjs
-  checksum: 10c0/3f8a51fcef302377ffc00bdf94b15580b7216e18e19191c6e71c89027b02f065e2c8755b5fa971500a387b3a08a7429cb473fe4093c2ca0e1d52ee356b5f9c7d
+  checksum: 10c0/6f728a4af8b6582ebbe87061653fd41a93fd4f1090f91800885d04955c9b15f8441f922e396829672f34844b6890d67b6ca4eb14ef37bd6dfaa00e20eb316b88
   languageName: node
   linkType: hard
 
