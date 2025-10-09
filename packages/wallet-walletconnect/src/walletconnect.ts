@@ -1,5 +1,5 @@
 import { getPolkadotSignerFromPjs } from "@polkadot-api/pjs-signer";
-import { BaseError } from "@reactive-dot/core";
+import { type Address, BaseError } from "@reactive-dot/core";
 import {
   DeepLinkWallet,
   type PolkadotSignerAccount,
@@ -181,7 +181,7 @@ export class WalletConnect extends DeepLinkWallet {
             account.split(":") as [
               chainType: string,
               chainId: string,
-              address: string,
+              address: Address,
             ],
         )
         .map(

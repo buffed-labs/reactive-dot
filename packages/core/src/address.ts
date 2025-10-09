@@ -1,3 +1,4 @@
+import { keccak_256 } from "@noble/hashes/sha3.js";
 import {
   AccountId,
   FixedSizeBinary,
@@ -23,4 +24,20 @@ export function toSs58String(
   }
 
   return accountId.dec(accountId.enc(address));
+}
+
+export function toH160Bytes(address: Address): FixedSizeBinary<20> {
+  if (address.startsWith("0x")) {
+    return FixedSizeBinary.fromHex(address);
+  }
+
+  return FixedSizeBinary.fromBytes(
+    keccak_256(FixedSizeBinary.fromAccountId32<32>(address).asBytes()).slice(
+      12,
+    ),
+  );
+}
+
+export function toH160Hex(address: Address) {
+  return toH160Bytes(address).asHex() as `0x${string}`;
 }

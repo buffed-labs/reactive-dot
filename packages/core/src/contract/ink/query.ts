@@ -1,6 +1,6 @@
-import { toH160Bytes, toSs58Address } from "../../contract/address.js";
+import { toH160Bytes, toSs58String, type Address } from "../../address.js";
 import { QueryError } from "../../errors.js";
-import type { ContractAddress, ContractCompatApi } from "../types.js";
+import type { ContractCompatApi } from "../types.js";
 import type {
   InferQueryInstructionPayload,
   SimpleInkQueryInstruction,
@@ -15,7 +15,7 @@ export async function queryInk<
 >(
   api: ContractCompatApi,
   client: InkClient<GenericInkDescriptors>,
-  address: ContractAddress,
+  address: Address,
   instruction: Instruction,
   options?: { signal?: AbortSignal },
 ) {
@@ -60,7 +60,7 @@ export async function queryInk<
       }
 
       const response = await api.apis.ReviveApi.call(
-        toSs58Address(instruction.origin ?? address),
+        toSs58String(instruction.origin ?? address),
         toH160Bytes(address),
         0n,
         undefined,

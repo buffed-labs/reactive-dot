@@ -1,3 +1,4 @@
+import type { Address } from "../address.js";
 import type { Wallet } from "./wallet.js";
 import type { InjectedPolkadotAccount } from "polkadot-api/pjs-signer";
 
@@ -18,7 +19,7 @@ export type PolkadotSignerAccount = {
 
 export type PolkadotAccount = Omit<PolkadotSignerAccount, "polkadotSigner"> & {
   polkadotSigner: InjectedPolkadotAccount["polkadotSigner"];
-  address: string;
+  address: Address;
 };
 
 export type WalletAccount = PolkadotAccount & {

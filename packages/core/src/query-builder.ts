@@ -1,3 +1,4 @@
+import type { Address } from "./address.js";
 import type { CommonDescriptor } from "./chains.js";
 import {
   type Contract,
@@ -126,13 +127,13 @@ export type ApiCallInstruction = BaseInstruction<"call-api"> & {
 
 type InkContractReadInstruction = BaseInstruction<"read-contract"> & {
   contract: InkContract;
-  address: string;
+  address: Address;
   instructions: InkQuery["instructions"];
 };
 
 type SolidityContractReadInstruction = BaseInstruction<"read-contract"> & {
   contract: SolidityContract;
-  address: string;
+  address: Address;
   instructions: SolidityQuery["instructions"];
 };
 
@@ -510,7 +511,7 @@ export class Query<
     const TDefer extends boolean = false,
   >(
     contract: InkContract<TContractDescriptor>,
-    address: string,
+    address: Address,
     builder: (
       query: InkQuery<TContractDescriptor, []>,
     ) => InkQuery<TContractDescriptor, TContractInstructions>,
@@ -521,7 +522,7 @@ export class Query<
       {
         instruction: "read-contract";
         contract: InkContract<TContractDescriptor>;
-        address: string;
+        address: Address;
         instructions: TContractInstructions;
         directives: {
           defer: NoInfer<TDefer>;
@@ -536,7 +537,7 @@ export class Query<
     const TDefer extends boolean = false,
   >(
     contract: SolidityContract<TAbi>,
-    address: string,
+    address: Address,
     builder: (
       query: SolidityQuery<TAbi, []>,
     ) => SolidityQuery<TAbi, TContractInstructions>,
@@ -547,7 +548,7 @@ export class Query<
       {
         instruction: "read-contract";
         contract: SolidityContract<TAbi>;
-        address: string;
+        address: Address;
         instructions: TContractInstructions;
         directives: {
           defer: NoInfer<TDefer>;
@@ -558,7 +559,7 @@ export class Query<
   >;
   contract(
     contract: Contract,
-    address: string,
+    address: Address,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     builder: (query: any) => any,
     options: { defer?: boolean },
@@ -589,7 +590,7 @@ export class Query<
     const TStream extends boolean = false,
   >(
     contract: InkContract<TContractDescriptor>,
-    addresses: string[],
+    addresses: Address[],
     builder: (
       query: InkQuery<TContractDescriptor, []>,
     ) => InkQuery<TContractDescriptor, TContractInstructions>,
@@ -608,7 +609,7 @@ export class Query<
           stream: NoInfer<TStream>;
         };
         contract: InkContract<TContractDescriptor>;
-        addresses: string[];
+        addresses: Address[];
         instructions: TContractInstructions;
       },
     ],
@@ -621,7 +622,7 @@ export class Query<
     const TStream extends boolean = false,
   >(
     contract: SolidityContract<TAbi>,
-    addresses: string[],
+    addresses: Address[],
     builder: (
       query: SolidityQuery<TAbi, []>,
     ) => SolidityQuery<TAbi, TContractInstructions>,
@@ -640,7 +641,7 @@ export class Query<
           stream: NoInfer<TStream>;
         };
         contract: SolidityContract<TAbi>;
-        addresses: string[];
+        addresses: Address[];
         instructions: TContractInstructions;
       },
     ],
@@ -648,7 +649,7 @@ export class Query<
   >;
   contracts(
     contract: Contract,
-    addresses: string[],
+    addresses: Address[],
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     builder: (query: any) => any,
     options: { defer?: boolean; stream?: boolean },

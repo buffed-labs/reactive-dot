@@ -1,4 +1,4 @@
-import { defineContract, Query } from "@reactive-dot/core";
+import { type Address, defineContract, Query } from "@reactive-dot/core";
 import type {
   SimpleInkQueryInstruction,
   SimpleSolidityQueryInstruction,
@@ -71,7 +71,7 @@ export function mockInternals() {
         async (
           _,
           __,
-          address: string,
+          address: Address,
           instruction: SimpleInkQueryInstruction,
         ) => {
           if (Object.values(instruction).includes(delayKey)) {
@@ -92,7 +92,7 @@ export function mockInternals() {
         async (
           _,
           __,
-          address: string,
+          address: Address,
           instruction: SimpleSolidityQueryInstruction,
         ) => {
           if (Object.values(instruction.args).includes(delayKey)) {

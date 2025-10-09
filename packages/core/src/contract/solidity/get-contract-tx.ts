@@ -1,4 +1,4 @@
-import { toH160Bytes } from "../../contract/address.js";
+import { type Address, toH160Bytes } from "../../address.js";
 import { omitUndefinedProperties } from "../../utils/omit-undefined-properties.js";
 import type { ContractCompatApi } from "../types.js";
 import type { SolidityTxBody } from "./types.js";
@@ -12,7 +12,7 @@ export async function getSolidityContractTx<
   api: ContractCompatApi,
   abi: TAbi,
   signer: PolkadotSigner,
-  contract: string,
+  contract: Address,
   functionName: TFunctionName,
   body: SolidityTxBody<TAbi, TFunctionName> | undefined,
   options?: { signal?: AbortSignal },
