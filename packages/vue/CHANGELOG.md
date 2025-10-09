@@ -1,5 +1,16 @@
 # @reactive-dot/vue
 
+## 0.55.0
+
+### Minor Changes
+
+- [#920](https://github.com/buffed-labs/reactive-dot/pull/920) [`058878a`](https://github.com/buffed-labs/reactive-dot/commit/058878af6302d01f2ad052246ba204a43196a5bf) Thanks [@tien](https://github.com/tien)! - Add `useStore` hook & composable for cache management. This enhancement lays the groundwork for more sophisticated cache management features in future releases.
+
+### Patch Changes
+
+- Updated dependencies [[`fbd10ed`](https://github.com/buffed-labs/reactive-dot/commit/fbd10ede089f9ab3fff848b296471136b9107f48), [`058878a`](https://github.com/buffed-labs/reactive-dot/commit/058878af6302d01f2ad052246ba204a43196a5bf)]:
+  - @reactive-dot/core@0.55.0
+
 ## 0.54.0
 
 ### Minor Changes
