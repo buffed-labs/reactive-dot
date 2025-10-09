@@ -1,5 +1,16 @@
 # @reactive-dot/react
 
+## 0.54.0
+
+### Minor Changes
+
+- [#916](https://github.com/buffed-labs/reactive-dot/pull/916) [`6286277`](https://github.com/buffed-labs/reactive-dot/commit/6286277940fd4a77257dffc86f6644bc8dbc9b89) Thanks [@tien](https://github.com/tien)! - Added support for getting spendable balance of H160 (EVM) addresses via `useSpendableBalance(s)` hook/composable.
+
+### Patch Changes
+
+- Updated dependencies [[`6286277`](https://github.com/buffed-labs/reactive-dot/commit/6286277940fd4a77257dffc86f6644bc8dbc9b89)]:
+  - @reactive-dot/core@0.54.0
+
 ## 0.53.0
 
 ### Patch Changes
