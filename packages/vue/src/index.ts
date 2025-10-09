@@ -14,6 +14,7 @@ export { useNativeToken } from "./composables/use-native-token.js";
 export { useQueryErrorResetter } from "./composables/use-query-error-resetter.js";
 export { useQuery } from "./composables/use-query.js";
 export { useSigner } from "./composables/use-signer.js";
+export { useStore } from "./composables/use-store.js";
 export { useTypedApi } from "./composables/use-typed-api.js";
 export { useWalletConnector } from "./composables/use-wallet-connector.js";
 export { useWalletDisconnector } from "./composables/use-wallet-disconnector.js";

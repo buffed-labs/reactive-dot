@@ -69,10 +69,24 @@ export function useQueryObservable<
   TChainId extends ChainId | undefined,
   TQuery extends QueryArgument<TChainId>,
 >(query: TQuery, options?: ChainComposableOptions<TChainId>) {
-  const chainId = internal_useChainId(options);
-  const typedApiPromise = useTypedApiPromise(options);
-  const cache = useLazyValuesCache();
+  return queryObservable(
+    internal_useChainId(options),
+    useTypedApiPromise(options),
+    query,
+    useLazyValuesCache(),
+  );
+}
 
+/** @internal */
+export function queryObservable<
+  TChainId extends ChainId | undefined,
+  TQuery extends QueryArgument<TChainId>,
+>(
+  chainId: MaybeRefOrGetter<ChainId>,
+  typedApiPromise: MaybeRefOrGetter<Promise<TypedApi<ChainDefinition>>>,
+  query: TQuery,
+  cache: MaybeRefOrGetter<Map<string, ShallowRef<unknown>>>,
+) {
   const responses = computed(() => {
     const unwrappedQuery = unref(query);
 
