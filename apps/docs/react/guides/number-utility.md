@@ -6,7 +6,7 @@ sidebar_position: 2
 
 ## Denominated number
 
-To handle complexity around [planck unit](https://wiki.polkadot.network/docs/learn-DOT#the-planck-unit) used in Polkadot, a utility class [`DenominatedNumber`](/api/utils/class/DenominatedNumber) is provided by [`@reactive-dot/utils`](https://reactivedot.dev/api/utils).
+To handle complexity around [planck unit](https://wiki.polkadot.network/docs/learn-DOT#the-planck-unit) used in Polkadot, a utility class [`DenominatedNumber`](/react/api/utils/classes/DenominatedNumber) is provided by [`@reactive-dot/utils`](https://reactivedot.dev/api/utils).
 
 ```ts
 import { DenominatedNumber } from "@reactive-dot/utils";
@@ -51,7 +51,7 @@ console.log(dotAmount.toLocaleString()); // DOT 5.25
 
 ## Native token
 
-Two hooks [`useNativeTokenAmountFromPlanck`](/api/react/function/useNativeTokenAmountFromPlanck) & [`useNativeTokenAmountFromNumber`](/api/react/function/useNativeTokenAmountFromNumber) are also provided for easy conversion from planck and/or number value to native token amount.
+Two hooks [`useNativeTokenAmountFromPlanck`](/react/api/react/functions/useNativeTokenAmountFromPlanck) & [`useNativeTokenAmountFromNumber`](/react/api/react/functions/useNativeTokenAmountFromNumber) are also provided for easy conversion from planck and/or number value to native token amount.
 
 ```ts
 import {
@@ -80,7 +80,7 @@ const amountFromPlanck = useNativeTokenAmountFromPlanck();
 
 ## Spendable balance
 
-The [`useSpendableBalance`](/api/react/function/useSpendableBalance) & [`useSpendableBalances`](/api/react/function/useSpendableBalances) hooks can be used to get the [spendable balance](https://wiki.polkadot.network/docs/learn-account-balances) of an account(s).
+The [`useSpendableBalance`](/react/api/react/functions/useSpendableBalance) & [`useSpendableBalances`](/react/api/react/functions/useSpendableBalances) hooks can be used to get the [spendable balance](https://wiki.polkadot.network/docs/learn-account-balances) of an account(s).
 
 ```ts
 import { useSpendableBalance, useSpendableBalances } from "@reactive-dot/react";

@@ -119,7 +119,7 @@ function Component() {
 
 ## Multi-chain query
 
-You can query multiple chains concurrently by passing an array of query options to the [`useLazyLoadQuery`](/api/react/function/useLazyLoadQuery) hook. This prevents suspense waterfalls and improves performance.
+You can query multiple chains concurrently by passing an array of query options to the [`useLazyLoadQuery`](/react/api/react/functions/useLazyLoadQuery) hook. This prevents suspense waterfalls and improves performance.
 
 ```tsx
 import { useLazyLoadQuery } from "@reactive-dot/react";

@@ -6,7 +6,7 @@ sidebar_position: 2
 
 ## Denominated number
 
-To handle complexity around [planck unit](https://wiki.polkadot.network/docs/learn-DOT#the-planck-unit) used in Polkadot, a utility class [`DenominatedNumber`](/api/utils/class/DenominatedNumber) is provided by [`@reactive-dot/utils`](https://reactivedot.dev/api/utils).
+To handle complexity around [planck unit](https://wiki.polkadot.network/docs/learn-DOT#the-planck-unit) used in Polkadot, a utility class [`DenominatedNumber`](/vue/api/utils/classes/DenominatedNumber) is provided by [`@reactive-dot/utils`](https://reactivedot.dev/api/utils).
 
 ```ts
 import { DenominatedNumber } from "@reactive-dot/utils";
@@ -51,7 +51,7 @@ console.log(dotAmount.toLocaleString()); // DOT 5.25
 
 ## Native token
 
-The [`useNativeToken`](/api/vue/function/useNativeToken) composable is also provided for easy conversion from planck and/or number value to native token amount.
+The [`useNativeToken`](/vue/api/vue/functions/useNativeToken) composable is also provided for easy conversion from planck and/or number value to native token amount.
 
 ```vue
 <script setup lang="ts">
@@ -69,7 +69,7 @@ console.log(nativeToken.value.amountFromNumber(1).toLocaleString("en-NZ")); // D
 
 ## Spendable balance
 
-The [`useSpendableBalance`](/api/react/function/useSpendableBalance) & [`useSpendableBalances`](/api/react/function/useSpendableBalances) composable can be used to get the [spendable balance](https://wiki.polkadot.network/docs/learn-account-balances) of an account(s).
+The [`useSpendableBalance`](/vue/api/vue/functions/useSpendableBalance) & [`useSpendableBalances`](/vue/api/vue/functions/useSpendableBalances) composable can be used to get the [spendable balance](https://wiki.polkadot.network/docs/learn-account-balances) of an account(s).
 
 ```vue
 <script setup lang="ts">

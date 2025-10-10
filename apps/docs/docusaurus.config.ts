@@ -1,8 +1,20 @@
 import type * as Preset from "@docusaurus/preset-classic";
-import type { Config } from "@docusaurus/types";
+import type { Config, PluginConfig } from "@docusaurus/types";
 import type { PluginOptions as LlmsTxtPluginOptions } from "@signalwire/docusaurus-plugin-llms-txt";
-import path from "node:path";
 import { themes as prismThemes } from "prism-react-renderer";
+
+const commonApiDocsConfig = {
+  readme: "none",
+  cleanOutputDir: true,
+  indexFormat: "table",
+  parametersFormat: "table",
+  enumMembersFormat: "table",
+  useCodeBlocks: true,
+  textContentMappings: {
+    "title.indexPage": "{projectName} {version}",
+    "title.memberPage": "{name}",
+  },
+};
 
 const config: Config = {
   title: "ReactiveDOT",
@@ -59,25 +71,30 @@ const config: Config = {
         ],
       },
     ],
+    coreApi("react"),
     [
-      "typedoc-api",
+      "docusaurus-plugin-typedoc",
       {
-        projectRoot: path.join(__dirname, "../.."),
-        tsconfigName: "tsconfig.typedoc.json",
-        packages: [
-          {
-            path: "packages/core",
-            entry: {
-              index: "src/index.ts",
-              "wallets.js": { path: "src/wallets/index.ts", label: "Wallets" },
-            },
-          },
-          "packages/react",
-          "packages/vue",
-          "packages/utils",
-        ],
+        id: "api-react",
+        entryPoints: ["../../packages/react/src/index.ts"],
+        tsconfig: "../../packages/react/tsconfig.json",
+        out: "react/api/react",
+        ...commonApiDocsConfig,
       },
     ],
+    utilsApi("react"),
+    coreApi("vue"),
+    [
+      "docusaurus-plugin-typedoc",
+      {
+        id: "api-vue",
+        entryPoints: ["../../packages/vue/src/index.ts"],
+        tsconfig: "../../packages/vue/tsconfig.json",
+        out: "vue/api/vue",
+        ...commonApiDocsConfig,
+      },
+    ],
+    utilsApi("vue"),
     [
       "@signalwire/docusaurus-plugin-llms-txt",
       {
@@ -109,10 +126,6 @@ const config: Config = {
           label: "Vue",
         },
         {
-          to: "api",
-          label: "API",
-        },
-        {
           href: "https://github.com/buffed-labs/reactive-dot",
           label: "GitHub",
           position: "right",
@@ -133,3 +146,33 @@ const config: Config = {
 };
 
 export default config;
+
+function coreApi(base: string) {
+  return [
+    "docusaurus-plugin-typedoc",
+    {
+      id: `api-core-${base}`,
+      entryPoints: [
+        "../../packages/core/src/index.ts",
+        "../../packages/core/src/providers/light-client/index.ts",
+        "../../packages/core/src/wallets/index.ts",
+      ],
+      tsconfig: "../../packages/core/tsconfig.json",
+      out: `${base}/api/core`,
+      ...commonApiDocsConfig,
+    },
+  ] satisfies PluginConfig;
+}
+
+function utilsApi(base: string) {
+  return [
+    "docusaurus-plugin-typedoc",
+    {
+      id: `api-utils-${base}`,
+      entryPoints: ["../../packages/utils/src/index.ts"],
+      tsconfig: "../../packages/utils/tsconfig.json",
+      out: `${base}/api/utils`,
+      ...commonApiDocsConfig,
+    },
+  ] satisfies PluginConfig;
+}

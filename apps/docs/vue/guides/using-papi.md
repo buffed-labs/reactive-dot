@@ -4,7 +4,7 @@ sidebar_position: 4
 
 # Using Polkadot-API (PAPI)
 
-ReactiveDOT is designed as a convenient layer over [PAPI](https://papi.how/) for enhanced developer quality of life. For more advanced use cases and data manipulation, it's recommended to use [PAPI](https://papi.how/) directly. You can access PAPI APIs through two composables: [`useClient`](/api/vue/function/useClient) and [`useTypedApi`](/api/vue/function/useTypedApi).
+ReactiveDOT is designed as a convenient layer over [PAPI](https://papi.how/) for enhanced developer quality of life. For more advanced use cases and data manipulation, it's recommended to use [PAPI](https://papi.how/) directly. You can access PAPI APIs through two composables: [`useClient`](/vue/api/vue/functions/useClient) and [`useTypedApi`](/vue/api/vue/functions/useTypedApi).
 
 ## Polkadot client
 

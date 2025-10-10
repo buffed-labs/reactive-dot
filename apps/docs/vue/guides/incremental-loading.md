@@ -6,14 +6,14 @@ sidebar_position: 3
 
 ## `defer`
 
-The `defer` directive may be specified on a query to imply de-prioritization, that causes the data to be in [`pending`](/api/core#pending) state in the initial response, and delivered as a subsequent response afterward.
+The `defer` directive may be specified on a query to imply de-prioritization, that causes the data to be in [`pending`](/vue/api/core#pending) state in the initial response, and delivered as a subsequent response afterward.
 
 :::info
 
 When you pass `{ defer: true }` to the query, the result will now be either:
 
 - A resolved value (the response you expect), or
-- A special [`pending`](/api/core#pending) symbol from `@reactive-dot/core`, indicating that the data hasn’t arrived yet.
+- A special [`pending`](/vue/api/core#pending) symbol from `@reactive-dot/core`, indicating that the data hasn’t arrived yet.
 
 :::
 

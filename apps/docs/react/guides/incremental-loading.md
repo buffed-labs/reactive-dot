@@ -6,14 +6,14 @@ sidebar_position: 4
 
 ## `defer`
 
-The `defer` directive may be specified on a query to imply de-prioritization, that causes the data to be in [`pending`](/api/core#pending) state in the initial response, and delivered as a subsequent response afterward. For React, this can also be used to opt-out of suspending.
+The `defer` directive may be specified on a query to imply de-prioritization, that causes the data to be in [`pending`](/react/api/core#pending) state in the initial response, and delivered as a subsequent response afterward. For React, this can also be used to opt-out of suspending.
 
 :::info
 
 When you pass `{ defer: true }` to the query, the result will now be either:
 
 - A resolved value (the response you expect), or
-- A special [`pending`](/api/core#pending) symbol from `@reactive-dot/core`, indicating that the data hasn’t arrived yet.
+- A special [`pending`](/react/api/core#pending) symbol from `@reactive-dot/core`, indicating that the data hasn’t arrived yet.
 
 :::
 
@@ -65,7 +65,7 @@ This works well for a small number of accounts, where results load quickly. But 
 When you pass `{ stream: true }` to the query, each item in the result array will now be either:
 
 - A resolved value (the response you expect), or
-- A special [`pending`](/api/core#pending) symbol from `@reactive-dot/core`, indicating that the data for that item hasn’t arrived yet.
+- A special [`pending`](/react/api/core#pending) symbol from `@reactive-dot/core`, indicating that the data for that item hasn’t arrived yet.
 
 :::
 

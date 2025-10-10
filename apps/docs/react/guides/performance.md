@@ -16,7 +16,7 @@ Always remember to unmount components when they are no longer visible or require
 
 ## Controlling subscriptions
 
-In some scenarios, you might not want to unmount components (e.g., in an infinite scroll implementation where you only want active subscriptions on visible elements). In such cases, you can use the [`QueryOptionsProvider`](/api/react/function/QueryOptionsProvider) component to control subscription behavior.
+In some scenarios, you might not want to unmount components (e.g., in an infinite scroll implementation where you only want active subscriptions on visible elements). In such cases, you can use the [`QueryOptionsProvider`](/react/api/react/functions/QueryOptionsProvider) component to control subscription behavior.
 
 The `QueryOptionsProvider` allows you to disable subscriptions for specific parts of your application. This can be useful for optimizing performance when dealing with a large number of components.
 

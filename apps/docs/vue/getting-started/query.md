@@ -4,11 +4,11 @@ sidebar_position: 2
 
 # Query
 
-The [`useQuery`](/api/vue/function/useQuery) composable allow you to read any data from chain, while maintaining updates, concurrency, caching & deduplication behind the scene for you.
+The [`useQuery`](/vue/api/vue/functions/useQuery) composable allow you to read any data from chain, while maintaining updates, concurrency, caching & deduplication behind the scene for you.
 
 ## Async handling
 
-[`useQuery`](/api/vue/function/useQuery) utilize Vue's Suspense API for data fetching & error handling.
+[`useQuery`](/vue/api/vue/functions/useQuery) utilize Vue's Suspense API for data fetching & error handling.
 
 ```vue title="async-component.vue"
 <script setup lang="ts">
@@ -40,7 +40,7 @@ onErrorCaptured((error) => console.log(error));
 
 ## Fetching multiple data
 
-Fetching multiple data can be done by chaining queries together, [`useQuery`](/api/vue/function/useQuery) (with TypeScript) will automatically infer that you want to fetch multiple data concurrently & will return an array of data instead.
+Fetching multiple data can be done by chaining queries together, [`useQuery`](/vue/api/vue/functions/useQuery) (with TypeScript) will automatically infer that you want to fetch multiple data concurrently & will return an array of data instead.
 
 ```vue
 <script setup lang="ts">
@@ -60,7 +60,7 @@ const proposalCount = computed(() => data.value[2]);
 </script>
 ```
 
-Multiple queries of the same type can also be fetched using [`runtimeApis`](/api/core/class/Query#runtimeApis) & [`storages`](/api/core/class/Query#storages).
+Multiple queries of the same type can also be fetched using [`runtimeApis`](/vue/api/core/index/classes/Query#runtimeApis) & [`storages`](/vue/api/core/index/classes/Query#storages).
 
 ```vue
 <script setup lang="ts">
@@ -130,7 +130,7 @@ const {
 </template>
 ```
 
-The above will refresh all refreshable data in the query. If you want to target specific data to refresh, the [`useStore`](/api/vue/function/useStore) composable can be used instead.
+The above will refresh all refreshable data in the query. If you want to target specific data to refresh, the [`useStore`](/vue/api/vue/functions/useStore) composable can be used instead.
 
 ```vue
 <script setup lang="ts">
@@ -168,7 +168,7 @@ const {
 
 ## Retry failed query
 
-Error from queries can be reset using `ErrorBoundary` & [`useQueryErrorResetter`](/api/vue/function/useQueryErrorResetter) composable.
+Error from queries can be reset using `ErrorBoundary` & [`useQueryErrorResetter`](/vue/api/vue/functions/useQueryErrorResetter) composable.
 
 ```vue
 <script setup lang="ts">
