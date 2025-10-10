@@ -46,10 +46,10 @@
     "@tsconfig/recommended": "^1.0.10",
     "@tsconfig/strictest": "^2.0.6",
     "@types/react": "^19.1.14",
-    "eslint": "^9.36.0",
+    "eslint": "^9.37.0",
     "jsdom": "^27.0.0",
     "react": "^19.1.1",
-    "typescript": "^5.9.2",
+    "typescript": "^5.9.3",
     "vitest": "^3.2.4",
     "wonka": "^6.3.5"
   },
