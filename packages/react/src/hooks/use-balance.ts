@@ -131,6 +131,7 @@ export function useSpendableBalance(
 /**
  * Hook for getting accounts’ spendable balances.
  *
+ * @group Hooks
  * @param addresses  - The account-addresses
  * @param options - Additional options
  * @returns The accounts’ spendable balances

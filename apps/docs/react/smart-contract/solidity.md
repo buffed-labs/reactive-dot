@@ -51,7 +51,7 @@ export const myContract = defineContract({
 
 ## Reading contract data
 
-The [`useLazyLoadQuery`](/api/react/function/useLazyLoadQuery) hook with [`Query.contract`](/api/core/class/Query#contract) instruction allows you to read data on a smart contract, from a `view` or `pure` (read-only) function. They can only read the state of the contract, and cannot make any changes to it.
+The [`useLazyLoadQuery`](/react/api/react/functions/useLazyLoadQuery) hook with [`Query.contract`](/react/api/core/index/classes/Query#contract) instruction allows you to read data on a smart contract, from a `view` or `pure` (read-only) function. They can only read the state of the contract, and cannot make any changes to it.
 
 ```tsx title="Component.tsx"
 import { myContract } from "./contracts.ts";
@@ -108,7 +108,7 @@ function Component() {
 
 ## Writing to contract
 
-The [`useContractMutation`](/api/react/function/useContractMutation) hook allows you to mutate data on a smart contract, from a payable or nonpayable (write) message.
+The [`useContractMutation`](/react/api/react/functions/useContractMutation) hook allows you to mutate data on a smart contract, from a payable or nonpayable (write) message.
 
 ```tsx title="WriteComponent.tsx"
 import {

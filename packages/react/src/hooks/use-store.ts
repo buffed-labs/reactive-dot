@@ -7,6 +7,10 @@ import type { WritableAtom } from "jotai";
 import { useAtomCallback } from "jotai/utils";
 import { useCallback } from "react";
 
+/**
+ * Hook for getting the data store.
+ * @group Hooks
+ */
 export function useStore(): DataStore {
   const config = useConfig();
   const chainId = internal_useChainId();

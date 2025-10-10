@@ -4,11 +4,11 @@ sidebar_position: 2
 
 # Query
 
-The [`useLazyLoadQuery`](/api/react/function/useLazyLoadQuery) hook allow you to read any data from chain, while maintaining updates, concurrency, caching & deduplication behind the scene for you.
+The [`useLazyLoadQuery`](/react/api/react/functions/useLazyLoadQuery) hook allow you to read any data from chain, while maintaining updates, concurrency, caching & deduplication behind the scene for you.
 
 ## Async handling
 
-[`useLazyLoadQuery`](/api/react/function/useLazyLoadQuery) utilize React's Suspense API for data fetching & error handling.
+[`useLazyLoadQuery`](/react/api/react/functions/useLazyLoadQuery) utilize React's Suspense API for data fetching & error handling.
 
 ```tsx
 function ActiveEra() {
@@ -32,7 +32,7 @@ function App() {
 
 ## Fetching multiple data
 
-Fetching multiple data can be done by chaining queries together, [`useLazyLoadQuery`](/api/react/function/useLazyLoadQuery) (with TypeScript) will automatically infer that you want to fetch multiple data concurrently & will return an array of data instead.
+Fetching multiple data can be done by chaining queries together, [`useLazyLoadQuery`](/react/api/react/functions/useLazyLoadQuery) (with TypeScript) will automatically infer that you want to fetch multiple data concurrently & will return an array of data instead.
 
 ```tsx
 function MultiQuery() {
@@ -59,7 +59,7 @@ function MultiQuery() {
 }
 ```
 
-Multiple queries of the same type can also be fetched using [`runtimeApis`](/api/core/class/Query#runtimeApis) & [`storages`](/api/core/class/Query#storages).
+Multiple queries of the same type can also be fetched using [`runtimeApis`](/react/api/core/index/classes/Query#runtimeApis) & [`storages`](/react/api/core/index/classes/Query#storages).
 
 ```tsx
 const [rewards, metadatum] = useLazyLoadQuery((builder) =>
@@ -176,7 +176,7 @@ function QueryWithRefresh() {
 }
 ```
 
-The above will refresh all refreshable data in the query. If you want to target specific data to refresh, the [`useStore`](/api/react/function/useStore) hook can be used instead.
+The above will refresh all refreshable data in the query. If you want to target specific data to refresh, the [`useStore`](/react/api/react/functions/useStore) hook can be used instead.
 
 ```tsx
 import { useLazyLoadQuery, useStore } from "@reactive-dot/react";
@@ -216,7 +216,7 @@ function QueryWithRefresh() {
 
 ## Retry failed query
 
-Error from queries can be reset using `ErrorBoundary` & [`useQueryErrorResetter`](/api/react/function/useQueryErrorResetter) hook.
+Error from queries can be reset using `ErrorBoundary` & [`useQueryErrorResetter`](/react/api/react/functions/useQueryErrorResetter) hook.
 
 ```tsx
 import { useQueryErrorResetter } from "@reactive-dot/react";

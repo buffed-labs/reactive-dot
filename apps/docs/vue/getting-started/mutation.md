@@ -88,7 +88,7 @@ execute({ variables: "Hello, world!" });
 
 ## Watching transactions
 
-It’s common to watch for all transactions throughout the application to display an appropriate loading state or toast. This can be easily achieved with the [`watchMutationEffect`](/api/vue/function/watchMutationEffect) composable.
+It’s common to watch for all transactions throughout the application to display an appropriate loading state or toast. This can be easily achieved with the [`watchMutationEffect`](/vue/api/vue/functions/watchMutationEffect) composable.
 
 ```vue
 <script setup lang="ts">
