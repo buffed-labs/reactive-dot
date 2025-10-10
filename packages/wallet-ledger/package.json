@@ -33,7 +33,7 @@
   },
   "dependencies": {
     "@ledgerhq/hw-transport-webusb": "^6.29.11",
-    "@polkadot-api/ledger-signer": "^0.2.10",
+    "@polkadot-api/ledger-signer": "^0.2.11",
     "@reactive-dot/core": "workspace:^",
     "buffer": "^6.0.3"
   },
