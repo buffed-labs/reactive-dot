@@ -42,9 +42,9 @@ const fakeApi = {
 } as unknown as TypedApi<ChainDefinition>;
 
 describe("preflight", () => {
-  it('should return "promise" for get-constant instruction', () => {
+  it('should return "promise" for constant instruction', () => {
     const instruction = {
-      instruction: "get-constant",
+      instruction: "constant",
       pallet: "test",
       constant: "foo",
     } as SimpleQueryInstruction;
@@ -52,9 +52,9 @@ describe("preflight", () => {
     expect(preflight(instruction)).toBe("promise");
   });
 
-  it('should return "promise" for call-api instruction', () => {
+  it('should return "promise" for runtime-api instruction', () => {
     const instruction = {
-      instruction: "call-api",
+      instruction: "runtime-api",
       pallet: "test",
       api: "foo",
       args: [],
@@ -67,9 +67,9 @@ describe("preflight", () => {
     expect(preflight(instruction)).toBe("promise");
   });
 
-  it('should return "observable" for read-storage-entries instruction', () => {
+  it('should return "observable" for storage-entries instruction', () => {
     const instruction = {
-      instruction: "read-storage-entries",
+      instruction: "storage-entries",
       pallet: "test",
       storage: "foo",
       args: [],
@@ -82,9 +82,9 @@ describe("preflight", () => {
     expect(preflight(instruction)).toBe("observable");
   });
 
-  it('should return "observable" for read-storage instruction', () => {
+  it('should return "observable" for storage instruction', () => {
     const instruction = {
-      instruction: "read-storage",
+      instruction: "storage",
       pallet: "test",
       storage: "foo",
       args: [],
@@ -99,7 +99,7 @@ describe("preflight", () => {
 
   it('should return "promise" if "at" is provided and starts with "0x"', () => {
     const instruction = {
-      instruction: "read-storage",
+      instruction: "storage",
       pallet: "test",
       storage: "foo",
       args: [1],
@@ -113,9 +113,9 @@ describe("preflight", () => {
   });
 });
 
-it('should handle "get-constant" instruction', async () => {
+it('should handle "constant" instruction', async () => {
   const instruction = {
-    instruction: "get-constant",
+    instruction: "constant",
     pallet: "test",
     constant: "foo",
   } as SimpleQueryInstruction;
@@ -125,9 +125,9 @@ it('should handle "get-constant" instruction', async () => {
   expect(result).toEqual(dummyValue);
 });
 
-it('should handle "call-api" instruction', async () => {
+it('should handle "runtime-api" instruction', async () => {
   const instruction = {
-    instruction: "call-api",
+    instruction: "runtime-api",
     pallet: "test",
     api: "foo",
     args: [1, 2],
@@ -141,9 +141,9 @@ it('should handle "call-api" instruction', async () => {
   });
 });
 
-it('should handle "read-storage" instruction with at starting with "0x" (using getValue)', async () => {
+it('should handle "storage" instruction with at starting with "0x" (using getValue)', async () => {
   const instruction = {
-    instruction: "read-storage",
+    instruction: "storage",
     pallet: "test",
     storage: "foo",
     args: [3],
@@ -162,9 +162,9 @@ it('should handle "read-storage" instruction with at starting with "0x" (using g
   });
 });
 
-it('should handle "read-storage" instruction without at or non-hex at (using watchValue)', async () => {
+it('should handle "storage" instruction without at or non-hex at (using watchValue)', async () => {
   const instruction = {
-    instruction: "read-storage",
+    instruction: "storage",
     pallet: "test",
     storage: "foo",
     args: [3],
@@ -178,9 +178,9 @@ it('should handle "read-storage" instruction without at or non-hex at (using wat
   expect(result).toEqual({ method: "watchValue", args: [3], ...dummyValue });
 });
 
-it('should handle "read-storage-entries" instruction with at starting with "0x" (using getEntries)', async () => {
+it('should handle "storage-entries" instruction with at starting with "0x" (using getEntries)', async () => {
   const instruction = {
-    instruction: "read-storage-entries",
+    instruction: "storage-entries",
     pallet: "test",
     storage: "foo",
     args: [3],
@@ -197,9 +197,9 @@ it('should handle "read-storage-entries" instruction with at starting with "0x" 
   ]);
 });
 
-it('should handle "read-storage-entries" instruction without at or non-hex at (using watchEntries)', async () => {
+it('should handle "storage-entries" instruction without at or non-hex at (using watchEntries)', async () => {
   const instruction = {
-    instruction: "read-storage-entries",
+    instruction: "storage-entries",
     pallet: "test",
     storage: "foo",
     args: [3],

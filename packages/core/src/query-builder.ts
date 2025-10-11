@@ -98,12 +98,12 @@ export type MultiInstruction<
       : never;
   };
 
-export type ConstantFetchInstruction = BaseInstruction<"get-constant"> & {
+export type ConstantFetchInstruction = BaseInstruction<"constant"> & {
   pallet: string;
   constant: string;
 };
 
-export type StorageReadInstruction = BaseInstruction<"read-storage"> & {
+export type StorageReadInstruction = BaseInstruction<"storage"> & {
   pallet: string;
   storage: string;
   args: unknown[];
@@ -111,27 +111,27 @@ export type StorageReadInstruction = BaseInstruction<"read-storage"> & {
 };
 
 export type StorageEntriesReadInstruction =
-  BaseInstruction<"read-storage-entries"> & {
+  BaseInstruction<"storage-entries"> & {
     pallet: string;
     storage: string;
     args: unknown[];
     at: At | undefined;
   };
 
-export type ApiCallInstruction = BaseInstruction<"call-api"> & {
+export type ApiCallInstruction = BaseInstruction<"runtime-api"> & {
   pallet: string;
   api: string;
   args: unknown[];
   at: Finality | undefined;
 };
 
-type InkContractReadInstruction = BaseInstruction<"read-contract"> & {
+type InkContractReadInstruction = BaseInstruction<"contract"> & {
   contract: InkContract;
   address: Address;
   instructions: InkQuery["instructions"];
 };
 
-type SolidityContractReadInstruction = BaseInstruction<"read-contract"> & {
+type SolidityContractReadInstruction = BaseInstruction<"contract"> & {
   contract: SolidityContract;
   address: Address;
   instructions: SolidityQuery["instructions"];
@@ -318,7 +318,7 @@ export class Query<
     const TDefer extends boolean = false,
   >(pallet: TPallet, constant: TConstant, options?: { defer?: TDefer }) {
     return this.#append({
-      instruction: "get-constant",
+      instruction: "constant",
       pallet,
       constant,
       directives: {
@@ -356,7 +356,7 @@ export class Query<
         ]
   ) {
     return this.#append({
-      instruction: "read-storage",
+      instruction: "storage",
       pallet,
       storage,
       args: args ?? [],
@@ -388,7 +388,7 @@ export class Query<
     options?: { at?: At; defer?: TDefer; stream?: TStream },
   ) {
     return this.#append({
-      instruction: "read-storage",
+      instruction: "storage",
       pallet,
       storage,
       args,
@@ -419,7 +419,7 @@ export class Query<
     options?: { at?: At; defer?: TDefer },
   ) {
     return this.#append({
-      instruction: "read-storage-entries",
+      instruction: "storage-entries",
       pallet,
       storage,
       args: args ?? [],
@@ -459,7 +459,7 @@ export class Query<
         ]
   ) {
     return this.#append({
-      instruction: "call-api",
+      instruction: "runtime-api",
       pallet,
       api,
       args: args ?? [],
@@ -487,7 +487,7 @@ export class Query<
     options?: { at?: Finality; defer?: TDefer; stream?: TStream },
   ) {
     return this.#append({
-      instruction: "call-api",
+      instruction: "runtime-api",
       pallet,
       api,
       args,
@@ -520,7 +520,7 @@ export class Query<
     [
       ...TInstructions,
       {
-        instruction: "read-contract";
+        instruction: "contract";
         contract: InkContract<TContractDescriptor>;
         address: Address;
         instructions: TContractInstructions;
@@ -546,7 +546,7 @@ export class Query<
     [
       ...TInstructions,
       {
-        instruction: "read-contract";
+        instruction: "contract";
         contract: SolidityContract<TAbi>;
         address: Address;
         instructions: TContractInstructions;
@@ -566,7 +566,7 @@ export class Query<
   ): Query {
     if (contract instanceof InkContract) {
       return this.#append({
-        instruction: "read-contract",
+        instruction: "contract",
         contract,
         address,
         instructions: builder(new InkQuery()).instructions,
@@ -575,7 +575,7 @@ export class Query<
     }
 
     return this.#append({
-      instruction: "read-contract",
+      instruction: "contract",
       contract,
       address,
       instructions: builder(new SolidityQuery()).instructions,
@@ -602,7 +602,7 @@ export class Query<
     [
       ...TInstructions,
       {
-        instruction: "read-contract";
+        instruction: "contract";
         multi: true;
         directives: {
           defer: NoInfer<TDefer>;
@@ -634,7 +634,7 @@ export class Query<
     [
       ...TInstructions,
       {
-        instruction: "read-contract";
+        instruction: "contract";
         multi: true;
         directives: {
           defer: NoInfer<TDefer>;
@@ -656,7 +656,7 @@ export class Query<
   ): Query {
     if (contract instanceof InkContract) {
       return this.#append({
-        instruction: "read-contract",
+        instruction: "contract",
         multi: true,
         directives: {
           defer: options?.defer,
@@ -669,7 +669,7 @@ export class Query<
     }
 
     return this.#append({
-      instruction: "read-contract",
+      instruction: "contract",
       multi: true,
       directives: {
         defer: options?.defer,

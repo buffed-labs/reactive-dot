@@ -13,7 +13,7 @@ vi.mock("ox", () => ({
 }));
 
 describe("querySolidity", () => {
-  it("returns decoded result for successful call-function instruction", async () => {
+  it("returns decoded result for successful function instruction", async () => {
     const fakeApi = {
       apis: {
         ReviveApi: {
@@ -33,7 +33,7 @@ describe("querySolidity", () => {
       fakeApi as any,
       abi as any,
       "0x1234567890123456789012345678901234567890",
-      { instruction: "call-function", name: "foo", args: [1] } as any,
+      { instruction: "function", name: "foo", args: [1] } as any,
     );
 
     expect(result).toEqual([42]);
@@ -61,7 +61,7 @@ describe("querySolidity", () => {
         fakeApi as any,
         abi as any,
         "0x1234567890123456789012345678901234567890",
-        { instruction: "call-function", name: "foo", args: [1] } as any,
+        { instruction: "function", name: "foo", args: [1] } as any,
       ),
     ).rejects.toBeInstanceOf(QueryError);
   });

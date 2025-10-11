@@ -101,7 +101,7 @@ export function queryObservable<
 
     return queryValue.instructions.map((instruction) => {
       const response = (() => {
-        if (instruction.instruction === "read-contract") {
+        if (instruction.instruction === "contract") {
           const contract = instruction.contract;
 
           const processContractInstructions = (
@@ -125,7 +125,7 @@ export function queryObservable<
                   const { multi, ...rest } = instruction;
 
                   switch (rest.instruction) {
-                    case "read-storage": {
+                    case "storage": {
                       const { keys, ..._rest } = rest;
 
                       const responses = keys.map((key) =>
@@ -145,7 +145,7 @@ export function queryObservable<
 
                       return responses.map(asDeferred);
                     }
-                    case "send-message": {
+                    case "message": {
                       const { bodies, ..._rest } = rest;
 
                       const responses = bodies.map((body) =>
@@ -165,7 +165,7 @@ export function queryObservable<
 
                       return responses.map(asDeferred);
                     }
-                    case "call-function": {
+                    case "function": {
                       const { args, ..._rest } = rest;
 
                       const responses = args.map((args) =>

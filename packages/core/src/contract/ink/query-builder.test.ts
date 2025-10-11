@@ -24,7 +24,7 @@ describe("rootStorage", () => {
           "directives": {
             "defer": undefined,
           },
-          "instruction": "read-storage",
+          "instruction": "storage",
           "key": undefined,
           "path": "",
         },
@@ -41,7 +41,7 @@ describe("rootStorage", () => {
           "directives": {
             "defer": undefined,
           },
-          "instruction": "read-storage",
+          "instruction": "storage",
           "key": undefined,
           "path": "",
         },
@@ -60,7 +60,7 @@ describe("storage", () => {
           "directives": {
             "defer": undefined,
           },
-          "instruction": "read-storage",
+          "instruction": "storage",
           "key": undefined,
           "path": "test-path",
         },
@@ -77,7 +77,7 @@ describe("storage", () => {
           "directives": {
             "defer": undefined,
           },
-          "instruction": "read-storage",
+          "instruction": "storage",
           "key": "key-value",
           "path": "test-path",
         },
@@ -96,7 +96,7 @@ describe("storage", () => {
           "directives": {
             "defer": undefined,
           },
-          "instruction": "read-storage",
+          "instruction": "storage",
           "key": "key-value",
           "path": "test-path",
         },
@@ -116,7 +116,7 @@ describe("storages", () => {
             "defer": undefined,
             "stream": undefined,
           },
-          "instruction": "read-storage",
+          "instruction": "storage",
           "keys": [
             "key1",
             "key2",
@@ -140,7 +140,7 @@ describe("storages", () => {
             "defer": undefined,
             "stream": undefined,
           },
-          "instruction": "read-storage",
+          "instruction": "storage",
           "keys": [
             "key1",
             "key2",
@@ -164,7 +164,7 @@ describe("message", () => {
           "directives": {
             "defer": undefined,
           },
-          "instruction": "send-message",
+          "instruction": "message",
           "name": "test-message",
           "origin": undefined,
         },
@@ -184,7 +184,7 @@ describe("message", () => {
           "directives": {
             "defer": undefined,
           },
-          "instruction": "send-message",
+          "instruction": "message",
           "name": "test-message",
           "origin": undefined,
         },
@@ -208,7 +208,7 @@ describe("message", () => {
           "directives": {
             "defer": undefined,
           },
-          "instruction": "send-message",
+          "instruction": "message",
           "name": "test-message",
           "origin": undefined,
         },
@@ -239,7 +239,7 @@ describe("messages", () => {
             "defer": undefined,
             "stream": undefined,
           },
-          "instruction": "send-message",
+          "instruction": "message",
           "multi": true,
           "name": "test-message",
           "origin": undefined,
@@ -270,7 +270,7 @@ describe("messages", () => {
             "defer": undefined,
             "stream": undefined,
           },
-          "instruction": "send-message",
+          "instruction": "message",
           "multi": true,
           "name": "test-message",
           "origin": undefined,
@@ -296,7 +296,7 @@ describe("chaining", () => {
         "directives": {
           "defer": undefined,
         },
-        "instruction": "read-storage",
+        "instruction": "storage",
         "key": "key1",
         "path": "path1",
       }
@@ -307,7 +307,7 @@ describe("chaining", () => {
         "directives": {
           "defer": undefined,
         },
-        "instruction": "read-storage",
+        "instruction": "storage",
         "key": undefined,
         "path": "",
       }

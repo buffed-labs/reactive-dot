@@ -39,7 +39,7 @@ it("reads a non-empty storage value", async () => {
   });
 
   const result = await queryInk(api, client, address, {
-    instruction: "read-storage",
+    instruction: "storage",
     path: "",
     key: "foo",
   } as SimpleInkQueryInstruction);
@@ -57,7 +57,7 @@ it("returns undefined when storage value is absent", async () => {
   });
 
   const result = await queryInk(api, client, address, {
-    instruction: "read-storage",
+    instruction: "storage",
     path: "myPath",
     key: "foo",
   } as SimpleInkQueryInstruction);
@@ -75,26 +75,26 @@ it("throws QueryError on storage fetch failure", async () => {
 
   await expect(() =>
     queryInk(api, client, address, {
-      instruction: "read-storage",
+      instruction: "storage",
       path: "",
       key: "foo",
     } as SimpleInkQueryInstruction),
   ).rejects.throws(QueryError);
 });
 
-it("throws when send-message is mutating", async () => {
+it("throws when message is mutating", async () => {
   client.message.mockReturnValue({ attributes: { mutates: true } });
 
   await expect(() =>
     queryInk(api, client, address, {
-      instruction: "send-message",
+      instruction: "message",
       name: "doMutate",
       body: {},
     } as SimpleInkQueryInstruction),
   ).rejects.throws(QueryError);
 });
 
-it("throws QueryError when send-message call fails", async () => {
+it("throws QueryError when message call fails", async () => {
   client.message.mockReturnValue({
     attributes: { mutates: false },
     encode: vi.fn().mockReturnValue("msg"),
@@ -106,7 +106,7 @@ it("throws QueryError when send-message call fails", async () => {
 
   await expect(() =>
     queryInk(api, client, address, {
-      instruction: "send-message",
+      instruction: "message",
       name: "foo",
       body: {},
     } as SimpleInkQueryInstruction),

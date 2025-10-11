@@ -4,14 +4,14 @@ import type { GenericInkDescriptors } from "./contract/ink/types.js";
 import { Query } from "./query-builder.js";
 import { expect, it } from "vitest";
 
-it("should append a get-constant instruction", () => {
+it("should append a constant instruction", () => {
   const query = new Query();
   const newQuery = query.constant("TestPallet", "TestConstant");
   const instructions = newQuery.instructions;
 
   expect(instructions).toHaveLength(1);
   expect(instructions[0]).toEqual({
-    instruction: "get-constant",
+    instruction: "constant",
     pallet: "TestPallet",
     constant: "TestConstant",
     directives: {
@@ -20,7 +20,7 @@ it("should append a get-constant instruction", () => {
   });
 });
 
-it("should append a read-storage instruction", () => {
+it("should append a storage instruction", () => {
   const query = new Query();
   const newQuery = query.storage("TestPallet", "TestStorage", ["arg1"], {
     at: "finalized",
@@ -37,14 +37,14 @@ it("should append a read-storage instruction", () => {
       "directives": {
         "defer": undefined,
       },
-      "instruction": "read-storage",
+      "instruction": "storage",
       "pallet": "TestPallet",
       "storage": "TestStorage",
     }
   `);
 });
 
-it("should append a multi read-storage instruction using storages", () => {
+it("should append a multi storage instruction using storages", () => {
   const query = new Query();
   const newQuery = query.storages("TestPallet", "TestStorage", [
     ["arg1"],
@@ -68,7 +68,7 @@ it("should append a multi read-storage instruction using storages", () => {
         "defer": undefined,
         "stream": undefined,
       },
-      "instruction": "read-storage",
+      "instruction": "storage",
       "multi": true,
       "pallet": "TestPallet",
       "storage": "TestStorage",
@@ -76,7 +76,7 @@ it("should append a multi read-storage instruction using storages", () => {
   `);
 });
 
-it("should append a read-storage-entries instruction", () => {
+it("should append a storage-entries instruction", () => {
   const query = new Query();
   const newQuery = query.storageEntries("TestPallet", "TestStorage", ["arg1"], {
     at: "best",
@@ -93,14 +93,14 @@ it("should append a read-storage-entries instruction", () => {
       "directives": {
         "defer": undefined,
       },
-      "instruction": "read-storage-entries",
+      "instruction": "storage-entries",
       "pallet": "TestPallet",
       "storage": "TestStorage",
     }
   `);
 });
 
-it("should append a call-api instruction", () => {
+it("should append a runtime-api instruction", () => {
   const query = new Query();
   const newQuery = query.runtimeApi("TestPallet", "TestApi", ["arg1"], {
     at: "best",
@@ -118,13 +118,13 @@ it("should append a call-api instruction", () => {
       "directives": {
         "defer": undefined,
       },
-      "instruction": "call-api",
+      "instruction": "runtime-api",
       "pallet": "TestPallet",
     }
   `);
 });
 
-it("should append a multi call-api instruction using runtimeApis", () => {
+it("should append a multi runtime-api instruction using runtimeApis", () => {
   const query = new Query();
   const newQuery = query.runtimeApis(
     "TestPallet",
@@ -151,7 +151,7 @@ it("should append a multi call-api instruction using runtimeApis", () => {
         "defer": undefined,
         "stream": undefined,
       },
-      "instruction": "call-api",
+      "instruction": "runtime-api",
       "multi": true,
       "pallet": "TestPallet",
     }
@@ -172,7 +172,7 @@ const mockInkQueryBuilder = (
   return query.message("testMessage", {});
 };
 
-it("should append a read-contract instruction", () => {
+it("should append a contract instruction", () => {
   const query = new Query();
   const newQuery = query.contract(
     mockContract,
@@ -192,7 +192,7 @@ it("should append a read-contract instruction", () => {
       "directives": {
         "defer": undefined,
       },
-      "instruction": "read-contract",
+      "instruction": "contract",
       "instructions": [
         {
           "at": undefined,
@@ -200,7 +200,7 @@ it("should append a read-contract instruction", () => {
           "directives": {
             "defer": undefined,
           },
-          "instruction": "send-message",
+          "instruction": "message",
           "name": "testMessage",
           "origin": undefined,
         },
@@ -209,7 +209,7 @@ it("should append a read-contract instruction", () => {
   `);
 });
 
-it("should append a multi read-contract instruction using contracts", () => {
+it("should append a multi contract instruction using contracts", () => {
   const query = new Query();
   const newQuery = query.contracts(
     mockContract,
@@ -233,7 +233,7 @@ it("should append a multi read-contract instruction using contracts", () => {
         "defer": undefined,
         "stream": undefined,
       },
-      "instruction": "read-contract",
+      "instruction": "contract",
       "instructions": [
         {
           "at": undefined,
@@ -241,7 +241,7 @@ it("should append a multi read-contract instruction using contracts", () => {
           "directives": {
             "defer": undefined,
           },
-          "instruction": "send-message",
+          "instruction": "message",
           "name": "testMessage",
           "origin": undefined,
         },
@@ -268,17 +268,17 @@ it("should concatenate two queries", () => {
 
   expect(instructions).toHaveLength(3);
   expect(instructions[0]).toMatchObject({
-    instruction: "get-constant",
+    instruction: "constant",
     pallet: "TestPallet",
     constant: "TestConstant",
   });
   expect(instructions[1]).toMatchObject({
-    instruction: "read-storage",
+    instruction: "storage",
     pallet: "TestPallet",
     storage: "TestStorage",
   });
   expect(instructions[2]).toMatchObject({
-    instruction: "call-api",
+    instruction: "runtime-api",
     pallet: "TestPallet",
     api: "TestApi",
   });

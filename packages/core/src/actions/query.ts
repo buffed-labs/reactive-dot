@@ -15,18 +15,18 @@ export function query<
   options?: { signal?: AbortSignal },
 ): InferInstructionResponse<TInstruction> {
   switch (instruction.instruction) {
-    case "get-constant":
+    case "constant":
       return (
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (api.constants[instruction.pallet]![instruction.constant] as any)()
       );
-    case "call-api":
+    case "runtime-api":
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return (api.apis[instruction.pallet]![instruction.api] as any)(
         ...instruction.args,
         { signal: options?.signal, at: instruction.at },
       );
-    case "read-storage": {
+    case "storage": {
       const storageEntry = api.query[instruction.pallet]![
         instruction.storage
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -39,7 +39,7 @@ export function query<
             ...[instruction.at].filter((x) => x !== undefined),
           );
     }
-    case "read-storage-entries":
+    case "storage-entries":
       return instruction.at?.startsWith("0x")
         ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
           (api.query[instruction.pallet]![instruction.storage] as any) // Comment to prevent formatting
@@ -86,11 +86,11 @@ export function preflight(instruction: SimpleQueryInstruction) {
   }
 
   switch (instruction.instruction) {
-    case "get-constant":
-    case "call-api":
+    case "constant":
+    case "runtime-api":
       return "promise";
-    case "read-storage-entries":
-    case "read-storage":
+    case "storage-entries":
+    case "storage":
       return "observable";
   }
 }
