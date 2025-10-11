@@ -14,7 +14,7 @@ import type {
 import type { UnwrapResult } from "./result.js";
 import type { GenericInkDescriptors } from "./types.js";
 
-type StorageReadInstruction = BaseInstruction<"read-storage"> & {
+type StorageReadInstruction = BaseInstruction<"storage"> & {
   path: string;
   key: unknown | undefined;
   at: Finality | undefined;
@@ -31,7 +31,7 @@ export type InferStorageReadInstructionPayload<
   TDescriptor extends GenericInkDescriptors,
 > = TDescriptor["__types"]["storage"][TInstruction["path"]]["value"];
 
-type MessageSendInstruction = BaseInstruction<"send-message"> & {
+type MessageSendInstruction = BaseInstruction<"message"> & {
   name: string;
   body: unknown;
   origin: Address | undefined;
@@ -118,7 +118,7 @@ export class InkQuery<
     defer?: TDefer;
   }) {
     return this.#append({
-      instruction: "read-storage",
+      instruction: "storage",
       path: "" as const,
       key: undefined,
       at: options?.at,
@@ -148,7 +148,7 @@ export class InkQuery<
         ]
   ) {
     return this.#append({
-      instruction: "read-storage",
+      instruction: "storage",
       path,
       key: key as any,
       at: options?.at,
@@ -169,7 +169,7 @@ export class InkQuery<
     options?: { at?: Finality; defer?: TDefer; stream?: TStream },
   ) {
     return this.#append({
-      instruction: "read-storage",
+      instruction: "storage",
       multi: true,
       directives: {
         defer: options?.defer as NoInfer<TDefer>,
@@ -203,7 +203,7 @@ export class InkQuery<
         ]
   ) {
     return this.#append({
-      instruction: "send-message",
+      instruction: "message",
       // TODO: this is needed for some reason
       name: name as typeof name,
       body,
@@ -230,7 +230,7 @@ export class InkQuery<
     },
   ) {
     return this.#append({
-      instruction: "send-message",
+      instruction: "message",
       multi: true,
       directives: {
         defer: options?.defer as NoInfer<TDefer>,

@@ -11,7 +11,7 @@ import type {
   ExtractAbiFunctionNames,
 } from "abitype";
 
-export type FunctionCallInstruction = BaseInstruction<"call-function"> & {
+export type FunctionCallInstruction = BaseInstruction<"function"> & {
   name: string;
   args: unknown[];
   at: Finality | undefined;
@@ -97,7 +97,7 @@ export class SolidityQuery<
       : [args: TArguments, options?: { at?: Finality; defer?: TDefer }]
   ) {
     return this.#append({
-      instruction: "call-function",
+      instruction: "function",
       name,
       args: (args ?? []) as unknown as unknown[],
       at: options?.at,
@@ -119,7 +119,7 @@ export class SolidityQuery<
     options?: { at?: Finality; defer?: TDefer; stream?: TStream },
   ) {
     return this.#append({
-      instruction: "call-function",
+      instruction: "function",
       name,
       args,
       at: options?.at,

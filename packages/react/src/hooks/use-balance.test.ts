@@ -42,13 +42,13 @@ vi.mocked(useLazyLoadQuery).mockImplementation(
 
     return query.instructions.map((instruction) => {
       if (
-        instruction.instruction === "get-constant" &&
+        instruction.instruction === "constant" &&
         instruction.pallet === "Balances" &&
         instruction.constant === "ExistentialDeposit"
       ) {
         return 100n;
       } else if (
-        instruction.instruction === "read-storage" &&
+        instruction.instruction === "storage" &&
         instruction.pallet === "System" &&
         instruction.storage === "Account" &&
         "multi" in instruction &&

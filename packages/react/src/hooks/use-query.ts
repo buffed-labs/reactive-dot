@@ -313,7 +313,7 @@ export function getQueryInstructionPayloadAtoms(
 ) {
   return query.instructions.map((instruction) => {
     const responseAtom = (() => {
-      if (instruction.instruction === "read-contract") {
+      if (instruction.instruction === "contract") {
         const processContractInstructions = (
           address: Address,
           instructions: InkQueryInstruction[] | SolidityQueryInstruction[],
@@ -334,7 +334,7 @@ export function getQueryInstructionPayloadAtoms(
                 const { multi, ...rest } = instruction;
 
                 switch (rest.instruction) {
-                  case "read-storage": {
+                  case "storage": {
                     const { keys, ..._rest } = rest;
 
                     return keys.map((key) => {
@@ -352,7 +352,7 @@ export function getQueryInstructionPayloadAtoms(
                       return _rest.directives.stream ? asDeferred(atom) : atom;
                     });
                   }
-                  case "send-message": {
+                  case "message": {
                     const { bodies, ..._rest } = rest;
 
                     return bodies.map((body) => {
@@ -370,7 +370,7 @@ export function getQueryInstructionPayloadAtoms(
                       return _rest.directives.stream ? asDeferred(atom) : atom;
                     });
                   }
-                  case "call-function": {
+                  case "function": {
                     const { args, ..._rest } = rest;
 
                     return args.map((args) => {

@@ -25,7 +25,7 @@ export async function queryInk<
   };
 
   switch (instruction.instruction) {
-    case "read-storage": {
+    case "storage": {
       const storage =
         instruction.path === ""
           ? client.storage()
@@ -50,7 +50,7 @@ export async function queryInk<
             Descriptor
           >);
     }
-    case "send-message": {
+    case "message": {
       const message = client.message(instruction.name);
 
       if (message.attributes.mutates) {

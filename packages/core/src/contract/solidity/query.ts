@@ -22,7 +22,7 @@ export async function querySolidity<
   };
 
   switch (instruction.instruction) {
-    case "call-function": {
+    case "function": {
       const origin = address;
 
       const { AbiFunction } = await import("ox");
