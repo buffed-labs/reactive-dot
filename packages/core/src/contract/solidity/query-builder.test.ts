@@ -103,7 +103,6 @@ it("matches snapshot", () => {
         "directives": {
           "defer": undefined,
         },
-        "instruction": "contract",
         "instructions": [
           {
             "args": [],
@@ -111,7 +110,7 @@ it("matches snapshot", () => {
             "directives": {
               "defer": undefined,
             },
-            "instruction": "function",
+            "method": "function",
             "name": "totalSupply",
           },
           {
@@ -122,7 +121,7 @@ it("matches snapshot", () => {
             "directives": {
               "defer": undefined,
             },
-            "instruction": "function",
+            "method": "function",
             "name": "balanceOf",
           },
           {
@@ -139,11 +138,12 @@ it("matches snapshot", () => {
               "defer": undefined,
               "stream": undefined,
             },
-            "instruction": "function",
+            "method": "function",
             "multi": true,
             "name": "balanceOf",
           },
         ],
+        "method": "contract",
       },
     ]
   `);

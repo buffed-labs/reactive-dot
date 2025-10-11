@@ -44,7 +44,7 @@ const fakeApi = {
 describe("preflight", () => {
   it('should return "promise" for constant instruction', () => {
     const instruction = {
-      instruction: "constant",
+      method: "constant",
       pallet: "test",
       constant: "foo",
     } as SimpleQueryInstruction;
@@ -54,7 +54,7 @@ describe("preflight", () => {
 
   it('should return "promise" for runtime-api instruction', () => {
     const instruction = {
-      instruction: "runtime-api",
+      method: "runtime-api",
       pallet: "test",
       api: "foo",
       args: [],
@@ -69,7 +69,7 @@ describe("preflight", () => {
 
   it('should return "observable" for storage-entries instruction', () => {
     const instruction = {
-      instruction: "storage-entries",
+      method: "storage-entries",
       pallet: "test",
       storage: "foo",
       args: [],
@@ -84,7 +84,7 @@ describe("preflight", () => {
 
   it('should return "observable" for storage instruction', () => {
     const instruction = {
-      instruction: "storage",
+      method: "storage",
       pallet: "test",
       storage: "foo",
       args: [],
@@ -99,7 +99,7 @@ describe("preflight", () => {
 
   it('should return "promise" if "at" is provided and starts with "0x"', () => {
     const instruction = {
-      instruction: "storage",
+      method: "storage",
       pallet: "test",
       storage: "foo",
       args: [1],
@@ -115,7 +115,7 @@ describe("preflight", () => {
 
 it('should handle "constant" instruction', async () => {
   const instruction = {
-    instruction: "constant",
+    method: "constant",
     pallet: "test",
     constant: "foo",
   } as SimpleQueryInstruction;
@@ -127,7 +127,7 @@ it('should handle "constant" instruction', async () => {
 
 it('should handle "runtime-api" instruction', async () => {
   const instruction = {
-    instruction: "runtime-api",
+    method: "runtime-api",
     pallet: "test",
     api: "foo",
     args: [1, 2],
@@ -143,7 +143,7 @@ it('should handle "runtime-api" instruction', async () => {
 
 it('should handle "storage" instruction with at starting with "0x" (using getValue)', async () => {
   const instruction = {
-    instruction: "storage",
+    method: "storage",
     pallet: "test",
     storage: "foo",
     args: [3],
@@ -164,7 +164,7 @@ it('should handle "storage" instruction with at starting with "0x" (using getVal
 
 it('should handle "storage" instruction without at or non-hex at (using watchValue)', async () => {
   const instruction = {
-    instruction: "storage",
+    method: "storage",
     pallet: "test",
     storage: "foo",
     args: [3],
@@ -180,7 +180,7 @@ it('should handle "storage" instruction without at or non-hex at (using watchVal
 
 it('should handle "storage-entries" instruction with at starting with "0x" (using getEntries)', async () => {
   const instruction = {
-    instruction: "storage-entries",
+    method: "storage-entries",
     pallet: "test",
     storage: "foo",
     args: [3],
@@ -199,7 +199,7 @@ it('should handle "storage-entries" instruction with at starting with "0x" (usin
 
 it('should handle "storage-entries" instruction without at or non-hex at (using watchEntries)', async () => {
   const instruction = {
-    instruction: "storage-entries",
+    method: "storage-entries",
     pallet: "test",
     storage: "foo",
     args: [3],
