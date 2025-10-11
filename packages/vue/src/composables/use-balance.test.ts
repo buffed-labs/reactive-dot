@@ -27,13 +27,13 @@ vi.mocked(useQueryObservable).mockImplementation(
 
     const result = query.instructions.map((instruction) => {
       if (
-        instruction.instruction === "constant" &&
+        instruction.method === "constant" &&
         instruction.pallet === "Balances" &&
         instruction.constant === "ExistentialDeposit"
       ) {
         return 100n;
       } else if (
-        instruction.instruction === "storage" &&
+        instruction.method === "storage" &&
         instruction.pallet === "System" &&
         instruction.storage === "Account" &&
         "multi" in instruction &&

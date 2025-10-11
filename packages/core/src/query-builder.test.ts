@@ -11,7 +11,7 @@ it("should append a constant instruction", () => {
 
   expect(instructions).toHaveLength(1);
   expect(instructions[0]).toEqual({
-    instruction: "constant",
+    method: "constant",
     pallet: "TestPallet",
     constant: "TestConstant",
     directives: {
@@ -37,7 +37,7 @@ it("should append a storage instruction", () => {
       "directives": {
         "defer": undefined,
       },
-      "instruction": "storage",
+      "method": "storage",
       "pallet": "TestPallet",
       "storage": "TestStorage",
     }
@@ -68,7 +68,7 @@ it("should append a multi storage instruction using storages", () => {
         "defer": undefined,
         "stream": undefined,
       },
-      "instruction": "storage",
+      "method": "storage",
       "multi": true,
       "pallet": "TestPallet",
       "storage": "TestStorage",
@@ -93,7 +93,7 @@ it("should append a storage-entries instruction", () => {
       "directives": {
         "defer": undefined,
       },
-      "instruction": "storage-entries",
+      "method": "storage-entries",
       "pallet": "TestPallet",
       "storage": "TestStorage",
     }
@@ -118,7 +118,7 @@ it("should append a runtime-api instruction", () => {
       "directives": {
         "defer": undefined,
       },
-      "instruction": "runtime-api",
+      "method": "runtime-api",
       "pallet": "TestPallet",
     }
   `);
@@ -151,7 +151,7 @@ it("should append a multi runtime-api instruction using runtimeApis", () => {
         "defer": undefined,
         "stream": undefined,
       },
-      "instruction": "runtime-api",
+      "method": "runtime-api",
       "multi": true,
       "pallet": "TestPallet",
     }
@@ -192,7 +192,6 @@ it("should append a contract instruction", () => {
       "directives": {
         "defer": undefined,
       },
-      "instruction": "contract",
       "instructions": [
         {
           "at": undefined,
@@ -200,11 +199,12 @@ it("should append a contract instruction", () => {
           "directives": {
             "defer": undefined,
           },
-          "instruction": "message",
+          "method": "message",
           "name": "testMessage",
           "origin": undefined,
         },
       ],
+      "method": "contract",
     }
   `);
 });
@@ -233,7 +233,6 @@ it("should append a multi contract instruction using contracts", () => {
         "defer": undefined,
         "stream": undefined,
       },
-      "instruction": "contract",
       "instructions": [
         {
           "at": undefined,
@@ -241,11 +240,12 @@ it("should append a multi contract instruction using contracts", () => {
           "directives": {
             "defer": undefined,
           },
-          "instruction": "message",
+          "method": "message",
           "name": "testMessage",
           "origin": undefined,
         },
       ],
+      "method": "contract",
       "multi": true,
     }
   `);
@@ -268,17 +268,17 @@ it("should concatenate two queries", () => {
 
   expect(instructions).toHaveLength(3);
   expect(instructions[0]).toMatchObject({
-    instruction: "constant",
+    method: "constant",
     pallet: "TestPallet",
     constant: "TestConstant",
   });
   expect(instructions[1]).toMatchObject({
-    instruction: "storage",
+    method: "storage",
     pallet: "TestPallet",
     storage: "TestStorage",
   });
   expect(instructions[2]).toMatchObject({
-    instruction: "runtime-api",
+    method: "runtime-api",
     pallet: "TestPallet",
     api: "TestApi",
   });

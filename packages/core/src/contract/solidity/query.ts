@@ -21,7 +21,7 @@ export async function querySolidity<
     ...(options?.signal === undefined ? undefined : { signal: options.signal }),
   };
 
-  switch (instruction.instruction) {
+  switch (instruction.method) {
     case "function": {
       const origin = address;
 

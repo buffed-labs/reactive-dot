@@ -24,7 +24,7 @@ export async function queryInk<
     ...(options?.signal === undefined ? undefined : { signal: options.signal }),
   };
 
-  switch (instruction.instruction) {
+  switch (instruction.method) {
     case "storage": {
       const storage =
         instruction.path === ""
