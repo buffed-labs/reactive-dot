@@ -45,10 +45,10 @@
     "@testing-library/user-event": "^14.6.1",
     "@tsconfig/recommended": "^1.0.10",
     "@tsconfig/strictest": "^2.0.6",
-    "@types/react": "^19.1.14",
+    "@types/react": "^19.2.2",
     "eslint": "^9.36.0",
     "jsdom": "^27.0.0",
-    "react": "^19.1.1",
+    "react": "^19.2.0",
     "typescript": "^5.9.2",
     "vitest": "^3.2.4",
     "wonka": "^6.3.5"
