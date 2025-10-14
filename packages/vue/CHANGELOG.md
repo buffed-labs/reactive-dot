@@ -1,5 +1,11 @@
 # @reactive-dot/vue
 
+## 0.55.2
+
+### Patch Changes
+
+- [#932](https://github.com/buffed-labs/reactive-dot/pull/932) [`a80db14`](https://github.com/buffed-labs/reactive-dot/commit/a80db1458d993a8ef3ca678103d3ee4c7d252c0c) Thanks [@tien](https://github.com/tien)! - Fixed mismatched dependencies.
+
 ## 0.55.0
 
 ### Minor Changes
