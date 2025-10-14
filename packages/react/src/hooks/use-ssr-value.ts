@@ -15,6 +15,7 @@ export function useSsrValue<T>(clientValue: T, serverValue: T) {
   useEffect(
     () => {
       if (enabled) {
+        // eslint-disable-next-line @eslint-react/hooks-extra/no-direct-set-state-in-use-effect
         setCurrentValue(clientValue);
       }
     },
