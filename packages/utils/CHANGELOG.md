@@ -1,5 +1,11 @@
 # @reactive-dot/utils
 
+## 0.10.3
+
+### Patch Changes
+
+- [#922](https://github.com/buffed-labs/reactive-dot/pull/922) [`3202ab8`](https://github.com/buffed-labs/reactive-dot/commit/3202ab8852ffb6a9757541d74a9a8dedad815ebb) Thanks [@tien](https://github.com/tien)! - Bumped dependencies.
+
 ## 0.10.2
 
 ### Patch Changes
