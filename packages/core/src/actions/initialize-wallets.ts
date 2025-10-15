@@ -1,13 +1,18 @@
 import type { Wallet } from "../wallets/wallet.js";
 
-const initializedWallets = new Set<Wallet>();
+const initializedWallets = new WeakSet<Wallet>();
 
 export function initializeWallets(wallets: Wallet[]) {
   return Promise.all(
     wallets.map(async (wallet) => {
       if (!initializedWallets.has(wallet)) {
-        await wallet.initialize();
-        initializedWallets.add(wallet);
+        try {
+          initializedWallets.add(wallet);
+          await wallet.initialize();
+        } catch (error: unknown) {
+          initializedWallets.delete(wallet);
+          throw error;
+        }
       }
     }),
   );

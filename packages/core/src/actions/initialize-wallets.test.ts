@@ -31,8 +31,7 @@ it("only calls wallet.initialize once for each wallet", async () => {
 
   const wallets = [wallet1, wallet2];
 
-  await initializeWallets(wallets);
-  await initializeWallets(wallets);
+  await Promise.all([initializeWallets(wallets), initializeWallets(wallets)]);
 
   expect(wallet1.initialize).toHaveBeenCalledTimes(1);
   expect(wallet2.initialize).toHaveBeenCalledTimes(1);
