@@ -106,9 +106,14 @@ export type ConstantFetchInstruction = BaseInstruction<"constant"> & {
 export type StorageReadInstruction = BaseInstruction<"storage"> & {
   pallet: string;
   storage: string;
-  args: unknown[];
+  keys: unknown[];
   at: At | undefined;
 };
+
+export type MultiStorageReadInstruction = MultiInstruction<
+  StorageReadInstruction,
+  "keys"
+>;
 
 export type StorageEntriesReadInstruction =
   BaseInstruction<"storage-entries"> & {
@@ -119,8 +124,8 @@ export type StorageEntriesReadInstruction =
   };
 
 export type ApiCallInstruction = BaseInstruction<"runtime-api"> & {
-  pallet: string;
   api: string;
+  method: string;
   args: unknown[];
   at: Finality | undefined;
 };
@@ -155,7 +160,7 @@ export type SimpleQueryInstruction =
 
 export type QueryInstruction =
   | SimpleQueryInstruction
-  | MultiInstruction<StorageReadInstruction>
+  | MultiStorageReadInstruction
   | MultiInstruction<ApiCallInstruction>
   | ContractReadInstruction
   | MultiContractReadInstruction;
@@ -168,9 +173,7 @@ type ConstantFetchPayload<
 >;
 
 type StorageReadResponse<
-  TInstruction extends
-    | StorageReadInstruction
-    | MultiInstruction<StorageReadInstruction>,
+  TInstruction extends StorageReadInstruction | MultiStorageReadInstruction,
   TDescriptor extends ChainDefinition = CommonDescriptor,
 > = InferPapiStorageEntry<
   TypedApi<TDescriptor>["query"][TInstruction["pallet"]][TInstruction["storage"]]
@@ -189,7 +192,7 @@ type ApiCallResponse<
     | MultiInstruction<ApiCallInstruction>,
   TDescriptor extends ChainDefinition = CommonDescriptor,
 > = InferPapiRuntimeCall<
-  TypedApi<TDescriptor>["apis"][TInstruction["pallet"]][TInstruction["api"]]
+  TypedApi<TDescriptor>["apis"][TInstruction["api"]][TInstruction["method"]]
 >["response"];
 
 type InferContractReadResponse<
@@ -339,7 +342,7 @@ export class Query<
   >(
     pallet: TPallet,
     storage: TStorage,
-    ...[args, options]: InferPapiStorageEntry<
+    ...[keys, options]: InferPapiStorageEntry<
       TypedApi<TDescriptor>["query"][TPallet][TStorage]
     >["args"] extends []
       ? [
@@ -359,7 +362,7 @@ export class Query<
       type: "storage",
       pallet,
       storage,
-      args: args ?? [],
+      keys: keys ?? [],
       at: options?.at,
       directives: {
         defer: options?.defer as NoInfer<TDefer>,
@@ -380,7 +383,7 @@ export class Query<
   >(
     pallet: TPallet,
     storage: TStorage,
-    args: Array<
+    keys: Array<
       InferPapiStorageEntry<
         TypedApi<TDescriptor>["query"][TPallet][TStorage]
       >["args"]
@@ -391,14 +394,14 @@ export class Query<
       type: "storage",
       pallet,
       storage,
-      args,
+      keys,
       at: options?.at,
       multi: true,
       directives: {
         defer: options?.defer as NoInfer<TDefer>,
         stream: options?.stream as NoInfer<TStream>,
       },
-    } satisfies MultiInstruction<StorageReadInstruction>);
+    } satisfies MultiStorageReadInstruction);
   }
 
   /**
@@ -436,32 +439,32 @@ export class Query<
   readStorageEntries = this.storageEntries;
 
   runtimeApi<
-    const TPallet extends StringKeyOf<TypedApi<TDescriptor>["apis"]>,
-    const TApi extends StringKeyOf<TypedApi<TDescriptor>["apis"][TPallet]>,
+    const TApi extends StringKeyOf<TypedApi<TDescriptor>["apis"]>,
+    const TMethod extends StringKeyOf<TypedApi<TDescriptor>["apis"][TApi]>,
     const TDefer extends boolean = false,
   >(
-    pallet: TPallet,
     api: TApi,
+    method: TMethod,
     ...[args, options]: InferPapiRuntimeCall<
-      TypedApi<TDescriptor>["apis"][TPallet][TApi]
+      TypedApi<TDescriptor>["apis"][TApi][TMethod]
     >["args"] extends []
       ? [
           args?: InferPapiRuntimeCall<
-            TypedApi<TDescriptor>["apis"][TPallet][TApi]
+            TypedApi<TDescriptor>["apis"][TApi][TMethod]
           >["args"],
           options?: { at?: Finality; defer?: TDefer },
         ]
       : [
           args: InferPapiRuntimeCall<
-            TypedApi<TDescriptor>["apis"][TPallet][TApi]
+            TypedApi<TDescriptor>["apis"][TApi][TMethod]
           >["args"],
           options?: { at?: Finality; defer?: TDefer },
         ]
   ) {
     return this.#append({
       type: "runtime-api",
-      pallet,
       api,
+      method,
       args: args ?? [],
       at: options?.at,
       directives: { defer: options?.defer as NoInfer<TDefer> },
@@ -474,22 +477,22 @@ export class Query<
   callApi = this.runtimeApi;
 
   runtimeApis<
-    const TPallet extends StringKeyOf<TypedApi<TDescriptor>["apis"]>,
-    const TApi extends StringKeyOf<TypedApi<TDescriptor>["apis"][TPallet]>,
+    const TApi extends StringKeyOf<TypedApi<TDescriptor>["apis"]>,
+    const TMethod extends StringKeyOf<TypedApi<TDescriptor>["apis"][TApi]>,
     const TDefer extends boolean = false,
     const TStream extends boolean = false,
   >(
-    pallet: TPallet,
     api: TApi,
+    method: TMethod,
     args: Array<
-      InferPapiRuntimeCall<TypedApi<TDescriptor>["apis"][TPallet][TApi]>["args"]
+      InferPapiRuntimeCall<TypedApi<TDescriptor>["apis"][TApi][TMethod]>["args"]
     >,
     options?: { at?: Finality; defer?: TDefer; stream?: TStream },
   ) {
     return this.#append({
       type: "runtime-api",
-      pallet,
       api,
+      method,
       args,
       at: options?.at,
       multi: true,

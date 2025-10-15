@@ -238,11 +238,14 @@ export function queryObservable<
           return queryInstruction(instruction, chainId, typedApiPromise, cache);
         }
 
-        return instruction.args.map((args) => {
+        return (
+          "keys" in instruction ? instruction.keys : instruction.args
+        ).map((args) => {
           const { multi, ...rest } = instruction;
+          const argsObj = "keys" in rest ? { keys: args } : { args };
 
           const response = queryInstruction(
-            { ...rest, args },
+            { ...rest, ...argsObj },
             chainId,
             typedApiPromise,
             cache,

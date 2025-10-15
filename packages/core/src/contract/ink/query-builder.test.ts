@@ -25,8 +25,8 @@ describe("rootStorage", () => {
             "defer": undefined,
           },
           "key": undefined,
-          "type": "storage",
           "path": "",
+          "type": "storage",
         },
       ]
     `);
@@ -42,8 +42,8 @@ describe("rootStorage", () => {
             "defer": undefined,
           },
           "key": undefined,
-          "type": "storage",
           "path": "",
+          "type": "storage",
         },
       ]
     `);
@@ -61,8 +61,8 @@ describe("storage", () => {
             "defer": undefined,
           },
           "key": undefined,
-          "type": "storage",
           "path": "test-path",
+          "type": "storage",
         },
       ]
     `);
@@ -78,8 +78,8 @@ describe("storage", () => {
             "defer": undefined,
           },
           "key": "key-value",
-          "type": "storage",
           "path": "test-path",
+          "type": "storage",
         },
       ]
     `);
@@ -97,8 +97,8 @@ describe("storage", () => {
             "defer": undefined,
           },
           "key": "key-value",
-          "type": "storage",
           "path": "test-path",
+          "type": "storage",
         },
       ]
     `);
@@ -120,9 +120,9 @@ describe("storages", () => {
             "key1",
             "key2",
           ],
-          "type": "storage",
           "multi": true,
           "path": "test-path",
+          "type": "storage",
         },
       ]
     `);
@@ -144,9 +144,9 @@ describe("storages", () => {
             "key1",
             "key2",
           ],
-          "type": "storage",
           "multi": true,
           "path": "test-path",
+          "type": "storage",
         },
       ]
     `);
@@ -164,9 +164,9 @@ describe("message", () => {
           "directives": {
             "defer": undefined,
           },
-          "type": "message",
           "name": "test-message",
           "origin": undefined,
+          "type": "message",
         },
       ]
     `);
@@ -184,9 +184,9 @@ describe("message", () => {
           "directives": {
             "defer": undefined,
           },
-          "type": "message",
           "name": "test-message",
           "origin": undefined,
+          "type": "message",
         },
       ]
     `);
@@ -208,9 +208,9 @@ describe("message", () => {
           "directives": {
             "defer": undefined,
           },
-          "type": "message",
           "name": "test-message",
           "origin": undefined,
+          "type": "message",
         },
       ]
     `);
@@ -239,10 +239,10 @@ describe("messages", () => {
             "defer": undefined,
             "stream": undefined,
           },
-          "type": "message",
           "multi": true,
           "name": "test-message",
           "origin": undefined,
+          "type": "message",
         },
       ]
     `);
@@ -270,10 +270,10 @@ describe("messages", () => {
             "defer": undefined,
             "stream": undefined,
           },
-          "type": "message",
           "multi": true,
           "name": "test-message",
           "origin": undefined,
+          "type": "message",
         },
       ]
     `);
@@ -297,8 +297,8 @@ describe("chaining", () => {
           "defer": undefined,
         },
         "key": "key1",
-        "type": "storage",
         "path": "path1",
+        "type": "storage",
       }
     `);
     expect(query.instructions[4]).toMatchInlineSnapshot(`
@@ -308,8 +308,8 @@ describe("chaining", () => {
           "defer": undefined,
         },
         "key": undefined,
-        "type": "storage",
         "path": "",
+        "type": "storage",
       }
     `);
   });

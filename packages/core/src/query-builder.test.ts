@@ -30,16 +30,16 @@ it("should append a storage instruction", () => {
   expect(instructions).toHaveLength(1);
   expect(instructions[0]).toMatchInlineSnapshot(`
     {
-      "args": [
-        "arg1",
-      ],
       "at": "finalized",
       "directives": {
         "defer": undefined,
       },
-      "type": "storage",
+      "keys": [
+        "arg1",
+      ],
       "pallet": "TestPallet",
       "storage": "TestStorage",
+      "type": "storage",
     }
   `);
 });
@@ -55,7 +55,12 @@ it("should append a multi storage instruction using storages", () => {
   expect(instructions).toHaveLength(1);
   expect(instructions[0]).toMatchInlineSnapshot(`
     {
-      "args": [
+      "at": undefined,
+      "directives": {
+        "defer": undefined,
+        "stream": undefined,
+      },
+      "keys": [
         [
           "arg1",
         ],
@@ -63,15 +68,10 @@ it("should append a multi storage instruction using storages", () => {
           "arg2",
         ],
       ],
-      "at": undefined,
-      "directives": {
-        "defer": undefined,
-        "stream": undefined,
-      },
-      "type": "storage",
       "multi": true,
       "pallet": "TestPallet",
       "storage": "TestStorage",
+      "type": "storage",
     }
   `);
 });
@@ -93,9 +93,9 @@ it("should append a storage-entries instruction", () => {
       "directives": {
         "defer": undefined,
       },
-      "type": "storage-entries",
       "pallet": "TestPallet",
       "storage": "TestStorage",
+      "type": "storage-entries",
     }
   `);
 });
@@ -110,7 +110,7 @@ it("should append a runtime-api instruction", () => {
   expect(instructions).toHaveLength(1);
   expect(instructions[0]).toMatchInlineSnapshot(`
     {
-      "api": "TestApi",
+      "api": "TestPallet",
       "args": [
         "arg1",
       ],
@@ -118,8 +118,8 @@ it("should append a runtime-api instruction", () => {
       "directives": {
         "defer": undefined,
       },
+      "method": "TestApi",
       "type": "runtime-api",
-      "pallet": "TestPallet",
     }
   `);
 });
@@ -137,7 +137,7 @@ it("should append a multi runtime-api instruction using runtimeApis", () => {
   expect(instructions).toHaveLength(1);
   expect(instructions[0]).toMatchInlineSnapshot(`
     {
-      "api": "TestApi",
+      "api": "TestPallet",
       "args": [
         [
           "arg1",
@@ -151,9 +151,9 @@ it("should append a multi runtime-api instruction using runtimeApis", () => {
         "defer": undefined,
         "stream": undefined,
       },
-      "type": "runtime-api",
+      "method": "TestApi",
       "multi": true,
-      "pallet": "TestPallet",
+      "type": "runtime-api",
     }
   `);
 });
@@ -199,9 +199,9 @@ it("should append a contract instruction", () => {
           "directives": {
             "defer": undefined,
           },
-          "type": "message",
           "name": "testMessage",
           "origin": undefined,
+          "type": "message",
         },
       ],
       "type": "contract",
@@ -240,13 +240,13 @@ it("should append a multi contract instruction using contracts", () => {
           "directives": {
             "defer": undefined,
           },
-          "type": "message",
           "name": "testMessage",
           "origin": undefined,
+          "type": "message",
         },
       ],
-      "type": "contract",
       "multi": true,
+      "type": "contract",
     }
   `);
 });
@@ -279,7 +279,7 @@ it("should concatenate two queries", () => {
   });
   expect(instructions[2]).toMatchObject({
     type: "runtime-api",
-    pallet: "TestPallet",
-    api: "TestApi",
+    api: "TestPallet",
+    method: "TestApi",
   });
 });

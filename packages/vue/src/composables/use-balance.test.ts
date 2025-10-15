@@ -39,7 +39,7 @@ vi.mocked(useQueryObservable).mockImplementation(
         "multi" in instruction &&
         instruction.multi
       ) {
-        return Array.from({ length: instruction.args.length }).fill({
+        return Array.from({ length: instruction.keys.length }).fill({
           nonce: 0,
           consumers: 0,
           providers: 0,

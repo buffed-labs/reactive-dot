@@ -432,21 +432,25 @@ export function getQueryInstructionPayloadAtoms(
         return instructionPayloadAtom(config, chainId, instruction);
       }
 
-      return instruction.args.map((args) => {
-        const { multi, directives, ...rest } = instruction;
+      return ("keys" in instruction ? instruction.keys : instruction.args).map(
+        (args) => {
+          const { multi, directives, ...rest } = instruction;
 
-        const atom = instructionPayloadAtom(config, chainId, {
-          ...rest,
-          args,
-          directives,
-        });
+          const argsObj = "keys" in rest ? { keys: args } : { args };
 
-        if (!directives.stream) {
-          return atom;
-        }
+          const atom = instructionPayloadAtom(config, chainId, {
+            ...rest,
+            ...argsObj,
+            directives,
+          });
 
-        return asDeferred(atom);
-      });
+          if (!directives.stream) {
+            return atom;
+          }
+
+          return asDeferred(atom);
+        },
+      );
     })();
 
     return maybeDeferInstructionResponse(

@@ -55,8 +55,8 @@ describe("preflight", () => {
   it('should return "promise" for runtime-api instruction', () => {
     const instruction = {
       type: "runtime-api",
-      pallet: "test",
-      api: "foo",
+      api: "test",
+      method: "foo",
       args: [],
       at: undefined,
       directives: {
@@ -87,7 +87,7 @@ describe("preflight", () => {
       type: "storage",
       pallet: "test",
       storage: "foo",
-      args: [],
+      keys: [],
       at: undefined,
       directives: {
         defer: undefined,
@@ -102,7 +102,7 @@ describe("preflight", () => {
       type: "storage",
       pallet: "test",
       storage: "foo",
-      args: [1],
+      keys: [1],
       at: "0x1234",
       directives: {
         defer: undefined,
@@ -128,8 +128,8 @@ it('should handle "constant" instruction', async () => {
 it('should handle "runtime-api" instruction', async () => {
   const instruction = {
     type: "runtime-api",
-    pallet: "test",
-    api: "foo",
+    api: "test",
+    method: "foo",
     args: [1, 2],
   } as SimpleQueryInstruction;
 
@@ -146,7 +146,7 @@ it('should handle "storage" instruction with at starting with "0x" (using getVal
     type: "storage",
     pallet: "test",
     storage: "foo",
-    args: [3],
+    keys: [3],
     at: "0xabc",
     directives: {
       defer: undefined,
@@ -167,7 +167,7 @@ it('should handle "storage" instruction without at or non-hex at (using watchVal
     type: "storage",
     pallet: "test",
     storage: "foo",
-    args: [3],
+    keys: [3],
   } as SimpleQueryInstruction;
 
   const result = await firstValueFrom(
