@@ -101,7 +101,7 @@ export function queryObservable<
 
     return queryValue.instructions.map((instruction) => {
       const response = (() => {
-        if (instruction.method === "contract") {
+        if (instruction.type === "contract") {
           const contract = instruction.contract;
 
           const processContractInstructions = (
@@ -124,7 +124,7 @@ export function queryObservable<
 
                   const { multi, ...rest } = instruction;
 
-                  switch (rest.method) {
+                  switch (rest.type) {
                     case "storage": {
                       const { keys, ..._rest } = rest;
 

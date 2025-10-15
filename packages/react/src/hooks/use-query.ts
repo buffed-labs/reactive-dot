@@ -313,7 +313,7 @@ export function getQueryInstructionPayloadAtoms(
 ) {
   return query.instructions.map((instruction) => {
     const responseAtom = (() => {
-      if (instruction.method === "contract") {
+      if (instruction.type === "contract") {
         const processContractInstructions = (
           address: Address,
           instructions: InkQueryInstruction[] | SolidityQueryInstruction[],
@@ -333,7 +333,7 @@ export function getQueryInstructionPayloadAtoms(
 
                 const { multi, ...rest } = instruction;
 
-                switch (rest.method) {
+                switch (rest.type) {
                   case "storage": {
                     const { keys, ..._rest } = rest;
 

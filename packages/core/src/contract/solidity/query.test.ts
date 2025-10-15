@@ -33,7 +33,7 @@ describe("querySolidity", () => {
       fakeApi as any,
       abi as any,
       "0x1234567890123456789012345678901234567890",
-      { method: "function", name: "foo", args: [1] } as any,
+      { type: "function", name: "foo", args: [1] } as any,
     );
 
     expect(result).toEqual([42]);
@@ -61,7 +61,7 @@ describe("querySolidity", () => {
         fakeApi as any,
         abi as any,
         "0x1234567890123456789012345678901234567890",
-        { method: "function", name: "foo", args: [1] } as any,
+        { type: "function", name: "foo", args: [1] } as any,
       ),
     ).rejects.toBeInstanceOf(QueryError);
   });

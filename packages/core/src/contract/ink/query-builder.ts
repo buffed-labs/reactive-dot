@@ -118,7 +118,7 @@ export class InkQuery<
     defer?: TDefer;
   }) {
     return this.#append({
-      method: "storage",
+      type: "storage",
       path: "" as const,
       key: undefined,
       at: options?.at,
@@ -148,7 +148,7 @@ export class InkQuery<
         ]
   ) {
     return this.#append({
-      method: "storage",
+      type: "storage",
       path,
       key: key as any,
       at: options?.at,
@@ -169,7 +169,7 @@ export class InkQuery<
     options?: { at?: Finality; defer?: TDefer; stream?: TStream },
   ) {
     return this.#append({
-      method: "storage",
+      type: "storage",
       multi: true,
       directives: {
         defer: options?.defer as NoInfer<TDefer>,
@@ -203,7 +203,7 @@ export class InkQuery<
         ]
   ) {
     return this.#append({
-      method: "message",
+      type: "message",
       // TODO: this is needed for some reason
       name: name as typeof name,
       body,
@@ -230,7 +230,7 @@ export class InkQuery<
     },
   ) {
     return this.#append({
-      method: "message",
+      type: "message",
       multi: true,
       directives: {
         defer: options?.defer as NoInfer<TDefer>,

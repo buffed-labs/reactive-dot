@@ -10,7 +10,7 @@ import { ref } from "vue";
 describe("tapTx", () => {
   const chainId = 1 as const;
   const dummyTx = {
-    decodedCall: { method: "0x123", args: [] },
+    decodedCall: { type: "0x123", args: [] },
   } as unknown as GenericTransaction;
 
   it("should set pending then success with data", async () => {

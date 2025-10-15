@@ -25,7 +25,7 @@ describe("rootStorage", () => {
             "defer": undefined,
           },
           "key": undefined,
-          "method": "storage",
+          "type": "storage",
           "path": "",
         },
       ]
@@ -42,7 +42,7 @@ describe("rootStorage", () => {
             "defer": undefined,
           },
           "key": undefined,
-          "method": "storage",
+          "type": "storage",
           "path": "",
         },
       ]
@@ -61,7 +61,7 @@ describe("storage", () => {
             "defer": undefined,
           },
           "key": undefined,
-          "method": "storage",
+          "type": "storage",
           "path": "test-path",
         },
       ]
@@ -78,7 +78,7 @@ describe("storage", () => {
             "defer": undefined,
           },
           "key": "key-value",
-          "method": "storage",
+          "type": "storage",
           "path": "test-path",
         },
       ]
@@ -97,7 +97,7 @@ describe("storage", () => {
             "defer": undefined,
           },
           "key": "key-value",
-          "method": "storage",
+          "type": "storage",
           "path": "test-path",
         },
       ]
@@ -120,7 +120,7 @@ describe("storages", () => {
             "key1",
             "key2",
           ],
-          "method": "storage",
+          "type": "storage",
           "multi": true,
           "path": "test-path",
         },
@@ -144,7 +144,7 @@ describe("storages", () => {
             "key1",
             "key2",
           ],
-          "method": "storage",
+          "type": "storage",
           "multi": true,
           "path": "test-path",
         },
@@ -164,7 +164,7 @@ describe("message", () => {
           "directives": {
             "defer": undefined,
           },
-          "method": "message",
+          "type": "message",
           "name": "test-message",
           "origin": undefined,
         },
@@ -184,7 +184,7 @@ describe("message", () => {
           "directives": {
             "defer": undefined,
           },
-          "method": "message",
+          "type": "message",
           "name": "test-message",
           "origin": undefined,
         },
@@ -208,7 +208,7 @@ describe("message", () => {
           "directives": {
             "defer": undefined,
           },
-          "method": "message",
+          "type": "message",
           "name": "test-message",
           "origin": undefined,
         },
@@ -239,7 +239,7 @@ describe("messages", () => {
             "defer": undefined,
             "stream": undefined,
           },
-          "method": "message",
+          "type": "message",
           "multi": true,
           "name": "test-message",
           "origin": undefined,
@@ -270,7 +270,7 @@ describe("messages", () => {
             "defer": undefined,
             "stream": undefined,
           },
-          "method": "message",
+          "type": "message",
           "multi": true,
           "name": "test-message",
           "origin": undefined,
@@ -297,7 +297,7 @@ describe("chaining", () => {
           "defer": undefined,
         },
         "key": "key1",
-        "method": "storage",
+        "type": "storage",
         "path": "path1",
       }
     `);
@@ -308,7 +308,7 @@ describe("chaining", () => {
           "defer": undefined,
         },
         "key": undefined,
-        "method": "storage",
+        "type": "storage",
         "path": "",
       }
     `);

@@ -14,7 +14,7 @@ export function query<
   instruction: TInstruction,
   options?: { signal?: AbortSignal },
 ): InferInstructionResponse<TInstruction> {
-  switch (instruction.method) {
+  switch (instruction.type) {
     case "constant":
       return (
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -85,7 +85,7 @@ export function preflight(instruction: SimpleQueryInstruction) {
     return "promise";
   }
 
-  switch (instruction.method) {
+  switch (instruction.type) {
     case "constant":
     case "runtime-api":
       return "promise";
