@@ -1,5 +1,11 @@
 # @reactive-dot/core
 
+## 0.55.2
+
+### Patch Changes
+
+- [#938](https://github.com/buffed-labs/reactive-dot/pull/938) [`3de443c`](https://github.com/buffed-labs/reactive-dot/commit/3de443c2ed91f05e6e59f28891a740fad86f78d8) Thanks [@tien](https://github.com/tien)! - Fixed an issue where concurrent wallet initialization could run more than once.
+
 ## 0.55.1
 
 ### Patch Changes
