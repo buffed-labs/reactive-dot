@@ -374,7 +374,14 @@ export function queryContractInstruction(
     () =>
       ({
         chainId: toValue(chainId),
-        instruction: { ...instruction, contract, address: toValue(address) },
+        instruction: {
+          ...instruction,
+          kind: contract instanceof InkContract ? "ink" : "solidity",
+          contract,
+          address: toValue(address),
+        } as Parameters<
+          Parameters<DataStore["invalidateContractQueries"]>[0]
+        >[0],
       }) satisfies QueryContractInstructionMetadata,
   );
 
@@ -386,6 +393,7 @@ export function queryContractInstruction(
         "ink-query",
         toValue(chainId),
         contract.id,
+        toValue(address),
         stringify(
           omit(instruction, ["directives" as keyof typeof instruction]),
         ),
@@ -406,6 +414,7 @@ export function queryContractInstruction(
         "solidity-query",
         toValue(chainId),
         contract.id,
+        toValue(address),
         stringify(
           omit(instruction, ["directives" as keyof typeof instruction]),
         ),

@@ -1,7 +1,9 @@
 import type { ChainDescriptorOf, ChainId } from "./chains.js";
 import type {
+  InkContract,
   SimpleInkQueryInstruction,
   SimpleSolidityQueryInstruction,
+  SolidityContract,
 } from "./internal.js";
 import type {
   ContractReadInstruction,
@@ -41,8 +43,17 @@ export interface DataStore {
   invalidateContractQueries<TChainId extends ChainId | undefined>(
     shouldInvalidate: (
       instruction: MappedOmit<
-        Pick<ContractReadInstruction, "contract" | "address"> &
-          (SimpleInkQueryInstruction | SimpleSolidityQueryInstruction),
+        Pick<ContractReadInstruction, "address"> &
+          (
+            | ({
+                kind: "ink";
+                contract: InkContract;
+              } & SimpleInkQueryInstruction)
+            | ({
+                kind: "solidity";
+                contract: SolidityContract;
+              } & SimpleSolidityQueryInstruction)
+          ),
         "directives"
       >,
     ) => boolean,

@@ -29,7 +29,7 @@ export function useStore(): DataStore {
           cache,
         ),
       ),
-    invalidateChainQueries: (shouldInvalidate, options) => {
+    invalidateChainQueries: (shouldInvalidate, options) =>
       toValue(cache).forEach((value, key) => {
         if (
           key.startsWith(chainQueryCacheKeyPrefix) &&
@@ -45,9 +45,8 @@ export function useStore(): DataStore {
             refresh(value);
           }
         }
-      });
-    },
-    invalidateContractQueries: (shouldInvalidate, options) => {
+      }),
+    invalidateContractQueries: (shouldInvalidate, options) =>
       toValue(cache).forEach((value, key) => {
         if (
           (key.startsWith(inkQueryCacheKeyPrefix) ||
@@ -66,7 +65,6 @@ export function useStore(): DataStore {
             refresh(value);
           }
         }
-      });
-    },
+      }),
   };
 }

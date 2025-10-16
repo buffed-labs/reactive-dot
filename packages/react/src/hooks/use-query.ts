@@ -275,7 +275,14 @@ export const contractInstructionPayloadAtom: AtomFamily<
       __meta: {
         config,
         chainId,
-        instruction: { ...instruction, contract, address },
+        instruction: {
+          ...instruction,
+          kind: contract instanceof InkContract ? "ink" : "solidity",
+          contract,
+          address,
+        } as Parameters<
+          Parameters<DataStore["invalidateContractQueries"]>[0]
+        >[0],
       },
     };
   },
