@@ -10,12 +10,12 @@ import {
   solidityQueryCacheKeyPrefix,
 } from "./use-query.js";
 import { useTypedApiPromise } from "./use-typed-api.js";
-import { Query } from "@reactive-dot/core";
+import { BaseError, Query } from "@reactive-dot/core";
 import type { DataStore } from "@reactive-dot/core/internal.js";
 import { computed, toValue } from "vue";
 
 export function useStore(): DataStore {
-  const chainId = internal_useChainId();
+  const chainId = internal_useChainId({ optionalChainId: true });
   const typedApiPromise = useTypedApiPromise();
   const cache = useLazyValuesCache();
 
@@ -23,13 +23,22 @@ export function useStore(): DataStore {
     invalidateQuery: (builder, options) =>
       refresh(
         queryObservable(
-          computed(() => options?.chainId ?? toValue(chainId)),
+          computed(() => {
+            const _chainId = options?.chainId ?? toValue(chainId);
+
+            if (_chainId === undefined) {
+              throw new BaseError("No chain ID provided");
+            }
+
+            return _chainId;
+          }),
           typedApiPromise,
           builder(new Query()),
           cache,
         ),
       ),
-    invalidateChainQueries: (shouldInvalidate, options) =>
+    invalidateChainQueries: (shouldInvalidate, options) => {
+      const _chainId = options?.chainId ?? toValue(chainId);
       toValue(cache).forEach((value, key) => {
         if (
           key.startsWith(chainQueryCacheKeyPrefix) &&
@@ -39,14 +48,16 @@ export function useStore(): DataStore {
           const metadata = value[metadataSymbol] as QueryInstructionMetadata;
 
           if (
-            metadata.chainId === (options?.chainId ?? toValue(chainId)) &&
+            (_chainId === undefined || _chainId === metadata.chainId) &&
             shouldInvalidate(metadata.instruction)
           ) {
             refresh(value);
           }
         }
-      }),
-    invalidateContractQueries: (shouldInvalidate, options) =>
+      });
+    },
+    invalidateContractQueries: (shouldInvalidate, options) => {
+      const _chainId = options?.chainId ?? toValue(chainId);
       toValue(cache).forEach((value, key) => {
         if (
           (key.startsWith(inkQueryCacheKeyPrefix) ||
@@ -59,12 +70,13 @@ export function useStore(): DataStore {
           ] as QueryContractInstructionMetadata;
 
           if (
-            metadata.chainId === (options?.chainId ?? toValue(chainId)) &&
+            (_chainId === undefined || _chainId === metadata.chainId) &&
             shouldInvalidate(metadata.instruction)
           ) {
             refresh(value);
           }
         }
-      }),
+      });
+    },
   };
 }
