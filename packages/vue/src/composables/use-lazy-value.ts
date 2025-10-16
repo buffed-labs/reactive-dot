@@ -51,7 +51,8 @@ export function lazyValue<T>(
   cache: MaybeRefOrGetter<Map<string, ShallowRef<unknown>>>,
   metadata?: MaybeRefOrGetter<unknown>,
 ) {
-  const makeRefreshable = (ref: Ref) => refreshable(ref, () => void put(true));
+  const makeRefreshable = <T extends Ref>(ref: T) =>
+    refreshable(ref, () => void put(true));
 
   const put = (force = false) => {
     const stringKey = toValue(key).join("/");
