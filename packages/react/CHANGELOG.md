@@ -1,5 +1,16 @@
 # @reactive-dot/react
 
+## 0.56.0
+
+### Minor Changes
+
+- [#940](https://github.com/buffed-labs/reactive-dot/pull/940) [`170291d`](https://github.com/buffed-labs/reactive-dot/commit/170291d230bfc1c31058fd7ca71118aea9193fe3) Thanks [@tien](https://github.com/tien)! - Added `invalidateChainQueries` and `invalidateContractQueries` methods to enable bulk invalidation of queries matching a predicate.
+
+### Patch Changes
+
+- Updated dependencies [[`170291d`](https://github.com/buffed-labs/reactive-dot/commit/170291d230bfc1c31058fd7ca71118aea9193fe3)]:
+  - @reactive-dot/core@0.56.0
+
 ## 0.55.1
 
 ### Patch Changes
