@@ -1,6 +1,7 @@
 import { findAllIndexes } from "../utils/find-all-indexes.js";
 import { interlace } from "../utils/interlace.js";
 import { atomFamilyWithErrorCatcher } from "../utils/jotai/atom-family-with-error-catcher.js";
+import type { AtomFamily } from "../utils/jotai/atom-family.js";
 import {
   atomWithObservableAndPromise,
   mapAtomWithObservableAndPromise,
@@ -32,6 +33,7 @@ import {
 } from "@reactive-dot/core";
 import {
   type Contract,
+  type DataStore,
   flatHead,
   InkContract,
   type InkQueryInstruction,
@@ -48,7 +50,7 @@ import {
   queryInk,
   querySolidity,
 } from "@reactive-dot/core/internal/actions.js";
-import { atom, type Getter } from "jotai";
+import { atom, type Getter, type WritableAtom } from "jotai";
 import { soon, soonAll } from "jotai-eager";
 import { unwrap } from "jotai/utils";
 import { useMemo } from "react";
@@ -210,7 +212,26 @@ export function useLazyLoadQueryWithRefresh(
   return [data, refresh];
 }
 
-const contractInstructionPayloadAtom = atomFamilyWithErrorCatcher(
+export const contractInstructionPayloadAtom: AtomFamily<
+  [
+    config: Config,
+    chainId: ChainId,
+    contract: Contract,
+    address: Address,
+    instruction: SimpleInkQueryInstruction | SimpleSolidityQueryInstruction,
+  ],
+  {
+    promiseAtom: WritableAtom<unknown, [], void>;
+    observableAtom: WritableAtom<unknown, [], void>;
+    __meta: {
+      config: Config;
+      chainId: ChainId;
+      instruction: Parameters<
+        Parameters<DataStore["invalidateContractQueries"]>[0]
+      >[0];
+    };
+  }
+> = atomFamilyWithErrorCatcher(
   (
     withErrorCatcher,
     config: Config,
@@ -248,8 +269,15 @@ const contractInstructionPayloadAtom = atomFamilyWithErrorCatcher(
         );
       }),
     );
-
-    return { promiseAtom, observableAtom: promiseAtom };
+    return {
+      promiseAtom,
+      observableAtom: promiseAtom,
+      __meta: {
+        config,
+        chainId,
+        instruction: { ...instruction, contract, address },
+      },
+    };
   },
   (config, chainId, contract, address, instruction) =>
     [
@@ -261,40 +289,44 @@ const contractInstructionPayloadAtom = atomFamilyWithErrorCatcher(
     ].join(),
 );
 
-const instructionPayloadAtom = atomFamilyWithErrorCatcher(
+export const instructionPayloadAtom = atomFamilyWithErrorCatcher(
   (
     withErrorCatcher,
     config: Config,
     chainId: ChainId,
     instruction: SimpleQueryInstruction,
-  ) => {
-    switch (preflight(instruction)) {
-      case "promise": {
-        const atom = withErrorCatcher(
-          atomWithPromise((get, { signal }) =>
-            soon(get(typedApiAtom(config, chainId)), (api) =>
-              query(api, instruction, { signal }),
-            ),
-          ),
-        );
-
-        return {
-          observableAtom: atom,
-          promiseAtom: atom,
-        };
-      }
-      case "observable":
-        return atomWithObservableAndPromise(
-          (get) =>
-            from(Promise.resolve(get(typedApiAtom(config, chainId)))).pipe(
-              switchMap(
-                (api) => query(api, instruction) as Observable<unknown>,
+  ) =>
+    Object.assign(
+      (() => {
+        switch (preflight(instruction)) {
+          case "promise": {
+            const atom = withErrorCatcher(
+              atomWithPromise((get, { signal }) =>
+                soon(get(typedApiAtom(config, chainId)), (api) =>
+                  query(api, instruction, { signal }),
+                ),
               ),
-            ),
-          withErrorCatcher,
-        );
-    }
-  },
+            );
+
+            return {
+              observableAtom: atom,
+              promiseAtom: atom,
+            };
+          }
+          case "observable":
+            return atomWithObservableAndPromise(
+              (get) =>
+                from(Promise.resolve(get(typedApiAtom(config, chainId)))).pipe(
+                  switchMap(
+                    (api) => query(api, instruction) as Observable<unknown>,
+                  ),
+                ),
+              withErrorCatcher,
+            );
+        }
+      })(),
+      { __meta: { config, chainId, instruction } },
+    ),
   (config, chainId, instruction) =>
     [
       objectId(config),

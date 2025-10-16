@@ -3,6 +3,7 @@ import { objectId } from "../object-id.js";
 export type AtomFamily<TArguments extends unknown[], TAtomType> = {
   (...args: TArguments): TAtomType;
   delete: (...args: TArguments) => boolean;
+  values: () => MapIterator<TAtomType>;
 };
 
 export function atomFamily<TArguments extends unknown[], TAtomType>(
@@ -29,6 +30,9 @@ export function atomFamily<TArguments extends unknown[], TAtomType>(
         atoms.get(key) ?? atoms.set(key, initializeAtom(...args)).get(key)!
       );
     },
-    { delete: (...args: TArguments) => atoms.delete(_getKey(...args)) },
+    {
+      delete: (...args: TArguments) => atoms.delete(_getKey(...args)),
+      values: () => atoms.values(),
+    },
   );
 }

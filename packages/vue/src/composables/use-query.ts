@@ -20,6 +20,7 @@ import { useTypedApiPromise } from "./use-typed-api.js";
 import { type Address, type ChainId, pending, Query } from "@reactive-dot/core";
 import {
   type Contract,
+  type DataStore,
   flatHead,
   InkContract,
   type InkQueryInstruction,
@@ -299,7 +300,14 @@ export function queryObservable<
   >;
 }
 
-function queryInstruction(
+export const chainQueryCacheKeyPrefix = "chain-query";
+
+export type QueryInstructionMetadata = {
+  chainId: ChainId;
+  instruction: SimpleQueryInstruction;
+};
+
+export function queryInstruction(
   instruction: SimpleQueryInstruction,
   chainId: MaybeRefOrGetter<ChainId>,
   typedApiPromise: MaybeRefOrGetter<Promise<TypedApi<ChainDefinition>>>,
@@ -307,7 +315,7 @@ function queryInstruction(
 ) {
   return lazyValue(
     computed(() => [
-      "query",
+      chainQueryCacheKeyPrefix,
       toValue(chainId),
       stringify(
         toValue(omit(instruction, ["directives" as keyof typeof instruction])),
@@ -333,10 +341,28 @@ function queryInstruction(
       }
     },
     cache,
+    computed(
+      () =>
+        ({
+          chainId: toValue(chainId),
+          instruction,
+        }) satisfies QueryInstructionMetadata,
+    ),
   );
 }
 
-function queryContractInstruction(
+export const inkQueryCacheKeyPrefix = "ink-query";
+
+export const solidityQueryCacheKeyPrefix = "solidity-query";
+
+export type QueryContractInstructionMetadata = {
+  chainId: ChainId;
+  instruction: Parameters<
+    Parameters<DataStore["invalidateContractQueries"]>[0]
+  >[0];
+};
+
+export function queryContractInstruction(
   chainId: MaybeRefOrGetter<ChainId>,
   typedApiPromise: MaybeRefOrGetter<Promise<TypedApi<ChainDefinition>>>,
   contract: Contract,
@@ -344,6 +370,14 @@ function queryContractInstruction(
   instruction: SimpleInkQueryInstruction | SimpleSolidityQueryInstruction,
   cache: MaybeRefOrGetter<Map<string, ShallowRef<unknown>>>,
 ) {
+  const metadata = computed(
+    () =>
+      ({
+        chainId: toValue(chainId),
+        instruction: { ...instruction, contract, address: toValue(address) },
+      }) satisfies QueryContractInstructionMetadata,
+  );
+
   if (contract instanceof InkContract) {
     const inkClient = getInkClient(contract, cache);
 
@@ -364,6 +398,7 @@ function queryContractInstruction(
           instruction as SimpleInkQueryInstruction,
         ),
       cache,
+      metadata,
     );
   } else {
     return lazyValue(
@@ -383,6 +418,7 @@ function queryContractInstruction(
           instruction as SimpleSolidityQueryInstruction,
         ),
       cache,
+      metadata,
     );
   }
 }

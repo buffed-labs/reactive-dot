@@ -38,15 +38,17 @@ export function useLazyValuesCache() {
   return cache;
 }
 
-/**
- * @internal
- */
+/** @internal */
 export const erroredSymbol = Symbol("errored");
+
+/** @internal */
+export const metadataSymbol = Symbol("metadata");
 
 export function lazyValue<T>(
   key: MaybeRefOrGetter<Key[]>,
   get: () => T,
   cache: MaybeRefOrGetter<Map<string, ShallowRef<unknown>>>,
+  metadata?: MaybeRefOrGetter<unknown>,
 ) {
   const put = (force = false) => {
     const stringKey = toValue(key).join("/");
@@ -56,7 +58,14 @@ export function lazyValue<T>(
     const refValue = (
       hasValue
         ? toValue(cache).get(stringKey)!
-        : toValue(cache).set(stringKey, shallowRef()).get(stringKey)!
+        : toValue(cache)
+            .set(
+              stringKey,
+              Object.assign(shallowRef(), {
+                [metadataSymbol]: toValue(metadata),
+              }),
+            )
+            .get(stringKey)!
     ) as ShallowRef<T>;
 
     const tagAsErrored = () =>

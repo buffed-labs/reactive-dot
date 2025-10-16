@@ -14,3 +14,7 @@ export function refreshable<T extends object>(value: T, refresh: () => void) {
 export function refresh(value: Refreshable<unknown>) {
   value[refreshSymbol]();
 }
+
+export function canRefresh(value: unknown): value is Refreshable<unknown> {
+  return typeof value === "object" && value !== null && refreshSymbol in value;
+}
