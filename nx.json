@@ -10,6 +10,5 @@
     },
     "lint": { "cache": true }
   },
-  "parallel": 10,
-  "nxCloudId": "68ddf67dc1f3dcde102ea6d6"
+  "parallel": 10
 }
