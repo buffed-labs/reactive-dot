@@ -1,3 +1,5 @@
+import { BaseError } from "../../errors.js";
+
 type Result<T> =
   | { success: true; value: T }
   | {
@@ -23,7 +25,9 @@ export function unwrapResult(maybeResult: unknown): unknown {
   }
 
   if (!maybeResult.success) {
-    throw new Error(maybeResult.value.type, { cause: maybeResult.value.value });
+    throw new BaseError(maybeResult.value.type, {
+      cause: maybeResult.value.value,
+    });
   }
 
   return maybeResult.value;

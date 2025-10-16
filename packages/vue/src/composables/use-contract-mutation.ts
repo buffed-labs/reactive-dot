@@ -7,7 +7,7 @@ import { getInkClient } from "./use-ink-client.js";
 import { useLazyValuesCache } from "./use-lazy-value.js";
 import { useSigner } from "./use-signer.js";
 import { useTypedApiPromise } from "./use-typed-api.js";
-import { MutationError } from "@reactive-dot/core";
+import { BaseError, MutationError } from "@reactive-dot/core";
 import {
   getSolidityContractTx,
   InkContract,
@@ -56,7 +56,7 @@ export function useContractMutation<
   const mutationEventRef = inject(
     mutationEventKey,
     () => {
-      throw new Error("No mutation event ref provided");
+      throw new BaseError("No mutation event ref provided");
     },
     true,
   );

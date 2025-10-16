@@ -1,4 +1,5 @@
 import { type Address, toH160Bytes } from "../../address.js";
+import { BaseError } from "../../errors.js";
 import type { ExtractExactProperties, StringKeyOf } from "../../types.js";
 import { omitUndefinedProperties } from "../../utils/omit-undefined-properties.js";
 import type { ContractCompatApi } from "../types.js";
@@ -26,7 +27,7 @@ export async function getInkContractTx<
   const message = inkClient.message(messageName);
 
   if (!message.attributes.mutates) {
-    throw new Error(
+    throw new BaseError(
       `Readonly message ${String(messageName)} cannot be used in a mutating transaction`,
     );
   }
