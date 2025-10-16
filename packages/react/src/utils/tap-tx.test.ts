@@ -14,7 +14,7 @@ const mockTransaction: GenericTransaction = {
   decodedCall: {
     // @ts-expect-error Mocking a transaction call
     pallet: "system",
-    method: "remark",
+    type: "remark",
     args: { _remark: "test" },
   },
   getEncodedData: vi.fn(),

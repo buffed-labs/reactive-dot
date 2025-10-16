@@ -14,7 +14,7 @@ export function query<
   instruction: TInstruction,
   options?: { signal?: AbortSignal },
 ): InferInstructionResponse<TInstruction> {
-  switch (instruction.method) {
+  switch (instruction.type) {
     case "constant":
       return (
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -22,7 +22,7 @@ export function query<
       );
     case "runtime-api":
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      return (api.apis[instruction.pallet]![instruction.api] as any)(
+      return (api.apis[instruction.api]![instruction.method] as any)(
         ...instruction.args,
         { signal: options?.signal, at: instruction.at },
       );
@@ -33,9 +33,9 @@ export function query<
       ] as any;
 
       return instruction.at?.startsWith("0x")
-        ? storageEntry.getValue(...instruction.args, { at: instruction.at })
+        ? storageEntry.getValue(...instruction.keys, { at: instruction.at })
         : storageEntry.watchValue(
-            ...instruction.args,
+            ...instruction.keys,
             ...[instruction.at].filter((x) => x !== undefined),
           );
     }
@@ -85,7 +85,7 @@ export function preflight(instruction: SimpleQueryInstruction) {
     return "promise";
   }
 
-  switch (instruction.method) {
+  switch (instruction.type) {
     case "constant":
     case "runtime-api":
       return "promise";

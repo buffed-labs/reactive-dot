@@ -45,8 +45,8 @@ describe("useQuery", () => {
           "directives": {
             "defer": undefined,
           },
-          "method": "storage",
           "path": "",
+          "type": "storage",
         },
       ]
     `);
@@ -79,8 +79,8 @@ describe("useQuery", () => {
               "directives": {
                 "defer": undefined,
               },
-              "method": "storage",
               "path": "",
+              "type": "storage",
             },
           ],
           [
@@ -90,8 +90,8 @@ describe("useQuery", () => {
                 "defer": undefined,
               },
               "key": "test_key",
-              "method": "storage",
               "path": "test_storage",
+              "type": "storage",
             },
           ],
           [
@@ -103,8 +103,8 @@ describe("useQuery", () => {
                   "stream": undefined,
                 },
                 "key": "test_key1",
-                "method": "storage",
                 "path": "test_storage",
+                "type": "storage",
               },
             ],
             [
@@ -115,8 +115,8 @@ describe("useQuery", () => {
                   "stream": undefined,
                 },
                 "key": "test_key2",
-                "method": "storage",
                 "path": "test_storage",
+                "type": "storage",
               },
             ],
           ],
@@ -129,8 +129,8 @@ describe("useQuery", () => {
               "directives": {
                 "defer": undefined,
               },
-              "method": "message",
               "name": "test_message",
+              "type": "message",
             },
           ],
           [
@@ -144,8 +144,8 @@ describe("useQuery", () => {
                   "defer": undefined,
                   "stream": undefined,
                 },
-                "method": "message",
                 "name": "test_message",
+                "type": "message",
               },
             ],
             [
@@ -158,8 +158,8 @@ describe("useQuery", () => {
                   "defer": undefined,
                   "stream": undefined,
                 },
-                "method": "message",
                 "name": "test_message",
+                "type": "message",
               },
             ],
           ],
@@ -174,8 +174,8 @@ describe("useQuery", () => {
                   "defer": undefined,
                   "stream": undefined,
                 },
-                "method": "message",
                 "name": "test_message",
+                "type": "message",
               },
             ],
             [
@@ -188,8 +188,8 @@ describe("useQuery", () => {
                   "defer": undefined,
                   "stream": undefined,
                 },
-                "method": "message",
                 "name": "test_message",
+                "type": "message",
               },
             ],
           ],
@@ -202,8 +202,8 @@ describe("useQuery", () => {
                 "directives": {
                   "defer": undefined,
                 },
-                "method": "storage",
                 "path": "",
+                "type": "storage",
               },
             ],
             [
@@ -213,8 +213,8 @@ describe("useQuery", () => {
                   "defer": undefined,
                 },
                 "key": "test_key",
-                "method": "storage",
                 "path": "test_storage",
+                "type": "storage",
               },
             ],
             [
@@ -226,8 +226,8 @@ describe("useQuery", () => {
                     "stream": undefined,
                   },
                   "key": "test_key1",
-                  "method": "storage",
                   "path": "test_storage",
+                  "type": "storage",
                 },
               ],
               [
@@ -238,8 +238,8 @@ describe("useQuery", () => {
                     "stream": undefined,
                   },
                   "key": "test_key2",
-                  "method": "storage",
                   "path": "test_storage",
+                  "type": "storage",
                 },
               ],
             ],
@@ -252,8 +252,8 @@ describe("useQuery", () => {
                 "directives": {
                   "defer": undefined,
                 },
-                "method": "message",
                 "name": "test_message",
+                "type": "message",
               },
             ],
             [
@@ -267,8 +267,8 @@ describe("useQuery", () => {
                     "defer": undefined,
                     "stream": undefined,
                   },
-                  "method": "message",
                   "name": "test_message",
+                  "type": "message",
                 },
               ],
               [
@@ -281,62 +281,62 @@ describe("useQuery", () => {
                     "defer": undefined,
                     "stream": undefined,
                   },
-                  "method": "message",
                   "name": "test_message",
+                  "type": "message",
                 },
               ],
             ],
           ],
           [
             [
-              "contract-0x",
+              "contract-0x1",
               {
                 "directives": {
                   "defer": undefined,
                 },
-                "method": "storage",
                 "path": "",
+                "type": "storage",
               },
             ],
             [
-              "contract-0x",
+              "contract-0x1",
               {
                 "directives": {
                   "defer": undefined,
                 },
                 "key": "test_key",
-                "method": "storage",
                 "path": "test_storage",
+                "type": "storage",
               },
             ],
             [
               [
-                "contract-0x",
+                "contract-0x1",
                 {
                   "directives": {
                     "defer": undefined,
                     "stream": undefined,
                   },
                   "key": "test_key1",
-                  "method": "storage",
                   "path": "test_storage",
+                  "type": "storage",
                 },
               ],
               [
-                "contract-0x",
+                "contract-0x1",
                 {
                   "directives": {
                     "defer": undefined,
                     "stream": undefined,
                   },
                   "key": "test_key2",
-                  "method": "storage",
                   "path": "test_storage",
+                  "type": "storage",
                 },
               ],
             ],
             [
-              "contract-0x",
+              "contract-0x1",
               {
                 "body": {
                   "data": "test-data",
@@ -344,13 +344,13 @@ describe("useQuery", () => {
                 "directives": {
                   "defer": undefined,
                 },
-                "method": "message",
                 "name": "test_message",
+                "type": "message",
               },
             ],
             [
               [
-                "contract-0x",
+                "contract-0x1",
                 {
                   "body": {
                     "data": "test-data1",
@@ -359,12 +359,12 @@ describe("useQuery", () => {
                     "defer": undefined,
                     "stream": undefined,
                   },
-                  "method": "message",
                   "name": "test_message",
+                  "type": "message",
                 },
               ],
               [
-                "contract-0x",
+                "contract-0x1",
                 {
                   "body": {
                     "data": "test-data2",
@@ -373,8 +373,8 @@ describe("useQuery", () => {
                     "defer": undefined,
                     "stream": undefined,
                   },
-                  "method": "message",
                   "name": "test_message",
+                  "type": "message",
                 },
               ],
             ],
@@ -390,8 +390,8 @@ describe("useQuery", () => {
               "directives": {
                 "defer": undefined,
               },
-              "method": "function",
               "name": "test_func",
+              "type": "function",
             },
           ],
           [
@@ -405,8 +405,8 @@ describe("useQuery", () => {
                   "defer": undefined,
                   "stream": undefined,
                 },
-                "method": "function",
                 "name": "test_func",
+                "type": "function",
               },
             ],
             [
@@ -419,8 +419,8 @@ describe("useQuery", () => {
                   "defer": undefined,
                   "stream": undefined,
                 },
-                "method": "function",
                 "name": "test_func",
+                "type": "function",
               },
             ],
           ],
@@ -436,8 +436,8 @@ describe("useQuery", () => {
                 "directives": {
                   "defer": undefined,
                 },
-                "method": "function",
                 "name": "test_func",
+                "type": "function",
               },
             ],
             [
@@ -451,8 +451,8 @@ describe("useQuery", () => {
                     "defer": undefined,
                     "stream": undefined,
                   },
-                  "method": "function",
                   "name": "test_func",
+                  "type": "function",
                 },
               ],
               [
@@ -465,15 +465,15 @@ describe("useQuery", () => {
                     "defer": undefined,
                     "stream": undefined,
                   },
-                  "method": "function",
                   "name": "test_func",
+                  "type": "function",
                 },
               ],
             ],
           ],
           [
             [
-              "contract-0x",
+              "contract-0x1",
               {
                 "args": [
                   "test-data",
@@ -481,13 +481,13 @@ describe("useQuery", () => {
                 "directives": {
                   "defer": undefined,
                 },
-                "method": "function",
                 "name": "test_func",
+                "type": "function",
               },
             ],
             [
               [
-                "contract-0x",
+                "contract-0x1",
                 {
                   "args": [
                     "test-data1",
@@ -496,12 +496,12 @@ describe("useQuery", () => {
                     "defer": undefined,
                     "stream": undefined,
                   },
-                  "method": "function",
                   "name": "test_func",
+                  "type": "function",
                 },
               ],
               [
-                "contract-0x",
+                "contract-0x1",
                 {
                   "args": [
                     "test-data2",
@@ -510,8 +510,8 @@ describe("useQuery", () => {
                     "defer": undefined,
                     "stream": undefined,
                   },
-                  "method": "function",
                   "name": "test_func",
+                  "type": "function",
                 },
               ],
             ],
@@ -602,8 +602,8 @@ describe("useQuery", () => {
                 "stream": undefined,
               },
               "key": Symbol(delay),
-              "method": "storage",
               "path": "test_storage",
+              "type": "storage",
             },
           ],
           [
@@ -615,8 +615,8 @@ describe("useQuery", () => {
                   "stream": undefined,
                 },
                 "key": Symbol(delay),
-                "method": "storage",
                 "path": "test_storage",
+                "type": "storage",
               },
             ],
             [
@@ -627,8 +627,8 @@ describe("useQuery", () => {
                   "stream": undefined,
                 },
                 "key": Symbol(delay),
-                "method": "storage",
                 "path": "test_storage",
+                "type": "storage",
               },
             ],
           ],
@@ -639,8 +639,8 @@ describe("useQuery", () => {
               "directives": {
                 "defer": true,
               },
-              "method": "message",
               "name": "test_message",
+              "type": "message",
             },
           ],
           [
@@ -651,8 +651,8 @@ describe("useQuery", () => {
                 "directives": {
                   "defer": true,
                 },
-                "method": "message",
                 "name": "test_message",
+                "type": "message",
               },
             ],
             [
@@ -662,8 +662,8 @@ describe("useQuery", () => {
                 "directives": {
                   "defer": true,
                 },
-                "method": "message",
                 "name": "test_message",
+                "type": "message",
               },
             ],
           ],
@@ -677,8 +677,8 @@ describe("useQuery", () => {
                 "stream": undefined,
               },
               "key": Symbol(delay),
-              "method": "storage",
               "path": "test_storage",
+              "type": "storage",
             },
           ],
         ],
@@ -692,8 +692,8 @@ describe("useQuery", () => {
                   "stream": undefined,
                 },
                 "key": Symbol(delay),
-                "method": "storage",
                 "path": "test_storage",
+                "type": "storage",
               },
             ],
           ],
@@ -706,8 +706,8 @@ describe("useQuery", () => {
                   "stream": undefined,
                 },
                 "key": Symbol(delay),
-                "method": "storage",
                 "path": "test_storage",
+                "type": "storage",
               },
             ],
           ],
@@ -722,8 +722,8 @@ describe("useQuery", () => {
                   "stream": undefined,
                 },
                 "key": Symbol(delay),
-                "method": "storage",
                 "path": "test_storage",
+                "type": "storage",
               },
             ],
           ],
@@ -736,8 +736,8 @@ describe("useQuery", () => {
                   "stream": undefined,
                 },
                 "key": Symbol(delay),
-                "method": "storage",
                 "path": "test_storage",
+                "type": "storage",
               },
             ],
           ],
@@ -753,8 +753,8 @@ describe("useQuery", () => {
                     "stream": undefined,
                   },
                   "key": Symbol(delay),
-                  "method": "storage",
                   "path": "test_storage",
+                  "type": "storage",
                 },
               ],
             ],
@@ -767,8 +767,8 @@ describe("useQuery", () => {
                     "stream": undefined,
                   },
                   "key": Symbol(delay),
-                  "method": "storage",
                   "path": "test_storage",
+                  "type": "storage",
                 },
               ],
             ],
@@ -783,8 +783,8 @@ describe("useQuery", () => {
                     "stream": undefined,
                   },
                   "key": Symbol(delay),
-                  "method": "storage",
                   "path": "test_storage",
+                  "type": "storage",
                 },
               ],
             ],
@@ -797,8 +797,8 @@ describe("useQuery", () => {
                     "stream": undefined,
                   },
                   "key": Symbol(delay),
-                  "method": "storage",
                   "path": "test_storage",
+                  "type": "storage",
                 },
               ],
             ],

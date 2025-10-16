@@ -7,11 +7,12 @@ import {
 import { BaseError } from "@reactive-dot/core";
 import { catchError, isObservable } from "rxjs";
 import {
-  type ComputedRef,
-  type MaybeRefOrGetter,
-  type ShallowRef,
   computed,
+  type ComputedRef,
   inject,
+  type MaybeRefOrGetter,
+  type Ref,
+  type ShallowRef,
   shallowRef,
   toValue,
 } from "vue";
@@ -38,16 +39,21 @@ export function useLazyValuesCache() {
   return cache;
 }
 
-/**
- * @internal
- */
+/** @internal */
 export const erroredSymbol = Symbol("errored");
+
+/** @internal */
+export const metadataSymbol = Symbol("metadata");
 
 export function lazyValue<T>(
   key: MaybeRefOrGetter<Key[]>,
   get: () => T,
   cache: MaybeRefOrGetter<Map<string, ShallowRef<unknown>>>,
+  metadata?: MaybeRefOrGetter<unknown>,
 ) {
+  const makeRefreshable = <T extends Ref>(ref: T) =>
+    refreshable(ref, () => void put(true));
+
   const put = (force = false) => {
     const stringKey = toValue(key).join("/");
 
@@ -56,7 +62,16 @@ export function lazyValue<T>(
     const refValue = (
       hasValue
         ? toValue(cache).get(stringKey)!
-        : toValue(cache).set(stringKey, shallowRef()).get(stringKey)!
+        : toValue(cache)
+            .set(
+              stringKey,
+              makeRefreshable(
+                Object.assign(shallowRef(), {
+                  [metadataSymbol]: toValue(metadata),
+                }),
+              ),
+            )
+            .get(stringKey)!
     ) as ShallowRef<T>;
 
     const tagAsErrored = () =>
@@ -88,10 +103,7 @@ export function lazyValue<T>(
     return refValue.value;
   };
 
-  return refreshable(
-    computed(() => put()),
-    () => void put(true),
-  );
+  return makeRefreshable(computed(() => put()));
 }
 
 export function mapLazyValue<T, U>(

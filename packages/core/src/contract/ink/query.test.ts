@@ -39,7 +39,7 @@ it("reads a non-empty storage value", async () => {
   });
 
   const result = await queryInk(api, client, address, {
-    method: "storage",
+    type: "storage",
     path: "",
     key: "foo",
   } as SimpleInkQueryInstruction);
@@ -57,7 +57,7 @@ it("returns undefined when storage value is absent", async () => {
   });
 
   const result = await queryInk(api, client, address, {
-    method: "storage",
+    type: "storage",
     path: "myPath",
     key: "foo",
   } as SimpleInkQueryInstruction);
@@ -75,7 +75,7 @@ it("throws QueryError on storage fetch failure", async () => {
 
   await expect(() =>
     queryInk(api, client, address, {
-      method: "storage",
+      type: "storage",
       path: "",
       key: "foo",
     } as SimpleInkQueryInstruction),
@@ -87,7 +87,7 @@ it("throws when message is mutating", async () => {
 
   await expect(() =>
     queryInk(api, client, address, {
-      method: "message",
+      type: "message",
       name: "doMutate",
       body: {},
     } as SimpleInkQueryInstruction),
@@ -106,7 +106,7 @@ it("throws QueryError when message call fails", async () => {
 
   await expect(() =>
     queryInk(api, client, address, {
-      method: "message",
+      type: "message",
       name: "foo",
       body: {},
     } as SimpleInkQueryInstruction),

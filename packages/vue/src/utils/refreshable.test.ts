@@ -1,5 +1,10 @@
-import { refresh, refreshable, type Refreshable } from "./refreshable.js";
-import { expect, it, vi } from "vitest";
+import {
+  canRefresh,
+  refresh,
+  refreshable,
+  type Refreshable,
+} from "./refreshable.js";
+import { expect, it, test, vi } from "vitest";
 
 it("should call the refresh function when refresh is called", () => {
   const obj = {};
@@ -55,4 +60,9 @@ it("should allow calling refresh multiple times", () => {
   refresh(refreshableObj as Refreshable<typeof obj>);
 
   expect(refreshFn).toHaveBeenCalledTimes(3);
+});
+
+test("canRefresh", () => {
+  expect(canRefresh({})).toBeFalsy();
+  expect(canRefresh(refreshable({}, () => {}))).toBeTruthy();
 });

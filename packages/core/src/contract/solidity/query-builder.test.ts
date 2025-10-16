@@ -110,8 +110,8 @@ it("matches snapshot", () => {
             "directives": {
               "defer": undefined,
             },
-            "method": "function",
             "name": "totalSupply",
+            "type": "function",
           },
           {
             "args": [
@@ -121,8 +121,8 @@ it("matches snapshot", () => {
             "directives": {
               "defer": undefined,
             },
-            "method": "function",
             "name": "balanceOf",
+            "type": "function",
           },
           {
             "args": [
@@ -138,12 +138,12 @@ it("matches snapshot", () => {
               "defer": undefined,
               "stream": undefined,
             },
-            "method": "function",
             "multi": true,
             "name": "balanceOf",
+            "type": "function",
           },
         ],
-        "method": "contract",
+        "type": "contract",
       },
     ]
   `);

@@ -42,19 +42,19 @@ vi.mocked(useLazyLoadQuery).mockImplementation(
 
     return query.instructions.map((instruction) => {
       if (
-        instruction.method === "constant" &&
+        instruction.type === "constant" &&
         instruction.pallet === "Balances" &&
         instruction.constant === "ExistentialDeposit"
       ) {
         return 100n;
       } else if (
-        instruction.method === "storage" &&
+        instruction.type === "storage" &&
         instruction.pallet === "System" &&
         instruction.storage === "Account" &&
         "multi" in instruction &&
         instruction.multi
       ) {
-        return Array.from({ length: instruction.args.length }).fill({
+        return Array.from({ length: instruction.keys.length }).fill({
           nonce: 0,
           consumers: 0,
           providers: 0,
