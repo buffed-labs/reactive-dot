@@ -289,7 +289,7 @@ describe("useQuery", () => {
           ],
           [
             [
-              "contract-0x",
+              "contract-0x1",
               {
                 "directives": {
                   "defer": undefined,
@@ -299,7 +299,7 @@ describe("useQuery", () => {
               },
             ],
             [
-              "contract-0x",
+              "contract-0x1",
               {
                 "directives": {
                   "defer": undefined,
@@ -311,7 +311,7 @@ describe("useQuery", () => {
             ],
             [
               [
-                "contract-0x",
+                "contract-0x1",
                 {
                   "directives": {
                     "defer": undefined,
@@ -323,7 +323,7 @@ describe("useQuery", () => {
                 },
               ],
               [
-                "contract-0x",
+                "contract-0x1",
                 {
                   "directives": {
                     "defer": undefined,
@@ -336,7 +336,7 @@ describe("useQuery", () => {
               ],
             ],
             [
-              "contract-0x",
+              "contract-0x1",
               {
                 "body": {
                   "data": "test-data",
@@ -350,7 +350,7 @@ describe("useQuery", () => {
             ],
             [
               [
-                "contract-0x",
+                "contract-0x1",
                 {
                   "body": {
                     "data": "test-data1",
@@ -364,7 +364,7 @@ describe("useQuery", () => {
                 },
               ],
               [
-                "contract-0x",
+                "contract-0x1",
                 {
                   "body": {
                     "data": "test-data2",
@@ -473,7 +473,7 @@ describe("useQuery", () => {
           ],
           [
             [
-              "contract-0x",
+              "contract-0x1",
               {
                 "args": [
                   "test-data",
@@ -487,7 +487,7 @@ describe("useQuery", () => {
             ],
             [
               [
-                "contract-0x",
+                "contract-0x1",
                 {
                   "args": [
                     "test-data1",
@@ -501,7 +501,7 @@ describe("useQuery", () => {
                 },
               ],
               [
-                "contract-0x",
+                "contract-0x1",
                 {
                   "args": [
                     "test-data2",
