@@ -6,7 +6,7 @@ import { useChainId } from "./use-chain-id.js";
 import { useSigner } from "./use-signer.js";
 import { useTypedApiPromise } from "./use-typed-api.js";
 import type { ChainId } from "@reactive-dot/core";
-import { MutationError } from "@reactive-dot/core";
+import { BaseError, MutationError } from "@reactive-dot/core";
 import type {
   ChainDescriptorOf,
   TxOptionsOf,
@@ -51,7 +51,7 @@ export function useMutation<
   const mutationEventRef = inject(
     mutationEventKey,
     () => {
-      throw new Error("No mutation event ref provided");
+      throw new BaseError("No mutation event ref provided");
     },
     true,
   );
