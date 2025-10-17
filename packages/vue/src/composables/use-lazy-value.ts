@@ -5,7 +5,7 @@ import {
   refreshable,
 } from "../utils/refreshable.js";
 import { BaseError } from "@reactive-dot/core";
-import { catchError, isObservable } from "rxjs";
+import { catchError, isObservable, shareReplay } from "rxjs";
 import {
   computed,
   type ComputedRef,
@@ -93,6 +93,7 @@ export function lazyValue<T>(
       }) as T;
     } else if (isObservable(refValue.value)) {
       refValue.value = refValue.value.pipe(
+        shareReplay({ bufferSize: 1, refCount: true }),
         catchError((error) => {
           tagAsErrored();
           throw error;
