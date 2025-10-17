@@ -7,7 +7,7 @@ sidebar_position: 5
 Sometimes you need to refresh multiple queries at once based on certain criteria. The store provides methods to invalidate queries in bulk using a filter function.
 
 ```ts
-import { useStore } from "@reactive-dot/core";
+import { useStore } from "@reactive-dot/react";
 
 const store = useStore();
 
