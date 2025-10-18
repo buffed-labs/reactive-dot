@@ -2,6 +2,7 @@ import type { ChainComposableOptions } from "../types.js";
 import { useAsyncData } from "./use-async-data.js";
 import { internal_useChainId } from "./use-chain-id.js";
 import { useChainSpecDataPromise } from "./use-chain-spec-data.js";
+import { useConfig } from "./use-config.js";
 import { useLazyValue } from "./use-lazy-value.js";
 import { useConnectedWalletsObservable } from "./use-wallets.js";
 import { getAccounts } from "@reactive-dot/core/internal/actions.js";
@@ -22,6 +23,7 @@ export function useAccounts(
 function useAccountsPromise(
   options?: ChainComposableOptions | { chainId: MaybeRefOrGetter<null> },
 ) {
+  const config = useConfig();
   const safeOptions = {
     ...options,
     chainId: computed(() => toValue(options?.chainId) ?? undefined),
@@ -45,10 +47,14 @@ function useAccountsPromise(
         ? ["accounts"]
         : ["accounts", safeChainId.value],
     ),
-    () =>
-      getAccounts(
+    () => {
+      const includeEvmAccounts = toValue(config).includeEvmAccounts;
+      return getAccounts(
         connectedWalletsObservable.value,
         safeChainId.value === undefined ? undefined : chainSpecPromise.value,
-      ),
+        undefined,
+        includeEvmAccounts !== undefined ? { includeEvmAccounts } : undefined,
+      );
+    },
   );
 }

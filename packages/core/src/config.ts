@@ -22,9 +22,17 @@ export type Config<
   readonly targetChains?: TTargetChainIds;
   readonly wallets?: Array<WalletProvider | Wallet>;
   /**
+   * Include EVM accounts from wallets.
+   * When `false`, EVM accounts will be filtered out
+   *
+   * @defaultValue false
+   */
+  readonly includeEvmAccounts?: boolean;
+  /**
    * Enable SSR support & optimizations
    *
    * @experimental
+   * @defaultValue false
    */
   readonly ssr?: boolean;
 };

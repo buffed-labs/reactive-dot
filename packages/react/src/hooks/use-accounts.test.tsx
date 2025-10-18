@@ -96,7 +96,12 @@ it("ignores context chainId when chainId is null", async () => {
     }),
   );
 
-  expect(getAccounts).toHaveBeenCalledWith(expect.anything(), undefined);
+  expect(getAccounts).toHaveBeenCalledWith(
+    expect.anything(),
+    undefined,
+    undefined,
+    undefined,
+  );
 });
 
 it("returns undefined when defer is true and accounts are not ready", async () => {
