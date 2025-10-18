@@ -255,7 +255,11 @@ it("handles EVM and Substrate accounts", async () => {
     ]),
   } as unknown as Wallet;
 
-  const accounts = await firstValueFrom(getAccounts([mockWallet]));
+  const accounts = await firstValueFrom(
+    getAccounts([mockWallet], undefined, undefined, {
+      includeEvmAccounts: true,
+    }),
+  );
 
   expect(accounts.length).toBe(2);
   expect(accounts[0]?.address).toMatchInlineSnapshot(
@@ -263,5 +267,43 @@ it("handles EVM and Substrate accounts", async () => {
   );
   expect(accounts[1]?.address).toMatchInlineSnapshot(
     `"0x0102030405060708090a0B0c0d0e0f1011121314"`,
+  );
+});
+
+it("filters out EVM accounts when `includeEvmAccounts` is false", async () => {
+  const mockWallet = {
+    accounts$: of([
+      {
+        id: 1,
+        polkadotSigner: {
+          sign: vi.fn(),
+          publicKey: new Uint8Array([
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+            20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
+          ]),
+        },
+      },
+      {
+        id: 2,
+        polkadotSigner: {
+          sign: vi.fn(),
+          publicKey: new Uint8Array([
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+            20,
+          ]),
+        },
+      },
+    ]),
+  } as unknown as Wallet;
+
+  const accounts = await firstValueFrom(
+    getAccounts([mockWallet], undefined, undefined, {
+      includeEvmAccounts: false,
+    }),
+  );
+
+  expect(accounts.length).toBe(1);
+  expect(accounts[0]?.address).toMatchInlineSnapshot(
+    `"5C62W7ELLAAfjCQeBU3me9ykaYomD8XTg2B9Hk6ki6Cm3v58"`,
   );
 });

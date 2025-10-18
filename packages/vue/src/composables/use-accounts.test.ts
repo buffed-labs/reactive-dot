@@ -99,5 +99,10 @@ it("ignores injected chainId when chainId is null", async () => {
 
   await result;
 
-  expect(getAccounts).toHaveBeenCalledWith(expect.anything(), undefined);
+  expect(getAccounts).toHaveBeenCalledWith(
+    expect.anything(),
+    undefined,
+    undefined,
+    undefined,
+  );
 });

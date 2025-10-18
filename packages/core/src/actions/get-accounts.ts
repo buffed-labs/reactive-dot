@@ -13,6 +13,7 @@ export function getAccounts(
   wallets: MaybeAsync<Wallet[]>,
   chainSpec?: MaybeAsync<ChainSpecData>,
   fallbackChainSpec?: MaybeAsync<ChainSpecData>,
+  options?: { includeEvmAccounts?: boolean },
 ) {
   return combineLatest([
     toObservable(wallets),
@@ -65,6 +66,10 @@ export function getAccounts(
                     polkadotSigner.publicKey.length === 20
                       ? "evm"
                       : "substrate";
+
+                  if (type === "evm" && !options?.includeEvmAccounts) {
+                    return undefined;
+                  }
 
                   return {
                     ...account,

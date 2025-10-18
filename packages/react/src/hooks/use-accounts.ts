@@ -53,6 +53,10 @@ export const accountsAtom = atomFamilyWithErrorCatcher(
           chainId === undefined
             ? undefined
             : get(chainSpecDataAtom(config, chainId)),
+          undefined,
+          config.includeEvmAccounts !== undefined
+            ? { includeEvmAccounts: config.includeEvmAccounts }
+            : undefined,
         ),
       ),
     ),
