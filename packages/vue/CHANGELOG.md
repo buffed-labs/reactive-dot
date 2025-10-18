@@ -1,5 +1,16 @@
 # @reactive-dot/vue
 
+## 0.56.1
+
+### Patch Changes
+
+- [#945](https://github.com/buffed-labs/reactive-dot/pull/945) [`7aa74c3`](https://github.com/buffed-labs/reactive-dot/commit/7aa74c3fcc64d0321848289cb0f26ba0f554ecaa) Thanks [@tien](https://github.com/tien)! - Use `BaseError` for errors originating from these libraries whenever possible.
+
+- [#948](https://github.com/buffed-labs/reactive-dot/pull/948) [`fc9513e`](https://github.com/buffed-labs/reactive-dot/commit/fc9513ea029f9ea9f52e7e310badbcb22974a200) Thanks [@tien](https://github.com/tien)! - Improve query performance by sharing the latest observable value.
+
+- Updated dependencies [[`7aa74c3`](https://github.com/buffed-labs/reactive-dot/commit/7aa74c3fcc64d0321848289cb0f26ba0f554ecaa)]:
+  - @reactive-dot/core@0.56.1
+
 ## 0.56.0
 
 ### Minor Changes

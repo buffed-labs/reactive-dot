@@ -1,5 +1,11 @@
 # @reactive-dot/core
 
+## 0.56.1
+
+### Patch Changes
+
+- [#945](https://github.com/buffed-labs/reactive-dot/pull/945) [`7aa74c3`](https://github.com/buffed-labs/reactive-dot/commit/7aa74c3fcc64d0321848289cb0f26ba0f554ecaa) Thanks [@tien](https://github.com/tien)! - Use `BaseError` for errors originating from these libraries whenever possible.
+
 ## 0.56.0
 
 ### Minor Changes
