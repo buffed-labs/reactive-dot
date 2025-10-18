@@ -1,5 +1,15 @@
 # @reactive-dot/core
 
+## 0.57.0
+
+### Minor Changes
+
+- [#949](https://github.com/buffed-labs/reactive-dot/pull/949) [`ffdcf32`](https://github.com/buffed-labs/reactive-dot/commit/ffdcf32dbaea850e8dc9aad7413ee4a259dfbc4f) Thanks [@tien](https://github.com/tien)! - Added the `includeEvmAccounts` option to the configuration, defaulting to `false`. This filters out EVM accounts from wallets by default, mitigating potential errors caused by unexpected EVM accounts.
+
+### Patch Changes
+
+- [#945](https://github.com/buffed-labs/reactive-dot/pull/945) [`7aa74c3`](https://github.com/buffed-labs/reactive-dot/commit/7aa74c3fcc64d0321848289cb0f26ba0f554ecaa) Thanks [@tien](https://github.com/tien)! - Use `BaseError` for errors originating from these libraries whenever possible.
+
 ## 0.56.0
 
 ### Minor Changes
