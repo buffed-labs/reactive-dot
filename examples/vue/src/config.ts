@@ -89,6 +89,12 @@ export const config = defineConfig({
   ],
 });
 
+declare module "@reactive-dot/core" {
+  export interface Register {
+    config: typeof config;
+  }
+}
+
 export const psp22 = defineContract({ descriptor: contracts.psp22 });
 
 export const flipper = defineContract({ descriptor: contracts.flipper });

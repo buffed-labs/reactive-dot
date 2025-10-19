@@ -19,18 +19,6 @@ npx papi add wnd -n westend2
 npx papi
 ```
 
-### Add type information
-
-```ts title="reactive-dot.d.ts"
-import type { config } from "./config.js";
-
-declare module "@reactive-dot/core" {
-  export interface Register {
-    config: typeof config;
-  }
-}
-```
-
 ### Configure chains
 
 ```ts title="config.ts"
@@ -54,6 +42,12 @@ export const config = defineConfig({
   },
   //...
 });
+
+declare module "@reactive-dot/core" {
+  export interface Register {
+    config: typeof config;
+  }
+}
 ```
 
 ## Chain selection
