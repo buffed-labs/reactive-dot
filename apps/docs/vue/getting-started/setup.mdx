@@ -80,6 +80,38 @@ declare module "@reactive-dot/core" {
 }
 ```
 
+<details>
+  <summary>Parachains setup</summary>
+
+```ts title="config.ts"
+// ...
+// highlight-next-line
+import { dot, dot_asset_hub } from "@polkadot-api/descriptors";
+
+const lightClientProvider = createLightClientProvider();
+
+// highlight-next-line
+const polkadotProvider = lightClientProvider.addRelayChain({ id: "polkadot" });
+
+export const config = defineConfig({
+  chains: {
+    // highlight-start
+    polkadot: {
+      descriptor: dot,
+      provider: polkadotProvider,
+    },
+    polkadot_asset_hub: {
+      descriptor: dot_asset_hub,
+      provider: polkadotProvider.addParachain({ id: "polkadot_asset_hub" }),
+    },
+    // highlight-end
+  },
+  wallets: [new InjectedWalletProvider()],
+});
+```
+
+</details>
+
 {/* prettier-ignore-start */}
 
   </TabItem>
