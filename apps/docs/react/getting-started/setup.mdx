@@ -63,7 +63,7 @@ const lightClientProvider = createLightClientProvider();
 
 export const config = defineConfig({
   chains: {
-    // "polkadot" here can be any unique string value
+    // Use "polkadot" as the `ChainId`, this can be any unique string value
     polkadot: {
       descriptor: dot,
       provider: lightClientProvider.addRelayChain({ id: "polkadot" }),
@@ -71,6 +71,13 @@ export const config = defineConfig({
   },
   wallets: [new InjectedWalletProvider()],
 });
+
+// Register the config for type safety
+declare module "@reactive-dot/core" {
+  export interface Register {
+    config: typeof config;
+  }
+}
 ```
 
 {/* prettier-ignore-start */}
@@ -81,6 +88,7 @@ export const config = defineConfig({
 {/* prettier-ignore-end */}
 
 ```ts title="config.ts"
+// `dot` is the name we gave to `npx papi add`
 import { dot } from "@polkadot-api/descriptors";
 import { getWsProvider } from "@polkadot-api/ws-provider/web";
 import { defineConfig } from "@reactive-dot/core";
@@ -88,6 +96,7 @@ import { InjectedWalletProvider } from "@reactive-dot/core/wallets.js";
 
 export const config = defineConfig({
   chains: {
+    // Use "polkadot" as the `ChainId`, this can be any unique string value
     polkadot: {
       descriptor: dot,
       provider: getWsProvider("wss://polkadot-rpc.publicnode.com"),
@@ -95,6 +104,13 @@ export const config = defineConfig({
   },
   wallets: [new InjectedWalletProvider()],
 });
+
+// Register the config for type safety
+declare module "@reactive-dot/core" {
+  export interface Register {
+    config: typeof config;
+  }
+}
 ```
 
 {/* prettier-ignore-start */}
@@ -103,20 +119,6 @@ export const config = defineConfig({
 </Tabs>
 
 {/* prettier-ignore-end */}
-
-## Add type information
-
-The type declarations extension here will be used to provide you with the right type definitions when using hooks.
-
-```ts title="reactive-dot.d.ts"
-import type { config } from "./config.js";
-
-declare module "@reactive-dot/core" {
-  export interface Register {
-    config: typeof config;
-  }
-}
-```
 
 ## Wrap app in context providers
 
