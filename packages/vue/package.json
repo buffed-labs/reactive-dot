@@ -39,7 +39,7 @@
     "@reactive-dot/test": "workspace:^",
     "@tsconfig/recommended": "^1.0.10",
     "@tsconfig/strictest": "^2.0.6",
-    "eslint": "^9.37.0",
+    "eslint": "^9.38.0",
     "typescript": "^5.9.3",
     "vitest": "^3.2.4",
     "vue": "^3.5.22"
