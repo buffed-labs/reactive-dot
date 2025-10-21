@@ -2,7 +2,14 @@
 import type { ChainConfig } from "./config.js";
 import type { ChainDefinition } from "polkadot-api";
 
-export class UnsafeDescriptor<_ extends ChainDefinition = ChainDefinition> {}
+export class UnsafeDescriptor<_ extends ChainDefinition = ChainDefinition> {
+  /**
+   * Workaround for VSCode TypeScript type inference bug
+   *
+   * @internal
+   */
+  unsafe = true;
+}
 
 /**
  * Create an unsafe chain descriptor for use in {@link ChainConfig}.
