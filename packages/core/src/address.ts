@@ -47,5 +47,5 @@ export function toH160Hex(address: Address): `0x${string}` {
     return address as `0x${string}`;
   }
 
-  return toH160Bytes(address).asHex() as `0x${string}`;
+  return toH160Bytes(address).asHex();
 }
