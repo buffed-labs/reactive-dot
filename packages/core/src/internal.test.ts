@@ -8,6 +8,7 @@ it("should match inline snapshot", () =>
       "InkContract",
       "SolidityContract",
       "getSolidityContractTx",
+      "UnsafeDescriptor",
       "flatHead",
       "nativeTokenInfoFromChainSpecData",
       "omit",

@@ -5,10 +5,13 @@ import { internal_useChainId } from "./use-chain-id.js";
 import { clientAtom } from "./use-client.js";
 import { useConfig } from "./use-config.js";
 import { BaseError, type ChainId, type Config } from "@reactive-dot/core";
-import type { ChainDescriptorOf } from "@reactive-dot/core/internal.js";
+import {
+  UnsafeDescriptor,
+  type ChainDescriptorOf,
+} from "@reactive-dot/core/internal.js";
 import { atom } from "jotai";
 import { soon } from "jotai-eager";
-import type { TypedApi } from "polkadot-api";
+import type { ChainDefinition, TypedApi } from "polkadot-api";
 
 /**
  * Hook for getting Polkadot-API typed API.
@@ -38,8 +41,14 @@ export const typedApiAtom = atomFamilyWithErrorCatcher(
           throw new BaseError(`No config provided for chain ${chainId}`);
         }
 
-        return soon(get(clientAtom(config, chainId)), (client) =>
-          client.getTypedApi(chainConfig.descriptor),
+        return soon(
+          get(clientAtom(config, chainId)),
+          (client) =>
+            (chainConfig.descriptor instanceof UnsafeDescriptor
+              ? client.getUnsafeApi()
+              : client.getTypedApi(
+                  chainConfig.descriptor,
+                )) as TypedApi<ChainDefinition>,
         );
       }),
     ),

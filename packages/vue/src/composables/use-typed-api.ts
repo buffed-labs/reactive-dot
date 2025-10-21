@@ -5,7 +5,10 @@ import { useClientPromise } from "./use-client.js";
 import { useChainConfig } from "./use-config.js";
 import { useLazyValue } from "./use-lazy-value.js";
 import type { ChainId } from "@reactive-dot/core";
-import type { ChainDescriptorOf } from "@reactive-dot/core/internal.js";
+import {
+  UnsafeDescriptor,
+  type ChainDescriptorOf,
+} from "@reactive-dot/core/internal.js";
 import type { TypedApi } from "polkadot-api";
 import { computed } from "vue";
 
@@ -36,7 +39,9 @@ export function useTypedApiPromise<TChainId extends ChainId | undefined>(
     () =>
       clientPromise.value.then(
         (client) =>
-          client.getTypedApi(chainConfig.value.descriptor) as TypedApi<
+          (chainConfig.value.descriptor instanceof UnsafeDescriptor
+            ? client.getUnsafeApi()
+            : client.getTypedApi(chainConfig.value.descriptor)) as TypedApi<
             ChainDescriptorOf<TChainId>
           >,
       ),
