@@ -28,7 +28,8 @@ const config: Config = {
   projectName: "reactive-dot",
 
   onBrokenLinks: "throw",
-  onBrokenMarkdownLinks: "warn",
+  onBrokenAnchors: "throw",
+  onBrokenMarkdownLinks: "throw",
 
   i18n: {
     defaultLocale: "en",
@@ -134,8 +135,48 @@ const config: Config = {
     },
     footer: {
       style: "dark",
-      links: [],
-      copyright: `Made with a literal 💻 by <a href="https://tien.zone/" target="_blanck">Tiến</a>`,
+      links: [
+        {
+          title: "Learn",
+          items: [
+            {
+              label: "Getting started",
+              to: "/react/getting-started/setup",
+            },
+            {
+              label: "Smart contracts",
+              to: "/react/smart-contract/ink",
+            },
+            {
+              label: "Guides",
+              to: "/react/category/guides",
+            },
+          ],
+        },
+        {
+          title: "Community",
+          items: [
+            {
+              label: "Matrix",
+              href: "https://matrix.to/#/#reactive-dot:matrix.org",
+            },
+          ],
+        },
+        {
+          title: "More",
+          items: [
+            {
+              label: "GitHub",
+              href: "https://github.com/buffed-labs/reactive-dot",
+            },
+            {
+              label: "X",
+              href: "https://x.com/TienNguyenK",
+            },
+          ],
+        },
+      ],
+      copyright: `Copyright © ${new Date().getFullYear()} Buffed Labs. Made with a literal 💻 by <a href="https://tien.zone/" target="_blanck">Tiến</a>`,
     },
     prism: {
       additionalLanguages: ["bash"],
