@@ -1,5 +1,11 @@
 # @reactive-dot/core
 
+## 0.58.1
+
+### Patch Changes
+
+- [#960](https://github.com/buffed-labs/reactive-dot/pull/960) [`46cffdb`](https://github.com/buffed-labs/reactive-dot/commit/46cffdb2824e9111af38d3c3e56d7a74bedea6bf) Thanks [@tien](https://github.com/tien)! - Fixed VSCode type inference bug.
+
 ## 0.58.0
 
 ### Minor Changes
