@@ -50,7 +50,7 @@ export async function querySolidity<
       return flatHead(
         AbiFunction.decodeResult(
           abiFunction,
-          response.result.value.data.asHex() as `0x${string}`,
+          response.result.value.data.asHex(),
         ),
       );
     }
