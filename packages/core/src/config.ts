@@ -1,11 +1,12 @@
 import type { LightClientProvider } from "./providers/light-client/provider.js";
 import type { Gettable } from "./types.js";
+import type { UnsafeDescriptor } from "./unsafe-descriptor.js";
 import type { Wallet, WalletProvider } from "./wallets/index.js";
 import type { JsonRpcProvider } from "@polkadot-api/json-rpc-provider";
 import type { ChainDefinition } from "polkadot-api";
 
 export type ChainConfig = {
-  readonly descriptor: ChainDefinition;
+  readonly descriptor: ChainDefinition | UnsafeDescriptor;
   readonly provider: Gettable<JsonRpcProvider | LightClientProvider>;
 };
 

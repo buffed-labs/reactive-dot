@@ -14,6 +14,7 @@ it("should match inline snapshot", () =>
       "Storage",
       "idle",
       "pending",
+      "unsafeDescriptor",
       "aggregateWallets",
       "connectWallet",
       "disconnectWallet",
