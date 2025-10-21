@@ -1,5 +1,11 @@
 # @reactive-dot/core
 
+## 0.58.0
+
+### Minor Changes
+
+- [#955](https://github.com/buffed-labs/reactive-dot/pull/955) [`bacfd76`](https://github.com/buffed-labs/reactive-dot/commit/bacfd761aff9aba3d97ec6bf31957531e7bfcfa0) Thanks [@tien](https://github.com/tien)! - Added option to skip runtime check using `unsafeDescriptor`.
+
 ## 0.57.0
 
 ### Minor Changes
