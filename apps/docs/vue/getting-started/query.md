@@ -60,7 +60,7 @@ const proposalCount = computed(() => data.value[2]);
 </script>
 ```
 
-Multiple queries of the same type can also be fetched using [`runtimeApis`](/vue/api/core/index/classes/Query#runtimeApis) & [`storages`](/vue/api/core/index/classes/Query#storages).
+Multiple queries of the same type can also be fetched using [`runtimeApis`](/vue/api/core/index/classes/Query#runtimeapis) & [`storages`](/vue/api/core/index/classes/Query#storages).
 
 ```vue
 <script setup lang="ts">

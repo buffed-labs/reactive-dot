@@ -59,7 +59,7 @@ function MultiQuery() {
 }
 ```
 
-Multiple queries of the same type can also be fetched using [`runtimeApis`](/react/api/core/index/classes/Query#runtimeApis) & [`storages`](/react/api/core/index/classes/Query#storages).
+Multiple queries of the same type can also be fetched using [`runtimeApis`](/react/api/core/index/classes/Query#runtimeapis) & [`storages`](/react/api/core/index/classes/Query#storages).
 
 ```tsx
 const [rewards, metadatum] = useLazyLoadQuery((builder) =>
