@@ -1,5 +1,11 @@
 # @reactive-dot/core
 
+## 0.58.2
+
+### Patch Changes
+
+- [#964](https://github.com/buffed-labs/reactive-dot/pull/964) [`f094fb3`](https://github.com/buffed-labs/reactive-dot/commit/f094fb3efc66df9e822ef096ab42113bc5a219e9) Thanks [@tien](https://github.com/tien)! - Fixed bug where contract addresses could no longer be used as fallback origins ([polkadot-sdk#8619](https://github.com/paritytech/polkadot-sdk/issues/8619#issuecomment-3430582831))
+
 ## 0.58.1
 
 ### Patch Changes
