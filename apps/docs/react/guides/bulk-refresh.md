@@ -20,7 +20,7 @@ store.invalidateChainQueries(
 store.invalidateChainQueries(
   (instruction) =>
     instruction.type === "runtime-api" &&
-    instruction.method === "NominationPoolsApi",
+    instruction.api === "NominationPoolsApi",
 );
 
 // Refresh all queries to a specific contract
