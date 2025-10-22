@@ -142,7 +142,7 @@ if (conditionalReturn === idle || conditionalFunction === idle) {
 
 ## Refreshing queries
 
-Certain query, like runtime API calls doesn't create any subscriptions. In order to get the latest data, they must be manually refreshed using `options.fetchKey`.
+Data from `constant` queries never changes, while `storage` and `storage-entries` queries automatically subscribe to updates. For all other query types, you must manually refresh them to get the latest data by updating the `fetchKey` option.
 
 ```tsx
 import { useLazyLoadQuery } from "@reactive-dot/react";
