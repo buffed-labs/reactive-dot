@@ -107,7 +107,7 @@ if (status === "idle") {
 
 ## Refreshing queries
 
-Certain query, like runtime API calls doesn't create any subscriptions. In order to get the latest data, they must be manually refreshed.
+Data from `constant` queries never changes, while `storage` and `storage-entries` queries automatically subscribe to updates. For all other query types, you must manually refresh them to get the latest data.
 
 ```vue
 <script setup lang="ts">
