@@ -1,6 +1,7 @@
 import { toH160Bytes, toSs58String, type Address } from "../../address.js";
 import { QueryError } from "../../errors.js";
 import { flatHead } from "../../internal.js";
+import { fallbackOrigin } from "../consts.js";
 import type { ContractCompatApi } from "../types.js";
 import type { SimpleSolidityQueryInstruction } from "./query-builder.js";
 import type { Abi } from "abitype";
@@ -23,7 +24,7 @@ export async function querySolidity<
 
   switch (instruction.type) {
     case "function": {
-      const origin = address;
+      const origin = fallbackOrigin;
 
       const { AbiFunction } = await import("ox");
 

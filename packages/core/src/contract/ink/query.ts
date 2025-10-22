@@ -1,5 +1,6 @@
 import { toH160Bytes, toSs58String, type Address } from "../../address.js";
 import { QueryError } from "../../errors.js";
+import { fallbackOrigin } from "../consts.js";
 import type { ContractCompatApi } from "../types.js";
 import type {
   InferQueryInstructionPayload,
@@ -60,7 +61,7 @@ export async function queryInk<
       }
 
       const response = await api.apis.ReviveApi.call(
-        toSs58String(instruction.origin ?? address),
+        toSs58String(instruction.origin ?? fallbackOrigin),
         toH160Bytes(address),
         0n,
         undefined,
