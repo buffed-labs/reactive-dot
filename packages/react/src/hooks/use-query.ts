@@ -104,7 +104,7 @@ export function useLazyLoadQuery<
     useStablePromise(
       usePausableAtomValue(
         !queryValue
-          ? ({ promiseAtom: atom(idle), observableAtom: atom(idle) } as never)
+          ? ({ promiseAtom: idleAtom, observableAtom: idleAtom } as never)
           : queryPayloadAtom(config, { chainId, query: queryValue }),
       ) as
         | InferQueryArgumentResult<TChainId, TQuery>
@@ -113,6 +113,8 @@ export function useLazyLoadQuery<
     options,
   );
 }
+
+const idleAtom = atom(idle);
 
 /**
  * Hook for querying data from chain, returning the response & a refresher function.
