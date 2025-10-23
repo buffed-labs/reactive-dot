@@ -1,5 +1,3 @@
-import { findAllIndexes } from "../utils/find-all-indexes.js";
-import { interlace } from "../utils/interlace.js";
 import { atomFamilyWithErrorCatcher } from "../utils/jotai/atom-family-with-error-catcher.js";
 import type { AtomFamily } from "../utils/jotai/atom-family.js";
 import {
@@ -14,14 +12,16 @@ import type {
   ChainHookOptions,
   InferQueryArgumentResult,
   QueryArgument,
-  QueryOptions,
+  SuspenseOptions,
 } from "./types.js";
+import { internal_useChainId } from "./use-chain-id.js";
 import { useConfig } from "./use-config.js";
 import { inkClientAtom } from "./use-ink-client.js";
+import { useMaybeUse } from "./use-maybe-use.js";
 import { usePausableAtomValue } from "./use-pausable-atom-value.js";
-import { useQueryOptions } from "./use-query-options.js";
 import { useQueryRefresher } from "./use-query-refresher.js";
 import { useRenderEffect } from "./use-render-effect.js";
+import { useStablePromise } from "./use-stable-promise.js";
 import { typedApiAtom } from "./use-typed-api.js";
 import {
   type Address,
@@ -29,7 +29,7 @@ import {
   type Config,
   idle,
   pending,
-  type Query,
+  Query,
 } from "@reactive-dot/core";
 import {
   type Contract,
@@ -75,88 +75,43 @@ type FetchOptions = {
 export function useLazyLoadQuery<
   TChainId extends ChainId | undefined,
   TQuery extends QueryArgument<TChainId>,
+  TUse extends boolean = true,
 >(
   query: TQuery,
-  options?: ChainHookOptions<TChainId> & FetchOptions,
-): InferQueryArgumentResult<TChainId, TQuery>;
-/**
- * Hook for querying data from chain, and returning the response.
- *
- * @group Hooks
- * @param options - The query options
- * @returns The data response
- */
-export function useLazyLoadQuery<
-  TChainIds extends Array<ChainId | undefined>,
-  const TOptions extends {
-    [P in keyof TChainIds]: QueryOptions<TChainIds[P]>;
-  },
->(
-  queryOptions: TOptions & {
-    [P in keyof TChainIds]: QueryOptions<TChainIds[P]>;
-  },
-  options?: FetchOptions,
-): {
-  [P in keyof TOptions]: InferQueryArgumentResult<
-    TOptions[P]["chainId"],
-    TOptions[P]["query"]
-  >;
-};
-export function useLazyLoadQuery(
-  queryOrOptions: // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  | QueryArgument<any>
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    | Array<ChainHookOptions<any> & { query: QueryArgument<any> }>,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  mayBeOptions?: ChainHookOptions<any> | FetchOptions,
+  options?: ChainHookOptions<TChainId> & SuspenseOptions<TUse> & FetchOptions,
 ) {
-  const options = useQueryOptions(
-    // @ts-expect-error complex overload
-    queryOrOptions,
-    mayBeOptions,
-  );
-
-  // @ts-expect-error complex types
-  const refresh = useQueryRefresher(queryOrOptions, mayBeOptions);
+  const refresh = useQueryRefresher(query, options);
 
   const fetchKey =
-    mayBeOptions !== undefined && "fetchKey" in mayBeOptions
-      ? mayBeOptions.fetchKey
+    options !== undefined && "fetchKey" in options
+      ? options.fetchKey
       : undefined;
 
   useRenderEffect(() => {
     refresh();
   }, fetchKey);
 
-  const partialData = usePausableAtomValue(
-    queryPayloadAtom(
-      useConfig(),
-      useMemo(
-        () =>
-          options.filter(
-            (
-              options,
-            ): options is Omit<typeof options, "query"> & {
-              query: NonNullable<(typeof options)["query"]>;
-            } => options.query !== undefined,
-          ),
-        [options],
-      ),
-    ),
+  const queryValue = useMemo(
+    () =>
+      !query ? undefined : query instanceof Query ? query : query(new Query()),
+    [query],
   );
 
-  return useMemo<unknown>(() => {
-    const unflattenedData = interlace(
-      partialData,
-      findAllIndexes(options, (options) => options.query === undefined).map(
-        (index) => [idle as unknown, index] as const,
-      ),
-    );
+  const config = useConfig();
+  const chainId = internal_useChainId(options);
 
-    return !Array.isArray(queryOrOptions)
-      ? flatHead(unflattenedData)
-      : unflattenedData.map(flatHead);
-  }, [options, partialData, queryOrOptions]);
+  return useMaybeUse(
+    useStablePromise(
+      usePausableAtomValue(
+        !queryValue
+          ? ({ promiseAtom: atom(idle), observableAtom: atom(idle) } as never)
+          : queryPayloadAtom(config, { chainId, query: queryValue }),
+      ) as
+        | InferQueryArgumentResult<TChainId, TQuery>
+        | Promise<InferQueryArgumentResult<TChainId, TQuery>>,
+    ),
+    options,
+  );
 }
 
 /**
@@ -174,33 +129,6 @@ export function useLazyLoadQueryWithRefresh<
   query: TQuery,
   options?: ChainHookOptions<TChainId>,
 ): [data: InferQueryArgumentResult<TChainId, TQuery>, refresh: () => void];
-/**
- * Hook for querying data from chain, returning the response & a refresher function.
- *
- * @deprecated Use {@link useLazyLoadQuery} with {@link FetchOptions.fetchKey | options.fetchKey} instead
- * @group Hooks
- * @param query - The function to create the query
- * @param options - Additional options
- * @returns The data response & a function to refresh it
- */
-export function useLazyLoadQueryWithRefresh<
-  TChainIds extends Array<ChainId | undefined>,
-  const TOptions extends {
-    [P in keyof TChainIds]: QueryOptions<TChainIds[P]>;
-  },
->(
-  options: TOptions & {
-    [P in keyof TChainIds]: QueryOptions<TChainIds[P]>;
-  },
-): [
-  data: {
-    [P in keyof TOptions]: InferQueryArgumentResult<
-      TOptions[P]["chainId"],
-      TOptions[P]["query"]
-    >;
-  },
-  refresh: () => void,
-];
 export function useLazyLoadQueryWithRefresh(
   ...args: unknown[]
 ): [unknown, unknown] {
@@ -509,10 +437,12 @@ export const queryPayloadAtom = atomFamilyWithErrorCatcher(
   (
     withErrorCatcher,
     config: Config,
-    params: Array<{ chainId: ChainId; query: Query }>,
+    params: { chainId: ChainId; query: Query },
   ) => {
-    const atoms = params.map((param) =>
-      getQueryInstructionPayloadAtoms(config, param.chainId, param.query),
+    const atoms = getQueryInstructionPayloadAtoms(
+      config,
+      params.chainId,
+      params.query,
     );
 
     return {
@@ -527,10 +457,8 @@ export const queryPayloadAtom = atomFamilyWithErrorCatcher(
   (config, params) =>
     [
       objectId(config),
-      ...params.map((param) => [
-        param.chainId,
-        stringify(param.query.instructions),
-      ]),
+      params.chainId,
+      stringify(params.query.instructions),
     ].join(),
 );
 

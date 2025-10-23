@@ -111,28 +111,6 @@ function Component() {
 }
 ```
 
-## Multi-chain query
-
-You can query multiple chains concurrently by passing an array of query options to the [`useLazyLoadQuery`](/react/api/react/functions/useLazyLoadQuery) hook. This prevents suspense waterfalls and improves performance.
-
-```tsx
-import { useLazyLoadQuery } from "@reactive-dot/react";
-
-function Component() {
-  const [totalNominationPoolsValue, assets] = useLazyLoadQuery([
-    {
-      chainId: "polkadot",
-      query: (builder) =>
-        builder.storage("NominationPools", "TotalValueLocked"),
-    },
-    {
-      chainId: "polkadot_asset_hub",
-      query: (builder) => builder.storageEntries("Assets", "Asset"),
-    },
-  ]);
-}
-```
-
 ## Chain narrowing
 
 By default, ReactiveDOT merges type definitions from all the chains in the config. For instance, if your DApp is set up to work with Polkadot, Kusama, and Westend, the following code will fail because the Bounties pallet is available only on Polkadot and Kusama, not on Westend:

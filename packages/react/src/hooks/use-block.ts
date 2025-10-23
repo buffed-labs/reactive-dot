@@ -1,10 +1,12 @@
 import { atomFamilyWithErrorCatcher } from "../utils/jotai/atom-family-with-error-catcher.js";
 import { atomWithObservableAndPromise } from "../utils/jotai/atom-with-observable-and-promise.js";
-import type { ChainHookOptions } from "./types.js";
+import type { ChainHookOptions, SuspenseOptions } from "./types.js";
 import { internal_useChainId } from "./use-chain-id.js";
 import { clientAtom } from "./use-client.js";
 import { useConfig } from "./use-config.js";
+import { useMaybeUse } from "./use-maybe-use.js";
 import { usePausableAtomValue } from "./use-pausable-atom-value.js";
+import { useStablePromise } from "./use-stable-promise.js";
 import { type ChainId, type Config } from "@reactive-dot/core";
 import { getBlock } from "@reactive-dot/core/internal/actions.js";
 import { from } from "rxjs";
@@ -18,17 +20,22 @@ import { switchMap } from "rxjs/operators";
  * @param options - Additional options
  * @returns The latest finalized or best block
  */
-export function useBlock(
+export function useBlock<TUse extends boolean = true>(
   tag: "best" | "finalized" = "finalized",
-  options?: ChainHookOptions,
+  options?: ChainHookOptions & SuspenseOptions<TUse>,
 ) {
   const config = useConfig();
   const chainId = internal_useChainId(options);
 
-  return usePausableAtomValue(
-    tag === "finalized"
-      ? finalizedBlockAtom(config, chainId)
-      : bestBlockAtom(config, chainId),
+  return useMaybeUse(
+    useStablePromise(
+      usePausableAtomValue(
+        tag === "finalized"
+          ? finalizedBlockAtom(config, chainId)
+          : bestBlockAtom(config, chainId),
+      ),
+    ),
+    options,
   );
 }
 

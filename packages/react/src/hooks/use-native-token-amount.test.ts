@@ -3,11 +3,9 @@ import {
   useNativeTokenAmountFromPlanck,
 } from "./use-native-token-amount.js";
 import { DenominatedNumber } from "@reactive-dot/utils";
+import { renderHook } from "@testing-library/react";
+import { act } from "react";
 import { describe, expect, it, vi } from "vitest";
-
-vi.mock("react", () => ({
-  useMemo: vi.fn((value: (...args: unknown[]) => unknown) => value()),
-}));
 
 vi.mock("./use-chain-spec-data", () => ({
   useChainSpecData: vi.fn(() => ({
@@ -19,48 +17,58 @@ vi.mock("./use-chain-spec-data", () => ({
 }));
 
 describe("useNativeTokenAmountFromPlanck", () => {
-  it("should convert planck value to DenominatedNumber", () => {
-    const result = useNativeTokenAmountFromPlanck(1000000000000n);
+  it("should convert planck value to DenominatedNumber", async () => {
+    const { result } = await act(() =>
+      renderHook(() => useNativeTokenAmountFromPlanck(1000000000000n)),
+    );
 
-    expect(result).toBeInstanceOf(DenominatedNumber);
-    expect(result.toLocaleString("en-NZ")).toBe("DOT 1.00");
+    expect(result.current).toBeInstanceOf(DenominatedNumber);
+    expect(result.current.toLocaleString("en-NZ")).toBe("DOT 1.00");
   });
 
-  it("should return conversion function when no planck value provided", () => {
-    const converter = useNativeTokenAmountFromPlanck();
+  it("should return conversion function when no planck value provided", async () => {
+    const { result } = await act(() =>
+      renderHook(() => useNativeTokenAmountFromPlanck()),
+    );
 
-    expect(converter).toBeTypeOf("function");
+    expect(result.current).toBeTypeOf("function");
 
-    const result = converter(1000000000000n);
+    const value = result.current(1000000000000n);
 
-    expect(result).toBeInstanceOf(DenominatedNumber);
-    expect(result.toLocaleString("en-NZ")).toBe("DOT 1.00");
+    expect(value).toBeInstanceOf(DenominatedNumber);
+    expect(value.toLocaleString("en-NZ")).toBe("DOT 1.00");
   });
 });
 
 describe("useNativeTokenAmountFromNumber", () => {
-  it("should convert number value to DenominatedNumber", () => {
-    const result = useNativeTokenAmountFromNumber(1);
+  it("should convert number value to DenominatedNumber", async () => {
+    const { result } = await act(() =>
+      renderHook(() => useNativeTokenAmountFromNumber(1)),
+    );
 
-    expect(result).toBeInstanceOf(DenominatedNumber);
-    expect(result.toLocaleString("en-NZ")).toBe("DOT 1.00");
+    expect(result.current).toBeInstanceOf(DenominatedNumber);
+    expect(result.current.toLocaleString("en-NZ")).toBe("DOT 1.00");
   });
 
-  it("should convert string number to DenominatedNumber", () => {
-    const result = useNativeTokenAmountFromNumber("1.5");
+  it("should convert string number to DenominatedNumber", async () => {
+    const { result } = await act(() =>
+      renderHook(() => useNativeTokenAmountFromNumber("1.5")),
+    );
 
-    expect(result).toBeInstanceOf(DenominatedNumber);
-    expect(result.toLocaleString("en-NZ")).toBe("DOT 1.50");
+    expect(result.current).toBeInstanceOf(DenominatedNumber);
+    expect(result.current.toLocaleString("en-NZ")).toBe("DOT 1.50");
   });
 
-  it("should return conversion function when no number provided", () => {
-    const converter = useNativeTokenAmountFromNumber();
+  it("should return conversion function when no number provided", async () => {
+    const { result } = await act(() =>
+      renderHook(() => useNativeTokenAmountFromNumber()),
+    );
 
-    expect(converter).toBeTypeOf("function");
+    expect(result.current).toBeTypeOf("function");
 
-    const result = converter(2);
+    const value = result.current(2);
 
-    expect(result).toBeInstanceOf(DenominatedNumber);
-    expect(result.toLocaleString("en-NZ")).toBe("DOT 2.00");
+    expect(value).toBeInstanceOf(DenominatedNumber);
+    expect(value.toLocaleString("en-NZ")).toBe("DOT 2.00");
   });
 });

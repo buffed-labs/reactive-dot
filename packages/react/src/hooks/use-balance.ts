@@ -1,18 +1,20 @@
-import type { ChainHookOptions, DeferOptions } from "./types.js";
+import { atomFamilyWithErrorCatcher } from "../utils/jotai/atom-family-with-error-catcher.js";
+import type { ObservableAndPromiseAtom } from "../utils/jotai/atom-with-observable-and-promise.js";
+import { objectId } from "../utils/object-id.js";
+import type { ChainHookOptions, SuspenseOptions } from "./types.js";
 import { internal_useChainId } from "./use-chain-id.js";
 import { chainSpecDataAtom } from "./use-chain-spec-data.js";
 import { useConfig } from "./use-config.js";
-import { useLazyLoadQuery } from "./use-query.js";
-import { type Address, pending } from "@reactive-dot/core";
-import {
-  nativeTokenInfoFromChainSpecData,
-  toSs58String,
-} from "@reactive-dot/core/internal.js";
+import { useMaybeUse } from "./use-maybe-use.js";
+import { usePausableAtomValue } from "./use-pausable-atom-value.js";
+import { instructionPayloadAtom } from "./use-query.js";
+import { useStablePromise } from "./use-stable-promise.js";
+import type { Address, ChainId, Config } from "@reactive-dot/core";
+import { nativeTokenInfoFromChainSpecData } from "@reactive-dot/core/internal.js";
 import { spendableBalance } from "@reactive-dot/core/internal/maths.js";
 import { DenominatedNumber } from "@reactive-dot/utils";
-import { useAtomValue } from "jotai";
-import { unwrap } from "jotai/utils";
-import { useCallback, useMemo } from "react";
+import { atom } from "jotai";
+import { soon, soonAll } from "jotai-eager";
 
 type SystemAccount = {
   nonce: number;
@@ -27,8 +29,8 @@ type SystemAccount = {
   };
 };
 
-type Options<TDefer extends boolean> = ChainHookOptions &
-  DeferOptions<TDefer> & {
+type Options<TUse extends boolean> = ChainHookOptions &
+  SuspenseOptions<TUse> & {
     includesExistentialDeposit?: boolean;
   };
 
@@ -40,92 +42,23 @@ type Options<TDefer extends boolean> = ChainHookOptions &
  * @param options - Additional options
  * @returns The account's spendable balance
  */
-export function useSpendableBalance<TDefer extends boolean = false>(
+export function useSpendableBalance<TUse extends boolean = true>(
   address: Address,
-  options?: Options<TDefer>,
-): true extends TDefer ? DenominatedNumber | undefined : DenominatedNumber;
-/**
- * Hook for getting accounts’ spendable balances.
- *
- * @deprecated Use {@link useSpendableBalances} instead.
- * @param addresses  - The account-addresses
- * @param options - Additional options
- * @returns The accounts’ spendable balances
- */
-export function useSpendableBalance<TDefer extends boolean = false>(
-  addresses: Address[],
-  options?: Options<TDefer>,
-): true extends TDefer ? DenominatedNumber[] | undefined : DenominatedNumber[];
-export function useSpendableBalance(
-  addressOrAddresses: Address | Address[],
-  { includesExistentialDeposit = false, ...options }: Options<boolean> = {},
-): DenominatedNumber | DenominatedNumber[] | undefined {
-  const addresses = useMemo(
-    () =>
-      (Array.isArray(addressOrAddresses)
-        ? addressOrAddresses
-        : [addressOrAddresses]
-      ).map((address) => toSs58String(address)),
-    [addressOrAddresses],
-  );
-
-  const [existentialDeposit, accounts] = useLazyLoadQuery(
-    (builder) =>
-      builder
-        .constant("Balances", "ExistentialDeposit", {
-          defer: options.defer ?? false,
-        })
-        .storages(
-          "System",
-          "Account",
-          addresses.map((address) => [address] as const),
-          {
-            defer: options.defer ?? false,
-          },
+  options?: Options<TUse>,
+) {
+  return useMaybeUse(
+    useStablePromise(
+      usePausableAtomValue(
+        spendableBalanceAtom(
+          useConfig(),
+          internal_useChainId(options),
+          address,
+          options?.includesExistentialDeposit ?? false,
         ),
+      ),
+    ),
     options,
-  ) as [bigint | typeof pending, SystemAccount[] | typeof pending];
-
-  const chainSpecDataAtomInstance = chainSpecDataAtom(
-    useConfig(),
-    internal_useChainId(options),
   );
-
-  const chainSpecFallback = useCallback(() => pending, []);
-  const chainSpecData = useAtomValue(
-    options.defer
-      ? unwrap(chainSpecDataAtomInstance, chainSpecFallback)
-      : chainSpecDataAtomInstance,
-  );
-
-  const balances = useMemo(() => {
-    if (
-      accounts === pending ||
-      existentialDeposit === pending ||
-      chainSpecData === pending
-    ) {
-      return undefined;
-    }
-
-    const nativeTokenInfo = nativeTokenInfoFromChainSpecData(chainSpecData);
-
-    return accounts.map(
-      ({ data: { free, reserved, frozen } }) =>
-        new DenominatedNumber(
-          spendableBalance({
-            free,
-            reserved,
-            frozen,
-            existentialDeposit,
-            includesExistentialDeposit,
-          }),
-          nativeTokenInfo.decimals ?? 0,
-          nativeTokenInfo.code,
-        ),
-    );
-  }, [accounts, chainSpecData, existentialDeposit, includesExistentialDeposit]);
-
-  return Array.isArray(addressOrAddresses) ? balances : balances?.[0];
 }
 
 /**
@@ -136,9 +69,140 @@ export function useSpendableBalance(
  * @param options - Additional options
  * @returns The accounts’ spendable balances
  */
-export function useSpendableBalances<TDefer extends boolean = false>(
+export function useSpendableBalances<TUse extends boolean = true>(
   addresses: Address[],
-  options?: Options<TDefer>,
+  options?: Options<TUse>,
 ) {
-  return useSpendableBalance<TDefer>(addresses, options);
+  return useMaybeUse(
+    useStablePromise(
+      usePausableAtomValue(
+        spendableBalancesAtom(
+          useConfig(),
+          internal_useChainId(options),
+          addresses,
+          options?.includesExistentialDeposit ?? false,
+        ),
+      ),
+    ),
+    options,
+  );
 }
+
+const spendableBalanceAtom = atomFamilyWithErrorCatcher(
+  (
+    withErrorCatcher,
+    config: Config,
+    chainId: ChainId,
+    address: Address,
+    includesExistentialDeposit: boolean,
+  ) => {
+    const existentialDepositPayload = instructionPayloadAtom(config, chainId, {
+      type: "constant",
+      pallet: "Balances",
+      constant: "ExistentialDeposit",
+      directives: { defer: false },
+    }) as ObservableAndPromiseAtom<bigint>;
+
+    const accountPayload = instructionPayloadAtom(config, chainId, {
+      type: "storage",
+      pallet: "System",
+      storage: "Account",
+      keys: [address],
+      at: undefined,
+      directives: { defer: false },
+    }) as ObservableAndPromiseAtom<SystemAccount>;
+
+    const createAtom = (asObservable: boolean) =>
+      withErrorCatcher(
+        atom((get) =>
+          soon(
+            soonAll([
+              get(chainSpecDataAtom(config, chainId)),
+              get(
+                asObservable
+                  ? existentialDepositPayload.observableAtom
+                  : existentialDepositPayload.promiseAtom,
+              ),
+              get(
+                asObservable
+                  ? accountPayload.observableAtom
+                  : accountPayload.promiseAtom,
+              ),
+            ]),
+            ([
+              chainSpecData,
+              existentialDeposit,
+              {
+                data: { free, reserved, frozen },
+              },
+            ]) => {
+              const nativeTokenInfo =
+                nativeTokenInfoFromChainSpecData(chainSpecData);
+
+              return new DenominatedNumber(
+                spendableBalance({
+                  free,
+                  reserved,
+                  frozen,
+                  existentialDeposit,
+                  includesExistentialDeposit,
+                }),
+                nativeTokenInfo.decimals ?? 0,
+                nativeTokenInfo.code,
+              );
+            },
+          ),
+        ),
+      );
+
+    return {
+      promiseAtom: createAtom(false),
+      observableAtom: createAtom(true),
+    };
+  },
+);
+
+const spendableBalancesAtom = atomFamilyWithErrorCatcher(
+  (
+    withErrorCatcher,
+    config: Config,
+    chainId: ChainId,
+    addresses: Address[],
+    includesExistentialDeposit: boolean,
+  ) => {
+    const createAtom = (asObservable: boolean) => {
+      const balanceAtom = (address: Address) =>
+        spendableBalanceAtom(
+          config,
+          chainId,
+          address,
+          includesExistentialDeposit,
+        );
+
+      return withErrorCatcher(
+        atom((get) =>
+          soonAll(
+            addresses.map((address) =>
+              get(
+                asObservable
+                  ? balanceAtom(address).observableAtom
+                  : balanceAtom(address).promiseAtom,
+              ),
+            ),
+          ),
+        ),
+      );
+    };
+    return {
+      promiseAtom: createAtom(false),
+      observableAtom: createAtom(true),
+    };
+  },
+  (config, chainId, addresses, includesExistentialDeposit) =>
+    [
+      objectId(config),
+      chainId,
+      addresses.join(),
+      includesExistentialDeposit,
+    ].join(),
+);

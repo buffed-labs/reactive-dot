@@ -23,6 +23,8 @@ it("should match inline snapshot", () =>
       "useMutation",
       "useNativeTokenAmountFromNumber",
       "useNativeTokenAmountFromPlanck",
+      "usePromiseState",
+      "usePromises",
       "useQueryErrorResetter",
       "useQueryLoader",
       "useQueryRefresher",

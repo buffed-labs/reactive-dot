@@ -4,6 +4,7 @@ import { useAtomValue } from "./use-atom-value.js";
 import { internal_useChainId } from "./use-chain-id.js";
 import { clientAtom } from "./use-client.js";
 import { useConfig } from "./use-config.js";
+import { useStablePromise } from "./use-stable-promise.js";
 import { BaseError, type ChainId, type Config } from "@reactive-dot/core";
 import {
   UnsafeDescriptor,
@@ -12,6 +13,7 @@ import {
 import { atom } from "jotai";
 import { soon } from "jotai-eager";
 import type { ChainDefinition, TypedApi } from "polkadot-api";
+import { use } from "react";
 
 /**
  * Hook for getting Polkadot-API typed API.
@@ -23,8 +25,10 @@ import type { ChainDefinition, TypedApi } from "polkadot-api";
 export function useTypedApi<TChainId extends ChainId | undefined>(
   options?: ChainHookOptions<TChainId>,
 ) {
-  return useAtomValue(
-    typedApiAtom(useConfig(), internal_useChainId(options)),
+  return use(
+    useStablePromise(
+      useAtomValue(typedApiAtom(useConfig(), internal_useChainId(options))),
+    ),
   ) as TypedApi<ChainDescriptorOf<TChainId>>;
 }
 
