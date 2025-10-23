@@ -1,9 +1,12 @@
 import { emptyArrayAtom } from "../constants/empty-array-atom.js";
 import { atomFamilyWithErrorCatcher } from "../utils/jotai/atom-family-with-error-catcher.js";
 import { atomWithObservable } from "../utils/jotai/atom-with-observable.js";
+import type { SuspenseOptions } from "./types.js";
 import { useAtomValue } from "./use-atom-value.js";
 import { useConfig } from "./use-config.js";
+import { useMaybeUse } from "./use-maybe-use.js";
 import { useSsrValue } from "./use-ssr-value.js";
+import { useStablePromise } from "./use-stable-promise.js";
 import type { Config } from "@reactive-dot/core";
 import {
   aggregateWallets,
@@ -18,12 +21,19 @@ import { type Atom, atom } from "jotai";
  * @group Hooks
  * @returns Available wallets
  */
-export function useWallets() {
-  return useAtomValue(
-    useSsrValue<Atom<Wallet[] | Promise<Wallet[]>>>(
-      walletsAtom(useConfig()),
-      emptyArrayAtom,
+export function useWallets<TUse extends boolean = true>(
+  options?: SuspenseOptions<TUse>,
+) {
+  return useMaybeUse(
+    useStablePromise(
+      useAtomValue(
+        useSsrValue<Atom<Wallet[] | Promise<Wallet[]>>>(
+          walletsAtom(useConfig()),
+          emptyArrayAtom,
+        ),
+      ),
     ),
+    options,
   );
 }
 
@@ -33,9 +43,16 @@ export function useWallets() {
  * @group Hooks
  * @returns Connected wallets
  */
-export function useConnectedWallets() {
-  return useAtomValue(
-    useSsrValue(connectedWalletsAtom(useConfig()), emptyArrayAtom),
+export function useConnectedWallets<TUse extends boolean = true>(
+  options?: SuspenseOptions<TUse>,
+) {
+  return useMaybeUse(
+    useStablePromise(
+      useAtomValue(
+        useSsrValue(connectedWalletsAtom(useConfig()), emptyArrayAtom),
+      ),
+    ),
+    options,
   );
 }
 

@@ -3,10 +3,12 @@ import type { ChainHookOptions } from "./types.js";
 import { useAtomValue } from "./use-atom-value.js";
 import { internal_useChainId } from "./use-chain-id.js";
 import { useConfig } from "./use-config.js";
+import { useStablePromise } from "./use-stable-promise.js";
 import type { ChainId, Config } from "@reactive-dot/core";
 import { BaseError } from "@reactive-dot/core";
 import { getClient } from "@reactive-dot/core/internal/actions.js";
 import { atom } from "jotai";
+import { use } from "react";
 
 /**
  * Hook for getting Polkadot-API client instance.
@@ -16,7 +18,11 @@ import { atom } from "jotai";
  * @returns Polkadot-API client
  */
 export function useClient(options?: ChainHookOptions) {
-  return useAtomValue(clientAtom(useConfig(), internal_useChainId(options)));
+  return use(
+    useStablePromise(
+      useAtomValue(clientAtom(useConfig(), internal_useChainId(options))),
+    ),
+  );
 }
 
 /**

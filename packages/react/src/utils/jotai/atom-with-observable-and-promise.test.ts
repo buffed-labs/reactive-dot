@@ -1,8 +1,9 @@
 import { useAtomValue } from "../../hooks/use-atom-value.js";
+import { useStablePromise } from "../../hooks/use-stable-promise.js";
 import { atomWithObservableAndPromise } from "./atom-with-observable-and-promise.js";
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { useStore } from "jotai";
-import { useMemo } from "react";
+import { use, useMemo } from "react";
 import { BehaviorSubject, firstValueFrom, of } from "rxjs";
 import { switchMap, tap } from "rxjs/operators";
 import { expect, it } from "vitest";
@@ -11,7 +12,7 @@ it("should return an atom with the initial value from the observable", async () 
   const observable$ = of("initial");
   const { observableAtom } = atomWithObservableAndPromise(() => observable$);
   const render = await act(() =>
-    renderHook(() => useAtomValue(observableAtom)),
+    renderHook(() => use(useStablePromise(useAtomValue(observableAtom)))),
   );
 
   expect(render.result.current).toBe("initial");
@@ -21,7 +22,7 @@ it("should update the atom when the observable emits a new value", async () => {
   const subject$ = new BehaviorSubject("initial");
   const { observableAtom } = atomWithObservableAndPromise(() => subject$);
   const render = await act(() =>
-    renderHook(() => useAtomValue(observableAtom)),
+    renderHook(() => use(useStablePromise(useAtomValue(observableAtom)))),
   );
 
   expect(render.result.current).toBe("initial");
@@ -36,7 +37,9 @@ it("should update the atom when the observable emits a new value", async () => {
 it("should return a promise atom that resolves with the first value from the observable", async () => {
   const observable$ = of("initial");
   const { promiseAtom } = atomWithObservableAndPromise(() => observable$);
-  const render = await act(() => renderHook(() => useAtomValue(promiseAtom)));
+  const render = await act(() =>
+    renderHook(() => use(useStablePromise(useAtomValue(promiseAtom)))),
+  );
 
   await waitFor(() => firstValueFrom(observable$));
 
@@ -46,7 +49,9 @@ it("should return a promise atom that resolves with the first value from the obs
 it("should return a promise atom that resolves with the first value from the observable, even when the observable emits multiple values", async () => {
   const subject$ = new BehaviorSubject("initial");
   const { promiseAtom } = atomWithObservableAndPromise(() => subject$);
-  const render = await act(() => renderHook(() => useAtomValue(promiseAtom)));
+  const render = await act(() =>
+    renderHook(() => use(useStablePromise(useAtomValue(promiseAtom)))),
+  );
 
   expect(render.result.current).toBe("initial");
 
@@ -60,7 +65,9 @@ it("should return a promise atom that will be updated from an observable atom mo
   const { promiseAtom, observableAtom } = atomWithObservableAndPromise(
     () => subject$,
   );
-  const render = await act(() => renderHook(() => useAtomValue(promiseAtom)));
+  const render = await act(() =>
+    renderHook(() => use(useStablePromise(useAtomValue(promiseAtom)))),
+  );
 
   expect(render.result.current).toBe("initial");
 
@@ -68,7 +75,7 @@ it("should return a promise atom that will be updated from an observable atom mo
 
   expect(render.result.current).toBe("initial");
 
-  renderHook(() => useAtomValue(observableAtom));
+  renderHook(() => use(useStablePromise(useAtomValue(observableAtom))));
 
   expect(render.result.current).toBe("updated");
 });
@@ -88,7 +95,7 @@ it("should populate the observable atom initial value with result from promise a
   );
 
   const promiseRender = await act(() =>
-    renderHook(() => useAtomValue(promiseAtom)),
+    renderHook(() => use(useStablePromise(useAtomValue(promiseAtom)))),
   );
 
   delay.resolve();
@@ -113,7 +120,9 @@ it("should unsubscribe from the observable when the promise atom is unmounted", 
 
   const { promiseAtom } = atomWithObservableAndPromise(() => observable$);
 
-  const render = await act(() => renderHook(() => useAtomValue(promiseAtom)));
+  const render = await act(() =>
+    renderHook(() => use(useStablePromise(useAtomValue(promiseAtom)))),
+  );
 
   expect(render.result.current).toBe("initial");
 
@@ -127,7 +136,7 @@ it("should handle errors in the observable", async () => {
   const { observableAtom } = atomWithObservableAndPromise(() => observable$);
 
   const render = await act(() =>
-    renderHook(() => useAtomValue(observableAtom)),
+    renderHook(() => use(useStablePromise(useAtomValue(observableAtom)))),
   );
 
   expect(render.result.current).toBe("initial");
@@ -149,8 +158,10 @@ it("should propagate errors from the observable atom to the promise atom", async
     () => observable$,
   );
 
-  const render = await act(() => renderHook(() => useAtomValue(promiseAtom)));
-  renderHook(() => useAtomValue(observableAtom));
+  const render = await act(() =>
+    renderHook(() => use(useStablePromise(useAtomValue(promiseAtom)))),
+  );
+  renderHook(() => use(useStablePromise(useAtomValue(observableAtom))));
 
   expect(render.result.current).toBe("initial");
 
@@ -179,7 +190,7 @@ it("should allow enhancing the atom", async () => {
   );
 
   const render = await act(() =>
-    renderHook(() => useAtomValue(observableAtom)),
+    renderHook(() => use(useStablePromise(useAtomValue(observableAtom)))),
   );
 
   expect(render.result.current).toBe("initial");
@@ -193,7 +204,7 @@ it("should work with a delayed observable", async () => {
   const { observableAtom } = atomWithObservableAndPromise(() => observable$);
 
   const render = await act(() =>
-    renderHook(() => useAtomValue(observableAtom)),
+    renderHook(() => use(useStablePromise(useAtomValue(observableAtom)))),
   );
 
   expect(render.result.current).toBe(null);
@@ -209,7 +220,7 @@ it("should handle undefined values", async () => {
   const observable$ = of(undefined);
   const { observableAtom } = atomWithObservableAndPromise(() => observable$);
   const render = await act(() =>
-    renderHook(() => useAtomValue(observableAtom)),
+    renderHook(() => use(useStablePromise(useAtomValue(observableAtom)))),
   );
 
   expect(render.result.current).toBe(undefined);

@@ -7,6 +7,9 @@ import type {
   InferQueryPayload,
 } from "@reactive-dot/core/internal.js";
 
+export type When<TBoolean extends boolean, TTrue, TFalse> =
+  true extends NoInfer<TBoolean> ? TTrue : TFalse;
+
 type ChainOptions<TChainId extends ChainId | undefined> = {
   /**
    * Override default chain ID
@@ -28,9 +31,13 @@ export type QueryArgument<TChainId extends ChainId | undefined> =
     ) => Query<QueryInstruction[], ChainDescriptorOf<TChainId>> | Falsy)
   | Falsy;
 
-export type DeferOptions<TDefer extends boolean> = {
-  /** Return fallback instead of suspending when the data is not ready */
-  defer?: TDefer;
+export type SuspenseOptions<TUse extends boolean> = {
+  /**
+   * Whether to suspend while the data is loading. Return a "stable" `Promise` if set to `false`.
+   *
+   * @default true
+   */
+  use?: TUse;
 };
 
 export type InferQueryArgumentResult<

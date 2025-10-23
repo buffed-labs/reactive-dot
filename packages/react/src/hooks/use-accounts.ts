@@ -1,17 +1,17 @@
 import { emptyArrayAtom } from "../constants/empty-array-atom.js";
 import { atomFamilyWithErrorCatcher } from "../utils/jotai/atom-family-with-error-catcher.js";
 import { atomWithObservable } from "../utils/jotai/atom-with-observable.js";
-import type { ChainHookOptions, DeferOptions } from "./types.js";
+import type { ChainHookOptions, SuspenseOptions } from "./types.js";
+import { useAtomValue } from "./use-atom-value.js";
 import { internal_useChainId } from "./use-chain-id.js";
 import { chainSpecDataAtom } from "./use-chain-spec-data.js";
 import { useConfig } from "./use-config.js";
+import { useMaybeUse } from "./use-maybe-use.js";
 import { useSsrValue } from "./use-ssr-value.js";
+import { useStablePromise } from "./use-stable-promise.js";
 import { connectedWalletsAtom } from "./use-wallets.js";
 import { type ChainId, type Config } from "@reactive-dot/core";
 import { getAccounts } from "@reactive-dot/core/internal/actions.js";
-import type { WalletAccount } from "@reactive-dot/core/wallets.js";
-import { useAtomValue } from "jotai";
-import { unwrap } from "jotai/utils";
 
 /**
  * Hook for getting currently connected accounts.
@@ -20,25 +20,28 @@ import { unwrap } from "jotai/utils";
  * @param options - Additional options
  * @returns The currently connected accounts
  */
-export function useAccounts<TDefer extends boolean = false>(
-  options?: (ChainHookOptions | { chainId: null }) & DeferOptions<TDefer>,
+export function useAccounts<TUse extends boolean = true>(
+  options?: (ChainHookOptions | { chainId: null }) & SuspenseOptions<TUse>,
 ) {
-  const accountsAtomInstance = accountsAtom(
-    useConfig(),
-    options?.chainId === null
-      ? undefined
-      : internal_useChainId({
-          ...options,
-          optionalChainId: true,
-        }),
-  );
-
-  return useAtomValue(
-    useSsrValue(
-      options?.defer ? unwrap(accountsAtomInstance) : accountsAtomInstance,
-      emptyArrayAtom,
+  return useMaybeUse(
+    useStablePromise(
+      useAtomValue(
+        useSsrValue(
+          accountsAtom(
+            useConfig(),
+            options?.chainId === null
+              ? undefined
+              : internal_useChainId({
+                  ...options,
+                  optionalChainId: true,
+                }),
+          ),
+          emptyArrayAtom,
+        ),
+      ),
     ),
-  ) as true extends TDefer ? WalletAccount[] | undefined : WalletAccount[];
+    options,
+  );
 }
 
 /**

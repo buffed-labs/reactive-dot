@@ -3,13 +3,11 @@ import { useSpendableBalance, useSpendableBalances } from "./use-balance.js";
 import { internal_useChainId } from "./use-chain-id.js";
 import { chainSpecDataAtom } from "./use-chain-spec-data.js";
 import { useConfig } from "./use-config.js";
-import { useLazyLoadQuery } from "./use-query.js";
-import { idle, Query } from "@reactive-dot/core";
+import { instructionPayloadAtom } from "./use-query.js";
 import { renderHook } from "@testing-library/react";
 import { atom } from "jotai";
-import type { ChainDefinition } from "polkadot-api";
 import { act } from "react";
-import { beforeEach, describe, expect, it, test, vi } from "vitest";
+import { beforeEach, expect, it, vi } from "vitest";
 
 vi.mock("./use-config.js");
 vi.mock("./use-chain-id.js");
@@ -22,54 +20,44 @@ vi.mocked(useConfig).mockReturnValue({ chains: {} });
 
 vi.mocked(internal_useChainId).mockReturnValue("foo");
 
-vi.mocked(useLazyLoadQuery).mockImplementation(
-  // @ts-expect-error TODO: fix type
-  (
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    builder: <T extends Query<any[], ChainDefinition>>(
-      query: Query<[], ChainDefinition>,
-    ) => T,
-  ) => {
-    if (!builder) {
-      return idle;
-    }
+vi.mocked(instructionPayloadAtom).mockImplementation(
+  (config, chainId, instruction) => {
+    const value = Promise.resolve(
+      (() => {
+        if (
+          instruction.type === "constant" &&
+          instruction.pallet === "Balances" &&
+          instruction.constant === "ExistentialDeposit"
+        ) {
+          return 100n;
+        } else if (
+          instruction.type === "storage" &&
+          instruction.pallet === "System" &&
+          instruction.storage === "Account"
+        ) {
+          return {
+            nonce: 0,
+            consumers: 0,
+            providers: 0,
+            sufficients: 0,
+            data: {
+              free,
+              reserved: 1000n,
+              frozen: 50n,
+              flags: 0n,
+            },
+          };
+        } else {
+          throw new Error("Invalid instruction");
+        }
+      })(),
+    );
 
-    const query = builder(new Query());
-
-    if (!query) {
-      return idle;
-    }
-
-    return query.instructions.map((instruction) => {
-      if (
-        instruction.type === "constant" &&
-        instruction.pallet === "Balances" &&
-        instruction.constant === "ExistentialDeposit"
-      ) {
-        return 100n;
-      } else if (
-        instruction.type === "storage" &&
-        instruction.pallet === "System" &&
-        instruction.storage === "Account" &&
-        "multi" in instruction &&
-        instruction.multi
-      ) {
-        return Array.from({ length: instruction.keys.length }).fill({
-          nonce: 0,
-          consumers: 0,
-          providers: 0,
-          sufficients: 0,
-          data: {
-            free,
-            reserved: 1000n,
-            frozen: 50n,
-            flags: 0n,
-          },
-        });
-      } else {
-        throw new Error("Invalid instruction");
-      }
-    });
+    return {
+      observableAtom: atom(value),
+      promiseAtom: atom(value),
+      __meta: { config, chainId, instruction },
+    };
   },
 );
 
@@ -159,54 +147,4 @@ it("should handle includesExistentialDeposit option", async () => {
   );
 
   expect(result2.current.planck).toBeGreaterThan(result.current.planck);
-});
-
-describe("returns undefined when defer is true and the data is not ready", () => {
-  test("single address", async () => {
-    const { result } = await act(() =>
-      renderHook(() =>
-        useSpendableBalance(
-          "5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY",
-          {
-            defer: true,
-          },
-        ),
-      ),
-    );
-
-    expect(result.current).toBeUndefined();
-
-    await act(() => mockPromise.resolve());
-
-    expect(result.current).toBeInstanceOf(DenominatedNumber);
-  });
-
-  test("multi addresses", async () => {
-    const { result } = await act(() =>
-      renderHook(() =>
-        useSpendableBalance(
-          [
-            "5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY",
-            "5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY",
-            "5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY",
-          ],
-          {
-            defer: true,
-          },
-        ),
-      ),
-    );
-
-    expect(result.current).toBeUndefined();
-
-    await act(() => mockPromise.resolve());
-
-    expect(result.current).toEqual(
-      expect.arrayContaining([
-        expect.any(DenominatedNumber),
-        expect.any(DenominatedNumber),
-        expect.any(DenominatedNumber),
-      ]),
-    );
-  });
 });

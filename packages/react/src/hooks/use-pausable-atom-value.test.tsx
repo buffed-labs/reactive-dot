@@ -3,8 +3,9 @@ import { atomWithObservableAndPromise } from "../utils/jotai/atom-with-observabl
 import { atomWithObservable } from "../utils/jotai/atom-with-observable.js";
 import { useAtomValue } from "./use-atom-value.js";
 import { usePausableAtomValue } from "./use-pausable-atom-value.js";
+import { useStablePromise } from "./use-stable-promise.js";
 import { renderHook } from "@testing-library/react";
-import { act, type PropsWithChildren } from "react";
+import { act, use, type PropsWithChildren } from "react";
 import { BehaviorSubject } from "rxjs";
 import { expect, it } from "vitest";
 
@@ -32,7 +33,7 @@ it("should return promise atom when subscription is set to inactive", async () =
   const valueAtom = atomWithObservableAndPromise(() => subject);
 
   const { result } = await act(() =>
-    renderHook(() => usePausableAtomValue(valueAtom), {
+    renderHook(() => use(useStablePromise(usePausableAtomValue(valueAtom))), {
       wrapper: ({ children }) => (
         <QueryOptionsProvider active={false}>{children}</QueryOptionsProvider>
       ),
@@ -54,13 +55,15 @@ it("should change from inactive to active when subscription status change", asyn
   const valueAtom = atomWithObservableAndPromise(() => subject);
 
   const Wrapper = ({ children }: PropsWithChildren) => (
-    <QueryOptionsProvider active={useAtomValue(activeAtom)}>
+    <QueryOptionsProvider
+      active={use(useStablePromise(useAtomValue(activeAtom)))}
+    >
       {children}
     </QueryOptionsProvider>
   );
 
   const { result } = await act(() =>
-    renderHook(() => usePausableAtomValue(valueAtom), {
+    renderHook(() => use(useStablePromise(usePausableAtomValue(valueAtom))), {
       wrapper: Wrapper,
     }),
   );
