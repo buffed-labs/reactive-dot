@@ -1,5 +1,11 @@
 # @reactive-dot/react
 
+## 0.59.1
+
+### Patch Changes
+
+- [#970](https://github.com/buffed-labs/reactive-dot/pull/970) [`8b5443b`](https://github.com/buffed-labs/reactive-dot/commit/8b5443b04f5de3de48abd55299490659da9faa66) Thanks [@tien](https://github.com/tien)! - Fixed infinite render loop when using conditional queries.
+
 ## 0.59.0
 
 ### Minor Changes
