@@ -30,6 +30,10 @@ function App() {
 }
 ```
 
+:::tip
+For advanced async handling, see this [guide](/react/guides/async).
+:::
+
 ## Fetching multiple data
 
 Fetching multiple data can be done by chaining queries together, [`useLazyLoadQuery`](/react/api/react/functions/useLazyLoadQuery) (with TypeScript) will automatically infer that you want to fetch multiple data concurrently & will return an array of data instead.
