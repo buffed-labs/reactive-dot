@@ -1,5 +1,11 @@
 # @reactive-dot/react
 
+## 0.60.0
+
+### Minor Changes
+
+- [#972](https://github.com/buffed-labs/reactive-dot/pull/972) [`0c6a9fe`](https://github.com/buffed-labs/reactive-dot/commit/0c6a9fe072752ae531591543011d6baaa7dde633) Thanks [@tien](https://github.com/tien)! - Added `Await` component.
+
 ## 0.59.1
 
 ### Patch Changes
