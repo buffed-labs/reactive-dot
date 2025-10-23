@@ -19,6 +19,7 @@ type QueryRendererProps<
  * Component for rendering the result of a query.
  *
  * @experimental
+ * @deprecated Use Await component with promise instead
  * @group Components
  */
 export function QueryRenderer<
