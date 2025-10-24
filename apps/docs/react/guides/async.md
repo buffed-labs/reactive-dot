@@ -177,7 +177,7 @@ function App() {
 
 ### Using the `<Await>` component
 
-The `<Await>` component provides a declarative way to handle promises with render props:
+The `<Await>` component provides a declarative way to handle promises with render props. It uses React's `use()` hook internally, so it suspends until the promise resolves.
 
 ```tsx
 import { useSpendableBalance, Await } from "@reactive-dot/react";
@@ -188,6 +188,7 @@ function UserBalance({ address }: { address: string }) {
 
   return (
     // highlight-start
+    // Suspends until promise resolves
     <Await promise={balancePromise}>
       {(balance) => <div>Balance: {balance.toLocaleString()}</div>}
     </Await>
@@ -197,6 +198,8 @@ function UserBalance({ address }: { address: string }) {
 
 function App() {
   return (
+    // highlight-next-line
+    // Suspense boundary required
     <Suspense fallback={<div>Loading...</div>}>
       <UserBalance address={ADDRESS} />
     </Suspense>
@@ -212,7 +215,7 @@ function App() {
 | **`use()`**             | When you need promise control but still want suspense |
 | **`usePromiseState()`** | Custom loading states without suspense                |
 | **`usePromises()`**     | Parallel data fetching with suspense                  |
-| **`<Await>`**           | Declarative promise handling, good for composition    |
+| **`<Await>`**           | Declarative promise handling with suspense            |
 
 ## Error handling
 
