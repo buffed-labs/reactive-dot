@@ -1,7 +1,7 @@
 /**
  * @see https://bsky.app/profile/sebmarkbage.calyptus.eu/post/3lku7b7xjmk2w
  */
-export class ResolvedPromise<T> extends Promise<T> {
+export class FulfilledPromise<T> extends Promise<T> {
   status = "fulfilled";
   value: T;
 
@@ -14,11 +14,19 @@ export class ResolvedPromise<T> extends Promise<T> {
     if (value instanceof Promise) {
       return value;
     } else {
-      return new ResolvedPromise<T>(value);
+      return new FulfilledPromise<T>(value);
     }
   }
 
   static override get [Symbol.species]() {
     return Promise;
+  }
+
+  [Symbol.hasInstance](instance: unknown) {
+    return (
+      instance instanceof Promise &&
+      "status" in instance &&
+      instance.status === "fulfilled"
+    );
   }
 }

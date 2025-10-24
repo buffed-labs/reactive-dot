@@ -1,5 +1,6 @@
+import { FulfilledPromise } from "../utils/react-promise.js";
 import { pending } from "@reactive-dot/core";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
 /**
  * Hook for tracking promise state with a fallback value.
@@ -13,47 +14,50 @@ export function usePromiseState<TValue, TFallback = typeof pending>(
   promise: Promise<TValue>,
   fallback: (
     prev?: TValue | TFallback,
-  ) => TFallback = defaultFallback as () => TFallback,
+  ) => TValue | TFallback = defaultFallback as () => TFallback,
 ) {
   const [value, setValue] = useState<TValue | TFallback | ErrorContainer>(() =>
     fallback(),
   );
 
-  const mounted = useRef(false);
-
   if (value instanceof ErrorContainer) {
     throw value.error;
   }
 
-  useEffect(
-    () => {
-      const abortController = new AbortController();
+  const [prevPromise, setPrevPromise] = useState(promise);
+  if (promise !== prevPromise) {
+    setPrevPromise(promise);
+  }
 
-      if (mounted.current) {
-        // eslint-disable-next-line @eslint-react/hooks-extra/no-direct-set-state-in-use-effect
-        setValue(fallback(value));
-      }
+  if (promise instanceof FulfilledPromise && promise.value !== value) {
+    setValue(promise.value);
+  }
 
-      mounted.current = true;
+  if (!(promise instanceof FulfilledPromise) && promise !== prevPromise) {
+    setValue(fallback(value));
+  }
 
-      promise
-        .then((value) => {
-          if (!abortController.signal.aborted) {
-            setValue(value);
-          }
-        })
-        .catch((error) => {
-          if (!abortController.signal.aborted) {
-            setValue(new ErrorContainer(error));
-          }
-        });
+  useEffect(() => {
+    if (promise instanceof FulfilledPromise) {
+      return;
+    }
 
-      return () => abortController.abort();
-    },
+    const abortController = new AbortController();
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [promise],
-  );
+    promise
+      .then((value) => {
+        if (!abortController.signal.aborted) {
+          setValue(value);
+        }
+      })
+      .catch((error) => {
+        if (!abortController.signal.aborted) {
+          setValue(new ErrorContainer(error));
+        }
+      });
+
+    return () => abortController.abort();
+  }, [promise]);
 
   return value;
 }
