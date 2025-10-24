@@ -1,5 +1,13 @@
 # @reactive-dot/react
 
+## 0.60.1
+
+### Patch Changes
+
+- [#977](https://github.com/buffed-labs/reactive-dot/pull/977) [`80e6dc7`](https://github.com/buffed-labs/reactive-dot/commit/80e6dc7ed68fd58b47e7795fab96498f42ecd69b) Thanks [@tien](https://github.com/tien)! - Improved `usePromiseState`:
+  - Skip extra render when Promise is already fulfilled
+  - Set fallback value in render rather than part of side effect
+
 ## 0.60.0
 
 ### Minor Changes
