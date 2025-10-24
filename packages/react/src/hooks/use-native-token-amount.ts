@@ -1,4 +1,4 @@
-import type { ResolvedPromise } from "../utils/react-promise.js";
+import { FulfilledPromise } from "../utils/react-promise.js";
 import type { ChainHookOptions, SuspenseOptions, When } from "./types.js";
 import { useChainSpecData } from "./use-chain-spec-data.js";
 import { useMaybeUse } from "./use-maybe-use.js";
@@ -48,7 +48,7 @@ export function useNativeTokenAmountFromPlanck<TUse extends boolean = true>(
 
   // TODO: very dangerous hack, require tapping into internals
   const chainSpecDataPromise = useChainSpecData({ ...options, use: false }) as
-    | ResolvedPromise<ChainSpecData>
+    | FulfilledPromise<ChainSpecData>
     | Promise<ChainSpecData>;
 
   return useMaybeUse(
@@ -126,18 +126,15 @@ export function useNativeTokenAmountFromNumber<TUse extends boolean = true>(
   const options =
     typeof numberOrOptions === "object" ? numberOrOptions : maybeOptions;
 
-  // TODO: very dangerous hack, require tapping into internals
-  const chainSpecDataPromise = useChainSpecData({ ...options, use: false }) as
-    | ResolvedPromise<ChainSpecData>
-    | Promise<ChainSpecData>;
+  const chainSpecDataPromise = useChainSpecData({ ...options, use: false });
 
   return useMaybeUse(
     useStablePromise(
       useMemo(
         () =>
           soon(
-            "status" in chainSpecDataPromise &&
-              chainSpecDataPromise.status === "resolved"
+            // TODO: very dangerous hack, require tapping into internals
+            chainSpecDataPromise instanceof FulfilledPromise
               ? chainSpecDataPromise.value
               : chainSpecDataPromise,
             (chainSpecData) => {

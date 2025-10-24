@@ -48,3 +48,56 @@ it("throws rejected promise", async () => {
     expect(caught).toBe(error);
   }
 });
+
+it("reset to pending with a new promise", async () => {
+  const { promise: promise1, resolve: resolve1 } =
+    Promise.withResolvers<true>();
+  const { promise: promise2, resolve: resolve2 } =
+    Promise.withResolvers<true>();
+
+  const { result, rerender } = renderHook(
+    (promise: Promise<true>) => usePromiseState(promise),
+    { initialProps: promise1 },
+  );
+
+  expect(result.current).toBe(pending);
+
+  await act(() => resolve1(true));
+
+  expect(result.current).toBeTruthy();
+
+  rerender(promise2);
+
+  expect(result.current).toBe(pending);
+
+  await act(() => resolve2(true));
+
+  expect(result.current).toBeTruthy();
+});
+
+it("keep previous value with a new promise", async () => {
+  const { promise: promise1, resolve: resolve1 } =
+    Promise.withResolvers<string>();
+  const { promise: promise2, resolve: resolve2 } =
+    Promise.withResolvers<string>();
+
+  const { result, rerender } = renderHook(
+    (promise: Promise<string>) =>
+      usePromiseState(promise, (prev) => prev ?? pending),
+    { initialProps: promise1 },
+  );
+
+  expect(result.current).toBe(pending);
+
+  await act(() => resolve1("Hello"));
+
+  expect(result.current).toBe("Hello");
+
+  rerender(promise2);
+
+  expect(result.current).toBe("Hello");
+
+  await act(() => resolve2("World"));
+
+  expect(result.current).toBe("World");
+});
