@@ -3,7 +3,7 @@
 
 # ReactiveDOT
 
-A reactive library for building Substrate front-ends.
+A reactive library for building Polkadot front-ends.
 
 ## Documentation
 
