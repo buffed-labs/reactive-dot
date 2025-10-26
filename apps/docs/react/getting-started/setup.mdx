@@ -10,15 +10,25 @@ import Tabs from "@theme/Tabs";
 
 This walks you through the process of creating a simple ReactiveDOT application.
 
+:::tip[Automatic installation]
+For new projects, you can quickly set up your ReactiveDOT app using the [`create-polkadot-dapp`](https://github.com/paritytech/create-polkadot-dapp) command line interface (CLI).
+This will create a new ReactiveDOT project using TypeScript and install the required dependencies.
+
+```sh npm2yarn
+npm create polkadot-dapp@latest
+```
+
+:::
+
 ## Installation
 
 First add ReactiveDOT, along with required packages as dependencies to your React project.
 
-```bash npm2yarn
+```sh npm2yarn
 npm install @reactive-dot/core @reactive-dot/react polkadot-api
 ```
 
-## Download & sync metadata
+### Download & sync metadata
 
 Next, download the latest metadata from the chain you want to connect to and generate the types.
 
@@ -43,7 +53,7 @@ For more information on metadata syncing and type generation, please refer to th
 
 :::
 
-## Create config
+### Create config
 
 {/* prettier-ignore-start */}
 
@@ -152,7 +162,7 @@ declare module "@reactive-dot/core" {
 
 {/* prettier-ignore-end */}
 
-## Wrap app in context providers
+### Wrap app in context providers
 
 ```tsx title="app.tsx"
 import { config } from "./config";
