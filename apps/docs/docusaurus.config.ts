@@ -18,7 +18,7 @@ const commonApiDocsConfig = {
 
 const config: Config = {
   title: "ReactiveDOT",
-  tagline: "A reactive library for building Substrate front-ends",
+  tagline: "A reactive library for building Polkadot front-ends",
   favicon: "img/favicon.ico",
 
   url: "https://reactivedot.dev",
