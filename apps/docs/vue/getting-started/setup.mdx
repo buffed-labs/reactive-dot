@@ -18,7 +18,7 @@ First add ReactiveDOT, along with required packages as dependencies to your Vue 
 npm install @reactive-dot/core @reactive-dot/vue polkadot-api
 ```
 
-## Download & sync metadata
+### Download & sync metadata
 
 Next, download the latest metadata from the chain you want to connect to and generate the types.
 
@@ -43,7 +43,7 @@ For more information on metadata syncing and type generation, please refer to th
 
 :::
 
-## Create config
+### Create config
 
 {/* prettier-ignore-start */}
 
@@ -152,7 +152,7 @@ declare module "@reactive-dot/core" {
 
 {/* prettier-ignore-end */}
 
-## Install the plugin
+### Install the plugin
 
 ```tsx title="index.ts"
 import App from "./app.vue";
@@ -163,7 +163,7 @@ import { createApp } from "vue";
 createApp(App).use(ReactiveDotPlugin, config).mount("#root");
 ```
 
-## Provide the target chain ID
+### Provide the target chain ID
 
 ```vue title="app.vue"
 <script setup lang="ts">
