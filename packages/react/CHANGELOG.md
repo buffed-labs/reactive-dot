@@ -1,5 +1,11 @@
 # @reactive-dot/react
 
+## 0.60.2
+
+### Patch Changes
+
+- [#987](https://github.com/buffed-labs/reactive-dot/pull/987) [`aa48eec`](https://github.com/buffed-labs/reactive-dot/commit/aa48eecf75d22dc7b2caed2c1ff24e72b14abc44) Thanks [@tien](https://github.com/tien)! - Added default `Suspense` boundary to `ReactiveDotProvider` to prevent possible infinite loops when consumers forget to add a root boundary.
+
 ## 0.60.1
 
 ### Patch Changes
