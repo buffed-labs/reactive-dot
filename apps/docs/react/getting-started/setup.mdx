@@ -173,8 +173,7 @@ export function App() {
   return (
     <ReactiveDotProvider config={config}>
       <ChainProvider chainId="polkadot">
-        {/* Make sure there is at least one Suspense boundary wrapping the app */}
-        <Suspense>{/* ... */}</Suspense>
+        <Suspense fallback="Loading...">{/* ... */}</Suspense>
       </ChainProvider>
     </ReactiveDotProvider>
   );

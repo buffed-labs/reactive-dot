@@ -27,14 +27,16 @@ export function ReactiveDotProvider({
 }: ReactiveDotProviderProps) {
   return (
     <JotaiProvider store={useLocalStore()}>
-      <ConfigContext value={config}>
-        <MutationEventSubjectContext value={useMemo(() => new Subject(), [])}>
-          <Suspense>
-            <WalletsInitializer />
-          </Suspense>
-          {children}
-        </MutationEventSubjectContext>
-      </ConfigContext>
+      <Suspense>
+        <ConfigContext value={config}>
+          <MutationEventSubjectContext value={useMemo(() => new Subject(), [])}>
+            <Suspense>
+              <WalletsInitializer />
+            </Suspense>
+            {children}
+          </MutationEventSubjectContext>
+        </ConfigContext>
+      </Suspense>
     </JotaiProvider>
   );
 }
