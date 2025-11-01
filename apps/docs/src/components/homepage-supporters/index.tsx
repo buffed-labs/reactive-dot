@@ -2,13 +2,13 @@ import styles from "./styles.module.css";
 import Heading from "@theme/Heading";
 import { ReactNode } from "react";
 
-type SponsorItem = {
+type SupporterItem = {
   title: string;
   image: ReactNode;
   href: string;
 };
 
-const SponsorList: SponsorItem[] = [
+const supporterList: SupporterItem[] = [
   {
     title: "Polkadot OpenGov",
     image: (
@@ -85,9 +85,9 @@ const SponsorList: SponsorItem[] = [
   },
 ];
 
-function Sponsor({ title, image, href }: SponsorItem) {
+function Supporter({ title, image, href }: SupporterItem) {
   return (
-    <a href={href} target="_blank" className={styles.sponsor}>
+    <a href={href} target="_blank" className={styles.supporter}>
       <figure>
         {image}
         <figcaption>{title}</figcaption>
@@ -96,17 +96,17 @@ function Sponsor({ title, image, href }: SponsorItem) {
   );
 }
 
-export function HomepageSponsors() {
+export function HomepageSupporters() {
   return (
     <section className="margin-vert--lg">
       <header className="text--center">
         <Heading as="h2" className="text--primary">
-          Sponsored by
+          Supported by
         </Heading>
       </header>
-      <div className={styles.sponsors}>
-        {SponsorList.map((props, index) => (
-          <Sponsor key={index} {...props} />
+      <div className={styles.supporters}>
+        {supporterList.map((props, index) => (
+          <Supporter key={index} {...props} />
         ))}
       </div>
     </section>

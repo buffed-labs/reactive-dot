@@ -1,4 +1,4 @@
-import { HomepageSponsors } from "../components/homepage-sponsors";
+import { HomepageSupporters } from "../components/homepage-supporters";
 import styles from "./index.module.css";
 import Link from "@docusaurus/Link";
 import useDocusaurusContext from "@docusaurus/useDocusaurusContext";
@@ -35,7 +35,7 @@ export default function Home() {
       <HomepageHeader />
       <main>
         <HomepageFeatures />
-        <HomepageSponsors />
+        <HomepageSupporters />
       </main>
     </Layout>
   );

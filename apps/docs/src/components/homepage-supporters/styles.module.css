@@ -1,10 +1,10 @@
-.sponsors {
+.supporters {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.sponsor {
+.supporter {
   display: contents;
   color: inherit;
 
