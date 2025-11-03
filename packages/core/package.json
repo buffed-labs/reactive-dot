@@ -42,7 +42,7 @@
     "@reactive-dot/utils": "workspace:^",
     "@substrate/smoldot-discovery": "^2.0.2",
     "abitype": "^1.1.1",
-    "ox": "^0.9.11"
+    "ox": "^0.9.14"
   },
   "devDependencies": {
     "@reactive-dot/eslint-config": "workspace:^",
