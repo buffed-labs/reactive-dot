@@ -58,7 +58,13 @@ describe("connect", () => {
     };
 
     vi.mocked(MimirPAPISigner).mockImplementation(
-      () => mockSigner as unknown as MimirPAPISigner,
+      vi.fn(
+        class {
+          constructor() {
+            Object.assign(this, mockSigner);
+          }
+        } as unknown as typeof MimirPAPISigner,
+      ),
     );
 
     await wallet.connect();
@@ -73,7 +79,13 @@ describe("connect", () => {
     };
 
     vi.mocked(MimirPAPISigner).mockImplementation(
-      () => mockSigner as unknown as MimirPAPISigner,
+      vi.fn(
+        class {
+          constructor() {
+            Object.assign(this, mockSigner);
+          }
+        } as unknown as typeof MimirPAPISigner,
+      ),
     );
 
     await expect(wallet.connect()).rejects.toThrow(BaseError);
@@ -105,7 +117,13 @@ describe("$accounts", () => {
     };
 
     vi.mocked(MimirPAPISigner).mockImplementation(
-      () => mockSigner as unknown as MimirPAPISigner,
+      vi.fn(
+        class {
+          constructor() {
+            Object.assign(this, mockSigner);
+          }
+        } as unknown as typeof MimirPAPISigner,
+      ),
     );
 
     await wallet.connect();
@@ -154,7 +172,13 @@ describe("getAccounts", () => {
     };
 
     vi.mocked(MimirPAPISigner).mockImplementation(
-      () => mockSigner as unknown as MimirPAPISigner,
+      vi.fn(
+        class {
+          constructor() {
+            Object.assign(this, mockSigner);
+          }
+        } as unknown as typeof MimirPAPISigner,
+      ),
     );
 
     await wallet.connect();
@@ -173,7 +197,13 @@ describe("initialize", () => {
     };
 
     vi.mocked(MimirPAPISigner).mockImplementation(
-      () => mockSigner as unknown as MimirPAPISigner,
+      vi.fn(
+        class {
+          constructor() {
+            Object.assign(this, mockSigner);
+          }
+        } as unknown as typeof MimirPAPISigner,
+      ),
     );
 
     // @ts-expect-error using protected method for testing

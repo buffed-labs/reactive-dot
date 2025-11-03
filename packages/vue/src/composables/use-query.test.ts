@@ -571,7 +571,7 @@ describe("useQuery", () => {
 
     delay.resolve();
     await delay.promise;
-    await new Promise((resolve) => setImmediate(resolve));
+    await new Promise((resolve) => setTimeout(resolve));
 
     expect(result.data.value).toMatchInlineSnapshot(`
       [
