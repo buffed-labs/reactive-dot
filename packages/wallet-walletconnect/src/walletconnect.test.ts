@@ -26,11 +26,13 @@ vi.mock("@walletconnect/universal-provider", () => {
 
 vi.mock("@walletconnect/modal", () => {
   return {
-    WalletConnectModal: vi.fn().mockImplementation(() => ({
-      openModal: vi.fn(),
-      closeModal: vi.fn(),
-      subscribeModal: vi.fn(),
-    })),
+    WalletConnectModal: vi.fn(
+      class {
+        openModal = vi.fn();
+        closeModal = vi.fn();
+        subscribeModal = vi.fn();
+      },
+    ),
   };
 });
 
@@ -184,7 +186,15 @@ describe("connect", () => {
       subscribeModal: vi.fn().mockImplementation(() => () => {}),
     };
 
-    vi.mocked(WalletConnectModal).mockImplementation(() => modal);
+    vi.mocked(WalletConnectModal).mockImplementation(
+      vi.fn(
+        class {
+          constructor() {
+            Object.assign(this, modal);
+          }
+        },
+      ),
+    );
 
     await walletConnect.connect();
 
@@ -205,7 +215,15 @@ describe("connect", () => {
       subscribeModal: vi.fn().mockImplementation(() => () => {}),
     };
 
-    vi.mocked(WalletConnectModal).mockImplementation(() => modal);
+    vi.mocked(WalletConnectModal).mockImplementation(
+      vi.fn(
+        class {
+          constructor() {
+            Object.assign(this, modal);
+          }
+        },
+      ),
+    );
 
     // Simulate a successful connection by resolving the settled promise immediately
     vi.mocked(mockProvider.client.connect).mockResolvedValue({
@@ -244,7 +262,15 @@ describe("connect", () => {
         ),
     };
 
-    vi.mocked(WalletConnectModal).mockImplementation(() => modal);
+    vi.mocked(WalletConnectModal).mockImplementation(
+      vi.fn(
+        class {
+          constructor() {
+            Object.assign(this, modal);
+          }
+        },
+      ),
+    );
 
     await expect(walletConnect.connect()).rejects.toThrow("Modal was closed");
   });
