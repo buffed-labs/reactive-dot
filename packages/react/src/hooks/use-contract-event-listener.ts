@@ -7,7 +7,7 @@ import {
   type ContractEventOf,
   watchContractEvent,
 } from "@reactive-dot/core/internal.js";
-import { useEffect } from "react";
+import { useEffect, useEffectEvent } from "react";
 
 /**
  * Hook for listening to contract events.
@@ -31,6 +31,8 @@ export function useContractEventListener<
 ) {
   const typedApi = useTypedApi(options);
 
+  const onEvent = useEffectEvent<typeof listener>((event) => listener(event));
+
   useEffect(() => {
     const subscription = watchContractEvent(
       typedApi,
@@ -40,9 +42,9 @@ export function useContractEventListener<
       eventName,
     ).subscribe(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      listener as any,
+      onEvent as any,
     );
 
     return () => subscription.unsubscribe();
-  }, [address, contract, eventName, listener, typedApi]);
+  }, [address, contract, eventName, typedApi]);
 }

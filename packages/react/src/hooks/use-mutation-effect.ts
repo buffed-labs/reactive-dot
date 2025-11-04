@@ -2,7 +2,7 @@ import {
   type MutationEvent,
   MutationEventSubjectContext,
 } from "../contexts/mutation.js";
-import { use, useEffect } from "react";
+import { use, useEffect, useEffectEvent } from "react";
 
 /**
  * Hook that watches for mutation events.
@@ -13,9 +13,11 @@ import { use, useEffect } from "react";
 export function useMutationEffect(effect: (event: MutationEvent) => void) {
   const mutationEventSubject = use(MutationEventSubjectContext);
 
+  const onMutation = useEffectEvent<typeof effect>((event) => effect(event));
+
   useEffect(() => {
-    const subscription = mutationEventSubject.subscribe({ next: effect });
+    const subscription = mutationEventSubject.subscribe({ next: onMutation });
 
     return () => subscription.unsubscribe();
-  }, [mutationEventSubject, effect]);
+  }, [mutationEventSubject]);
 }
