@@ -55,6 +55,6 @@
     "wonka": "^6.3.5"
   },
   "peerDependencies": {
-    "react": "19.x"
+    "react": ">= 19.2.x"
   }
 }
