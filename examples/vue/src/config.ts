@@ -103,6 +103,25 @@ export const solidityStorage = defineContract({
   type: "solidity",
   abi: [
     {
+      anonymous: false,
+      inputs: [
+        {
+          indexed: false,
+          internalType: "uint256",
+          name: "oldValue",
+          type: "uint256",
+        },
+        {
+          indexed: false,
+          internalType: "uint256",
+          name: "newValue",
+          type: "uint256",
+        },
+      ],
+      name: "StorageSet",
+      type: "event",
+    },
+    {
       inputs: [],
       name: "retrieve",
       outputs: [
@@ -119,7 +138,7 @@ export const solidityStorage = defineContract({
       inputs: [
         {
           internalType: "uint256",
-          name: "num",
+          name: "value",
           type: "uint256",
         },
       ],

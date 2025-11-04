@@ -49,3 +49,9 @@ export function toH160Hex(address: Address): `0x${string}` {
 
   return toH160Bytes(address).asHex();
 }
+
+export function isEqual(address1: Address, address2: Address): boolean {
+  return (
+    toH160Hex(address1).toLowerCase() === toH160Hex(address2).toLowerCase()
+  );
+}

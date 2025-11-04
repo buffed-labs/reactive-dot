@@ -16,7 +16,6 @@ import type {
 } from "./types.js";
 import { internal_useChainId } from "./use-chain-id.js";
 import { useConfig } from "./use-config.js";
-import { inkClientAtom } from "./use-ink-client.js";
 import { useMaybeUse } from "./use-maybe-use.js";
 import { usePausableAtomValue } from "./use-pausable-atom-value.js";
 import { useQueryRefresher } from "./use-query-refresher.js";
@@ -45,6 +44,7 @@ import {
   stringify,
 } from "@reactive-dot/core/internal.js";
 import {
+  getInkClient,
   preflight,
   query,
   queryInk,
@@ -176,7 +176,7 @@ export const contractInstructionPayloadAtom: AtomFamily<
 
         if (contract instanceof InkContract) {
           return soon(
-            soonAll([typedApiPromise, get(inkClientAtom(contract))]),
+            soonAll([typedApiPromise, getInkClient(contract)]),
             ([api, inkClient]) =>
               queryInk(
                 api,

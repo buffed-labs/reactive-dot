@@ -53,7 +53,7 @@ it("should wait for load event when document is not complete", async () => {
   const provider = new InjectedWalletProvider();
   const getWalletsPromise = provider.getWallets();
 
-  await new Promise<void>((resolve) => setTimeout(() => resolve()));
+  await new Promise<void>((resolve) => setTimeout(resolve));
 
   globalThis.dispatchEvent(new Event("load"));
 

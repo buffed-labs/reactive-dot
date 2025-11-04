@@ -1,6 +1,6 @@
-import { toH160Hex, toSs58String } from "./address.js";
+import { isEqual, toH160Hex, toSs58String } from "./address.js";
 import { AccountId, FixedSizeBinary } from "polkadot-api";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, test } from "vitest";
 
 const ss58Alice = "5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY"; // Alice's address (default/format 42)
 const h160HexForAliceSs58Derived = "0x9621dde636de098b43efb0fa9b61facfe328f99d";
@@ -52,4 +52,28 @@ describe("toH160Hex", () => {
 
     expect(result).toBe(h160HexForAliceSs58Derived);
   });
+});
+
+test("isEqual", () => {
+  expect(isEqual(ss58Alice, h160HexForAliceSs58Derived)).toBeTruthy();
+
+  expect(
+    isEqual(ss58Format0ForGenericH160, ss58Format42ForGenericH160),
+  ).toBeTruthy();
+
+  expect(isEqual(ss58Alice, genericH160Hex)).toBeFalsy();
+
+  expect(
+    isEqual(
+      "0xa0cf798816d4b9b9866b5330eea46a18382f251e",
+      "0xA0Cf798816D4b9b9866b5330EEa46a18382f251e",
+    ),
+  ).toBeTruthy();
+
+  expect(
+    isEqual(
+      "0xa0cf798816d4b9b9866b5330eea46a18382f251e",
+      "0xA0Cf798816D4b9b9866b5330EEa46a18382f251f",
+    ),
+  ).toBeFalsy();
 });

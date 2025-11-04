@@ -8,6 +8,6 @@ provideChain("passet_hub");
 <template>
   <section>
     <h2>Solidity contracts</h2>
-    <StorageContract address="0xf9643E033D4210b477C6b47A8c5d21a275eE42C8" />
+    <StorageContract address="0xF919bfbEa8f4Aad2126C7e2a4a91ba06c0cb1462" />
   </section>
 </template>

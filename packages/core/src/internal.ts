@@ -17,6 +17,11 @@ export type {
   SimpleSolidityQueryInstruction,
   SolidityQueryInstruction,
 } from "./contract/solidity/query-builder.js";
+export {
+  type ContractEventNames,
+  type ContractEventOf,
+  watchContractEvent,
+} from "./contract/watch-events.js";
 export type { DataStore } from "./data-store.js";
 export type { MutationEvent } from "./mutation-event.js";
 export type {
