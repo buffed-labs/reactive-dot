@@ -165,3 +165,43 @@ function Component() {
   );
 }
 ```
+
+## Listening to contract events
+
+The [`useContractEventListener`](/react/api/react/functions/useContractEventListener) hook allows you to subscribe to and handle events emitted by a smart contract in real time. This is especially useful for monitoring state changes or user interactions on the blockchain. By listening to specific events, you can trigger actions or update your application's state dynamically based on the event data.
+
+```tsx title="EventListenerComponent"
+import { useContractEventListener } from "@reactive-dot/react";
+
+const myContract = defineContract({
+  type: "solidity",
+  abi: [
+    // ...
+    {
+      name: "Transfer",
+      type: "event",
+      inputs: [
+        { name: "from", type: "address", indexed: true },
+        { name: "to", type: "address", indexed: true },
+        { name: "value", type: "uint256" },
+      ],
+    },
+  ],
+});
+
+function Component() {
+  useContractEventListener(
+    myContract,
+    CONTRACT_ADDRESS,
+    "Transfer",
+    (event) => {
+      console.log("block", event.block.number);
+      console.log("from", event.data.from);
+      console.log("to", event.data.to);
+      console.log("value", event.data.value);
+    },
+  );
+
+  return null;
+}
+```
