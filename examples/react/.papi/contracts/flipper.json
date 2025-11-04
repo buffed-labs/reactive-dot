@@ -1,16 +1,12 @@
 {
   "source": {
-    "hash": "0x62089de3e72efd0d1e372c2f5ecd439331dc43de78da0ea6e90680933383719f",
-    "language": "ink! 5.1.1",
+    "hash": "0xb01b1f7ae05f0c5329ee2928002aac15bfb27809370445674f4e1d31f7b3684c",
+    "language": "ink! 6.0.0-alpha",
     "compiler": "rustc 1.85.1",
     "build_info": {
-      "rust_toolchain": "stable-aarch64-apple-darwin",
-      "cargo_contract_version": "5.0.2",
       "build_mode": "Release",
-      "wasm_opt_settings": {
-        "optimization_passes": "Z",
-        "keep_debug_symbols": false
-      }
+      "cargo_contract_version": "6.0.0-alpha",
+      "rust_toolchain": "stable-aarch64-apple-darwin"
     }
   },
   "contract": {
@@ -19,7 +15,154 @@
     "authors": ["[your_name] <[your_email]>"]
   },
   "image": null,
-  "version": 5,
+  "spec": {
+    "constructors": [
+      {
+        "args": [
+          {
+            "label": "init_value",
+            "type": {
+              "displayName": ["bool"],
+              "type": 0
+            }
+          }
+        ],
+        "default": false,
+        "docs": [
+          "Constructor that initializes the `bool` value to the given `init_value`."
+        ],
+        "label": "new",
+        "payable": false,
+        "returnType": {
+          "displayName": ["ink_primitives", "ConstructorResult"],
+          "type": 2
+        },
+        "selector": "0x9bae9d5e"
+      },
+      {
+        "args": [],
+        "default": false,
+        "docs": [
+          "Constructor that initializes the `bool` value to `false`.",
+          "",
+          "Constructors can delegate to other constructors."
+        ],
+        "label": "default",
+        "payable": false,
+        "returnType": {
+          "displayName": ["ink_primitives", "ConstructorResult"],
+          "type": 2
+        },
+        "selector": "0xed4b9d1b"
+      }
+    ],
+    "docs": [],
+    "environment": {
+      "accountId": {
+        "displayName": ["AccountId"],
+        "type": 6
+      },
+      "balance": {
+        "displayName": ["Balance"],
+        "type": 9
+      },
+      "blockNumber": {
+        "displayName": ["BlockNumber"],
+        "type": 12
+      },
+      "chainExtension": {
+        "displayName": ["ChainExtension"],
+        "type": 13
+      },
+      "hash": {
+        "displayName": ["Hash"],
+        "type": 10
+      },
+      "maxEventTopics": 4,
+      "staticBufferSize": 16384,
+      "timestamp": {
+        "displayName": ["Timestamp"],
+        "type": 11
+      }
+    },
+    "events": [
+      {
+        "args": [
+          {
+            "docs": [],
+            "indexed": false,
+            "label": "new_value",
+            "type": {
+              "displayName": ["bool"],
+              "type": 0
+            }
+          }
+        ],
+        "docs": [],
+        "label": "Flipped",
+        "module_path": "flipper::flipper",
+        "signature_topic": "0x529cf346ddea0543633a1d91f021fa688fb7fe023ee1fb83ad031fe005673254"
+      }
+    ],
+    "lang_error": {
+      "displayName": ["ink", "LangError"],
+      "type": 4
+    },
+    "messages": [
+      {
+        "args": [],
+        "default": false,
+        "docs": [
+          " A message that can be called on instantiated contracts.",
+          " This one flips the value of the stored `bool` from `true`",
+          " to `false` and vice versa."
+        ],
+        "label": "flip",
+        "mutates": true,
+        "payable": false,
+        "returnType": {
+          "displayName": ["ink", "MessageResult"],
+          "type": 2
+        },
+        "selector": "0x633aa551"
+      },
+      {
+        "args": [],
+        "default": false,
+        "docs": [" Simply returns the current value of our `bool`."],
+        "label": "get",
+        "mutates": false,
+        "payable": false,
+        "returnType": {
+          "displayName": ["ink", "MessageResult"],
+          "type": 5
+        },
+        "selector": "0x2f865bd9"
+      }
+    ]
+  },
+  "storage": {
+    "root": {
+      "layout": {
+        "struct": {
+          "fields": [
+            {
+              "layout": {
+                "leaf": {
+                  "key": "0x00000000",
+                  "ty": 0
+                }
+              },
+              "name": "value"
+            }
+          ],
+          "name": "Flipper"
+        }
+      },
+      "root_key": "0x00000000",
+      "ty": 1
+    }
+  },
   "types": [
     {
       "id": 0,
@@ -32,7 +175,6 @@
     {
       "id": 1,
       "type": {
-        "path": ["flipper", "flipper", "Flipper"],
         "def": {
           "composite": {
             "fields": [
@@ -43,13 +185,37 @@
               }
             ]
           }
-        }
+        },
+        "path": ["flipper", "flipper", "Flipper"]
       }
     },
     {
       "id": 2,
       "type": {
-        "path": ["Result"],
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 3
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 4
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
         "params": [
           {
             "name": "T",
@@ -60,30 +226,7 @@
             "type": 4
           }
         ],
-        "def": {
-          "variant": {
-            "variants": [
-              {
-                "name": "Ok",
-                "fields": [
-                  {
-                    "type": 3
-                  }
-                ],
-                "index": 0
-              },
-              {
-                "name": "Err",
-                "fields": [
-                  {
-                    "type": 4
-                  }
-                ],
-                "index": 1
-              }
-            ]
-          }
-        }
+        "path": ["Result"]
       }
     },
     {
@@ -97,23 +240,46 @@
     {
       "id": 4,
       "type": {
-        "path": ["ink_primitives", "LangError"],
         "def": {
           "variant": {
             "variants": [
               {
-                "name": "CouldNotReadInput",
-                "index": 1
+                "index": 1,
+                "name": "CouldNotReadInput"
               }
             ]
           }
-        }
+        },
+        "path": ["ink_primitives", "LangError"]
       }
     },
     {
       "id": 5,
       "type": {
-        "path": ["Result"],
+        "def": {
+          "variant": {
+            "variants": [
+              {
+                "fields": [
+                  {
+                    "type": 0
+                  }
+                ],
+                "index": 0,
+                "name": "Ok"
+              },
+              {
+                "fields": [
+                  {
+                    "type": 4
+                  }
+                ],
+                "index": 1,
+                "name": "Err"
+              }
+            ]
+          }
+        },
         "params": [
           {
             "name": "T",
@@ -124,36 +290,12 @@
             "type": 4
           }
         ],
-        "def": {
-          "variant": {
-            "variants": [
-              {
-                "name": "Ok",
-                "fields": [
-                  {
-                    "type": 0
-                  }
-                ],
-                "index": 0
-              },
-              {
-                "name": "Err",
-                "fields": [
-                  {
-                    "type": 4
-                  }
-                ],
-                "index": 1
-              }
-            ]
-          }
-        }
+        "path": ["Result"]
       }
     },
     {
       "id": 6,
       "type": {
-        "path": ["ink_primitives", "types", "AccountId"],
         "def": {
           "composite": {
             "fields": [
@@ -163,7 +305,8 @@
               }
             ]
           }
-        }
+        },
+        "path": ["ink_primitives", "types", "AccountId"]
       }
     },
     {
@@ -196,7 +339,6 @@
     {
       "id": 10,
       "type": {
-        "path": ["ink_primitives", "types", "Hash"],
         "def": {
           "composite": {
             "fields": [
@@ -206,7 +348,8 @@
               }
             ]
           }
-        }
+        },
+        "path": ["ink_primitives", "types", "Hash"]
       }
     },
     {
@@ -228,141 +371,12 @@
     {
       "id": 13,
       "type": {
-        "path": ["ink_env", "types", "NoChainExtension"],
         "def": {
           "variant": {}
-        }
+        },
+        "path": ["ink_primitives", "types", "NoChainExtension"]
       }
     }
   ],
-  "storage": {
-    "root": {
-      "root_key": "0x00000000",
-      "layout": {
-        "struct": {
-          "name": "Flipper",
-          "fields": [
-            {
-              "name": "value",
-              "layout": {
-                "leaf": {
-                  "key": "0x00000000",
-                  "ty": 0
-                }
-              }
-            }
-          ]
-        }
-      },
-      "ty": 1
-    }
-  },
-  "spec": {
-    "constructors": [
-      {
-        "label": "new",
-        "selector": "0x9bae9d5e",
-        "payable": false,
-        "args": [
-          {
-            "label": "init_value",
-            "type": {
-              "type": 0,
-              "displayName": ["bool"]
-            }
-          }
-        ],
-        "returnType": {
-          "type": 2,
-          "displayName": ["ink_primitives", "ConstructorResult"]
-        },
-        "docs": [
-          "Constructor that initializes the `bool` value to the given `init_value`."
-        ],
-        "default": false
-      },
-      {
-        "label": "default",
-        "selector": "0xed4b9d1b",
-        "payable": false,
-        "args": [],
-        "returnType": {
-          "type": 2,
-          "displayName": ["ink_primitives", "ConstructorResult"]
-        },
-        "docs": [
-          "Constructor that initializes the `bool` value to `false`.",
-          "",
-          "Constructors can delegate to other constructors."
-        ],
-        "default": false
-      }
-    ],
-    "messages": [
-      {
-        "label": "flip",
-        "selector": "0x633aa551",
-        "mutates": true,
-        "payable": false,
-        "args": [],
-        "returnType": {
-          "type": 2,
-          "displayName": ["ink", "MessageResult"]
-        },
-        "docs": [
-          " A message that can be called on instantiated contracts.",
-          " This one flips the value of the stored `bool` from `true`",
-          " to `false` and vice versa."
-        ],
-        "default": false
-      },
-      {
-        "label": "get",
-        "selector": "0x2f865bd9",
-        "mutates": false,
-        "payable": false,
-        "args": [],
-        "returnType": {
-          "type": 5,
-          "displayName": ["ink", "MessageResult"]
-        },
-        "docs": [" Simply returns the current value of our `bool`."],
-        "default": false
-      }
-    ],
-    "events": [],
-    "docs": [],
-    "lang_error": {
-      "type": 4,
-      "displayName": ["ink", "LangError"]
-    },
-    "environment": {
-      "accountId": {
-        "type": 6,
-        "displayName": ["AccountId"]
-      },
-      "balance": {
-        "type": 9,
-        "displayName": ["Balance"]
-      },
-      "hash": {
-        "type": 10,
-        "displayName": ["Hash"]
-      },
-      "timestamp": {
-        "type": 11,
-        "displayName": ["Timestamp"]
-      },
-      "blockNumber": {
-        "type": 12,
-        "displayName": ["BlockNumber"]
-      },
-      "chainExtension": {
-        "type": 13,
-        "displayName": ["ChainExtension"]
-      },
-      "maxEventTopics": 4,
-      "staticBufferSize": 16384
-    }
-  }
+  "version": 5
 }

@@ -10,7 +10,6 @@ import {
 } from "../utils/refreshable.js";
 import { useAsyncData } from "./use-async-data.js";
 import { internal_useChainId } from "./use-chain-id.js";
-import { getInkClient } from "./use-ink-client.js";
 import {
   lazyValue,
   mapLazyValue,
@@ -33,6 +32,7 @@ import {
 } from "@reactive-dot/core/internal.js";
 import {
   query as executeQuery,
+  getInkClient,
   preflight,
   queryInk,
   querySolidity,
@@ -386,7 +386,7 @@ export function queryContractInstruction(
   );
 
   if (contract instanceof InkContract) {
-    const inkClient = getInkClient(contract, cache);
+    const inkClient = getInkClient(contract);
 
     return lazyValue(
       computed(() => [

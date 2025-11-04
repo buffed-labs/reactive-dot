@@ -19,6 +19,7 @@ it("should match inline snapshot", () =>
       "useChainSpecData",
       "useClient",
       "useConfig",
+      "useContractEventListener",
       "useContractMutation",
       "useMutationEffect",
       "useMutation",

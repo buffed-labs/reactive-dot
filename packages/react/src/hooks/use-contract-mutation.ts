@@ -5,7 +5,6 @@ import type { ChainHookOptions } from "./types.js";
 import { useAsyncAction } from "./use-async-action.js";
 import { internal_useChainId } from "./use-chain-id.js";
 import { useConfig } from "./use-config.js";
-import { inkClientAtom } from "./use-ink-client.js";
 import { typedApiAtom } from "./use-typed-api.js";
 import { MutationError } from "@reactive-dot/core";
 import {
@@ -17,7 +16,10 @@ import {
   type SolidityMutationBuilder,
   type TxOptionsOf,
 } from "@reactive-dot/core/internal.js";
-import { getInkContractTx } from "@reactive-dot/core/internal/actions.js";
+import {
+  getInkClient,
+  getInkContractTx,
+} from "@reactive-dot/core/internal/actions.js";
 import { useAtomCallback } from "jotai/utils";
 import type { PolkadotSigner } from "polkadot-api";
 import { use } from "react";
@@ -88,7 +90,7 @@ export function useContractMutation<
           getInkContractTx(
             ...(await Promise.all([
               get(typedApiAtom(config, chainId)),
-              get(inkClientAtom(contract)),
+              getInkClient(contract),
             ])),
             signer,
             address,

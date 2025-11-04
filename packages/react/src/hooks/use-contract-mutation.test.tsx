@@ -22,10 +22,6 @@ vi.mock("./use-typed-api.js", () => ({
   typedApiAtom: vi.fn(() => atom()),
 }));
 
-vi.mock("./use-ink-client.js", () => ({
-  inkClientAtom: vi.fn(() => atom()),
-}));
-
 vi.mock(
   "@reactive-dot/core/internal/actions.js",
   async (getOriginalModule) => ({
@@ -33,6 +29,7 @@ vi.mock(
     getInkContractTx: vi.fn(async () => ({
       signSubmitAndWatch: mockSignSubmitAndWatch,
     })),
+    getInkClient: vi.fn(),
   }),
 );
 

@@ -4,7 +4,7 @@ import { useLazyLoadQuery } from "./use-query.js";
 import { useStore } from "./use-store.js";
 import { defineConfig, defineContract } from "@reactive-dot/core";
 import { stringify } from "@reactive-dot/core/internal.js";
-import type { queryInk } from "@reactive-dot/core/internal/actions.js";
+import { type queryInk } from "@reactive-dot/core/internal/actions.js";
 import { renderHook } from "@testing-library/react";
 import { atom } from "jotai";
 import { act, Suspense } from "react";
@@ -50,10 +50,6 @@ vi.mock("./use-typed-api.js", () => ({
   ),
 }));
 
-vi.mock("./use-ink-client.js", () => ({
-  inkClientAtom: vi.fn(() => atom({})),
-}));
-
 vi.mock("@reactive-dot/core/internal/actions.js", async (importActual) => ({
   ...(await importActual()),
   queryInk: vi.fn<typeof queryInk>(async (_, __, address, instruction) => {
@@ -63,6 +59,7 @@ vi.mock("@reactive-dot/core/internal/actions.js", async (importActual) => ({
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     return curr as any;
   }),
+  getInkClient: vi.fn(),
 }));
 
 beforeEach(() => {

@@ -1,7 +1,11 @@
 import { AccountGuard } from "./account-guard";
 import { solidityStorage } from "./config";
-import { useContractMutation, useLazyLoadQuery } from "@reactive-dot/react";
-import { useEffect, useState, useTransition } from "react";
+import {
+  useContractEventListener,
+  useContractMutation,
+  useLazyLoadQuery,
+} from "@reactive-dot/react";
+import { useState, useTransition } from "react";
 
 export function SolidityContracts() {
   const [inTransition, startTransition] = useTransition();
@@ -10,47 +14,43 @@ export function SolidityContracts() {
     (builder) =>
       builder.contract(
         solidityStorage,
-        "0xf9643E033D4210b477C6b47A8c5d21a275eE42C8",
+        "0xF919bfbEa8f4Aad2126C7e2a4a91ba06c0cb1462",
         (builder) => builder.func("retrieve"),
       ),
     { fetchKey },
+  );
+
+  useContractEventListener(
+    solidityStorage,
+    "0xF919bfbEa8f4Aad2126C7e2a4a91ba06c0cb1462",
+    "StorageSet",
+    (event) => {
+      if (event.data.newValue !== value) {
+        startTransition(() => setFetchKey((count) => count + 1));
+      }
+    },
   );
 
   return (
     <article>
       Stored number: {value.toString()} {inTransition && `(updating)`}
       <AccountGuard>
-        <ValueSetter
-          onSet={() => {
-            startTransition(() => setFetchKey((count) => count + 1));
-          }}
-        />
+        <ValueSetter />
       </AccountGuard>
     </article>
   );
 }
 
-function ValueSetter({ onSet }: { onSet: () => void }) {
+function ValueSetter() {
   const [value, setValue] = useState("");
-  const [submitStatus, submit] = useContractMutation((mutate, value: bigint) =>
+  const [_, submit] = useContractMutation((mutate, value: bigint) =>
     mutate(
       solidityStorage,
-      "0xf9643E033D4210b477C6b47A8c5d21a275eE42C8",
+      "0xF919bfbEa8f4Aad2126C7e2a4a91ba06c0cb1462",
       "store",
       { args: [value] },
     ),
   );
-
-  useEffect(() => {
-    if (
-      typeof submitStatus !== "symbol" &&
-      !(submitStatus instanceof Error) &&
-      submitStatus.type === "finalized"
-    ) {
-      onSet();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [submitStatus]);
 
   return (
     <label>

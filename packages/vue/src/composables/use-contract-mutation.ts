@@ -3,21 +3,22 @@ import type { ChainComposableOptions } from "../types.js";
 import { tapTx } from "../utils/tap-tx.js";
 import { useAsyncAction } from "./use-async-action.js";
 import { useChainId } from "./use-chain-id.js";
-import { getInkClient } from "./use-ink-client.js";
-import { useLazyValuesCache } from "./use-lazy-value.js";
 import { useSigner } from "./use-signer.js";
 import { useTypedApiPromise } from "./use-typed-api.js";
 import { BaseError, MutationError } from "@reactive-dot/core";
 import {
   getSolidityContractTx,
   InkContract,
-  type MutationBuilder,
   type InkMutationBuilder,
+  type MutationBuilder,
   type PatchedReturnType,
   type SolidityMutationBuilder,
   type TxOptionsOf,
 } from "@reactive-dot/core/internal.js";
-import { getInkContractTx } from "@reactive-dot/core/internal/actions.js";
+import {
+  getInkClient,
+  getInkContractTx,
+} from "@reactive-dot/core/internal/actions.js";
 import type { PolkadotSigner } from "polkadot-api";
 import { from } from "rxjs";
 import { switchMap } from "rxjs/operators";
@@ -49,7 +50,6 @@ export function useContractMutation<
     txOptions?: TxOptionsOf<Awaited<ReturnType<TAction>>>;
   },
 ) {
-  const cache = useLazyValuesCache();
   const injectedSigner = useSigner();
   const chainId = useChainId();
   const typedApiPromise = useTypedApiPromise();
@@ -90,7 +90,7 @@ export function useContractMutation<
         getInkContractTx(
           ...(await Promise.all([
             await toValue(typedApiPromise),
-            await toValue(getInkClient(contract, cache)),
+            await getInkClient(contract),
           ])),
           signer,
           address,

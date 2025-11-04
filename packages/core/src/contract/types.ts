@@ -4,9 +4,11 @@ import type { Address } from "../address.js";
 import type {
   ApisTypedef,
   Binary,
+  BlockInfo,
   Enum,
   FixedSizeBinary,
   PalletsTypedef,
+  PlainDescriptor,
   ResultPayload,
   RuntimeDescriptor,
   SS58String,
@@ -16,6 +18,13 @@ import type {
 } from "polkadot-api";
 
 export type ContractAddress = Address | FixedSizeBinary<20>;
+
+export type ContractEvent<TName extends string = string, TData = unknown> = {
+  block: BlockInfo;
+  contract: Address;
+  name: TName;
+  data: TData;
+};
 
 export type Gas = {
   ref_time: bigint;
@@ -198,7 +207,26 @@ export type ContractPallets = PalletsTypedef<
       }>;
     };
   },
-  {},
+  {
+    Revive: {
+      ContractEmitted: PlainDescriptor<{
+        /**
+         * The contract that emitted the event.
+         */
+        contract: FixedSizeBinary<20>;
+        /**
+         * Data supplied by the contract. Metadata generated during contract compilation
+         * is needed to decode it.
+         */
+        data: Binary;
+        /**
+         * A list of topics used to index the event.
+         * Number of topics is capped by [`limits::NUM_EVENT_TOPICS`].
+         */
+        topics: FixedSizeBinary<32>[];
+      }>;
+    };
+  },
   {},
   {},
   {}

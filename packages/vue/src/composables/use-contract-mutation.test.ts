@@ -14,14 +14,11 @@ vi.mock("./use-typed-api.js", () => ({
   useTypedApiPromise: vi.fn(),
 }));
 
-vi.mock("./use-ink-client.js", () => ({
-  getInkClient: vi.fn(),
-}));
-
 vi.mock("@reactive-dot/core/internal/actions.js", () => ({
   getInkContractTx: vi.fn(async () => ({
     signSubmitAndWatch: mockSignSubmitAndWatch,
   })),
+  getInkClient: vi.fn(),
 }));
 
 vi.useFakeTimers();
