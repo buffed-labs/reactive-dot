@@ -1,5 +1,18 @@
 # @reactive-dot/react
 
+## 0.61.0
+
+### Minor Changes
+
+- [#996](https://github.com/buffed-labs/reactive-dot/pull/996) [`4fc6abc`](https://github.com/buffed-labs/reactive-dot/commit/4fc6abc70d49b69cc838a73187f2885f76ce7d1e) Thanks [@tien](https://github.com/tien)! - Added hook and composable for watching contract events.
+
+### Patch Changes
+
+- [#992](https://github.com/buffed-labs/reactive-dot/pull/992) [`05dd278`](https://github.com/buffed-labs/reactive-dot/commit/05dd278f8af49a52b586d2361e8e8ca135cefc04) Thanks [@tien](https://github.com/tien)! - Bumped dependencies.
+
+- Updated dependencies [[`4fc6abc`](https://github.com/buffed-labs/reactive-dot/commit/4fc6abc70d49b69cc838a73187f2885f76ce7d1e), [`05dd278`](https://github.com/buffed-labs/reactive-dot/commit/05dd278f8af49a52b586d2361e8e8ca135cefc04)]:
+  - @reactive-dot/core@0.61.0
+
 ## 0.60.2
 
 ### Patch Changes
