@@ -1,5 +1,11 @@
 # @reactive-dot/react
 
+## 0.61.1
+
+### Patch Changes
+
+- [#999](https://github.com/buffed-labs/reactive-dot/pull/999) [`1b09865`](https://github.com/buffed-labs/reactive-dot/commit/1b0986539ebe580f7af1022ed00d47f36d40b4a1) Thanks [@tien](https://github.com/tien)! - Enhanced the `useContractEventListener` & `useMutationEffect` hooks to simplify usage. Their callback now leverages `useEffectEvent` internally, eliminating the need to wrap it with `useCallback`.
+
 ## 0.61.0
 
 ### Minor Changes
