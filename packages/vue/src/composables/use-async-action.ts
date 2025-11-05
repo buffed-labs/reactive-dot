@@ -1,6 +1,6 @@
 import { useAsyncState } from "./use-async-state.js";
 import { MutationError } from "@reactive-dot/core";
-import { type Observable, Subject } from "rxjs";
+import { type Observable, ReplaySubject } from "rxjs";
 
 /**
  * @internal
@@ -22,7 +22,7 @@ export function useAsyncAction<
     TActionResult extends Promise<infer Value>
       ? Promise<Value>
       : TActionResult extends Observable<infer Value>
-        ? Subject<Value>
+        ? Observable<Value>
         : never;
 
   return {
@@ -49,7 +49,7 @@ export function useAsyncAction<
             throw error;
           }) as ExecuteReturn;
         } else {
-          const subject = new Subject();
+          const subject = new ReplaySubject();
 
           result.subscribe({
             next: (value) => {
@@ -63,7 +63,7 @@ export function useAsyncAction<
             complete: () => subject.complete(),
           });
 
-          return subject as ExecuteReturn;
+          return subject.asObservable() as ExecuteReturn;
         }
       } catch (error: unknown) {
         state.error.value = MutationError.from(error);

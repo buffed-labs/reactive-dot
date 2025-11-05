@@ -5,7 +5,7 @@ import {
   type AsyncValue,
 } from "@reactive-dot/core";
 import { useCallback, useState } from "react";
-import { Subject, type Observable } from "rxjs";
+import { ReplaySubject, type Observable } from "rxjs";
 
 /**
  * @internal
@@ -33,7 +33,7 @@ export function useAsyncAction<
     TReturn extends Promise<infer Value>
       ? Promise<Value>
       : TReturn extends Observable<infer Value>
-        ? Subject<Value>
+        ? Observable<Value>
         : never;
 
   const execute = useCallback(
@@ -48,7 +48,7 @@ export function useAsyncAction<
         if (result instanceof Promise) {
           return result.then(resolve).catch(setError) as ExecuteReturn;
         } else {
-          const subject = new Subject();
+          const subject = new ReplaySubject();
 
           result.subscribe({
             next: (value) => {
@@ -62,7 +62,7 @@ export function useAsyncAction<
             complete: () => subject.complete(),
           });
 
-          return subject as ExecuteReturn;
+          return subject.asObservable() as ExecuteReturn;
         }
       } catch (error) {
         setError(error);
