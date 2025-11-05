@@ -24,7 +24,7 @@ ReactiveDOT utilizes Ink! [metadata](https://use.ink/docs/v6/basics/metadata/ink
 
 Once you've obtained the metadata file(s), run the following command to convert it to TypeScript-friendly metadata:
 
-```bash
+```sh
 npx papi ink add "/path/to/metadata.(json|contract)" --key "myContract"
 ```
 
@@ -160,7 +160,7 @@ function Component() {
 
 The [`useContractEventListener`](/react/api/react/functions/useContractEventListener) hook allows you to subscribe to and handle events emitted by a smart contract in real time. This is especially useful for monitoring state changes or user interactions on the blockchain. By listening to specific events, you can trigger actions or update your application's state dynamically based on the event data.
 
-```tsx title="EventListenerComponent"
+```tsx title="EventListenerComponent.tsx"
 import { myContract } from "./contracts.ts";
 import { useContractEventListener } from "@reactive-dot/react";
 

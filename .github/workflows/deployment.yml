@@ -15,11 +15,14 @@ jobs:
       - uses: ./.github/actions/setup
 
       - run: yarn build
+        env:
+          ALGOLIA_APP_ID: ${{ secrets.ALGOLIA_APP_ID }}
+          ALGOLIA_API_KEY: ${{ secrets.ALGOLIA_API_KEY }}
+          ALGOLIA_INDEX_NAME: ${{ secrets.ALGOLIA_INDEX_NAME }}
 
-      - uses: cloudflare/pages-action@v1
+      - uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: reactive-dot
-          directory: apps/docs/build
+          command: pages deploy apps/docs/build --project-name=reactive-dot
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}

@@ -50,6 +50,9 @@ const config: Config = {
             [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }],
           ],
         },
+        sitemap: {
+          lastmod: "datetime",
+        },
         theme: {
           customCss: "./src/css/custom.css",
         },
@@ -183,6 +186,14 @@ const config: Config = {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
     },
+    algolia:
+      process.env.ALGOLIA_APP_ID === undefined
+        ? undefined
+        : {
+            appId: process.env.ALGOLIA_APP_ID,
+            apiKey: process.env.ALGOLIA_API_KEY,
+            indexName: process.env.ALGOLIA_INDEX_NAME,
+          },
   } satisfies Preset.ThemeConfig,
 };
 
