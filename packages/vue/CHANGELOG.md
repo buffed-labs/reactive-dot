@@ -1,5 +1,11 @@
 # @reactive-dot/vue
 
+## 0.61.2
+
+### Patch Changes
+
+- [#1002](https://github.com/buffed-labs/reactive-dot/pull/1002) [`f477d12`](https://github.com/buffed-labs/reactive-dot/commit/f477d12fd5932ce8c427a8b9558232e558fa55e0) Thanks [@tien](https://github.com/tien)! - Renamed mutation listener hook & composable.
+
 ## 0.61.0
 
 ### Minor Changes
