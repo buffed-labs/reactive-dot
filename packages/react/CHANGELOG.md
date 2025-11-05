@@ -1,5 +1,11 @@
 # @reactive-dot/react
 
+## 0.61.3
+
+### Patch Changes
+
+- [#1005](https://github.com/buffed-labs/reactive-dot/pull/1005) [`4ff9639`](https://github.com/buffed-labs/reactive-dot/commit/4ff9639562ef2e855b484289a8f05e79abf9e6fe) Thanks [@tien](https://github.com/tien)! - Fixed possible missing observable values from `useAsyncAction`.
+
 ## 0.61.2
 
 ### Patch Changes
