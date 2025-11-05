@@ -20,7 +20,10 @@ export { useWalletConnector } from "./composables/use-wallet-connector.js";
 export { useWalletDisconnector } from "./composables/use-wallet-disconnector.js";
 export { useConnectedWallets, useWallets } from "./composables/use-wallets.js";
 export { watchContractEvent } from "./composables/watch-contract-event.js";
-export { watchMutationEffect } from "./composables/watch-mutation-effect.js";
+export {
+  watchMutation,
+  watchMutationEffect,
+} from "./composables/watch-mutation.js";
 export { ReactiveDotPlugin } from "./plugin.js";
 export { provideChain } from "./providers/chain.js";
 export { provideSigner } from "./providers/signer.js";

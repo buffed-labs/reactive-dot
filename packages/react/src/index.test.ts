@@ -22,6 +22,7 @@ it("should match inline snapshot", () =>
       "useContractEventListener",
       "useContractMutation",
       "useMutationEffect",
+      "useMutationListener",
       "useMutation",
       "useNativeTokenAmountFromNumber",
       "useNativeTokenAmountFromPlanck",

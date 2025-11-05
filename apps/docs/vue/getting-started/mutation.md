@@ -88,13 +88,13 @@ execute({ variables: "Hello, world!" });
 
 ## Watching transactions
 
-It’s common to watch for all transactions throughout the application to display an appropriate loading state or toast. This can be easily achieved with the [`watchMutationEffect`](/vue/api/vue/functions/watchMutationEffect) composable.
+It’s common to watch for all transactions throughout the application to display an appropriate loading state or toast. This can be easily achieved with the [`watchMutation`](/vue/api/vue/functions/watchMutation) composable.
 
 ```vue
 <script setup lang="ts">
-import { watchMutationEffect } from "@reactive-dot/vue";
+import { watchMutation } from "@reactive-dot/vue";
 
-watchMutationEffect((event) => {
+watchMutation((event) => {
   if (event.status === "pending") {
     console.info("Submitting transaction", { id: event.id });
     return;

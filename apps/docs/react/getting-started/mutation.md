@@ -95,15 +95,15 @@ submit({ variables: "Hello, world!" });
 
 ## Watching transactions
 
-It’s common to watch for all transactions throughout the application to display an appropriate loading state or toast. This can be easily achieved with the [`useMutationEffect`](/react/api/react/functions/useMutationEffect) hook.
+It’s common to watch for all transactions throughout the application to display an appropriate loading state or toast. This can be easily achieved with the [`useMutationListener`](/react/api/react/functions/useMutationListener) hook.
 
 ```tsx
 import { idle, MutationError, pending } from "@reactive-dot/core";
-import { useMutationEffect } from "@reactive-dot/react";
+import { useMutationListener } from "@reactive-dot/react";
 import toast from "react-hot-toast";
 
 function Watcher() {
-  useMutationEffect((event) => {
+  useMutationListener((event) => {
     if (event.value === pending) {
       toast.loading("Submitting transaction", { id: event.id });
       return;

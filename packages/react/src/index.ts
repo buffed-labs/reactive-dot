@@ -18,7 +18,10 @@ export { useClient } from "./hooks/use-client.js";
 export { useConfig } from "./hooks/use-config.js";
 export { useContractEventListener } from "./hooks/use-contract-event-listener.js";
 export { useContractMutation } from "./hooks/use-contract-mutation.js";
-export { useMutationEffect } from "./hooks/use-mutation-effect.js";
+export {
+  useMutationEffect,
+  useMutationListener,
+} from "./hooks/use-mutation-listener.js";
 export { useMutation } from "./hooks/use-mutation.js";
 export {
   useNativeTokenAmountFromNumber,
