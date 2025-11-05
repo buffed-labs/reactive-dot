@@ -26,6 +26,7 @@ it("should match inline snapshot", () =>
       "useConnectedWallets",
       "useWallets",
       "watchContractEvent",
+      "watchMutation",
       "watchMutationEffect",
       "ReactiveDotPlugin",
       "provideChain",

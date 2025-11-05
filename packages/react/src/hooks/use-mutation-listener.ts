@@ -8,12 +8,14 @@ import { use, useEffect, useEffectEvent } from "react";
  * Hook that watches for mutation events.
  *
  * @group Hooks
- * @param effect - Callback when new mutation event is emitted
+ * @param listener - Callback when new mutation event is emitted
  */
-export function useMutationEffect(effect: (event: MutationEvent) => void) {
+export function useMutationListener(listener: (event: MutationEvent) => void) {
   const mutationEventSubject = use(MutationEventSubjectContext);
 
-  const onMutation = useEffectEvent<typeof effect>((event) => effect(event));
+  const onMutation = useEffectEvent<typeof listener>((event) =>
+    listener(event),
+  );
 
   useEffect(() => {
     const subscription = mutationEventSubject.subscribe({ next: onMutation });
@@ -21,3 +23,8 @@ export function useMutationEffect(effect: (event: MutationEvent) => void) {
     return () => subscription.unsubscribe();
   }, [mutationEventSubject]);
 }
+
+/**
+ * @deprecated Use {@link useMutationListener} instead
+ */
+export const useMutationEffect = useMutationListener;

@@ -9,7 +9,7 @@ import {
   provideChain,
   useChainIds,
   useQueryErrorResetter,
-  watchMutationEffect,
+  watchMutation,
 } from "@reactive-dot/vue";
 import { onErrorCaptured, ref } from "vue";
 
@@ -23,7 +23,7 @@ onErrorCaptured(() => (hasError.value = true));
 
 // Useful tracking all submitted transaction, i.e. for toast notification
 // eslint-disable-next-line no-undef
-watchMutationEffect((event) => console.log(event));
+watchMutation((event) => console.log(event));
 </script>
 
 <template>

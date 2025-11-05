@@ -9,7 +9,7 @@ import { MutationError, pending } from "@reactive-dot/core";
 import {
   ChainProvider,
   ReactiveDotProvider,
-  useMutationEffect,
+  useMutationListener,
   useQueryErrorResetter,
 } from "@reactive-dot/react";
 import { DevTools } from "jotai-devtools";
@@ -55,7 +55,7 @@ type ExampleProps = { chainName: string };
 function Example({ chainName }: ExampleProps) {
   const resetQueryError = useQueryErrorResetter();
 
-  useMutationEffect((event) => {
+  useMutationListener((event) => {
     if (event.value === pending) {
       toast.loading("Submitting transaction", { id: event.id });
       return;
