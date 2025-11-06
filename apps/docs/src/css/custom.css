@@ -1,16 +1,23 @@
 @font-face {
   font-family: "Manrope";
-  src: url("/font/Manrope.ttf");
+  src:
+    local("Manrope"),
+    url("/font/Manrope.woff2") format("woff2");
 }
 
 @font-face {
   font-family: "Unbounded";
-  src: url("/font/Unbounded.woff2");
+  src:
+    local("Unbounded"),
+    url("/font/Unbounded.woff2") format("woff2");
 }
 
 @font-face {
-  font-family: "Roboto Mono";
-  src: url("/font/RobotoMono.ttf");
+  font-family: "Monaspace Neon";
+  src:
+    local("Monaspace Neon"),
+    url("/font/MonaspaceNeon.woff2") format("woff2");
+  font-feature-settings: "calt", "liga";
 }
 
 :root {
@@ -24,7 +31,7 @@
   --ifm-color-primary-lightest: #a10055;
   --ifm-font-family-base: "Manrope", sans-serif;
   --ifm-heading-font-family: "Unbounded", sans-serif;
-  --ifm-font-family-monospace: "Roboto Mono", monospace;
+  --ifm-font-family-monospace: "Monaspace Neon", ui-monospace, monospace;
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
