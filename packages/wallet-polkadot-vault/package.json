@@ -1,0 +1,48 @@
+{
+  "name": "@reactive-dot/wallet-polkadot-vault",
+  "version": "0.0.1",
+  "description": "Polkadot Vault adapter for Reactive DOT",
+  "keywords": [
+    "substrate",
+    "polkadot",
+    "polkadot-vault"
+  ],
+  "homepage": "https://reactivedot.dev/",
+  "bugs": {
+    "url": "https://github.com/buffed-labs/reactive-dot/issues",
+    "email": "tien.nguyenkhac@icloud.com"
+  },
+  "license": "LGPL-3.0-or-later",
+  "author": "Tiến Nguyễn Khắc <tien.nguyenkhac@icloud.com> (https://tien.zone/)",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/buffed-labs/reactive-dot.git",
+    "directory": "packages/wallet-polkadot-vault"
+  },
+  "type": "module",
+  "files": [
+    "src",
+    "build"
+  ],
+  "exports": "./build/index.js",
+  "scripts": {
+    "dev": "tsc --build --watch",
+    "build": " tsc --build --clean && tsc --build",
+    "lint": "eslint src",
+    "test": "vitest"
+  },
+  "dependencies": {
+    "@polkadot-api/signers-common": "^0.1.18",
+    "@polkadot-api/substrate-bindings": "^0.16.5",
+    "@polkadot-api/utils": "^0.2.0",
+    "@reactive-dot/core": "workspace:^"
+  },
+  "devDependencies": {
+    "@reactive-dot/eslint-config": "workspace:^",
+    "@tsconfig/recommended": "^1.0.11",
+    "@tsconfig/strictest": "^2.0.7",
+    "eslint": "^9.39.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.6"
+  }
+}

@@ -59,7 +59,7 @@ it("should initialize with empty accounts from storage", () => {
   expect(wallet.accountStore.values()).toEqual([]);
 });
 
-it("should initialize with accounts from storage", () => {
+it("should initialize with accounts from storage", async () => {
   const mockAccount = {
     publicKey: "0x010203",
     path: 0,
@@ -69,7 +69,7 @@ it("should initialize with accounts from storage", () => {
   wallet.storage.setItem("accounts", JSON.stringify([mockAccount]));
   wallet.initialize();
 
-  const accounts = wallet.accountStore.values();
+  const accounts = await Array.fromAsync(wallet.accountStore.values());
 
   expect(accounts).toHaveLength(1);
   expect(accounts[0]?.publicKey).toEqual(new Uint8Array([1, 2, 3]));
@@ -80,7 +80,7 @@ it("should connect and add a new account", async () => {
   wallet.initialize();
   await wallet.connect();
 
-  const accounts = wallet.accountStore.values();
+  const accounts = await Array.fromAsync(wallet.accountStore.values());
 
   expect(accounts).toHaveLength(1);
   expect(accounts[0]?.publicKey).toEqual(new Uint8Array([1, 2, 3]));

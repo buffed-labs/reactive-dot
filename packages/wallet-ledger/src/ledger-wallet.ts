@@ -6,8 +6,7 @@ import {
   LocalWallet,
   type PolkadotSignerAccount,
 } from "@reactive-dot/core/wallets.js";
-import { BehaviorSubject } from "rxjs";
-import { map, skip } from "rxjs/operators";
+import { map } from "rxjs/operators";
 
 type LedgerAccount = {
   id: string;
@@ -17,21 +16,18 @@ type LedgerAccount = {
 };
 
 type JsonLedgerAccount = Omit<LedgerAccount, "publicKey" | "id"> & {
-  publicKey: string;
+  publicKey: `0x${string}`;
 };
 
 export class LedgerWallet extends LocalWallet<
   LedgerAccount,
-  WalletOptions,
-  "accounts"
+  JsonLedgerAccount
 > {
   readonly id = "ledger";
 
   readonly name = "Ledger";
 
-  readonly #ledgerAccounts$ = new BehaviorSubject<LedgerAccount[]>([]);
-
-  readonly accounts$ = this.#ledgerAccounts$.pipe(
+  readonly accounts$ = this.localAccounts$.pipe(
     map((accounts) =>
       accounts
         .toSorted((a, b) => a.path - b.path)
@@ -77,33 +73,21 @@ export class LedgerWallet extends LocalWallet<
 
   constructor(options?: WalletOptions) {
     super(options);
-    this.#ledgerAccounts$.pipe(skip(1)).subscribe((accounts) =>
-      this.storage.setItem(
-        "accounts",
-        JSON.stringify(
-          accounts.map(
-            ({ id, ...account }): JsonLedgerAccount => ({
-              ...account,
-              publicKey: Binary.fromBytes(account.publicKey).asHex(),
-            }),
-          ),
-        ),
-      ),
-    );
   }
 
-  initialize() {
-    this.#ledgerAccounts$.next(
-      (
-        JSON.parse(
-          this.storage.getItem("accounts") ?? JSON.stringify([]),
-        ) as JsonLedgerAccount[]
-      ).map((account) => ({
-        ...account,
-        id: account.publicKey,
-        publicKey: Binary.fromHex(account.publicKey).asBytes(),
-      })),
-    );
+  override accountToJson(account: Omit<LedgerAccount, "id">) {
+    return {
+      ...account,
+      publicKey: Binary.fromBytes(account.publicKey).asHex(),
+    };
+  }
+
+  override accountFromJson(data: JsonLedgerAccount) {
+    return {
+      ...data,
+      id: data.publicKey,
+      publicKey: Binary.fromHex(data.publicKey).asBytes(),
+    };
   }
 
   async connect() {
@@ -113,36 +97,6 @@ export class LedgerWallet extends LocalWallet<
   disconnect() {
     this.accountStore.clear();
   }
-
-  accountStore = {
-    add: (account: LedgerAccount) => {
-      this.#ledgerAccounts$.next(
-        this.#ledgerAccounts$.value
-          .filter((storedAccount) => storedAccount.id !== account.id)
-          .concat([account]),
-      );
-    },
-    clear: () => {
-      this.#ledgerAccounts$.next([]);
-    },
-    delete: (identifiable: string | { id: string }) => {
-      const id =
-        typeof identifiable === "string" ? identifiable : identifiable.id;
-
-      this.#ledgerAccounts$.next(
-        this.#ledgerAccounts$.value.filter(
-          (storedAccount) => storedAccount.id !== id,
-        ),
-      );
-    },
-    has: (identifiable: string | { id: string }) => {
-      const id =
-        typeof identifiable === "string" ? identifiable : identifiable.id;
-
-      return this.#ledgerAccounts$.value.some((account) => account.id === id);
-    },
-    values: () => this.#ledgerAccounts$.value,
-  };
 
   /**
    * @experimental
