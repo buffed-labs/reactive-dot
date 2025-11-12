@@ -14,7 +14,7 @@ export const vaultQrEncryption = {
 export type VaultQrEncryption =
   (typeof vaultQrEncryption)[keyof typeof vaultQrEncryption];
 
-export const VaultQrPayloadType = {
+export const vaultQrPayloadType = {
   legacyTx: 0x00,
   tx: 0x02,
   message: 0x03,
@@ -26,7 +26,7 @@ export const VaultQrPayloadType = {
 } as const;
 
 export type VaultQrPayloadType =
-  (typeof VaultQrPayloadType)[keyof typeof VaultQrPayloadType];
+  (typeof vaultQrPayloadType)[keyof typeof vaultQrPayloadType];
 
 export const createQrTransaction = (
   encryption: VaultQrEncryption,
@@ -38,7 +38,7 @@ export const createQrTransaction = (
   mergeUint8([
     vaultQrHeader,
     new Uint8Array([encryption]),
-    new Uint8Array([VaultQrPayloadType.tx]),
+    new Uint8Array([vaultQrPayloadType.tx]),
     publicKey,
     compact.enc(callData.length),
     callData,
@@ -55,7 +55,7 @@ export const createQrMessage = (
   mergeUint8([
     vaultQrHeader,
     new Uint8Array([encryption]),
-    new Uint8Array([VaultQrPayloadType.message]),
+    new Uint8Array([vaultQrPayloadType.message]),
     publicKey,
     compact.enc(data.length),
     data,
