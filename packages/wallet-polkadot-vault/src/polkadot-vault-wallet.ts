@@ -140,7 +140,11 @@ export class PolkadotVaultWallet extends LocalWallet<
                 const qrPayload = createQrMessage(
                   vaultQrEncryption.sr25519,
                   publicKey,
-                  data,
+                  mergeUint8([
+                    Binary.fromText("<Bytes>").asBytes(),
+                    data,
+                    Binary.fromText("</Bytes>").asBytes(),
+                  ]),
                   Binary.fromHex(genesisHash).asBytes(),
                 );
 

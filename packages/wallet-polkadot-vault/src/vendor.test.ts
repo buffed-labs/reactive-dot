@@ -82,7 +82,6 @@ test("createQrMessage", () =>
       1,
       2,
       3,
-      12,
       4,
       5,
       6,

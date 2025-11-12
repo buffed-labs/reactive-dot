@@ -57,7 +57,6 @@ export const createQrMessage = (
     new Uint8Array([encryption]),
     new Uint8Array([vaultQrPayloadType.message]),
     publicKey,
-    compact.enc(data.length),
     data,
     genesisHash,
   ]);
