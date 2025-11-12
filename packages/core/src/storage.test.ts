@@ -1,4 +1,4 @@
-import { Storage, type StorageOptions } from "./storage.js";
+import { inMemoryStorage, Storage, type StorageOptions } from "./storage.js";
 import { describe, it, expect, beforeEach } from "vitest";
 
 // Create an in-memory implementation of SimpleStorage for testing.
@@ -59,5 +59,25 @@ describe("Storage", () => {
     expect(storage.getItem("key4")).toBeNull();
     // The underlying storage should have the item with key "test/namespace/key4"
     expect(inMemoryStorage.getItem("test/namespace/key4")).toEqual("value4");
+  });
+});
+
+describe("inMemoryStorage", () => {
+  const storage = inMemoryStorage();
+
+  it("should set and get an item", () => {
+    storage.setItem("key1", "value1");
+
+    expect(storage.getItem("key1")).toEqual("value1");
+  });
+
+  it("should remove an item", () => {
+    storage.setItem("key2", "value2");
+
+    expect(storage.getItem("key2")).toEqual("value2");
+
+    storage.removeItem("key2");
+
+    expect(storage.getItem("key2")).toBeNull();
   });
 });

@@ -1,7 +1,7 @@
 {
   "name": "@reactive-dot/vue",
   "version": "0.61.3",
-  "description": "Vue library for Reactive DOT",
+  "description": "Vue library for ReactiveDOT",
   "keywords": [
     "substrate",
     "polkadot",
