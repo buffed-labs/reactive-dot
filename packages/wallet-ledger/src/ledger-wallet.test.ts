@@ -69,7 +69,7 @@ it("should initialize with accounts from storage", async () => {
   wallet.storage.setItem("accounts", JSON.stringify([mockAccount]));
   wallet.initialize();
 
-  const accounts = await Array.fromAsync(wallet.accountStore.values());
+  const accounts = Array.from(wallet.accountStore.values());
 
   expect(accounts).toHaveLength(1);
   expect(accounts[0]?.publicKey).toEqual(new Uint8Array([1, 2, 3]));
@@ -80,7 +80,7 @@ it("should connect and add a new account", async () => {
   wallet.initialize();
   await wallet.connect();
 
-  const accounts = await Array.fromAsync(wallet.accountStore.values());
+  const accounts = Array.from(wallet.accountStore.values());
 
   expect(accounts).toHaveLength(1);
   expect(accounts[0]?.publicKey).toEqual(new Uint8Array([1, 2, 3]));

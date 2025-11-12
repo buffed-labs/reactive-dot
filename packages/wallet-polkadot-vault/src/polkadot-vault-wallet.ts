@@ -70,7 +70,7 @@ export class PolkadotVaultWallet extends LocalWallet<
     return this.accountStore.add(await this.getNewAccount());
   }
 
-  override disconnect(): Promise<void> | void {
+  override disconnect() {
     return this.accountStore.clear();
   }
 

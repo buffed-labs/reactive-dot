@@ -80,7 +80,7 @@ describe("initialize", () => {
 
     wallet.initialize();
 
-    const values = await Array.fromAsync(wallet.accountStore.values());
+    const values = Array.from(wallet.accountStore.values());
     expect(values).toHaveLength(2);
     expect(values[0]).toEqual({
       id: "0x123",
@@ -105,9 +105,7 @@ describe("accountStore.add", () => {
     await wallet.accountStore.add(account);
 
     expect(wallet.accountStore.has("0x123")).toBe(true);
-    expect(await Array.fromAsync(wallet.accountStore.values())).toContainEqual(
-      account,
-    );
+    expect(Array.from(wallet.accountStore.values())).toContainEqual(account);
   });
 
   it("replaces existing account with same id", async () => {
@@ -125,7 +123,7 @@ describe("accountStore.add", () => {
     await wallet.accountStore.add(account1);
     await wallet.accountStore.add(account2);
 
-    const values = await Array.fromAsync(wallet.accountStore.values());
+    const values = Array.from(wallet.accountStore.values());
     expect(values).toHaveLength(1);
     expect(values[0]!.name).toBe("Alice Updated");
   });
@@ -192,7 +190,7 @@ describe("accountStore.clear", () => {
 
     await wallet.accountStore.clear();
 
-    expect(await Array.fromAsync(wallet.accountStore.values())).toHaveLength(0);
+    expect(Array.from(wallet.accountStore.values())).toHaveLength(0);
   });
 });
 
@@ -245,9 +243,7 @@ describe("accountStore.values", () => {
     await wallet.accountStore.add(account1);
     await wallet.accountStore.add(account2);
 
-    const values = Array.from(
-      await Array.fromAsync(wallet.accountStore.values()),
-    );
+    const values = Array.from(Array.from(wallet.accountStore.values()));
     expect(values).toHaveLength(2);
     expect(values).toContainEqual(account1);
     expect(values).toContainEqual(account2);

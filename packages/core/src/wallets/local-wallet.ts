@@ -1,16 +1,15 @@
-import type { MaybePromise } from "../types.js";
 import type { PolkadotSignerAccount } from "./account.js";
 import { Wallet, type WalletOptions } from "./wallet.js";
 import { BehaviorSubject, skip, type Subscription } from "rxjs";
 
 type AccountStore<T extends Pick<PolkadotSignerAccount, "id">> = {
-  add(account: T): MaybePromise<void>;
-  clear(): MaybePromise<void>;
-  delete(account: { id: T["id"] }): MaybePromise<void>;
-  delete(accountId: T["id"]): MaybePromise<void>;
-  has(account: { id: T["id"] }): MaybePromise<boolean>;
-  has(accountId: T["id"]): MaybePromise<boolean>;
-  values(): Iterable<T> | AsyncIterable<T>;
+  add(account: T): void;
+  clear(): void;
+  delete(account: { id: T["id"] }): void;
+  delete(accountId: T["id"]): void;
+  has(account: { id: T["id"] }): boolean;
+  has(accountId: T["id"]): boolean;
+  values(): Iterable<T>;
 };
 
 const finalizationRegistry = new FinalizationRegistry(
