@@ -1,6 +1,6 @@
 {
   "name": "@reactive-dot/wallet-polkadot-vault",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Polkadot Vault adapter for ReactiveDOT",
   "keywords": [
     "substrate",
