@@ -8,15 +8,15 @@
     "./*": "./*"
   },
   "devDependencies": {
-    "@eslint-react/eslint-plugin": "^2.3.1",
+    "@eslint-react/eslint-plugin": "^2.3.4",
     "@eslint/compat": "^1.4.1",
-    "@eslint/js": "^9.39.0",
+    "@eslint/js": "^9.39.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react-hooks": "^7.0.1",
-    "eslint-plugin-tsdoc": "^0.4.0",
+    "eslint-plugin-tsdoc": "^0.5.0",
     "eslint-plugin-vue": "^10.5.1",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.46.2",
+    "typescript-eslint": "^8.46.4",
     "vue-eslint-parser": "^10.2.0"
   },
   "peerDependencies": {
