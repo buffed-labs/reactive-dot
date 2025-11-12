@@ -62,11 +62,11 @@ export class PolkadotVaultWallet extends LocalWallet<
     };
   }
 
-  connect() {
-    return this.requestNewAccount();
+  override async connect() {
+    return this.accountStore.add(await this.getNewAccount());
   }
 
-  disconnect(): Promise<void> | void {
+  override disconnect(): Promise<void> | void {
     return this.accountStore.clear();
   }
 
@@ -88,7 +88,7 @@ export class PolkadotVaultWallet extends LocalWallet<
     });
   }
 
-  async requestNewAccount() {
+  async getNewAccount() {
     const response = await this.#request({ type: "account" });
 
     const split = response.split(":") as [
@@ -112,11 +112,11 @@ export class PolkadotVaultWallet extends LocalWallet<
       throw new BaseError("Invalid response");
     }
 
-    await this.accountStore.add({
+    return {
       id: [genesisHash, Binary.fromBytes(account.publicKey).asHex()].join(),
       publicKey: account.publicKey,
       genesisHash,
-    });
+    } as VaultAccount;
   }
 
   async #requestSignature(data: Uint8Array) {
