@@ -1,4 +1,3 @@
-import type { WalletOptions } from "../../core/build/wallets/wallet.js";
 import { AccountMismatchError } from "./errors.js";
 import type { LedgerSigner } from "@polkadot-api/ledger-signer";
 import { Binary } from "@polkadot-api/substrate-bindings";
@@ -70,10 +69,6 @@ export class LedgerWallet extends LocalWallet<
   );
 
   #ledgerSigner?: LedgerSigner;
-
-  constructor(options?: WalletOptions) {
-    super(options);
-  }
 
   override accountToJson(account: Omit<LedgerAccount, "id">) {
     return {
