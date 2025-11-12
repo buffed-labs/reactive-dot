@@ -22,9 +22,13 @@ type BaseVaultRequest<TType extends string, TData = void> = TData extends void
   ? { type: TType }
   : { type: TType; data: TData };
 
-type VaultRequest =
+type VaultRequestPayload =
   | BaseVaultRequest<"account">
   | BaseVaultRequest<"signature", Uint8Array>;
+
+export type VaultRequest = VaultRequestPayload & {
+  response: PromiseWithResolvers<string>;
+};
 
 type VaultAccount = {
   id: string;
@@ -70,13 +74,11 @@ export class PolkadotVaultWallet extends LocalWallet<
     return this.accountStore.clear();
   }
 
-  readonly #request$ = new BehaviorSubject<
-    (VaultRequest & { response: PromiseWithResolvers<string> }) | undefined
-  >(undefined);
+  readonly #request$ = new BehaviorSubject<VaultRequest | undefined>(undefined);
 
   readonly request$ = this.#request$.asObservable();
 
-  #request(request: VaultRequest) {
+  #request(request: VaultRequestPayload) {
     this.#request$.value?.response.reject(new BaseError("Cancelled"));
     const response = Promise.withResolvers<string>();
     this.#request$.next({ ...request, response });
@@ -142,13 +144,7 @@ export class PolkadotVaultWallet extends LocalWallet<
                   Binary.fromHex(genesisHash).asBytes(),
                 );
 
-                const signature = await this.#requestSignature(qrPayload);
-
-                if (!signature) {
-                  throw new BaseError("Cancelled");
-                }
-
-                return signature;
+                return this.#requestSignature(qrPayload);
               },
               signTx: async (callData, signedExtensions, metadata) => {
                 const decMeta = unifyMetadata(decAnyMetadata(metadata));
@@ -157,7 +153,9 @@ export class PolkadotVaultWallet extends LocalWallet<
                 decMeta.extrinsic.signedExtensions.map(({ identifier }) => {
                   const signedExtension = signedExtensions[identifier];
                   if (!signedExtension)
-                    throw new Error(`Missing ${identifier} signed extension`);
+                    throw new BaseError(
+                      `Missing ${identifier} signed extension`,
+                    );
                   extra.push(signedExtension.value);
                   additionalSigned.push(signedExtension.additionalSigned);
                 });
@@ -176,10 +174,6 @@ export class PolkadotVaultWallet extends LocalWallet<
                 );
 
                 const signature = await this.#requestSignature(qrPayload);
-
-                if (!signature) {
-                  throw new Error("Cancelled");
-                }
 
                 const tx = createV4Tx(
                   decMeta,
