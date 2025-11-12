@@ -1,7 +1,7 @@
 {
   "name": "@reactive-dot/wallet-mimir",
   "version": "0.1.28",
-  "description": "Mimir adapter for Reactive DOT",
+  "description": "Mimir adapter for ReactiveDOT",
   "keywords": [
     "substrate",
     "polkadot",
