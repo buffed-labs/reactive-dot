@@ -10,29 +10,41 @@ import Tabs from "@theme/Tabs";
 Wallets & accounts connection can by managed via [`useWallets`](/vue/api/vue/functions/useWallets), [`useConnectedWallets`](/vue/api/vue/functions/useConnectedWallets) & [`useAccounts`](/vue/api/vue/functions/useAccounts) composables.
 
 :::tip
-If you prefer not having to build a wallet connection UI from scratch, checkout [DOT Connect](https://dotconnect.dev/) for a quick and easy way to add a great wallet experience to your DApps.
+If you prefer not having to build a wallet connection UI from scratch, checkout [DOTConnect](https://dotconnect.dev/) for a quick and easy way to add a great wallet experience to your DApps.
 :::
 
 ## Install optional dependencies
 
 Additional dependencies are required if you use any of be bellow wallet type.
 
-### [WalletConnect](https://walletconnect.com/)
+### Plug-and-play wallets
+
+#### [WalletConnect](https://walletconnect.com/)
 
 ```sh npm2yarn
 npm install @reactive-dot/wallet-walletconnect
 ```
 
-### [Ledger](https://www.ledger.com/)
-
-```sh npm2yarn
-npm install @reactive-dot/wallet-ledger
-```
-
-### [Mimir](https://mimir.global/)
+#### [Mimir](https://mimir.global/)
 
 ```sh npm2yarn
 npm install @reactive-dot/wallet-mimir
+```
+
+### Wallets requiring additional UI setup
+
+The wallets listed below require extra UI integration and platform-specific setup. To avoid implementing these flows yourself, we recommend using [DOTConnect](https://dotconnect.dev/) for a quick and reliable wallet integration.
+
+#### [Polkadot Vault](https://vault.novasama.io/)
+
+```sh npm2yarn
+npm install @reactive-dot/wallet-polkadot-vault
+```
+
+#### [Ledger](https://www.ledger.com/)
+
+```sh npm2yarn
+npm install @reactive-dot/wallet-ledger
 ```
 
 ## Add wallets to the config

@@ -10,29 +10,41 @@ import Tabs from "@theme/Tabs";
 Wallets & accounts connection can by managed via [`useWallets`](/react/api/react/functions/useWallets), [`useConnectedWallets`](/react/api/react/functions/useConnectedWallets) & [`useAccounts`](/react/api/react/functions/useAccounts) hooks.
 
 :::tip
-If you prefer not having to build a wallet connection UI from scratch, checkout [DOT Connect](https://dotconnect.dev/) for a quick and easy way to add a great wallet experience to your DApps.
+If you prefer not having to build a wallet connection UI from scratch, checkout [DOTConnect](https://dotconnect.dev/) for a quick and easy way to add a great wallet experience to your DApps.
 :::
 
 ## Install optional dependencies
 
 Additional dependencies are required if you use any of be bellow wallet type.
 
-### [WalletConnect](https://walletconnect.com/)
+### Plug-and-play wallets
+
+#### [WalletConnect](https://walletconnect.com/)
 
 ```sh npm2yarn
 npm install @reactive-dot/wallet-walletconnect
 ```
 
-### [Ledger](https://www.ledger.com/)
-
-```sh npm2yarn
-npm install @reactive-dot/wallet-ledger
-```
-
-### [Mimir](https://mimir.global/)
+#### [Mimir](https://mimir.global/)
 
 ```sh npm2yarn
 npm install @reactive-dot/wallet-mimir
+```
+
+### Wallets requiring additional UI setup
+
+The wallets listed below require extra UI integration and platform-specific setup. To avoid implementing these flows yourself, we recommend using [DOTConnect](https://dotconnect.dev/) for a quick and reliable wallet integration.
+
+#### [Polkadot Vault](https://vault.novasama.io/)
+
+```sh npm2yarn
+npm install @reactive-dot/wallet-polkadot-vault
+```
+
+#### [Ledger](https://www.ledger.com/)
+
+```sh npm2yarn
+npm install @reactive-dot/wallet-ledger
 ```
 
 ## Add wallets to the config
@@ -42,6 +54,7 @@ import { defineConfig } from "@reactive-dot/core";
 import { InjectedWalletProvider } from "@reactive-dot/core/wallets.js";
 import { LedgerWallet } from "@reactive-dot/wallet-ledger";
 import { MimirWalletProvider } from "@reactive-dot/wallet-mimir";
+import { PolkadotVaultWallet } from "@reactive-dot/wallet-polkadot-vault";
 import { WalletConnect } from "@reactive-dot/wallet-walletconnect";
 
 export const config = defineConfig({
@@ -50,6 +63,7 @@ export const config = defineConfig({
     new InjectedWalletProvider(),
     new LedgerWallet(),
     new MimirWalletProvider(),
+    new PolkadotVaultWallet(),
     new WalletConnect({
       projectId: "WALLET_CONNECT_PROJECT_ID",
       providerOptions: {
