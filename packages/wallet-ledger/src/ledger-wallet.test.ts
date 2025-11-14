@@ -187,7 +187,7 @@ it("should sign a transaction", async () => {
   const accounts = await firstValueFrom(wallet.accounts$);
   await accounts[0]!
     // @ts-expect-error we know that this is a function
-    .polkadotSigner({ tokenSymbol: "DOT", tokenDecimals: 10 })
+    .polkadotSigner?.({ tokenSymbol: "DOT", tokenDecimals: 10 })!
     .signTx(new Uint8Array([10, 11, 12]));
 
   expect(mockSignTx).toHaveBeenCalledWith(new Uint8Array([10, 11, 12]));
@@ -207,7 +207,7 @@ it("should sign bytes", async () => {
   const accounts = await firstValueFrom(wallet.accounts$);
   await accounts[0]!
     // @ts-expect-error we know that this is a function
-    .polkadotSigner({ tokenSymbol: "DOT", tokenDecimals: 10 })
+    .polkadotSigner?.({ tokenSymbol: "DOT", tokenDecimals: 10 })!
     .signBytes(new Uint8Array([10, 11, 12]));
 
   expect(mockSignBytes).toHaveBeenCalledWith(new Uint8Array([10, 11, 12]));
@@ -230,7 +230,7 @@ it("should throw AccountMismatchError if public keys do not match", async () => 
   await expect(() =>
     accounts[0]!
       // @ts-expect-error we know that this is a function
-      .polkadotSigner({ tokenSymbol: "DOT", tokenDecimals: 10 })
+      .polkadotSigner?.({ tokenSymbol: "DOT", tokenDecimals: 10 })!
       .signBytes(new Uint8Array([10, 11, 12])),
   ).rejects.toThrow(AccountMismatchError);
 });

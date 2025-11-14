@@ -12,7 +12,8 @@ export type PolkadotSignerAccount = {
     | ((networkInfo: {
         tokenSymbol: string;
         tokenDecimals: number;
-      }) => InjectedPolkadotAccount["polkadotSigner"]);
+      }) => InjectedPolkadotAccount["polkadotSigner"])
+    | undefined;
   name?: string;
   genesisHash?: InjectedPolkadotAccount["genesisHash"];
 };

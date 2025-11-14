@@ -20,8 +20,11 @@ const finalizationRegistry = new FinalizationRegistry(
  * @experimental
  */
 export abstract class LocalWallet<
-  TAccount extends Pick<PolkadotSignerAccount, "id">,
-  TJsonAccount = unknown,
+  TAccount extends Pick<PolkadotSignerAccount, "id"> = Pick<
+    PolkadotSignerAccount,
+    "id"
+  >,
+  TJsonAccount = TAccount,
   TOptions extends WalletOptions = WalletOptions,
   TStorageKey extends string = string,
 > extends Wallet<TOptions, "accounts" | TStorageKey> {
