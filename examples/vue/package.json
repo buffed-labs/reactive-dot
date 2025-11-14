@@ -12,6 +12,7 @@
   "dependencies": {
     "@polkadot-api/descriptors": "portal:.papi/descriptors",
     "@reactive-dot/vue": "workspace:^",
+    "@reactive-dot/wallet-readonly": "workspace:^",
     "polkadot-api": "^1.20.1",
     "vue": "^3.5.22"
   },
