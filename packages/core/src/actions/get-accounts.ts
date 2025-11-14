@@ -46,7 +46,7 @@ export function getAccounts(
                     const safeChainSpec = chainSpec ?? fallbackChainSpec;
 
                     if (safeChainSpec === undefined) {
-                      return undefined;
+                      return null;
                     }
 
                     const nativeTokenInfo =
@@ -58,14 +58,20 @@ export function getAccounts(
                     });
                   })();
 
-                  if (polkadotSigner === undefined) {
+                  if (polkadotSigner === null) {
                     return undefined;
                   }
 
-                  const type =
-                    polkadotSigner.publicKey.length === 20
-                      ? "evm"
-                      : "substrate";
+                  const publicKey =
+                    "publicKey" in account
+                      ? account.publicKey
+                      : polkadotSigner?.publicKey;
+
+                  if (publicKey === undefined) {
+                    return undefined;
+                  }
+
+                  const type = publicKey.length === 20 ? "evm" : "substrate";
 
                   if (type === "evm" && !options?.includeEvmAccounts) {
                     return undefined;
@@ -76,10 +82,8 @@ export function getAccounts(
                     polkadotSigner,
                     address:
                       type === "substrate"
-                        ? ss58AccountId.dec(polkadotSigner.publicKey)
-                        : checksum(
-                            Binary.fromBytes(polkadotSigner.publicKey).asHex(),
-                          ),
+                        ? ss58AccountId.dec(publicKey)
+                        : checksum(Binary.fromBytes(publicKey).asHex()),
                     wallet,
                   };
                 })
