@@ -1,5 +1,14 @@
 # @reactive-dot/wallet-readonly
 
+## 0.1.1
+
+### Patch Changes
+
+- [#1026](https://github.com/buffed-labs/reactive-dot/pull/1026) [`60c8386`](https://github.com/buffed-labs/reactive-dot/commit/60c838606970d1ffa498254601f2f97bd91932bc) Thanks [@tien](https://github.com/tien)! - Fixed missing account public key.
+
+- Updated dependencies [[`60c8386`](https://github.com/buffed-labs/reactive-dot/commit/60c838606970d1ffa498254601f2f97bd91932bc)]:
+  - @reactive-dot/core@0.63.1
+
 ## 0.1.0
 
 ### Minor Changes
