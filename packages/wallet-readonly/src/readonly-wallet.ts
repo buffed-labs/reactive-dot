@@ -28,7 +28,7 @@ export class ReadonlyWallet extends LocalWallet<
   override readonly accounts$ = this.localAccounts$.pipe(
     map((accounts) =>
       accounts.map(
-        ({ publicKey, ...account }): PolkadotSignerAccount => ({
+        (account): PolkadotSignerAccount => ({
           ...account,
           polkadotSigner: undefined,
         }),
