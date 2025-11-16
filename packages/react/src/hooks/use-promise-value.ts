@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
  * @param fallback - The fallback function to provide a default value
  * @returns The state of the promise or fallback
  */
-export function usePromiseState<TValue, TFallback = typeof pending>(
+export function usePromiseValue<TValue, TFallback = typeof pending>(
   promise: Promise<TValue>,
   fallback: (
     prev?: TValue | TFallback,
@@ -67,3 +67,8 @@ const defaultFallback = () => pending;
 class ErrorContainer {
   constructor(public error: unknown) {}
 }
+
+/**
+ * @deprecated Use {@link usePromiseValue} instead.
+ */
+export const usePromiseState = usePromiseValue;

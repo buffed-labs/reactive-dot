@@ -55,7 +55,7 @@
 
 ### Patch Changes
 
-- [#977](https://github.com/buffed-labs/reactive-dot/pull/977) [`80e6dc7`](https://github.com/buffed-labs/reactive-dot/commit/80e6dc7ed68fd58b47e7795fab96498f42ecd69b) Thanks [@tien](https://github.com/tien)! - Improved `usePromiseState`:
+- [#977](https://github.com/buffed-labs/reactive-dot/pull/977) [`80e6dc7`](https://github.com/buffed-labs/reactive-dot/commit/80e6dc7ed68fd58b47e7795fab96498f42ecd69b) Thanks [@tien](https://github.com/tien)! - Improved `usePromiseValue`:
   - Skip extra render when Promise is already fulfilled
   - Set fallback value in render rather than part of side effect
 
@@ -90,12 +90,12 @@
   BREAKING CHANGES
   - Removed the `useSpendableBalance(addresses: Address[])` overload, use `useSpendableBalances(addresses: Address[])` instead.
   - Removed `useLazyLoadQuery(queries: Array<{ chainId: ChainID; query: Query }>)` overload. Use `{ use: false }` instead to avoid suspense waterfall for multi-chain queries.
-  - Removed the `defer` option from `useAccounts` and `useSpendableBalance(s)`. To opt out of suspense, use `{ use: false }` and combine with `usePromiseState` when you need a stateful value:
+  - Removed the `defer` option from `useAccounts` and `useSpendableBalance(s)`. To opt out of suspense, use `{ use: false }` and combine with `usePromiseValue` when you need a stateful value:
 
     ```ts
-    import { useAccounts, usePromiseState } from "@reactive-dot/react";
+    import { useAccounts, usePromiseValue } from "@reactive-dot/react";
 
-    const accounts = usePromiseState(
+    const accounts = usePromiseValue(
       useAccounts({ use: false }),
       (prev) => prev ?? undefined,
     ); // WalletAccount[] | undefined

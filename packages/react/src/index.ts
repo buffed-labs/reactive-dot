@@ -27,7 +27,7 @@ export {
   useNativeTokenAmountFromNumber,
   useNativeTokenAmountFromPlanck,
 } from "./hooks/use-native-token-amount.js";
-export { usePromiseState } from "./hooks/use-promise-state.js";
+export { usePromiseState, usePromiseValue } from "./hooks/use-promise-value.js";
 export { usePromises } from "./hooks/use-promises.js";
 export { useQueryErrorResetter } from "./hooks/use-query-error-resetter.js";
 export { useQueryLoader } from "./hooks/use-query-loader.js";
