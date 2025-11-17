@@ -1,5 +1,11 @@
 # @reactive-dot/react
 
+## 0.63.2
+
+### Patch Changes
+
+- [#1031](https://github.com/buffed-labs/reactive-dot/pull/1031) [`67039a1`](https://github.com/buffed-labs/reactive-dot/commit/67039a15b4b80a91667dcbeb921d9b3af4c184d8) Thanks [@tien](https://github.com/tien)! - Renamed `usePromiseState` to `usePromiseValue`.
+
 ## 0.63.0
 
 ### Patch Changes
