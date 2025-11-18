@@ -20,12 +20,14 @@ export function getAccounts(
     toObservable(chainSpec),
     toObservable(fallbackChainSpec),
   ]).pipe(
-    switchMap(([wallets, chainSpec, fallbackChainSpec]) => {
+    switchMap(([wallets, defaultChainSpec, fallbackChainSpec]) => {
       if (wallets.length === 0) {
         return of([]);
       }
 
-      const maybeSs58Format = chainSpec?.properties.ss58Format;
+      const maybeSs58Format =
+        defaultChainSpec?.properties.ss58Format ??
+        fallbackChainSpec?.properties.ss58Format;
 
       const ss58Format =
         typeof maybeSs58Format === "number" ? maybeSs58Format : undefined;
@@ -43,7 +45,7 @@ export function getAccounts(
                       return account.polkadotSigner;
                     }
 
-                    const safeChainSpec = chainSpec ?? fallbackChainSpec;
+                    const safeChainSpec = defaultChainSpec ?? fallbackChainSpec;
 
                     if (safeChainSpec === undefined) {
                       return null;
@@ -94,13 +96,13 @@ export function getAccounts(
       ).pipe(
         map((accounts) => accounts.flat()),
         map(
-          chainSpec === undefined
+          defaultChainSpec === undefined
             ? (accounts) => accounts
             : (accounts) =>
                 accounts.filter(
                   (account) =>
                     !account.genesisHash ||
-                    chainSpec.genesisHash.includes(account.genesisHash),
+                    defaultChainSpec.genesisHash.includes(account.genesisHash),
                 ),
         ),
       );
