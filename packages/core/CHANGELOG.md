@@ -1,5 +1,11 @@
 # @reactive-dot/core
 
+## 0.63.3
+
+### Patch Changes
+
+- [#1034](https://github.com/buffed-labs/reactive-dot/pull/1034) [`1ac5653`](https://github.com/buffed-labs/reactive-dot/commit/1ac565336ea7e036255193295d649e5ebc411075) Thanks [@tien](https://github.com/tien)! - Fixed account not using fallback chainspec for SS58 format.
+
 ## 0.63.1
 
 ### Patch Changes
