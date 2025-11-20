@@ -83,9 +83,8 @@ export class MimirWallet extends Wallet<MimirWalletOptions, "connected"> {
     accounts: InjectedAccount[],
   ) {
     return accounts.map(
-      (account, index) =>
+      (account) =>
         ({
-          id: index.toString(),
           polkadotSigner: mimir.getPolkadotSigner(account.address),
           ...account,
         }) satisfies PolkadotSignerAccount,

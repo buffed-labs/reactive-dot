@@ -148,9 +148,7 @@ describe("$accounts", () => {
 
     expect(emittedAccounts.length).toBe(2);
     expect(emittedAccounts[0]?.address).toBe("account1");
-    expect(emittedAccounts[0]?.id).toBe("0");
     expect(emittedAccounts[1]?.address).toBe("account2");
-    expect(emittedAccounts[1]?.id).toBe("1");
 
     subscription.unsubscribe();
   });
@@ -185,7 +183,6 @@ describe("getAccounts", () => {
     const accounts = await wallet.getAccounts();
 
     expect(accounts[0]?.address).toBe("test-address");
-    expect(accounts[0]?.id).toBe("0");
   });
 });
 
