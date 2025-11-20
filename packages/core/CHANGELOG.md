@@ -1,5 +1,11 @@
 # @reactive-dot/core
 
+## 0.64.1
+
+### Patch Changes
+
+- [#1040](https://github.com/buffed-labs/reactive-dot/pull/1040) [`70a76b9`](https://github.com/buffed-labs/reactive-dot/commit/70a76b93332b5333a1e8c83b04cba8c80086a355) Thanks [@tien](https://github.com/tien)! - Revert breaking wallets changes.
+
 ## 0.64.0
 
 ### Minor Changes
