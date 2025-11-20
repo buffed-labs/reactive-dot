@@ -1,6 +1,6 @@
 {
   "name": "@reactive-dot/wallet-readonly",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "description": "Readonly accounts adapter for ReactiveDOT",
   "keywords": [
     "substrate",

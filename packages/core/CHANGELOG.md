@@ -1,5 +1,11 @@
 # @reactive-dot/core
 
+## 0.64.0
+
+### Minor Changes
+
+- [#1038](https://github.com/buffed-labs/reactive-dot/pull/1038) [`013c431`](https://github.com/buffed-labs/reactive-dot/commit/013c431f820152e681334aa43bd2618d51e9d2eb) Thanks [@tien](https://github.com/tien)! - Removed local ID from wallet accounts.
+
 ## 0.63.3
 
 ### Patch Changes
