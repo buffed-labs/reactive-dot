@@ -31,6 +31,7 @@ export type VaultRequest = VaultRequestPayload & {
 };
 
 type VaultAccount = {
+  id: string;
   publicKey: Uint8Array;
   genesisHash: `0x${string}`;
   name?: string;
@@ -50,7 +51,7 @@ export class PolkadotVaultWallet extends LocalWallet<
 
   override readonly name = "Polkadot Vault";
 
-  protected override accountToJson(account: VaultAccount) {
+  protected override accountToJson(account: Omit<VaultAccount, "id">) {
     return {
       ...account,
       publicKey: Binary.fromBytes(account.publicKey).asHex(),
@@ -61,17 +62,8 @@ export class PolkadotVaultWallet extends LocalWallet<
     return {
       ...data,
       publicKey: Binary.fromHex(data.publicKey).asBytes(),
+      id: [data.genesisHash, data.publicKey].join(),
     };
-  }
-
-  protected override isAccountEqual(
-    accountA: VaultAccount,
-    accountB: VaultAccount,
-  ) {
-    return (
-      accountA.publicKey === accountB.publicKey &&
-      accountA.genesisHash === accountB.genesisHash
-    );
   }
 
   override async connect() {
@@ -123,6 +115,7 @@ export class PolkadotVaultWallet extends LocalWallet<
     }
 
     return {
+      id: [genesisHash, Binary.fromBytes(account.publicKey).asHex()].join(),
       publicKey: account.publicKey,
       genesisHash,
     } as VaultAccount;
@@ -137,8 +130,9 @@ export class PolkadotVaultWallet extends LocalWallet<
   override readonly accounts$ = this.localAccounts$.pipe(
     map((accounts) =>
       accounts.map(
-        ({ name, genesisHash, publicKey }) =>
+        ({ id, name, genesisHash, publicKey }) =>
           ({
+            id,
             polkadotSigner: {
               publicKey,
               ...(name === undefined ? {} : { name }),

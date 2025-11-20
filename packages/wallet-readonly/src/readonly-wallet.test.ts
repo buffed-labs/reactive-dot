@@ -21,6 +21,7 @@ it("should have correct id and name", () => {
 it("should map accounts to PolkadotSignerAccount", async () => {
   const mockPublicKey = new Uint8Array([1, 2, 3]);
   wallet.accountStore.add({
+    id: "0x010203",
     publicKey: mockPublicKey,
     name: "Test Account",
   });
@@ -32,6 +33,7 @@ it("should map accounts to PolkadotSignerAccount", async () => {
 
 it("should disconnect and clear accounts", () => {
   wallet.accountStore.add({
+    id: "0x010203",
     publicKey: new Uint8Array([1, 2, 3]),
   });
 
@@ -42,6 +44,7 @@ it("should disconnect and clear accounts", () => {
 
 it("should emit connected$ as true when accounts exist", async () => {
   wallet.accountStore.add({
+    id: "0x010203",
     publicKey: new Uint8Array([1, 2, 3]),
   });
 

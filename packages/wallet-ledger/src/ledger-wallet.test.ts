@@ -90,6 +90,7 @@ it("should connect and add a new account", async () => {
 it("should disconnect and clear accounts", () => {
   wallet.initialize();
   wallet.accountStore.add({
+    id: "0x010203",
     publicKey: new Uint8Array([1, 2, 3]),
     path: 0,
   });
@@ -102,6 +103,7 @@ it("accountStore.add should add a new account", () => {
   wallet.initialize();
 
   const newAccount = {
+    id: "0x040506",
     publicKey: new Uint8Array([4, 5, 6]),
     path: 1,
   };
@@ -114,6 +116,7 @@ it("accountStore.add should add a new account", () => {
 it("accountStore.clear should clear all accounts", () => {
   wallet.initialize();
   wallet.accountStore.add({
+    id: "0x010203",
     publicKey: new Uint8Array([1, 2, 3]),
     path: 0,
   });
@@ -126,18 +129,20 @@ it("accountStore.delete should delete an account by id", () => {
   wallet.initialize();
 
   const account1 = {
+    id: "0x010203",
     publicKey: new Uint8Array([1, 2, 3]),
     path: 0,
   };
 
   const account2 = {
+    id: "0x040506",
     publicKey: new Uint8Array([4, 5, 6]),
     path: 1,
   };
 
   wallet.accountStore.add(account1);
   wallet.accountStore.add(account2);
-  wallet.accountStore.delete(account1);
+  wallet.accountStore.delete("0x010203");
 
   expect(wallet.accountStore.values()).not.toContain(account1);
   expect(wallet.accountStore.values()).toContain(account2);
@@ -147,19 +152,16 @@ it("accountStore.has should return true if account exists", () => {
   wallet.initialize();
 
   const account = {
+    id: "0x010203",
     publicKey: new Uint8Array([1, 2, 3]),
     path: 0,
   };
 
-  const account2 = {
-    publicKey: new Uint8Array([1, 2, 3]),
-    path: 1,
-  };
-
   wallet.accountStore.add(account);
 
-  expect(wallet.accountStore.has(account)).toBe(true);
-  expect(wallet.accountStore.has(account2)).toBe(false);
+  expect(wallet.accountStore.has("0x010203")).toBe(true);
+  expect(wallet.accountStore.has({ id: "0x010203" })).toBe(true);
+  expect(wallet.accountStore.has("0x040506")).toBe(false);
 });
 
 it("getConnectedAccount should return the connected account", async () => {
@@ -175,6 +177,7 @@ it("should sign a transaction", async () => {
   wallet.initialize();
 
   const account = {
+    id: "0x010203",
     publicKey: new Uint8Array([1, 2, 3]),
     path: 0,
   };
@@ -240,6 +243,7 @@ it("connected$ should emit true when accounts are added", async () => {
   expect(connected).toBe(false);
 
   wallet.accountStore.add({
+    id: "0x010203",
     publicKey: new Uint8Array([1, 2, 3]),
     path: 0,
   });
@@ -253,6 +257,7 @@ it("should save accounts to storage when accounts change", () => {
   wallet.initialize();
 
   const account = {
+    id: "0x010203",
     publicKey: new Uint8Array([1, 2, 3]),
     path: 0,
   };

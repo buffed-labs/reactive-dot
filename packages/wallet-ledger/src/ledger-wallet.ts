@@ -8,12 +8,13 @@ import {
 import { map } from "rxjs/operators";
 
 type LedgerAccount = {
+  id: string;
   publicKey: Uint8Array;
   name?: string;
   path: number;
 };
 
-type JsonLedgerAccount = Omit<LedgerAccount, "publicKey"> & {
+type JsonLedgerAccount = Omit<LedgerAccount, "publicKey" | "id"> & {
   publicKey: `0x${string}`;
 };
 
@@ -31,6 +32,7 @@ export class LedgerWallet extends LocalWallet<
         .toSorted((a, b) => a.path - b.path)
         .map(
           (account): PolkadotSignerAccount => ({
+            id: account.id,
             ...(account.name === undefined ? {} : { name: account.name }),
             polkadotSigner: ({ tokenSymbol, tokenDecimals }) => ({
               publicKey: account.publicKey,
@@ -68,7 +70,7 @@ export class LedgerWallet extends LocalWallet<
 
   #ledgerSigner?: LedgerSigner;
 
-  override accountToJson(account: LedgerAccount) {
+  override accountToJson(account: Omit<LedgerAccount, "id">) {
     return {
       ...account,
       publicKey: Binary.fromBytes(account.publicKey).asHex(),
@@ -78,19 +80,9 @@ export class LedgerWallet extends LocalWallet<
   override accountFromJson(data: JsonLedgerAccount) {
     return {
       ...data,
+      id: data.publicKey,
       publicKey: Binary.fromHex(data.publicKey).asBytes(),
     };
-  }
-
-  protected override isAccountEqual(
-    accountA: LedgerAccount,
-    accountB: LedgerAccount,
-  ) {
-    return (
-      accountA.path === accountB.path &&
-      Binary.fromBytes(accountA.publicKey).asHex() ===
-        Binary.fromBytes(accountB.publicKey).asHex()
-    );
   }
 
   async connect() {
@@ -111,6 +103,7 @@ export class LedgerWallet extends LocalWallet<
     const publicKey = await ledgerSigner.getPubkey(path);
 
     return {
+      id: Binary.fromBytes(publicKey).asHex(),
       publicKey,
       path,
     } as LedgerAccount;

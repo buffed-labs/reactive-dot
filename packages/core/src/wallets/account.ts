@@ -17,6 +17,7 @@ type PolkadotSignerAccountBase =
     };
 
 export type PolkadotSignerAccount = PolkadotSignerAccountBase & {
+  id: string;
   name?: string;
   genesisHash?: InjectedPolkadotAccount["genesisHash"];
 };

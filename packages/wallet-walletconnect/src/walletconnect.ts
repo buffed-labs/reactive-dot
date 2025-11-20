@@ -186,6 +186,7 @@ export class WalletConnect extends DeepLinkWallet {
         )
         .map(
           ([chainType, chainId, address]): PolkadotSignerAccount => ({
+            id: `${chainType}:${chainId}:${address}`,
             genesisHash: chainId,
             polkadotSigner: getPolkadotSignerFromPjs(
               address,

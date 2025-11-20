@@ -7,6 +7,7 @@ import {
 import { map } from "rxjs";
 
 type ReadonlyAccount = {
+  id: string;
   publicKey: Uint8Array;
   name?: string;
 };
@@ -36,7 +37,7 @@ export class ReadonlyWallet extends LocalWallet<
   );
 
   protected override accountToJson(
-    account: ReadonlyAccount,
+    account: Omit<ReadonlyAccount, "id">,
   ): JsonReadonlyAccount {
     return {
       ...account,
@@ -49,15 +50,9 @@ export class ReadonlyWallet extends LocalWallet<
   ): ReadonlyAccount {
     return {
       ...jsonAccount,
+      id: jsonAccount.publicKey,
       publicKey: Binary.fromHex(jsonAccount.publicKey).asBytes(),
     };
-  }
-
-  protected override isAccountEqual(
-    accountA: ReadonlyAccount,
-    accountB: ReadonlyAccount,
-  ) {
-    return accountA.publicKey === accountB.publicKey;
   }
 
   override readonly connected$ = this.accounts$.pipe(
@@ -78,6 +73,7 @@ export class ReadonlyWallet extends LocalWallet<
     }
 
     this.accountStore.add({
+      id: Binary.fromBytes(address.publicKey).asHex(),
       publicKey: address.publicKey,
     });
   }

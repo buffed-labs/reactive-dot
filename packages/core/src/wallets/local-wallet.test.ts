@@ -1,19 +1,20 @@
 import { Storage } from "../storage.js";
 import type { MaybePromise } from "../types.js";
+import type { PolkadotSignerAccount } from "./account.js";
 import { LocalWallet } from "./local-wallet.js";
 import type { WalletOptions } from "./wallet.js";
 import { BehaviorSubject } from "rxjs";
 import { beforeEach, describe, expect, it } from "vitest";
 
-type TestAccount = {
+interface TestAccount extends Pick<PolkadotSignerAccount, "id"> {
   name: string;
   address: string;
-};
+}
 
-type TestJsonAccount = {
+interface TestJsonAccount {
   name: string;
   address: string;
-};
+}
 
 class TestLocalWallet extends LocalWallet<
   TestAccount,
@@ -34,16 +35,12 @@ class TestLocalWallet extends LocalWallet<
 
   override readonly accounts$ = new BehaviorSubject([]);
 
-  protected accountToJson(account: TestAccount): TestJsonAccount {
+  protected accountToJson(account: Omit<TestAccount, "id">): TestJsonAccount {
     return { name: account.name, address: account.address };
   }
 
   protected accountFromJson(jsonAccount: TestJsonAccount): TestAccount {
-    return jsonAccount;
-  }
-
-  protected isAccountEqual(accountA: TestAccount, accountB: TestAccount) {
-    return accountA.address === accountB.address;
+    return { id: jsonAccount.address, ...jsonAccount };
   }
 }
 
@@ -86,10 +83,11 @@ describe("initialize", () => {
     const values = Array.from(wallet.accountStore.values());
     expect(values).toHaveLength(2);
     expect(values[0]).toEqual({
+      id: "0x123",
       name: "Alice",
       address: "0x123",
     });
-    expect(values[1]).toEqual({ name: "Bob", address: "0x456" });
+    expect(values[1]).toEqual({ id: "0x456", name: "Bob", address: "0x456" });
   });
 });
 
@@ -100,21 +98,24 @@ describe("accountStore.add", () => {
 
   it("adds a new account", async () => {
     const account: TestAccount = {
+      id: "0x123",
       name: "Alice",
       address: "0x123",
     };
     await wallet.accountStore.add(account);
 
-    expect(wallet.accountStore.has(account)).toBe(true);
+    expect(wallet.accountStore.has("0x123")).toBe(true);
     expect(Array.from(wallet.accountStore.values())).toContainEqual(account);
   });
 
-  it("replaces existing account with same address", async () => {
+  it("replaces existing account with same id", async () => {
     const account1: TestAccount = {
+      id: "0x123",
       name: "Alice",
       address: "0x123",
     };
     const account2: TestAccount = {
+      id: "0x123",
       name: "Alice Updated",
       address: "0x123",
     };
@@ -129,6 +130,7 @@ describe("accountStore.add", () => {
 
   it("persists accounts to storage", async () => {
     const account: TestAccount = {
+      id: "0x123",
       name: "Alice",
       address: "0x123",
     };
@@ -147,15 +149,28 @@ describe("accountStore.delete", () => {
     wallet.initialize();
   });
 
-  it("deletes account by address", async () => {
+  it("deletes account by id string", async () => {
     const account: TestAccount = {
+      id: "0x123",
       name: "Alice",
       address: "0x123",
     };
     await wallet.accountStore.add(account);
-    await wallet.accountStore.delete(account);
+    await wallet.accountStore.delete("0x123");
 
-    expect(wallet.accountStore.has(account)).toBe(false);
+    expect(wallet.accountStore.has("0x123")).toBe(false);
+  });
+
+  it("deletes account by object with id", async () => {
+    const account: TestAccount = {
+      id: "0x123",
+      name: "Alice",
+      address: "0x123",
+    };
+    await wallet.accountStore.add(account);
+    await wallet.accountStore.delete({ id: "0x123" });
+
+    expect(wallet.accountStore.has("0x123")).toBe(false);
   });
 });
 
@@ -163,10 +178,12 @@ describe("accountStore.clear", () => {
   it("removes all accounts", async () => {
     wallet.initialize();
     await wallet.accountStore.add({
+      id: "0x123",
       name: "Alice",
       address: "0x123",
     });
     await wallet.accountStore.add({
+      id: "0x456",
       name: "Bob",
       address: "0x456",
     });
@@ -182,22 +199,30 @@ describe("accountStore.has", () => {
     wallet.initialize();
   });
 
-  it("returns true for existing account address", async () => {
+  it("returns true for existing account id string", async () => {
     const account: TestAccount = {
+      id: "0x123",
       name: "Alice",
       address: "0x123",
     };
     await wallet.accountStore.add(account);
 
-    expect(wallet.accountStore.has(account)).toBe(true);
+    expect(wallet.accountStore.has("0x123")).toBe(true);
+  });
+
+  it("returns true for existing account object", async () => {
+    const account: TestAccount = {
+      id: "0x123",
+      name: "Alice",
+      address: "0x123",
+    };
+    await wallet.accountStore.add(account);
+
+    expect(wallet.accountStore.has({ id: "0x123" })).toBe(true);
   });
 
   it("returns false for non-existent account", () => {
-    const account: TestAccount = {
-      name: "Alice",
-      address: "0x123456",
-    };
-    expect(wallet.accountStore.has(account)).toBe(false);
+    expect(wallet.accountStore.has("0x999")).toBe(false);
   });
 });
 
@@ -205,10 +230,12 @@ describe("accountStore.values", () => {
   it("returns all accounts", async () => {
     wallet.initialize();
     const account1: TestAccount = {
+      id: "0x123",
       name: "Alice",
       address: "0x123",
     };
     const account2: TestAccount = {
+      id: "0x456",
       name: "Bob",
       address: "0x456",
     };
