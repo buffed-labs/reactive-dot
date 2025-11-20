@@ -1,7 +1,10 @@
 import { BaseError } from "../../errors.js";
 import type { PolkadotSignerAccount } from "../account.js";
 import { Wallet, type WalletOptions } from "../wallet.js";
-import type { InjectedExtension } from "polkadot-api/pjs-signer";
+import type {
+  InjectedExtension,
+  InjectedPolkadotAccount,
+} from "polkadot-api/pjs-signer";
 import { BehaviorSubject, Observable, of } from "rxjs";
 import { map, switchMap } from "rxjs/operators";
 
@@ -64,9 +67,11 @@ export class InjectedWallet extends Wallet<InjectedWalletOptions, "connected"> {
       }
 
       return new Observable<PolkadotSignerAccount[]>((subscriber) => {
-        subscriber.next(extension.getAccounts());
+        subscriber.next(this.#withIds(extension.getAccounts()));
         subscriber.add(
-          extension.subscribe((accounts) => subscriber.next(accounts)),
+          extension.subscribe((accounts) =>
+            subscriber.next(this.#withIds(accounts)),
+          ),
         );
       });
     }),
@@ -79,6 +84,13 @@ export class InjectedWallet extends Wallet<InjectedWalletOptions, "connected"> {
       throw new BaseError("Extension is not connected");
     }
 
-    return extension.getAccounts();
+    return this.#withIds(extension.getAccounts());
+  }
+
+  #withIds(accounts: InjectedPolkadotAccount[]) {
+    return accounts.map((account, index) => ({
+      id: index.toString(),
+      ...account,
+    }));
   }
 }
