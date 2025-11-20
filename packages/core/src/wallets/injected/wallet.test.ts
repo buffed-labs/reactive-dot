@@ -99,12 +99,10 @@ describe("accounts$", () => {
 
     expect(await firstValueFrom(wallet.accounts$)).toEqual([
       {
-        id: expect.any(String),
         address: "5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY",
         name: "Alice",
       },
       {
-        id: expect.any(String),
         address: "5FHneW46xTkTDzSqdcWpzrLkERJZvm1tZsgU9LgANEGj9eJ6",
         name: "Bob",
       },
@@ -118,7 +116,6 @@ describe("accounts$", () => {
   it("should subscribe to extension account changes", async () => {
     const firstAccountSet = [
       {
-        id: expect.any(String),
         address: "5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY",
         name: "Alice",
       },
@@ -126,12 +123,10 @@ describe("accounts$", () => {
 
     const secondAccountSet = [
       {
-        id: expect.any(String),
         address: "5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY",
         name: "Alice",
       },
       {
-        id: expect.any(String),
         address: "5FHneW46xTkTDzSqdcWpzrLkERJZvm1tZsgU9LgANEGj9eJ6",
         name: "Bob",
       },
@@ -139,17 +134,14 @@ describe("accounts$", () => {
 
     const thirdAccountSet = [
       {
-        id: expect.any(String),
         address: "5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY",
         name: "Alice",
       },
       {
-        id: expect.any(String),
         address: "5FHneW46xTkTDzSqdcWpzrLkERJZvm1tZsgU9LgANEGj9eJ6",
         name: "Bob",
       },
       {
-        id: expect.any(String),
         address: "5GNJqTPyNqANVm9MRFYGS3KTAzoWqPmmWStZkJN5WJkXP6HL",
         name: "Charlie",
       },
@@ -182,12 +174,10 @@ describe("getAccounts", () => {
 
     expect(accounts).toEqual([
       {
-        id: expect.any(String),
         address: "5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY",
         name: "Alice",
       },
       {
-        id: expect.any(String),
         address: "5FHneW46xTkTDzSqdcWpzrLkERJZvm1tZsgU9LgANEGj9eJ6",
         name: "Bob",
       },

@@ -20,12 +20,10 @@ it("returns accounts from connected wallets", async () => {
     new MockWallet(
       [
         {
-          id: "1",
-          polkadotSigner: { publicKey: new Uint8Array() } as PolkadotSigner,
+          polkadotSigner: { publicKey: new Uint8Array([1]) } as PolkadotSigner,
         },
         {
-          id: "2",
-          polkadotSigner: { publicKey: new Uint8Array() } as PolkadotSigner,
+          polkadotSigner: { publicKey: new Uint8Array([2]) } as PolkadotSigner,
         },
       ],
       true,
@@ -33,12 +31,10 @@ it("returns accounts from connected wallets", async () => {
     new MockWallet(
       [
         {
-          id: "3",
-          polkadotSigner: { publicKey: new Uint8Array() } as PolkadotSigner,
+          polkadotSigner: { publicKey: new Uint8Array([3]) } as PolkadotSigner,
         },
         {
-          id: "4",
-          polkadotSigner: { publicKey: new Uint8Array() } as PolkadotSigner,
+          polkadotSigner: { publicKey: new Uint8Array([4]) } as PolkadotSigner,
         },
       ],
       true,
@@ -58,10 +54,18 @@ it("returns accounts from connected wallets", async () => {
   );
 
   expect(result.current).toEqual([
-    expect.objectContaining({ id: "1" }),
-    expect.objectContaining({ id: "2" }),
-    expect.objectContaining({ id: "3" }),
-    expect.objectContaining({ id: "4" }),
+    expect.objectContaining({
+      polkadotSigner: { publicKey: new Uint8Array([1]) },
+    }),
+    expect.objectContaining({
+      polkadotSigner: { publicKey: new Uint8Array([2]) },
+    }),
+    expect.objectContaining({
+      polkadotSigner: { publicKey: new Uint8Array([3]) },
+    }),
+    expect.objectContaining({
+      polkadotSigner: { publicKey: new Uint8Array([4]) },
+    }),
   ]);
 });
 
@@ -70,11 +74,9 @@ it("ignores context chainId when chainId is null", async () => {
     new MockWallet(
       [
         {
-          id: "1",
           polkadotSigner: { publicKey: new Uint8Array() } as PolkadotSigner,
         },
         {
-          id: "2",
           polkadotSigner: { publicKey: new Uint8Array() } as PolkadotSigner,
         },
       ],

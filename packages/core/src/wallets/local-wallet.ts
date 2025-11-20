@@ -1,14 +1,11 @@
-import type { PolkadotSignerAccount } from "./account.js";
 import { Wallet, type WalletOptions } from "./wallet.js";
 import { BehaviorSubject, skip, type Subscription } from "rxjs";
 
-type AccountStore<T extends Pick<PolkadotSignerAccount, "id">> = {
+type AccountStore<T> = {
   add(account: T): void;
   clear(): void;
-  delete(account: { id: T["id"] }): void;
-  delete(accountId: T["id"]): void;
-  has(account: { id: T["id"] }): boolean;
-  has(accountId: T["id"]): boolean;
+  delete(account: T): void;
+  has(account: T): boolean;
   values(): Iterable<T>;
 };
 
@@ -20,10 +17,7 @@ const finalizationRegistry = new FinalizationRegistry(
  * @experimental
  */
 export abstract class LocalWallet<
-  TAccount extends Pick<PolkadotSignerAccount, "id"> = Pick<
-    PolkadotSignerAccount,
-    "id"
-  >,
+  TAccount,
   TJsonAccount = TAccount,
   TOptions extends WalletOptions = WalletOptions,
   TStorageKey extends string = string,
@@ -31,6 +25,11 @@ export abstract class LocalWallet<
   protected abstract accountToJson(account: Omit<TAccount, "id">): TJsonAccount;
 
   protected abstract accountFromJson(jsonAccount: TJsonAccount): TAccount;
+
+  protected abstract isAccountEqual(
+    accountA: TAccount,
+    accountB: TAccount,
+  ): boolean;
 
   protected localAccounts$: BehaviorSubject<TAccount[]> = new BehaviorSubject<
     TAccount[]
@@ -47,7 +46,7 @@ export abstract class LocalWallet<
           this.storage.setItem(
             "accounts",
             JSON.stringify(
-              accounts.map(({ id, ...account }) => this.accountToJson(account)),
+              accounts.map((account) => this.accountToJson(account)),
             ),
           ),
         ),
@@ -66,32 +65,25 @@ export abstract class LocalWallet<
    * @experimental
    */
   accountStore: AccountStore<TAccount> = {
-    add: (account: TAccount) => {
+    add: (account: TAccount) =>
       this.localAccounts$.next(
         this.localAccounts$.value
-          .filter((storedAccount) => storedAccount.id !== account.id)
+          .filter(
+            (storedAccount) => !this.isAccountEqual(storedAccount, account),
+          )
           .concat([account]),
-      );
-    },
-    clear: () => {
-      this.localAccounts$.next([]);
-    },
-    delete: (identifiable: string | { id: string }) => {
-      const id =
-        typeof identifiable === "string" ? identifiable : identifiable.id;
-
+      ),
+    clear: () => this.localAccounts$.next([]),
+    delete: (account: TAccount) =>
       this.localAccounts$.next(
         this.localAccounts$.value.filter(
-          (storedAccount) => storedAccount.id !== id,
+          (storedAccount) => !this.isAccountEqual(storedAccount, account),
         ),
-      );
-    },
-    has: (identifiable: string | { id: string }) => {
-      const id =
-        typeof identifiable === "string" ? identifiable : identifiable.id;
-
-      return this.localAccounts$.value.some((account) => account.id === id);
-    },
+      ),
+    has: (account: TAccount) =>
+      this.localAccounts$.value.some((storedAccount) =>
+        this.isAccountEqual(storedAccount, account),
+      ),
     values: () => this.localAccounts$.value,
   };
 }
