@@ -43,11 +43,11 @@
     "@changesets/cli": "^2.29.7",
     "@commitlint/cli": "^20.1.0",
     "@commitlint/config-conventional": "^20.0.0",
-    "@trivago/prettier-plugin-sort-imports": "^5.2.2",
-    "@vitest/coverage-v8": "4.0.6",
+    "@trivago/prettier-plugin-sort-imports": "^6.0.0",
+    "@vitest/coverage-v8": "4.0.10",
     "husky": "^9.1.7",
-    "nx": "^21.6.8",
+    "nx": "^22.1.0",
     "prettier": "^3.6.2",
-    "vitest": "^4.0.6"
+    "vitest": "^4.0.10"
   }
 }
