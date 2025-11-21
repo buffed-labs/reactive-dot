@@ -35,6 +35,10 @@ class TestLocalWallet extends LocalWallet<
 
   override readonly accounts$ = new BehaviorSubject([]);
 
+  protected accountId(account: Omit<TestAccount, "id">) {
+    return account.address;
+  }
+
   protected accountToJson(account: Omit<TestAccount, "id">): TestJsonAccount {
     return { name: account.name, address: account.address };
   }
@@ -97,25 +101,25 @@ describe("accountStore.add", () => {
   });
 
   it("adds a new account", async () => {
-    const account: TestAccount = {
-      id: "0x123",
+    const account: Omit<TestAccount, "id"> = {
       name: "Alice",
       address: "0x123",
     };
     await wallet.accountStore.add(account);
 
     expect(wallet.accountStore.has("0x123")).toBe(true);
-    expect(Array.from(wallet.accountStore.values())).toContainEqual(account);
+    expect(Array.from(wallet.accountStore.values())).toContainEqual({
+      ...account,
+      id: "0x123",
+    });
   });
 
   it("replaces existing account with same id", async () => {
-    const account1: TestAccount = {
-      id: "0x123",
+    const account1: Omit<TestAccount, "id"> = {
       name: "Alice",
       address: "0x123",
     };
-    const account2: TestAccount = {
-      id: "0x123",
+    const account2: Omit<TestAccount, "id"> = {
       name: "Alice Updated",
       address: "0x123",
     };
@@ -129,8 +133,7 @@ describe("accountStore.add", () => {
   });
 
   it("persists accounts to storage", async () => {
-    const account: TestAccount = {
-      id: "0x123",
+    const account: Omit<TestAccount, "id"> = {
       name: "Alice",
       address: "0x123",
     };
@@ -150,8 +153,7 @@ describe("accountStore.delete", () => {
   });
 
   it("deletes account by id string", async () => {
-    const account: TestAccount = {
-      id: "0x123",
+    const account: Omit<TestAccount, "id"> = {
       name: "Alice",
       address: "0x123",
     };
@@ -162,8 +164,7 @@ describe("accountStore.delete", () => {
   });
 
   it("deletes account by object with id", async () => {
-    const account: TestAccount = {
-      id: "0x123",
+    const account: Omit<TestAccount, "id"> = {
       name: "Alice",
       address: "0x123",
     };
@@ -178,12 +179,10 @@ describe("accountStore.clear", () => {
   it("removes all accounts", async () => {
     wallet.initialize();
     await wallet.accountStore.add({
-      id: "0x123",
       name: "Alice",
       address: "0x123",
     });
     await wallet.accountStore.add({
-      id: "0x456",
       name: "Bob",
       address: "0x456",
     });
@@ -200,8 +199,7 @@ describe("accountStore.has", () => {
   });
 
   it("returns true for existing account id string", async () => {
-    const account: TestAccount = {
-      id: "0x123",
+    const account: Omit<TestAccount, "id"> = {
       name: "Alice",
       address: "0x123",
     };
@@ -211,8 +209,7 @@ describe("accountStore.has", () => {
   });
 
   it("returns true for existing account object", async () => {
-    const account: TestAccount = {
-      id: "0x123",
+    const account: Omit<TestAccount, "id"> = {
       name: "Alice",
       address: "0x123",
     };
@@ -229,13 +226,11 @@ describe("accountStore.has", () => {
 describe("accountStore.values", () => {
   it("returns all accounts", async () => {
     wallet.initialize();
-    const account1: TestAccount = {
-      id: "0x123",
+    const account1: Omit<TestAccount, "id"> = {
       name: "Alice",
       address: "0x123",
     };
-    const account2: TestAccount = {
-      id: "0x456",
+    const account2: Omit<TestAccount, "id"> = {
       name: "Bob",
       address: "0x456",
     };
@@ -245,7 +240,7 @@ describe("accountStore.values", () => {
 
     const values = Array.from(Array.from(wallet.accountStore.values()));
     expect(values).toHaveLength(2);
-    expect(values).toContainEqual(account1);
-    expect(values).toContainEqual(account2);
+    expect(values).toContainEqual({ ...account1, id: "0x123" });
+    expect(values).toContainEqual({ ...account2, id: "0x456" });
   });
 });
