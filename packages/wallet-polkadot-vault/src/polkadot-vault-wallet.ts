@@ -51,6 +51,13 @@ export class PolkadotVaultWallet extends LocalWallet<
 
   override readonly name = "Polkadot Vault";
 
+  protected override accountId(account: Omit<VaultAccount, "id">) {
+    return [
+      account.genesisHash,
+      Binary.fromBytes(account.publicKey).asHex(),
+    ].join();
+  }
+
   protected override accountToJson(account: Omit<VaultAccount, "id">) {
     return {
       ...account,
@@ -62,7 +69,6 @@ export class PolkadotVaultWallet extends LocalWallet<
     return {
       ...data,
       publicKey: Binary.fromHex(data.publicKey).asBytes(),
-      id: [data.genesisHash, data.publicKey].join(),
     };
   }
 

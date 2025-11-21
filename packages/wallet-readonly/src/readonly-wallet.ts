@@ -36,21 +36,20 @@ export class ReadonlyWallet extends LocalWallet<
     ),
   );
 
-  protected override accountToJson(
-    account: Omit<ReadonlyAccount, "id">,
-  ): JsonReadonlyAccount {
+  protected override accountId(account: Omit<ReadonlyAccount, "id">) {
+    return Binary.fromBytes(account.publicKey).asHex();
+  }
+
+  protected override accountToJson(account: Omit<ReadonlyAccount, "id">) {
     return {
       ...account,
       publicKey: Binary.fromBytes(account.publicKey).asHex(),
     };
   }
 
-  protected override accountFromJson(
-    jsonAccount: JsonReadonlyAccount,
-  ): ReadonlyAccount {
+  protected override accountFromJson(jsonAccount: JsonReadonlyAccount) {
     return {
       ...jsonAccount,
-      id: jsonAccount.publicKey,
       publicKey: Binary.fromHex(jsonAccount.publicKey).asBytes(),
     };
   }
@@ -73,7 +72,6 @@ export class ReadonlyWallet extends LocalWallet<
     }
 
     this.accountStore.add({
-      id: Binary.fromBytes(address.publicKey).asHex(),
       publicKey: address.publicKey,
     });
   }
