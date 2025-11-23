@@ -1,5 +1,11 @@
 # @reactive-dot/core
 
+## 0.64.2
+
+### Patch Changes
+
+- [#1043](https://github.com/buffed-labs/reactive-dot/pull/1043) [`ac2ca03`](https://github.com/buffed-labs/reactive-dot/commit/ac2ca032ee9251199b4b0bb8cc42483168991157) Thanks [@tien](https://github.com/tien)! - Refactored account ID logic for local wallets.
+
 ## 0.64.1
 
 ### Patch Changes
