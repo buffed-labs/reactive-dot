@@ -3969,46 +3969,46 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@ledgerhq/devices@npm:8.6.1":
-  version: 8.6.1
-  resolution: "@ledgerhq/devices@npm:8.6.1"
+"@ledgerhq/devices@npm:8.7.0":
+  version: 8.7.0
+  resolution: "@ledgerhq/devices@npm:8.7.0"
   dependencies:
-    "@ledgerhq/errors": "npm:^6.26.0"
+    "@ledgerhq/errors": "npm:^6.27.0"
     "@ledgerhq/logs": "npm:^6.13.0"
     rxjs: "npm:^7.8.1"
     semver: "npm:^7.3.5"
-  checksum: 10c0/ec5c594884091e732650fcf6bdba017ec9c5d9aa50db7ced285a73bc8cb904cde400037defe4a0c8b830a9fac61eaa70a9663ffef906a4bf93c22215030f5968
+  checksum: 10c0/6f8e2120c214cb37261758a6d2efc7299ba9d53924b7b522befa724a618023d55f38973d58854213c5c394498323c1676ae459c393b7eb9ab05154b0f6109e8e
   languageName: node
   linkType: hard
 
-"@ledgerhq/errors@npm:^6.26.0":
-  version: 6.26.0
-  resolution: "@ledgerhq/errors@npm:6.26.0"
-  checksum: 10c0/27e5a1dda997f3c38105b49c709aaf447e37eb27970150ece98ce81065a3bf4eb5c75d37cb91f9f874da2e69d2093395508fa08d9a293cfa6c6235b33627b983
+"@ledgerhq/errors@npm:^6.27.0":
+  version: 6.27.0
+  resolution: "@ledgerhq/errors@npm:6.27.0"
+  checksum: 10c0/76ee10899908a6a9c6eb442f9ef168d1df1d0e9fe087c4a8c7ddc4cd28e4a2d9b2e5be9cd1afa2674df107481c17204ac8e9ce9a749e7439289195b44d43cd62
   languageName: node
   linkType: hard
 
-"@ledgerhq/hw-transport-webusb@npm:^6.29.12":
-  version: 6.29.12
-  resolution: "@ledgerhq/hw-transport-webusb@npm:6.29.12"
+"@ledgerhq/hw-transport-webusb@npm:^6.29.13":
+  version: 6.29.13
+  resolution: "@ledgerhq/hw-transport-webusb@npm:6.29.13"
   dependencies:
-    "@ledgerhq/devices": "npm:8.6.1"
-    "@ledgerhq/errors": "npm:^6.26.0"
-    "@ledgerhq/hw-transport": "npm:^6.31.12"
+    "@ledgerhq/devices": "npm:8.7.0"
+    "@ledgerhq/errors": "npm:^6.27.0"
+    "@ledgerhq/hw-transport": "npm:6.31.13"
     "@ledgerhq/logs": "npm:^6.13.0"
-  checksum: 10c0/63e1983cb2b2e3e1523d193c96a750717e723fc5e219d7d9f015b8e5c10f207de44afffe32e6f738dd8d62e70bc3ff4e70d65920b0f1616841670fdcce697ad2
+  checksum: 10c0/ccc86414ec018f3058eb43350007d7d094c650720d466ccdbc0d8c97282c387a8db11c67fe1a698f17ecace64c822fe7c97ce1a9bbae5c19e89927858c0e2b16
   languageName: node
   linkType: hard
 
-"@ledgerhq/hw-transport@npm:^6.31.12":
-  version: 6.31.12
-  resolution: "@ledgerhq/hw-transport@npm:6.31.12"
+"@ledgerhq/hw-transport@npm:6.31.13":
+  version: 6.31.13
+  resolution: "@ledgerhq/hw-transport@npm:6.31.13"
   dependencies:
-    "@ledgerhq/devices": "npm:8.6.1"
-    "@ledgerhq/errors": "npm:^6.26.0"
+    "@ledgerhq/devices": "npm:8.7.0"
+    "@ledgerhq/errors": "npm:^6.27.0"
     "@ledgerhq/logs": "npm:^6.13.0"
     events: "npm:^3.3.0"
-  checksum: 10c0/0e31af2f5f513a37a920fdbe77c2a66ae9773f6138b395d295653b6de2f77c60980a6cdbef8d2c848ce3fd7ebbdbbfc9460208fab6b625e65c91c4f7b61e06a8
+  checksum: 10c0/8f7f76a5bbb0d6ccb38d5c86d5f38dd422fb60f18f357b0ca58f9953b6a7d064c66516a9fbbd968b670c6de2a0f43b7ca9fc05990013e0a685ccb9492bcd29b7
   languageName: node
   linkType: hard
 
@@ -5010,7 +5010,7 @@ __metadata:
     "@tsconfig/strictest": "npm:^2.0.7"
     abitype: "npm:^1.1.1"
     eslint: "npm:^9.39.0"
-    ox: "npm:^0.9.14"
+    ox: "npm:^0.9.17"
     polkadot-api: "npm:^1.21.1"
     typescript: "npm:^5.9.3"
     vitest: "npm:^4.0.6"
@@ -5193,7 +5193,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@reactive-dot/wallet-ledger@workspace:packages/wallet-ledger"
   dependencies:
-    "@ledgerhq/hw-transport-webusb": "npm:^6.29.12"
+    "@ledgerhq/hw-transport-webusb": "npm:^6.29.13"
     "@polkadot-api/ledger-signer": "npm:^0.2.13"
     "@reactive-dot/core": "workspace:^"
     "@reactive-dot/eslint-config": "workspace:^"
@@ -15438,9 +15438,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ox@npm:^0.9.14":
-  version: 0.9.14
-  resolution: "ox@npm:0.9.14"
+"ox@npm:^0.9.17":
+  version: 0.9.17
+  resolution: "ox@npm:0.9.17"
   dependencies:
     "@adraffy/ens-normalize": "npm:^1.11.0"
     "@noble/ciphers": "npm:^1.3.0"
@@ -15455,7 +15455,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10c0/287e6beb626881882aafbd9b1d12583faace4693beb46860afa183b48a3469d7ff7ab0e9f7d282efc83d57c6d71c8ed6767f864bd2578fbe4a54825b265afb2f
+  checksum: 10c0/082b1a568cabbc1a7eea2b724d90ec0289fa3519cdcbad975122caa175cde68284174c2df8f497fb6e64445143c1ba689ddbdde089898f5c83f5506d1e1ea6c0
   languageName: node
   linkType: hard
 
