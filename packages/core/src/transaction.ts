@@ -7,10 +7,7 @@ export type GenericTransaction = Transaction<
   unknown
 >;
 
-export type TxOptionsOf<T extends GenericTransaction> = Parameters<
-  TxObservable<
-    T extends Transaction<infer _, infer __, infer ___, infer Asset>
-      ? Asset
-      : never
-  >
->[1];
+export type TxOptionsOf<T extends GenericTransaction> =
+  T extends Transaction<infer _, infer __, infer ___, infer Asset, infer Ext>
+    ? Parameters<TxObservable<Asset, Ext>>[1]
+    : never;
