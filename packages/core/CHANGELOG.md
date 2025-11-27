@@ -1,5 +1,13 @@
 # @reactive-dot/core
 
+## 0.64.4
+
+### Patch Changes
+
+- [#1050](https://github.com/buffed-labs/reactive-dot/pull/1050) [`17257f5`](https://github.com/buffed-labs/reactive-dot/commit/17257f5cfaf47c2e17c7737afc0963bb7d32a6d6) Thanks [@tien](https://github.com/tien)! - Moved `abitype` to dev-dependencies.
+
+- [#1050](https://github.com/buffed-labs/reactive-dot/pull/1050) [`a9d05d8`](https://github.com/buffed-labs/reactive-dot/commit/a9d05d84177c36fe1aa88fb936b765b639a8fd55) Thanks [@tien](https://github.com/tien)! - Bumped dependencies.
+
 ## 0.64.3
 
 ### Patch Changes
