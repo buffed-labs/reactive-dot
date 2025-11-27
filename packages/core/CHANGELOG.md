@@ -1,5 +1,11 @@
 # @reactive-dot/core
 
+## 0.64.3
+
+### Patch Changes
+
+- [#1048](https://github.com/buffed-labs/reactive-dot/pull/1048) [`d99ed90`](https://github.com/buffed-labs/reactive-dot/commit/d99ed907f0343d5f1524a536d497e611b7f781f0) Thanks [@tien](https://github.com/tien)! - Fixed compatibility with latest Polkadot-API version.
+
 ## 0.64.2
 
 ### Patch Changes
