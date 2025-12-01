@@ -1,5 +1,11 @@
 # @reactive-dot/core
 
+## 0.65.0
+
+### Minor Changes
+
+- [#1058](https://github.com/buffed-labs/reactive-dot/pull/1058) [`c293e85`](https://github.com/buffed-labs/reactive-dot/commit/c293e85b54d902c5ec8235a3aaafd05c4366fa93) Thanks [@tien](https://github.com/tien)! - BREAKING: removed deprecated top-level action exports in preparation for stable top-level APIs.
+
 ## 0.64.4
 
 ### Patch Changes
