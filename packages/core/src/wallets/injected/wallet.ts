@@ -43,9 +43,8 @@ export class InjectedWallet extends Wallet<InjectedWalletOptions, "connected"> {
 
   async connect() {
     if (this.#extension$.getValue() === undefined) {
-      const { connectInjectedExtension } = await import(
-        "polkadot-api/pjs-signer"
-      );
+      const { connectInjectedExtension } =
+        await import("polkadot-api/pjs-signer");
 
       this.#extension$.next(
         await connectInjectedExtension(this.name, this.options?.originName),

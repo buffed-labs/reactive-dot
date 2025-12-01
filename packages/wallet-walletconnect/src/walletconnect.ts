@@ -63,9 +63,8 @@ export class WalletConnect extends DeepLinkWallet {
   }
 
   async initialize() {
-    const { UniversalProvider } = await import(
-      "@walletconnect/universal-provider"
-    );
+    const { UniversalProvider } =
+      await import("@walletconnect/universal-provider");
 
     this.#provider ??= await UniversalProvider.init(this.#providerOptions);
 
