@@ -1,5 +1,11 @@
 # @reactive-dot/core
 
+## 0.65.1
+
+### Patch Changes
+
+- [#1061](https://github.com/buffed-labs/reactive-dot/pull/1061) [`b6794d0`](https://github.com/buffed-labs/reactive-dot/commit/b6794d0adfd957943fe5dbd607c8e06242ebe94b) Thanks [@tien](https://github.com/tien)! - Reduced unnecessary subscription updates in `watch-entries` queries when entries remain unchanged.
+
 ## 0.65.0
 
 ### Minor Changes
