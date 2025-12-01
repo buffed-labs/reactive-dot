@@ -15,16 +15,5 @@ it("should match inline snapshot", () =>
       "idle",
       "pending",
       "unsafeDescriptor",
-      "aggregateWallets",
-      "connectWallet",
-      "disconnectWallet",
-      "getAccounts",
-      "unstable_getBlockExtrinsics",
-      "getBlock",
-      "getClient",
-      "getConnectedWallets",
-      "initializeWallets",
-      "preflight",
-      "query",
     ]
   `));
