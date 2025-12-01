@@ -68,8 +68,8 @@ export type InferSolidityInstructionsPayload<
 
 export class SolidityQuery<
   TAbi extends Abi = Abi,
-  const TInstructions extends
-    SolidityQueryInstruction[] = SolidityQueryInstruction[],
+  const TInstructions extends SolidityQueryInstruction[] =
+    SolidityQueryInstruction[],
 > {
   readonly #instructions: TInstructions;
 
