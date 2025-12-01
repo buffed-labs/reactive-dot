@@ -1,5 +1,14 @@
 # @reactive-dot/react
 
+## 0.65.0
+
+### Patch Changes
+
+- [#1059](https://github.com/buffed-labs/reactive-dot/pull/1059) [`c207d46`](https://github.com/buffed-labs/reactive-dot/commit/c207d469c633d80d43d94bdbc54bea12d1a7975e) Thanks [@tien](https://github.com/tien)! - Bumped dependencies.
+
+- Updated dependencies [[`c293e85`](https://github.com/buffed-labs/reactive-dot/commit/c293e85b54d902c5ec8235a3aaafd05c4366fa93)]:
+  - @reactive-dot/core@0.65.0
+
 ## 0.64.1
 
 ### Patch Changes

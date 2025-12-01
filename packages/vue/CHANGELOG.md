@@ -1,5 +1,12 @@
 # @reactive-dot/vue
 
+## 0.65.0
+
+### Patch Changes
+
+- Updated dependencies [[`c293e85`](https://github.com/buffed-labs/reactive-dot/commit/c293e85b54d902c5ec8235a3aaafd05c4366fa93)]:
+  - @reactive-dot/core@0.65.0
+
 ## 0.64.1
 
 ### Patch Changes
