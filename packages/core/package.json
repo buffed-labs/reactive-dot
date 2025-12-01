@@ -49,7 +49,7 @@
     "@tsconfig/strictest": "^2.0.7",
     "abitype": "^1.1.1",
     "eslint": "^9.39.0",
-    "polkadot-api": "^1.21.1",
+    "polkadot-api": "^1.22.0",
     "typescript": "^5.9.3",
     "vitest": "^4.0.6"
   },
