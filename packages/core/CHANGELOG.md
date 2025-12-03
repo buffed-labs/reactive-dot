@@ -1,5 +1,11 @@
 # @reactive-dot/core
 
+## 0.66.0
+
+### Minor Changes
+
+- [#1066](https://github.com/buffed-labs/reactive-dot/pull/1066) [`ba806d6`](https://github.com/buffed-labs/reactive-dot/commit/ba806d64fa895a1fa5ae3d18c7d4224d8d2a824f) Thanks [@tien](https://github.com/tien)! - Added top-level `whenAccountsChanged` API.
+
 ## 0.65.1
 
 ### Patch Changes
