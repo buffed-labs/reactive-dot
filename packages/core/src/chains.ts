@@ -3,9 +3,11 @@ import type { ResolvedRegister } from "./register.js";
 import type { UnsafeDescriptor } from "./unsafe-descriptor.js";
 import type { ChainDefinition } from "polkadot-api";
 
-type InferChains<T extends Config> = {
+export type InferChains<T extends Config> = {
   [P in keyof T["chains"]]: UnwrapDescriptor<T["chains"][P]["descriptor"]>;
 };
+
+export type InferChainId<T extends Config> = keyof InferChains<T>;
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface Chains extends InferChains<ResolvedRegister["config"]> {}
