@@ -1,5 +1,12 @@
 # @reactive-dot/react
 
+## 0.66.0
+
+### Patch Changes
+
+- Updated dependencies [[`ba806d6`](https://github.com/buffed-labs/reactive-dot/commit/ba806d64fa895a1fa5ae3d18c7d4224d8d2a824f)]:
+  - @reactive-dot/core@0.66.0
+
 ## 0.65.0
 
 ### Patch Changes
