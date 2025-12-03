@@ -4,28 +4,28 @@ sidebar_position: 2
 
 # Number utility
 
-## Denominated number
+## Monetary number
 
-To handle complexity around [planck unit](https://wiki.polkadot.network/docs/learn-DOT#the-planck-unit) used in Polkadot, a utility class [`DenominatedNumber`](/vue/api/utils/classes/DenominatedNumber) is provided by [`@reactive-dot/utils`](https://reactivedot.dev/api/utils).
+To handle complexity around [planck unit](https://wiki.polkadot.network/docs/learn-DOT#the-planck-unit) used in Polkadot, a utility class [`MonetaryNumber`](/vue/api/utils/classes/MonetaryNumber) is provided by [`@reactive-dot/utils`](https://reactivedot.dev/api/utils).
 
 ```ts
-import { DenominatedNumber } from "@reactive-dot/utils";
+import { MonetaryNumber } from "@reactive-dot/utils";
 
-// Denominated numbers are created with a planck value and a decimal places number
+// Monetary numbers are created with a planck (minor units) value and a decimal places number
 
-const numberFromPlanck = new DenominatedNumber(10_000_000_000n, 10);
+const numberFromPlanck = new MonetaryNumber(10_000_000_000n, 10);
 
 console.log(numberFromPlanck.valueOf()); // 10
 
-// Denominated number can also be created from number instead of planck
+// Monetary number can also be created from decimal amounts (major units) instead of planck
 
-const numberFromNumber = DenominatedNumber.fromNumber(10, 10);
+const numberFromNumber = MonetaryNumber.fromMajorUnits(10, 10);
 
-console.log(numberFromNumber.planck); // 10000000000n
+console.log(numberFromNumber.minorUnits); // 10000000000n
 
-// A string denomination can optionally be added for locale string conversion capability
+// A string currency can optionally be added for locale string conversion capability
 
-const numberWithDenomination = DenominatedNumber.fromNumber(10, 10, "DOT");
+const numberWithDenomination = MonetaryNumber.fromMajorUnits(10, 10, "DOT");
 
 console.log(numberWithDenomination.toLocaleString("en-NZ")); // DOT 10.00
 
@@ -33,18 +33,18 @@ console.log(numberWithDenomination.toLocaleString("de-DE")); // 10,00 DOT
 
 // Arithmetics
 
-let dotAmount = DenominatedNumber.fromNumber(10, 10, "DOT");
+let dotAmount = MonetaryNumber.fromMajorUnits(10, 10, "DOT");
 
 // Arithmetic operations can be performed using the number's planck value
 
-dotAmount = dotAmount.mapPlanck((planck) => planck + 5_000_000_000n);
+dotAmount = dotAmount.mapMinorUnits((planck) => planck + 5_000_000_000n);
 
 console.log(dotAmount.toLocaleString()); // DOT 10.50
 
-// Arithmetic operations can also be carried out with the number value
+// Arithmetic operations can also be carried out with the decimal value (major units)
 // instead of planck if possible lost of precision is acceptable
 
-dotAmount = dotAmount.mapNumber((number) => (number * 2) / 4);
+dotAmount = dotAmount.mapMajorUnits((number) => (number * 2) / 4);
 
 console.log(dotAmount.toLocaleString()); // DOT 5.25
 ```

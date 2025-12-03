@@ -5,6 +5,6 @@ it("should match inline snapshot", () =>
   expect(Object.keys(exports)).toMatchInlineSnapshot(`
     [
       "BigIntMath",
-      "DenominatedNumber",
+      "MonetaryNumber",
     ]
   `));

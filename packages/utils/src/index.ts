@@ -1,2 +1,2 @@
 export { BigIntMath } from "./big-int.js";
-export { DenominatedNumber } from "./denominated-number.js";
+export { MonetaryNumber, DenominatedNumber } from "./monetary-number.js";

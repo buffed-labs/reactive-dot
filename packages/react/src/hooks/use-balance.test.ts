@@ -1,4 +1,4 @@
-import { DenominatedNumber } from "../../../utils/build/denominated-number.js";
+import { MonetaryNumber } from "../../../utils/build/denominated-number.js";
 import { useSpendableBalance, useSpendableBalances } from "./use-balance.js";
 import { internal_useChainId } from "./use-chain-id.js";
 import { chainSpecDataAtom } from "./use-chain-spec-data.js";
@@ -86,7 +86,7 @@ it("should return spendable balance for single address", async () => {
 
   await act(() => mockPromise.resolve());
 
-  expect(result.current).toBeInstanceOf(DenominatedNumber);
+  expect(result.current).toBeInstanceOf(MonetaryNumber);
 });
 
 it("should return spendable balances array for multiple addresses", async () => {
@@ -103,8 +103,8 @@ it("should return spendable balances array for multiple addresses", async () => 
 
   expect(result.current).toEqual(
     expect.arrayContaining([
-      expect.any(DenominatedNumber),
-      expect.any(DenominatedNumber),
+      expect.any(MonetaryNumber),
+      expect.any(MonetaryNumber),
     ]),
   );
 });
@@ -121,7 +121,7 @@ it("should return spendable balances array for an array of one address", async (
   await act(() => mockPromise.resolve());
 
   expect(result.current).toEqual(
-    expect.arrayContaining([expect.any(DenominatedNumber)]),
+    expect.arrayContaining([expect.any(MonetaryNumber)]),
   );
 });
 
@@ -136,7 +136,7 @@ it("should handle includesExistentialDeposit option", async () => {
 
   await act(() => mockPromise.resolve());
 
-  expect(result.current.planck).toBeLessThan(free);
+  expect(result.current.minorUnits).toBeLessThan(free);
 
   const { result: result2 } = await act(() =>
     renderHook(() =>
@@ -146,5 +146,5 @@ it("should handle includesExistentialDeposit option", async () => {
     ),
   );
 
-  expect(result2.current.planck).toBeGreaterThan(result.current.planck);
+  expect(result2.current.minorUnits).toBeGreaterThan(result.current.minorUnits);
 });

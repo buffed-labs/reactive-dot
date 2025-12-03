@@ -2,7 +2,7 @@ import {
   useNativeTokenAmountFromNumber,
   useNativeTokenAmountFromPlanck,
 } from "./use-native-token-amount.js";
-import { DenominatedNumber } from "@reactive-dot/utils";
+import { MonetaryNumber } from "@reactive-dot/utils";
 import { renderHook } from "@testing-library/react";
 import { act } from "react";
 import { describe, expect, it, vi } from "vitest";
@@ -17,12 +17,12 @@ vi.mock("./use-chain-spec-data", () => ({
 }));
 
 describe("useNativeTokenAmountFromPlanck", () => {
-  it("should convert planck value to DenominatedNumber", async () => {
+  it("should convert planck value to MonetaryNumber", async () => {
     const { result } = await act(() =>
       renderHook(() => useNativeTokenAmountFromPlanck(1000000000000n)),
     );
 
-    expect(result.current).toBeInstanceOf(DenominatedNumber);
+    expect(result.current).toBeInstanceOf(MonetaryNumber);
     expect(result.current.toLocaleString("en-NZ")).toBe("DOT 1.00");
   });
 
@@ -35,27 +35,27 @@ describe("useNativeTokenAmountFromPlanck", () => {
 
     const value = result.current(1000000000000n);
 
-    expect(value).toBeInstanceOf(DenominatedNumber);
+    expect(value).toBeInstanceOf(MonetaryNumber);
     expect(value.toLocaleString("en-NZ")).toBe("DOT 1.00");
   });
 });
 
 describe("useNativeTokenAmountFromNumber", () => {
-  it("should convert number value to DenominatedNumber", async () => {
+  it("should convert number value to MonetaryNumber", async () => {
     const { result } = await act(() =>
       renderHook(() => useNativeTokenAmountFromNumber(1)),
     );
 
-    expect(result.current).toBeInstanceOf(DenominatedNumber);
+    expect(result.current).toBeInstanceOf(MonetaryNumber);
     expect(result.current.toLocaleString("en-NZ")).toBe("DOT 1.00");
   });
 
-  it("should convert string number to DenominatedNumber", async () => {
+  it("should convert string number to MonetaryNumber", async () => {
     const { result } = await act(() =>
       renderHook(() => useNativeTokenAmountFromNumber("1.5")),
     );
 
-    expect(result.current).toBeInstanceOf(DenominatedNumber);
+    expect(result.current).toBeInstanceOf(MonetaryNumber);
     expect(result.current.toLocaleString("en-NZ")).toBe("DOT 1.50");
   });
 
@@ -68,7 +68,7 @@ describe("useNativeTokenAmountFromNumber", () => {
 
     const value = result.current(2);
 
-    expect(value).toBeInstanceOf(DenominatedNumber);
+    expect(value).toBeInstanceOf(MonetaryNumber);
     expect(value.toLocaleString("en-NZ")).toBe("DOT 2.00");
   });
 });
