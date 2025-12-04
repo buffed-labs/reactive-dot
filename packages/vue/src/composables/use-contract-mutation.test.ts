@@ -4,8 +4,7 @@ import { useContractMutation } from "./use-contract-mutation.js";
 import { defineConfig, defineContract } from "@reactive-dot/core";
 import { getInkContractTx } from "@reactive-dot/core/internal/actions.js";
 import type { TxEvent } from "polkadot-api";
-import { from, of, throwError } from "rxjs";
-import { concatMap, delay } from "rxjs/operators";
+import { concatMap, delay, from, of, throwError } from "rxjs";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
 const mockSignSubmitAndWatch = vi.fn();

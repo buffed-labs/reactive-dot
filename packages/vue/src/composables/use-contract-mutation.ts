@@ -20,8 +20,7 @@ import {
   getInkContractTx,
 } from "@reactive-dot/core/internal/actions.js";
 import type { PolkadotSigner } from "polkadot-api";
-import { from } from "rxjs";
-import { switchMap } from "rxjs/operators";
+import { from, switchMap } from "rxjs";
 import { inject, toValue } from "vue";
 
 /**

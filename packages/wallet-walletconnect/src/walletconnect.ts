@@ -13,8 +13,7 @@ import type {
   IUniversalProvider,
   UniversalProviderOpts,
 } from "@walletconnect/universal-provider";
-import { BehaviorSubject } from "rxjs";
-import { map } from "rxjs/operators";
+import { BehaviorSubject, map } from "rxjs";
 
 export class WalletConnect extends DeepLinkWallet {
   readonly #providerOptions: UniversalProviderOpts;

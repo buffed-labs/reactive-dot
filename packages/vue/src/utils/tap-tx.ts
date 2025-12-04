@@ -3,8 +3,12 @@ import type { ChainId } from "@reactive-dot/core";
 import { MutationError } from "@reactive-dot/core";
 import type { GenericTransaction } from "@reactive-dot/core/internal.js";
 import type { TxEvent } from "polkadot-api";
-import { type MonoTypeOperatorFunction, type Observable } from "rxjs";
-import { catchError, tap } from "rxjs/operators";
+import {
+  catchError,
+  tap,
+  type MonoTypeOperatorFunction,
+  type Observable,
+} from "rxjs";
 import { type Ref } from "vue";
 
 export function tapTx<T extends TxEvent>(

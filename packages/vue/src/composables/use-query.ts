@@ -38,8 +38,16 @@ import {
   querySolidity,
 } from "@reactive-dot/core/internal/actions.js";
 import type { ChainDefinition, TypedApi } from "polkadot-api";
-import { combineLatest, from, isObservable, type Observable, of } from "rxjs";
-import { map, startWith, switchMap } from "rxjs/operators";
+import {
+  combineLatest,
+  from,
+  isObservable,
+  map,
+  type Observable,
+  of,
+  startWith,
+  switchMap,
+} from "rxjs";
 import {
   computed,
   type ComputedRef,

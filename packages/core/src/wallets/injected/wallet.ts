@@ -5,8 +5,7 @@ import type {
   InjectedExtension,
   InjectedPolkadotAccount,
 } from "polkadot-api/pjs-signer";
-import { BehaviorSubject, Observable, of } from "rxjs";
-import { map, switchMap } from "rxjs/operators";
+import { BehaviorSubject, map, Observable, of, switchMap } from "rxjs";
 
 export type InjectedWalletOptions = WalletOptions & { originName?: string };
 
