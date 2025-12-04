@@ -23,12 +23,12 @@ These errors often occurs when multiple conflicting versions of ReactiveDOT are 
    Some package manager does not deduplicate dependencies by default and may create duplicates when updating packages. To fix this, run dedupe:
 
    ```sh
-   #NPM
+   # NPM
    npm dedupe
 
    # Yarn
    yarn dedupe
 
-   #PNPM
+   # PNPM
    pnpm dedupe
    ```
