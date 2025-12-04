@@ -10,7 +10,7 @@ import { useQueryObservable } from "./use-query.js";
 import type { Address } from "@reactive-dot/core";
 import { toSs58String } from "@reactive-dot/core/internal.js";
 import { spendableBalance } from "@reactive-dot/core/internal/maths.js";
-import { type DenominatedNumber } from "@reactive-dot/utils";
+import { type MonetaryNumber } from "@reactive-dot/utils";
 import { combineLatest, from } from "rxjs";
 import { map } from "rxjs/operators";
 import { computed, type MaybeRefOrGetter, toValue } from "vue";
@@ -42,7 +42,7 @@ type Options = ChainComposableOptions & {
 export function useSpendableBalance(
   address: MaybeRefOrGetter<Address>,
   options?: Options,
-): PromiseLikeAsyncState<DenominatedNumber>;
+): PromiseLikeAsyncState<MonetaryNumber>;
 /**
  * Composable for getting accounts’ spendable balances.
  *
@@ -54,11 +54,11 @@ export function useSpendableBalance(
 export function useSpendableBalance(
   addresses: MaybeRefOrGetter<Address[]>,
   options?: Options,
-): PromiseLikeAsyncState<DenominatedNumber[]>;
+): PromiseLikeAsyncState<MonetaryNumber[]>;
 export function useSpendableBalance(
   addressOrAddresses: MaybeRefOrGetter<Address | Address[]>,
   options?: Options,
-): PromiseLikeAsyncState<DenominatedNumber | DenominatedNumber[]> {
+): PromiseLikeAsyncState<MonetaryNumber | MonetaryNumber[]> {
   const chainId = internal_useChainId(options);
 
   const addresses = computed(() => {

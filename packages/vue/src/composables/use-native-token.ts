@@ -4,7 +4,7 @@ import { internal_useChainId } from "./use-chain-id.js";
 import { useChainSpecDataPromise } from "./use-chain-spec-data.js";
 import { useLazyValue } from "./use-lazy-value.js";
 import { nativeTokenInfoFromChainSpecData } from "@reactive-dot/core/internal.js";
-import { DenominatedNumber } from "@reactive-dot/utils";
+import { MonetaryNumber } from "@reactive-dot/utils";
 import { computed } from "vue";
 
 /**
@@ -33,13 +33,13 @@ export function useNativeTokenPromise(options?: ChainComposableOptions) {
           code: nativeTokenInfo.code,
           decimals: nativeTokenInfo.decimals,
           amountFromPlanck: (planck: bigint | number | string) =>
-            new DenominatedNumber(
+            new MonetaryNumber(
               planck,
               chainSpecData.properties.tokenDecimals,
               chainSpecData.properties.tokenSymbol,
             ),
           amountFromNumber: (number: number | string) =>
-            DenominatedNumber.fromNumber(
+            MonetaryNumber.fromMajorUnits(
               number,
               chainSpecData.properties.tokenDecimals,
               chainSpecData.properties.tokenSymbol,

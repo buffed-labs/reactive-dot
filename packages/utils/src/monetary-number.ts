@@ -1,24 +1,34 @@
-export class DenominatedNumber extends Number {
+export class MonetaryNumber extends Number {
   // Large values lead to massive memory usage. Limit to something sensible.
   static #maxDecimal = 100;
 
-  readonly planck: bigint;
+  readonly minorUnits: bigint;
 
-  constructor(
-    planck: bigint | boolean | number | string,
-    readonly decimals: number,
-    readonly denomination?: string,
-  ) {
-    super();
-    this.planck = BigInt(planck);
+  /** @deprecated Use {@link minorUnits} instead. */
+  get planck() {
+    return this.minorUnits;
   }
 
-  static fromNumber(
+  /** @deprecated Use {@link currency} instead. */
+  get denomination() {
+    return this.currency;
+  }
+
+  constructor(
+    minorUnits: bigint | boolean | number | string,
+    readonly decimals: number,
+    readonly currency?: string,
+  ) {
+    super();
+    this.minorUnits = BigInt(minorUnits);
+  }
+
+  static fromMajorUnits(
     number: number | string,
     decimals: number,
-    denomination?: string,
+    currency?: string,
   ) {
-    DenominatedNumber.#verifyDecimals(decimals);
+    this.#verifyDecimals(decimals);
 
     const numberString = number.toString();
 
@@ -61,15 +71,19 @@ export class DenominatedNumber extends Number {
 
     const quantity = `${whole}${fractional.padEnd(decimals, "0")}`;
 
-    return new DenominatedNumber(BigInt(quantity), decimals, denomination);
+    return new this(BigInt(quantity), decimals, currency);
   }
+
+  static readonly fromNumber = this.fromMajorUnits;
 
   override valueOf() {
     return Number(this.toString());
   }
 
   override toString() {
-    const paddedPlanck = this.planck.toString().padStart(this.decimals, "0");
+    const paddedPlanck = this.minorUnits
+      .toString()
+      .padStart(this.decimals, "0");
     const whole = paddedPlanck
       .slice(0, paddedPlanck.length - this.decimals)
       .padStart(1, "0");
@@ -96,7 +110,7 @@ export class DenominatedNumber extends Number {
     locales?: Intl.LocalesArgument | string | string[] | undefined,
     options?: Intl.NumberFormatOptions | undefined,
   ) {
-    if (this.denomination === undefined) {
+    if (this.currency === undefined) {
       return this.valueOf().toLocaleString(locales, options);
     }
 
@@ -109,43 +123,56 @@ export class DenominatedNumber extends Number {
 
     return this.valueOf()
       .toLocaleString(locales, newOptions)
-      .replace("XTS", this.denomination);
+      .replace("XTS", this.currency);
   }
 
-  mapPlanck(mapper: (planck: bigint) => bigint) {
-    return new DenominatedNumber(
-      mapper(this.planck),
+  mapMinorUnits(mapper: (minorUnits: bigint) => bigint) {
+    return new MonetaryNumber(
+      mapper(this.minorUnits),
       this.decimals,
-      this.denomination,
+      this.currency,
     );
   }
 
   /**
-   * @deprecated Use {@link DenominatedNumber.mapPlanck} instead.
+   * @deprecated Use {@link MonetaryNumber.mapMinorUnits} instead.
    */
-  mapFromPlanck = this.mapPlanck;
+  readonly mapPlanck = this.mapMinorUnits;
 
-  mapNumber(mapper: (number: number) => number) {
-    return DenominatedNumber.fromNumber(
+  /**
+   * @deprecated Use {@link MonetaryNumber.mapMinorUnits} instead.
+   */
+  readonly mapFromPlanck = this.mapMinorUnits;
+
+  mapMajorUnits(mapper: (number: number) => number) {
+    return MonetaryNumber.fromMajorUnits(
       mapper(this.valueOf()),
       this.decimals,
-      this.denomination,
+      this.currency,
     );
   }
 
   /**
-   * @deprecated Use {@link DenominatedNumber.mapNumber} instead.
+   * @deprecated Use {@link MonetaryNumber.mapMajorUnits} instead.
    */
-  mapFromNumber = this.mapNumber;
+  readonly mapNumber = this.mapMajorUnits;
+
+  /**
+   * @deprecated Use {@link MonetaryNumber.mapMajorUnits} instead.
+   */
+  readonly mapFromNumber = this.mapMajorUnits;
 
   static #verifyDecimals(fractionalDigits: number): void {
     if (!Number.isInteger(fractionalDigits))
       throw new Error("Decimals is not an integer");
     if (fractionalDigits < 0) throw new Error("Decimals must not be negative");
-    if (fractionalDigits > DenominatedNumber.#maxDecimal) {
-      throw new Error(
-        `Decimals must not exceed ${DenominatedNumber.#maxDecimal}`,
-      );
+    if (fractionalDigits > this.#maxDecimal) {
+      throw new Error(`Decimals must not exceed ${this.#maxDecimal}`);
     }
   }
 }
+
+/**
+ * @deprecated Use {@link MonetaryNumber} instead.
+ */
+export const DenominatedNumber = MonetaryNumber;

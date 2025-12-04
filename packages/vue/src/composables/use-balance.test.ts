@@ -1,4 +1,4 @@
-import { DenominatedNumber } from "../../../utils/build/denominated-number.js";
+import { MonetaryNumber } from "../../../utils/build/monetary-number.js";
 import { chainIdKey } from "../keys.js";
 import { withSetup } from "../test-utils.js";
 import { useSpendableBalance, useSpendableBalances } from "./use-balance.js";
@@ -64,7 +64,7 @@ vi.mocked(useNativeTokenPromise).mockImplementation(() =>
   // @ts-expect-error TODO: fix type
   computed(() =>
     Promise.resolve({
-      amountFromPlanck: (planck: bigint) => new DenominatedNumber(planck, 0),
+      amountFromPlanck: (planck: bigint) => new MonetaryNumber(planck, 0),
     }),
   ),
 );
@@ -76,7 +76,7 @@ it("should return spendable balance for single address", async () => {
     { [chainIdKey]: "test-chain-id" },
   );
 
-  expect((await result).data.value).toBeInstanceOf(DenominatedNumber);
+  expect((await result).data.value).toBeInstanceOf(MonetaryNumber);
 });
 
 it("should return spendable balances array for multiple addresses", async () => {
@@ -91,8 +91,8 @@ it("should return spendable balances array for multiple addresses", async () => 
 
   expect((await result).data.value).toEqual(
     expect.arrayContaining([
-      expect.any(DenominatedNumber),
-      expect.any(DenominatedNumber),
+      expect.any(MonetaryNumber),
+      expect.any(MonetaryNumber),
     ]),
   );
 });
@@ -107,7 +107,7 @@ it("should return spendable balances array for an array of one address", async (
   );
 
   expect((await result).data.value).toEqual(
-    expect.arrayContaining([expect.any(DenominatedNumber)]),
+    expect.arrayContaining([expect.any(MonetaryNumber)]),
   );
 });
 
@@ -122,7 +122,7 @@ it("should handle includesExistentialDeposit option", async () => {
 
   const data1 = (await result).data;
 
-  expect(data1.value.planck).toBeLessThan(free);
+  expect(data1.value.minorUnits).toBeLessThan(free);
 
   const { result: result2 } = withSetup(
     () =>
@@ -134,5 +134,5 @@ it("should handle includesExistentialDeposit option", async () => {
 
   const data2 = (await result2).data;
 
-  expect(data2.value.planck).toBeGreaterThan(data1.value.planck);
+  expect(data2.value.minorUnits).toBeGreaterThan(data1.value.minorUnits);
 });

@@ -12,7 +12,7 @@ import { useStablePromise } from "./use-stable-promise.js";
 import type { Address, ChainId, Config } from "@reactive-dot/core";
 import { nativeTokenInfoFromChainSpecData } from "@reactive-dot/core/internal.js";
 import { spendableBalance } from "@reactive-dot/core/internal/maths.js";
-import { DenominatedNumber } from "@reactive-dot/utils";
+import { MonetaryNumber } from "@reactive-dot/utils";
 import { atom } from "jotai";
 import { soon, soonAll } from "jotai-eager";
 
@@ -139,7 +139,7 @@ const spendableBalanceAtom = atomFamilyWithErrorCatcher(
               const nativeTokenInfo =
                 nativeTokenInfoFromChainSpecData(chainSpecData);
 
-              return new DenominatedNumber(
+              return new MonetaryNumber(
                 spendableBalance({
                   free,
                   reserved,

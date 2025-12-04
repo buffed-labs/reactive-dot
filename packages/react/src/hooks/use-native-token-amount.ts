@@ -5,7 +5,7 @@ import { useMaybeUse } from "./use-maybe-use.js";
 import { useStablePromise } from "./use-stable-promise.js";
 import type { ChainSpecData } from "@polkadot-api/substrate-client";
 import { nativeTokenInfoFromChainSpecData } from "@reactive-dot/core/internal.js";
-import { DenominatedNumber } from "@reactive-dot/utils";
+import { MonetaryNumber } from "@reactive-dot/utils";
 import { soon } from "jotai-eager";
 import { useMemo } from "react";
 
@@ -20,7 +20,7 @@ import { useMemo } from "react";
 export function useNativeTokenAmountFromPlanck<TUse extends boolean = true>(
   planck: bigint | number | string,
   options?: ChainHookOptions & SuspenseOptions<TUse>,
-): When<TUse, DenominatedNumber, Promise<DenominatedNumber>>;
+): When<TUse, MonetaryNumber, Promise<MonetaryNumber>>;
 /**
  * Hook for returning a function that converts planck value to native token amount.
  *
@@ -32,8 +32,8 @@ export function useNativeTokenAmountFromPlanck<TUse extends boolean = true>(
   options?: ChainHookOptions & SuspenseOptions<TUse>,
 ): When<
   TUse,
-  (planck: bigint | number | string) => DenominatedNumber,
-  Promise<(planck: bigint | number | string) => DenominatedNumber>
+  (planck: bigint | number | string) => MonetaryNumber,
+  Promise<(planck: bigint | number | string) => MonetaryNumber>
 >;
 export function useNativeTokenAmountFromPlanck<TUse extends boolean = true>(
   planckOrOptions?:
@@ -68,14 +68,14 @@ export function useNativeTokenAmountFromPlanck<TUse extends boolean = true>(
                 case "bigint":
                 case "number":
                 case "string":
-                  return new DenominatedNumber(
+                  return new MonetaryNumber(
                     planckOrOptions,
                     nativeTokenInfo.decimals ?? 0,
                     nativeTokenInfo.code,
                   );
                 default:
                   return (planck: bigint | number | string) =>
-                    new DenominatedNumber(
+                    new MonetaryNumber(
                       planck,
                       nativeTokenInfo.decimals ?? 0,
                       nativeTokenInfo.code,
@@ -101,7 +101,7 @@ export function useNativeTokenAmountFromPlanck<TUse extends boolean = true>(
 export function useNativeTokenAmountFromNumber<TUse extends boolean = true>(
   number: number | string,
   options?: ChainHookOptions & SuspenseOptions<TUse>,
-): When<TUse, DenominatedNumber, Promise<DenominatedNumber>>;
+): When<TUse, MonetaryNumber, Promise<MonetaryNumber>>;
 /**
  * Hook for returning a function that converts number value to native token amount
  *
@@ -113,8 +113,8 @@ export function useNativeTokenAmountFromNumber<TUse extends boolean = true>(
   options?: ChainHookOptions & SuspenseOptions<TUse>,
 ): When<
   TUse,
-  (number: number | string) => DenominatedNumber,
-  Promise<(number: number | string) => DenominatedNumber>
+  (number: number | string) => MonetaryNumber,
+  Promise<(number: number | string) => MonetaryNumber>
 >;
 export function useNativeTokenAmountFromNumber<TUse extends boolean = true>(
   numberOrOptions?:
@@ -144,14 +144,14 @@ export function useNativeTokenAmountFromNumber<TUse extends boolean = true>(
               switch (typeof numberOrOptions) {
                 case "number":
                 case "string":
-                  return DenominatedNumber.fromNumber(
+                  return MonetaryNumber.fromMajorUnits(
                     numberOrOptions,
                     nativeTokenInfo.decimals ?? 0,
                     nativeTokenInfo.code,
                   );
                 default:
                   return (number: number | string) =>
-                    DenominatedNumber.fromNumber(
+                    MonetaryNumber.fromMajorUnits(
                       number,
                       nativeTokenInfo.decimals ?? 0,
                       nativeTokenInfo.code,
