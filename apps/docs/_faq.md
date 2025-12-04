@@ -2,7 +2,13 @@ Collection of frequently asked questions with ideas on how to troubleshoot and r
 
 ## Unexpected behavior after installing or bumping dependencies
 
-This error often occurs when multiple conflicting versions of ReactiveDOT are installed. To resolve this, try the following steps:
+Common errors:
+
+- `Uncaught TypeError: [X] is not a function`
+- `Type [X] is not assignable to type [Y]`
+- etc
+
+These errors often occurs when multiple conflicting versions of ReactiveDOT are installed. To resolve this, try the following steps:
 
 1. **Ensure all ReactiveDOT dependencies are up to date**
 
