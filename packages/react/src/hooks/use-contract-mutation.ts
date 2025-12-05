@@ -10,9 +10,9 @@ import { MutationError } from "@reactive-dot/core";
 import {
   getSolidityContractTx,
   InkContract,
-  type PatchedReturnType,
   type InkMutationBuilder,
   type MutationBuilder,
+  type PatchedReturnType,
   type SolidityMutationBuilder,
   type TxOptionsOf,
 } from "@reactive-dot/core/internal.js";
@@ -23,8 +23,7 @@ import {
 import { useAtomCallback } from "jotai/utils";
 import type { PolkadotSigner } from "polkadot-api";
 import { use } from "react";
-import { from } from "rxjs";
-import { switchMap } from "rxjs/operators";
+import { from, switchMap } from "rxjs";
 
 /**
  * Hook for mutating (writing to) a contract.

@@ -9,8 +9,7 @@ import { usePausableAtomValue } from "./use-pausable-atom-value.js";
 import { useStablePromise } from "./use-stable-promise.js";
 import { type ChainId, type Config } from "@reactive-dot/core";
 import { getBlock } from "@reactive-dot/core/internal/actions.js";
-import { from } from "rxjs";
-import { switchMap } from "rxjs/operators";
+import { from, switchMap } from "rxjs";
 
 /**
  * Hook for fetching information about the latest block.

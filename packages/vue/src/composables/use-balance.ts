@@ -11,8 +11,7 @@ import type { Address } from "@reactive-dot/core";
 import { toSs58String } from "@reactive-dot/core/internal.js";
 import { spendableBalance } from "@reactive-dot/core/internal/maths.js";
 import { type DenominatedNumber } from "@reactive-dot/utils";
-import { combineLatest, from } from "rxjs";
-import { map } from "rxjs/operators";
+import { combineLatest, from, map } from "rxjs";
 import { computed, type MaybeRefOrGetter, toValue } from "vue";
 
 type SystemAccount = {

@@ -1,5 +1,5 @@
 import type { PolkadotClient } from "polkadot-api";
-import { map } from "rxjs/operators";
+import { map } from "rxjs";
 
 export type GetBlockOptions = {
   tag?: "best" | "finalized";

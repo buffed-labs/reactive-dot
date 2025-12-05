@@ -6,8 +6,7 @@ import {
   Wallet,
   type WalletOptions,
 } from "@reactive-dot/core/wallets.js";
-import { BehaviorSubject, Observable, of } from "rxjs";
-import { map, switchMap } from "rxjs/operators";
+import { BehaviorSubject, map, Observable, of, switchMap } from "rxjs";
 
 export type MimirWalletOptions = WalletOptions & { originName?: string };
 

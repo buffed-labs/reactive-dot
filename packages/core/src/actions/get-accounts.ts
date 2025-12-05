@@ -6,8 +6,7 @@ import type { Wallet } from "../wallets/wallet.js";
 import type { ChainSpecData } from "@polkadot-api/substrate-client";
 import { checksum } from "ox/Address";
 import { AccountId, Binary } from "polkadot-api";
-import { combineLatest, of } from "rxjs";
-import { map, switchMap } from "rxjs/operators";
+import { combineLatest, map, of, switchMap } from "rxjs";
 
 export function getAccounts(
   wallets: MaybeAsync<Wallet[]>,

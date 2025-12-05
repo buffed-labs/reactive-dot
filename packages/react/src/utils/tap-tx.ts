@@ -4,11 +4,12 @@ import { MutationError, pending } from "@reactive-dot/core";
 import type { GenericTransaction } from "@reactive-dot/core/internal.js";
 import type { TxEvent } from "polkadot-api";
 import {
+  catchError,
+  tap,
   type MonoTypeOperatorFunction,
   type Observable,
   type Subject,
 } from "rxjs";
-import { catchError, tap } from "rxjs/operators";
 
 export function tapTx<T extends TxEvent>(
   mutationEventSubject: Subject<MutationEvent>,

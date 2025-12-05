@@ -4,8 +4,7 @@ import type { InkContract } from "../contract.js";
 import { getInkClient } from "../ink/get-ink-client.js";
 import type { ContractCompatApi, ContractEvent } from "../types.js";
 import type { EventSpecV5 } from "@polkadot-api/ink-contracts";
-import { combineLatest, defer } from "rxjs";
-import { map } from "rxjs/operators";
+import { combineLatest, defer, map } from "rxjs";
 
 export type InkContractEventNames<TContract extends InkContract> =
   TContract["descriptor"]["__types"]["event"]["type"];

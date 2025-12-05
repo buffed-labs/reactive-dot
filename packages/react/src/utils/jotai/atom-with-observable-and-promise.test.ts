@@ -4,8 +4,7 @@ import { atomWithObservableAndPromise } from "./atom-with-observable-and-promise
 import { act, renderHook, waitFor } from "@testing-library/react";
 import { useStore } from "jotai";
 import { use, useMemo } from "react";
-import { BehaviorSubject, firstValueFrom, of } from "rxjs";
-import { switchMap, tap } from "rxjs/operators";
+import { BehaviorSubject, firstValueFrom, of, switchMap, tap } from "rxjs";
 import { expect, it } from "vitest";
 
 it("should return an atom with the initial value from the observable", async () => {

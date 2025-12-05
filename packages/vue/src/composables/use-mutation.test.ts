@@ -3,8 +3,7 @@ import { withSetup } from "../test-utils.js";
 import { useMutation } from "./use-mutation.js";
 import { defineConfig } from "@reactive-dot/core";
 import type { TxEvent } from "polkadot-api";
-import { from, of, throwError } from "rxjs";
-import { concatMap, delay } from "rxjs/operators";
+import { concatMap, delay, from, of, throwError } from "rxjs";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { computed } from "vue";
 

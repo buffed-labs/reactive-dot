@@ -15,8 +15,7 @@ import type {
 import { useAtomCallback } from "jotai/utils";
 import type { PolkadotSigner, Transaction, TypedApi } from "polkadot-api";
 import { use, useCallback } from "react";
-import { from } from "rxjs";
-import { switchMap } from "rxjs/operators";
+import { from, switchMap } from "rxjs";
 
 /**
  * Hook for sending transactions to chains.

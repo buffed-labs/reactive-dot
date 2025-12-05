@@ -6,8 +6,7 @@ import {
   type InjectedExtension,
   type InjectedPolkadotAccount,
 } from "polkadot-api/pjs-signer";
-import { firstValueFrom } from "rxjs";
-import { skip } from "rxjs/operators";
+import { firstValueFrom, skip } from "rxjs";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 const inMemorySimpleStorage = {

@@ -12,8 +12,7 @@ import type {
   TxOptionsOf,
 } from "@reactive-dot/core/internal.js";
 import type { PolkadotSigner, Transaction, TypedApi } from "polkadot-api";
-import { from } from "rxjs";
-import { switchMap } from "rxjs/operators";
+import { from, switchMap } from "rxjs";
 import { inject, type MaybeRefOrGetter, toValue } from "vue";
 
 /**

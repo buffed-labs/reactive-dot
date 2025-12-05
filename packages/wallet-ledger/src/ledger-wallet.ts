@@ -5,7 +5,7 @@ import {
   LocalWallet,
   type PolkadotSignerAccount,
 } from "@reactive-dot/core/wallets.js";
-import { map } from "rxjs/operators";
+import { map } from "rxjs";
 
 type LedgerAccount = {
   id: string;
