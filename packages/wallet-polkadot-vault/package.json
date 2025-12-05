@@ -43,6 +43,6 @@
     "@tsconfig/strictest": "^2.0.8",
     "eslint": "^9.39.1",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.14"
+    "vitest": "^4.0.15"
   }
 }
