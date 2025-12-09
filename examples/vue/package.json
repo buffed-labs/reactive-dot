@@ -23,6 +23,6 @@
     "@vitejs/plugin-vue": "^6.0.2",
     "eslint": "^9.39.1",
     "typescript": "^5.9.3",
-    "vite": "^7.2.6"
+    "vite": "^7.2.7"
   }
 }
