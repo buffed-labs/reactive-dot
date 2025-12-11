@@ -76,14 +76,14 @@ const { execute, status } = useMutation((tx) =>
 </template>
 ```
 
-You can also pass variables to the mutation builder callback using a second argument.
+You can also pass input to the mutation builder callback using a second argument.
 
 ```ts
 const { execute, status } = useMutation((tx, message: string) =>
   tx.System.remark({ remark: Binary.fromText(message) }),
 );
 
-execute({ variables: "Hello, world!" });
+execute({ input: "Hello, world!" });
 ```
 
 ## Watching transactions

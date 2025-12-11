@@ -83,14 +83,14 @@ function Component() {
 }
 ```
 
-You can also pass variables to the mutation builder callback using a second argument.
+You can also pass input to the mutation builder callback using a second argument.
 
 ```ts
 const [remarkState, submit] = useMutation((tx, message: string) =>
   tx.System.remark({ remark: Binary.fromText(message) }),
 );
 
-submit({ variables: "Hello, world!" });
+submit({ input: "Hello, world!" });
 ```
 
 ## Watching transactions

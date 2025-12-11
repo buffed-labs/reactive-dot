@@ -1,5 +1,8 @@
 import { mutationEventKey } from "../keys.js";
-import type { ChainComposableOptions } from "../types.js";
+import type {
+  BackwardCompatInputOptions,
+  ChainComposableOptions,
+} from "../types.js";
 import { tapTx } from "../utils/tap-tx.js";
 import { useAsyncAction } from "./use-async-action.js";
 import { useChainId } from "./use-chain-id.js";
@@ -26,7 +29,7 @@ export function useMutation<
   TAction extends (
     tx: TypedApi<ChainDescriptorOf<TChainId>>["tx"],
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    variables: any,
+    input: any,
   ) => // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Transaction<any, any, any, any>,
   TChainId extends ChainId | undefined,
@@ -59,8 +62,8 @@ export function useMutation<
     signer?: PolkadotSigner;
     txOptions?: TxOptionsOf<ReturnType<TAction>>;
   } & (Parameters<TAction>["length"] extends 2
-    ? { variables: Parameters<TAction>[1] }
-    : { variables?: Parameters<TAction>[1] });
+    ? BackwardCompatInputOptions<Parameters<TAction>[1]>
+    : Partial<BackwardCompatInputOptions<Parameters<TAction>[1]>>);
 
   return useAsyncAction(
     (
@@ -79,7 +82,16 @@ export function useMutation<
 
       return from(typedApiPromise.value).pipe(
         switchMap((typedApi) => {
-          const transaction = action(typedApi.tx, submitOptions?.variables);
+          const transaction = action(
+            typedApi.tx,
+            submitOptions === undefined
+              ? undefined
+              : "input" in submitOptions
+                ? submitOptions.input
+                : "variables" in submitOptions
+                  ? submitOptions.variables
+                  : undefined,
+          );
 
           const eventProps = {
             id,

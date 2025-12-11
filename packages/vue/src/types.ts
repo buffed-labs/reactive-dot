@@ -72,3 +72,12 @@ export type InferQueryArgumentResult<
           : never
       : never
     : never;
+
+export type BackwardCompatInputOptions<T> =
+  | {
+      input: T;
+    }
+  | {
+      /** @deprecated Use `input` instead. */
+      variables: T;
+    };
