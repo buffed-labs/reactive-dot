@@ -1,6 +1,6 @@
 {
   "name": "@reactive-dot/react",
-  "version": "0.66.0",
+  "version": "0.67.0",
   "description": "React library for ReactiveDOT",
   "keywords": [
     "substrate",
