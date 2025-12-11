@@ -1,5 +1,8 @@
 name: Verification
 
+permissions:
+  contents: read
+
 on: [workflow_call]
 
 jobs:
