@@ -1,5 +1,12 @@
 # @reactive-dot/wallet-polkadot-vault
 
+## 0.2.5
+
+### Patch Changes
+
+- Updated dependencies [[`e3275f5`](https://github.com/buffed-labs/reactive-dot/commit/e3275f5b3a936342b9e49b2480856375d50d5259)]:
+  - @reactive-dot/core@0.67.0
+
 ## 0.2.4
 
 ### Patch Changes

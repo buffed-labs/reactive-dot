@@ -1,5 +1,18 @@
 # @reactive-dot/vue
 
+## 0.67.0
+
+### Minor Changes
+
+- [#1079](https://github.com/buffed-labs/reactive-dot/pull/1079) [`f54b51a`](https://github.com/buffed-labs/reactive-dot/commit/f54b51a2b56c36fc4b5df85668371a81d896299f) Thanks [@tien](https://github.com/tien)! - For mutation functions, deprecated the `variables` parameter in favor of `input`. The new parameter name more accurately describes acceptable inputs, which can be objects, arrays, primitives, or other types.
+
+### Patch Changes
+
+- [#1075](https://github.com/buffed-labs/reactive-dot/pull/1075) [`e3275f5`](https://github.com/buffed-labs/reactive-dot/commit/e3275f5b3a936342b9e49b2480856375d50d5259) Thanks [@tien](https://github.com/tien)! - Preferred importing operators from `rxjs` instead of `rxjs/operators`.
+
+- Updated dependencies [[`e3275f5`](https://github.com/buffed-labs/reactive-dot/commit/e3275f5b3a936342b9e49b2480856375d50d5259)]:
+  - @reactive-dot/core@0.67.0
+
 ## 0.66.0
 
 ### Patch Changes
