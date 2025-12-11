@@ -85,7 +85,7 @@ it("sign submit and watch", async () => {
   expect(result.data.value).toMatchObject({ type: "finalized" });
 });
 
-it("accepts variables", async () => {
+it.each(["input", "variables"] as const)(`accepts %s`, async (key) => {
   const { result } = withSetup(
     () =>
       useMutation((tx, x: number) =>
@@ -101,7 +101,7 @@ it("accepts variables", async () => {
 
   expect(result.status.value).toBe("idle");
 
-  result.execute({ variables: 42 });
+  result.execute({ [key as "input"]: 42 });
 
   await vi.waitUntil(() => result.status.value === "success", {
     timeout: 3000,

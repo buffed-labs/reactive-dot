@@ -1,5 +1,8 @@
 import { mutationEventKey } from "../keys.js";
-import type { ChainComposableOptions } from "../types.js";
+import type {
+  BackwardCompatInputOptions,
+  ChainComposableOptions,
+} from "../types.js";
 import { tapTx } from "../utils/tap-tx.js";
 import { useAsyncAction } from "./use-async-action.js";
 import { useChainId } from "./use-chain-id.js";
@@ -34,7 +37,7 @@ export function useContractMutation<
   TAction extends (
     builder: MutationBuilder,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    variables: any,
+    input: any,
   ) => PatchedReturnType<MutationBuilder>,
 >(
   action: TAction,
@@ -64,8 +67,8 @@ export function useContractMutation<
     signer?: PolkadotSigner;
     txOptions?: TxOptionsOf<Awaited<ReturnType<TAction>>>;
   } & (Parameters<TAction>["length"] extends 2
-    ? { variables: Parameters<TAction>[1] }
-    : { variables?: Parameters<TAction>[1] });
+    ? BackwardCompatInputOptions<Parameters<TAction>[1]>
+    : Partial<BackwardCompatInputOptions<Parameters<TAction>[1]>>);
 
   return useAsyncAction(
     (
@@ -126,7 +129,13 @@ export function useContractMutation<
                 : solidityMutationBuilder(
                     ...(args as Parameters<SolidityMutationBuilder>),
                   ),
-            submitOptions?.variables,
+            submitOptions === undefined
+              ? undefined
+              : "input" in submitOptions
+                ? submitOptions.input
+                : "variables" in submitOptions
+                  ? submitOptions.variables
+                  : undefined,
           ),
         ),
       ).pipe(

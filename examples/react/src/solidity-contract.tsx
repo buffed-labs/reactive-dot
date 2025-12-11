@@ -60,10 +60,7 @@ function ValueSetter() {
         value={value}
         onChange={(e) => setValue(e.target.value)}
       />
-      <button
-        type="button"
-        onClick={() => submit({ variables: BigInt(value) })}
-      >
+      <button type="button" onClick={() => submit({ input: BigInt(value) })}>
         Submit
       </button>
     </label>

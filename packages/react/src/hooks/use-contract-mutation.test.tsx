@@ -99,7 +99,7 @@ it("sign submit and watch", async () => {
   expect(result.current[0]).toMatchObject({ type: "finalized" });
 });
 
-it("accepts variables", async () => {
+it.each(["input", "variables"] as const)(`accepts %s`, async (key) => {
   const { result } = await act(() =>
     renderHook(
       () =>
@@ -122,7 +122,7 @@ it("accepts variables", async () => {
 
   expect(result.current[0]).toBe(idle);
 
-  await act(() => result.current[1]({ variables: 123n }));
+  await act(() => result.current[1]({ [key as "input"]: 123n }));
 
   expect(getInkContractTx).toHaveBeenCalledWith(
     undefined,
