@@ -5,7 +5,7 @@ import {
   type LightClientProvider,
 } from "../providers/light-client/provider.js";
 import { createClient, type PolkadotClient } from "polkadot-api";
-import type { JsonRpcProvider } from "polkadot-api/ws-provider/web";
+import type { JsonRpcProvider } from "polkadot-api/ws-provider";
 
 const clientCache = new WeakMap<ChainConfig, Promise<PolkadotClient>>();
 

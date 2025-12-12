@@ -24,9 +24,9 @@ Next, download the latest metadata from the chain you want to connect to and gen
 
 ```sh
 # `papi add` is the command
-# `dot` is the name we're giving to this chain (can be any JS variable name)
-# `-n polkadot` specifies to download the metadata from the well-known chain polkadot
-npx papi add dot -n polkadot
+# `polkadot_asset_hub` is the name we're giving to this chain (can be any JS variable name)
+# `-n polkadot_asset_hub` specifies to download the metadata from the well-known chain polkadot_asset_hub
+npx papi add polkadot_asset_hub -n polkadot_asset_hub
 # Wait for the latest metadata to download, then generate the types:
 npx papi
 ```
@@ -53,8 +53,8 @@ For more information on metadata syncing and type generation, please refer to th
 {/* prettier-ignore-end */}
 
 ```ts title="config.ts"
-// `dot` is the name we gave to `npx papi add`
-import { dot } from "@polkadot-api/descriptors";
+// `polkadot_asset_hub` is the name we gave to `npx papi add`
+import { polkadot_asset_hub } from "@polkadot-api/descriptors";
 import { defineConfig } from "@reactive-dot/core";
 import { createLightClientProvider } from "@reactive-dot/core/providers/light-client.js";
 import { InjectedWalletProvider } from "@reactive-dot/core/wallets.js";
@@ -63,10 +63,12 @@ const lightClientProvider = createLightClientProvider();
 
 export const config = defineConfig({
   chains: {
-    // Use "polkadot" as the `ChainId`, this can be any unique string value
-    polkadot: {
-      descriptor: dot,
-      provider: lightClientProvider.addRelayChain({ id: "polkadot" }),
+    // Use "asset_hub" as the `ChainId`, this can be any unique string value
+    asset_hub: {
+      descriptor: polkadot_asset_hub,
+      provider: lightClientProvider
+        .addRelayChain({ id: "polkadot" })
+        .addParachain({ id: "polkadot_asset_hub" }),
     },
   },
   wallets: [new InjectedWalletProvider()],
@@ -86,7 +88,11 @@ declare module "@reactive-dot/core" {
 ```ts title="config.ts"
 // ...
 // highlight-next-line
-import { dot, dot_asset_hub } from "@polkadot-api/descriptors";
+import {
+  polkadot,
+  polkadot_asset_hub,
+  polkadot_people,
+} from "@polkadot-api/descriptors";
 
 const lightClientProvider = createLightClientProvider();
 
@@ -96,13 +102,17 @@ const polkadotProvider = lightClientProvider.addRelayChain({ id: "polkadot" });
 export const config = defineConfig({
   chains: {
     // highlight-start
-    polkadot: {
-      descriptor: dot,
+    relay: {
+      descriptor: polkadot,
       provider: polkadotProvider,
     },
-    polkadot_asset_hub: {
-      descriptor: dot_asset_hub,
+    asset_hub: {
+      descriptor: polkadot_asset_hub,
       provider: polkadotProvider.addParachain({ id: "polkadot_asset_hub" }),
+    },
+    people: {
+      descriptor: polkadot_people,
+      provider: polkadotProvider.addParachain({ id: "polkadot_people" }),
     },
     // highlight-end
   },
@@ -120,18 +130,18 @@ export const config = defineConfig({
 {/* prettier-ignore-end */}
 
 ```ts title="config.ts"
-// `dot` is the name we gave to `npx papi add`
-import { dot } from "@polkadot-api/descriptors";
-import { getWsProvider } from "@polkadot-api/ws-provider/web";
+// `polkadot_asset_hub` is the name we gave to `npx papi add`
+import { polkadot_asset_hub } from "@polkadot-api/descriptors";
+import { getWsProvider } from "@polkadot-api/ws-provider";
 import { defineConfig } from "@reactive-dot/core";
 import { InjectedWalletProvider } from "@reactive-dot/core/wallets.js";
 
 export const config = defineConfig({
   chains: {
-    // Use "polkadot" as the `ChainId`, this can be any unique string value
-    polkadot: {
-      descriptor: dot,
-      provider: getWsProvider("wss://polkadot-rpc.publicnode.com"),
+    // Use "asset_hub" as the `ChainId`, this can be any unique string value
+    asset_hub: {
+      descriptor: polkadot_asset_hub,
+      provider: getWsProvider("wss://polkadot-asset-hub-rpc.polkadot.io"),
     },
   },
   wallets: [new InjectedWalletProvider()],
@@ -170,7 +180,7 @@ createApp(App).use(ReactiveDotPlugin, config).mount("#root");
 import MyComponent from "./my-component.vue";
 import { provideChain } from "@reactive-dot/vue";
 
-provideChain("polkadot");
+provideChain("asset_hub");
 </script>
 
 <template>
