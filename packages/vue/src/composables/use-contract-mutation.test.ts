@@ -9,8 +9,8 @@ import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
 const mockSignSubmitAndWatch = vi.fn();
 
-vi.mock("./use-typed-api.js", () => ({
-  useTypedApiPromise: vi.fn(),
+vi.mock("./use-client.js", () => ({
+  useClientPromise: vi.fn(),
 }));
 
 vi.mock("@reactive-dot/core/internal/actions.js", () => ({

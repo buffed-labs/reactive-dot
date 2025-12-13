@@ -1,11 +1,14 @@
 import { type Address, toH160Bytes } from "../../address.js";
 import { BaseError } from "../../errors.js";
 import type { ExtractExactProperties, StringKeyOf } from "../../types.js";
-import { omitUndefinedProperties } from "../../utils/omit-undefined-properties.js";
-import type { ContractCompatApi } from "../types.js";
+import { getContractTx } from "../get-contract-tx.js";
 import type { GenericInkDescriptors, InkTxBody } from "./types.js";
 import type { InkClient } from "@polkadot-api/ink-contracts";
-import { AccountId, type PolkadotSigner } from "polkadot-api";
+import {
+  AccountId,
+  type PolkadotClient,
+  type PolkadotSigner,
+} from "polkadot-api";
 
 export async function getInkContractTx<
   TDescriptor extends GenericInkDescriptors,
@@ -16,7 +19,7 @@ export async function getInkContractTx<
     >
   >,
 >(
-  api: ContractCompatApi,
+  client: PolkadotClient,
   inkClient: InkClient<GenericInkDescriptors>,
   signer: PolkadotSigner,
   contract: Address,
@@ -50,23 +53,7 @@ export async function getInkContractTx<
         (body.value as bigint)
       : 0n;
 
-  const dryRunResult = await api.apis.ReviveApi.call(
-    origin,
-    dest,
-    value,
-    undefined,
-    undefined,
-    data,
-    omitUndefinedProperties({ signal: options?.signal }),
-  );
-
-  return api.tx.Revive.call({
-    dest,
-    value,
-    weight_limit: dryRunResult.weight_required,
-    storage_deposit_limit: dryRunResult.storage_deposit.value,
-    data,
-  });
+  return getContractTx(client, origin, dest, value, data, options);
 }
 
 const toSs58 = AccountId().dec;

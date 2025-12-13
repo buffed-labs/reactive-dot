@@ -1,15 +1,19 @@
 import { type Address, toH160Bytes } from "../../address.js";
-import { omitUndefinedProperties } from "../../utils/omit-undefined-properties.js";
-import type { ContractCompatApi } from "../types.js";
+import { getContractTx } from "../get-contract-tx.js";
 import type { SolidityTxBody } from "./types.js";
 import type { Abi, ExtractAbiFunctionNames } from "abitype";
-import { AccountId, Binary, type PolkadotSigner } from "polkadot-api";
+import {
+  AccountId,
+  Binary,
+  type PolkadotClient,
+  type PolkadotSigner,
+} from "polkadot-api";
 
 export async function getSolidityContractTx<
   TAbi extends Abi,
   TFunctionName extends ExtractAbiFunctionNames<TAbi, "nonpayable" | "payable">,
 >(
-  api: ContractCompatApi,
+  client: PolkadotClient,
   abi: TAbi,
   signer: PolkadotSigner,
   contract: Address,
@@ -36,23 +40,7 @@ export async function getSolidityContractTx<
         (body.value as bigint)
       : 0n;
 
-  const dryRunResult = await api.apis.ReviveApi.call(
-    origin,
-    dest,
-    value,
-    undefined,
-    undefined,
-    data,
-    omitUndefinedProperties({ signal: options?.signal }),
-  );
-
-  return api.tx.Revive.call({
-    dest,
-    value,
-    weight_limit: dryRunResult.weight_required,
-    storage_deposit_limit: dryRunResult.storage_deposit.value,
-    data,
-  });
+  return getContractTx(client, origin, dest, value, data, options);
 }
 
 const toSs58 = AccountId().dec;
