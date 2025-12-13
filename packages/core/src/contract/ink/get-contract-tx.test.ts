@@ -11,7 +11,7 @@ vi.mock("polkadot-api", () => ({
 }));
 
 const dryRunResult = {
-  gas_required: 123n,
+  weight_required: 123n,
   storage_deposit: { value: 456n },
 };
 
@@ -80,7 +80,7 @@ it("calls API with defaults when no data/value/options provided", async () => {
   expect(api.tx.Revive.call).toHaveBeenCalledWith({
     dest: "destBytes",
     value: 0n,
-    gas_limit: dryRunResult.gas_required,
+    weight_limit: dryRunResult.weight_required,
     storage_deposit_limit: dryRunResult.storage_deposit.value,
     data: "encodedData",
   });

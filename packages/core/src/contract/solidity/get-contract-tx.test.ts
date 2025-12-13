@@ -28,7 +28,7 @@ describe("getSolidityContractTx", () => {
     const signer = { publicKey: padded } as unknown as PolkadotSigner;
 
     const fakeDryRun = {
-      gas_required: 111n,
+      weight_required: 111n,
       storage_deposit: { value: 222n },
     };
 
@@ -107,9 +107,9 @@ describe("getSolidityContractTx", () => {
           "asOpaqueHex": [Function],
           "asText": [Function],
         },
-        "gas_limit": 111n,
         "storage_deposit_limit": 222n,
         "value": 5n,
+        "weight_limit": 111n,
       }
     `);
   });
