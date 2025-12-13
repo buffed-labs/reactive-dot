@@ -49,13 +49,13 @@ export type ContractApis<TEvent = any, TError = any> = ApisTypedef<{
         origin: SS58String,
         dest: FixedSizeBinary<20>,
         value: bigint,
-        gas_limit: Gas | undefined,
+        weight_limit: Gas | undefined,
         storage_deposit_limit: bigint | undefined,
         input_data: Binary,
       ],
       {
-        gas_consumed: Gas;
-        gas_required: Gas;
+        gas_consumed: bigint;
+        weight_required: Gas;
         storage_deposit: Enum<{
           Refund: bigint;
           Charge: bigint;
@@ -201,7 +201,7 @@ export type ContractPallets = PalletsTypedef<
       call: TxDescriptor<{
         dest: FixedSizeBinary<20>;
         value: bigint;
-        gas_limit: Gas;
+        weight_limit: Gas;
         storage_deposit_limit: bigint;
         data: Binary;
       }>;

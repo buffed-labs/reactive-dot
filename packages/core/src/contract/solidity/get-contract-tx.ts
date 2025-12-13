@@ -49,7 +49,7 @@ export async function getSolidityContractTx<
   return api.tx.Revive.call({
     dest,
     value,
-    gas_limit: dryRunResult.gas_required,
+    weight_limit: dryRunResult.weight_required,
     storage_deposit_limit: dryRunResult.storage_deposit.value,
     data,
   });
