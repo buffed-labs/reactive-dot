@@ -1,5 +1,11 @@
 # @reactive-dot/core
 
+## 0.67.1
+
+### Patch Changes
+
+- [#1089](https://github.com/buffed-labs/reactive-dot/pull/1089) [`403e0ca`](https://github.com/buffed-labs/reactive-dot/commit/403e0cad37635f7e13a1499359f7829dee8672c9) Thanks [@tien](https://github.com/tien)! - Fixed breaking Revive runtime change on PassetHub.
+
 ## 0.67.0
 
 ### Patch Changes
