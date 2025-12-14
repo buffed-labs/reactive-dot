@@ -1,4 +1,4 @@
-import { pasAh, passet } from "../../.papi/descriptors/dist/index.js";
+import type { PasAh, Passet } from "../../.papi/descriptors/dist/index.js";
 import { omitUndefinedProperties } from "../utils/omit-undefined-properties.js";
 import {
   type Binary,
@@ -6,6 +6,7 @@ import {
   type FixedSizeBinary,
   type PolkadotClient,
   type SS58String,
+  type TypedApi,
 } from "polkadot-api";
 
 export async function getContractTx(
@@ -16,7 +17,7 @@ export async function getContractTx(
   data: Binary,
   options?: { signal?: AbortSignal },
 ) {
-  const passetApi = client.getTypedApi(passet);
+  const passetApi = await getPassetApi(client);
 
   if (
     await passetApi.apis.ReviveApi.call.isCompatible(CompatibilityLevel.Partial)
@@ -40,7 +41,7 @@ export async function getContractTx(
     });
   }
 
-  const pasAhApi = client.getTypedApi(pasAh);
+  const pasAhApi = await getPasAhApi(client);
 
   const dryRunResult = await pasAhApi.apis.ReviveApi.call(
     origin,
@@ -59,4 +60,26 @@ export async function getContractTx(
     storage_deposit_limit: dryRunResult.storage_deposit.value,
     data,
   });
+}
+
+const passetApiCache = new WeakMap<PolkadotClient, TypedApi<Passet>>();
+
+async function getPassetApi(client: PolkadotClient) {
+  const { passet } = await import("../../.papi/descriptors/dist/index.js");
+
+  return (
+    passetApiCache.get(client) ??
+    passetApiCache.set(client, client.getTypedApi(passet)).get(client)!
+  );
+}
+
+const pasAhApiCache = new WeakMap<PolkadotClient, TypedApi<PasAh>>();
+
+async function getPasAhApi(client: PolkadotClient) {
+  const { pasAh } = await import("../../.papi/descriptors/dist/index.js");
+
+  return (
+    pasAhApiCache.get(client) ??
+    pasAhApiCache.set(client, client.getTypedApi(pasAh)).get(client)!
+  );
 }
