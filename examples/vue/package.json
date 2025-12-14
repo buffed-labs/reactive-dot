@@ -20,8 +20,8 @@
     "@reactive-dot/eslint-config": "workspace:^",
     "@tsconfig/recommended": "^1.0.13",
     "@tsconfig/strictest": "^2.0.8",
-    "@vitejs/plugin-vue": "^6.0.2",
-    "eslint": "^9.39.1",
+    "@vitejs/plugin-vue": "^6.0.3",
+    "eslint": "^9.39.2",
     "typescript": "^5.9.3",
     "vite": "^7.2.7"
   }
