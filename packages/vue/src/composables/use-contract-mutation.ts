@@ -6,8 +6,8 @@ import type {
 import { tapTx } from "../utils/tap-tx.js";
 import { useAsyncAction } from "./use-async-action.js";
 import { useChainId } from "./use-chain-id.js";
+import { useClientPromise } from "./use-client.js";
 import { useSigner } from "./use-signer.js";
-import { useTypedApiPromise } from "./use-typed-api.js";
 import { BaseError, MutationError } from "@reactive-dot/core";
 import {
   getSolidityContractTx,
@@ -54,7 +54,7 @@ export function useContractMutation<
 ) {
   const injectedSigner = useSigner();
   const chainId = useChainId();
-  const typedApiPromise = useTypedApiPromise();
+  const clientPromise = useClientPromise();
   const mutationEventRef = inject(
     mutationEventKey,
     () => {
@@ -91,7 +91,7 @@ export function useContractMutation<
       ) =>
         getInkContractTx(
           ...(await Promise.all([
-            await toValue(typedApiPromise),
+            await toValue(clientPromise),
             await getInkClient(contract),
           ])),
           signer,
@@ -107,7 +107,7 @@ export function useContractMutation<
         ...[body]
       ) =>
         getSolidityContractTx(
-          await toValue(typedApiPromise),
+          await toValue(clientPromise),
           contract.abi,
           signer,
           address,

@@ -17,8 +17,8 @@ import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
 const mockSignSubmitAndWatch = vi.fn();
 
-vi.mock("./use-typed-api.js", () => ({
-  typedApiAtom: vi.fn(() => atom()),
+vi.mock("./use-client.js", () => ({
+  clientAtom: vi.fn(() => atom()),
 }));
 
 vi.mock(

@@ -4,8 +4,8 @@ import { tapTx } from "../utils/tap-tx.js";
 import type { BackwardCompatInputOptions, ChainHookOptions } from "./types.js";
 import { useAsyncAction } from "./use-async-action.js";
 import { internal_useChainId } from "./use-chain-id.js";
+import { clientAtom } from "./use-client.js";
 import { useConfig } from "./use-config.js";
-import { typedApiAtom } from "./use-typed-api.js";
 import { MutationError } from "@reactive-dot/core";
 import {
   getSolidityContractTx,
@@ -88,7 +88,7 @@ export function useContractMutation<
         ) =>
           getInkContractTx(
             ...(await Promise.all([
-              get(typedApiAtom(config, chainId)),
+              get(clientAtom(config, chainId)),
               getInkClient(contract),
             ])),
             signer,
@@ -104,7 +104,7 @@ export function useContractMutation<
           ...[body]
         ) =>
           getSolidityContractTx(
-            await get(typedApiAtom(config, chainId)),
+            await get(clientAtom(config, chainId)),
             contract.abi,
             signer,
             address,
