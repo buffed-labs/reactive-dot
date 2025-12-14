@@ -1,5 +1,11 @@
 # @reactive-dot/core
 
+## 0.67.2
+
+### Patch Changes
+
+- [#1094](https://github.com/buffed-labs/reactive-dot/pull/1094) [`59bfaf5`](https://github.com/buffed-labs/reactive-dot/commit/59bfaf592b185407d5ce1a0cf18f2d0494081011) Thanks [@tien](https://github.com/tien)! - Cache created Revive APIs.
+
 ## 0.67.1
 
 ### Patch Changes
