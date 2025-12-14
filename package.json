@@ -46,7 +46,7 @@
     "@trivago/prettier-plugin-sort-imports": "^6.0.0",
     "@vitest/coverage-v8": "4.0.15",
     "husky": "^9.1.7",
-    "nx": "^22.2.0",
+    "nx": "^22.2.3",
     "prettier": "^3.7.4",
     "vitest": "^4.0.15"
   }
