@@ -1,10 +1,13 @@
 import { mutationEventKey } from "../keys.js";
-import type { ChainComposableOptions } from "../types.js";
+import type {
+  BackwardCompatInputOptions,
+  ChainComposableOptions,
+} from "../types.js";
 import { tapTx } from "../utils/tap-tx.js";
 import { useAsyncAction } from "./use-async-action.js";
 import { useChainId } from "./use-chain-id.js";
+import { useClientPromise } from "./use-client.js";
 import { useSigner } from "./use-signer.js";
-import { useTypedApiPromise } from "./use-typed-api.js";
 import { BaseError, MutationError } from "@reactive-dot/core";
 import {
   getSolidityContractTx,
@@ -20,8 +23,7 @@ import {
   getInkContractTx,
 } from "@reactive-dot/core/internal/actions.js";
 import type { PolkadotSigner } from "polkadot-api";
-import { from } from "rxjs";
-import { switchMap } from "rxjs/operators";
+import { from, switchMap } from "rxjs";
 import { inject, toValue } from "vue";
 
 /**
@@ -35,7 +37,7 @@ export function useContractMutation<
   TAction extends (
     builder: MutationBuilder,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    variables: any,
+    input: any,
   ) => PatchedReturnType<MutationBuilder>,
 >(
   action: TAction,
@@ -52,7 +54,7 @@ export function useContractMutation<
 ) {
   const injectedSigner = useSigner();
   const chainId = useChainId();
-  const typedApiPromise = useTypedApiPromise();
+  const clientPromise = useClientPromise();
   const mutationEventRef = inject(
     mutationEventKey,
     () => {
@@ -65,8 +67,8 @@ export function useContractMutation<
     signer?: PolkadotSigner;
     txOptions?: TxOptionsOf<Awaited<ReturnType<TAction>>>;
   } & (Parameters<TAction>["length"] extends 2
-    ? { variables: Parameters<TAction>[1] }
-    : { variables?: Parameters<TAction>[1] });
+    ? BackwardCompatInputOptions<Parameters<TAction>[1]>
+    : Partial<BackwardCompatInputOptions<Parameters<TAction>[1]>>);
 
   return useAsyncAction(
     (
@@ -89,7 +91,7 @@ export function useContractMutation<
       ) =>
         getInkContractTx(
           ...(await Promise.all([
-            await toValue(typedApiPromise),
+            await toValue(clientPromise),
             await getInkClient(contract),
           ])),
           signer,
@@ -105,7 +107,7 @@ export function useContractMutation<
         ...[body]
       ) =>
         getSolidityContractTx(
-          await toValue(typedApiPromise),
+          await toValue(clientPromise),
           contract.abi,
           signer,
           address,
@@ -127,7 +129,13 @@ export function useContractMutation<
                 : solidityMutationBuilder(
                     ...(args as Parameters<SolidityMutationBuilder>),
                   ),
-            submitOptions?.variables,
+            submitOptions === undefined
+              ? undefined
+              : "input" in submitOptions
+                ? submitOptions.input
+                : "variables" in submitOptions
+                  ? submitOptions.variables
+                  : undefined,
           ),
         ),
       ).pipe(

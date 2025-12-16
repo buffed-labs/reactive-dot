@@ -1,5 +1,57 @@
 # @reactive-dot/vue
 
+## 0.67.1
+
+### Patch Changes
+
+- [#1091](https://github.com/buffed-labs/reactive-dot/pull/1091) [`9c922df`](https://github.com/buffed-labs/reactive-dot/commit/9c922dfdc897249a6fece8c16ac61a3b6ca9d020) Thanks [@tien](https://github.com/tien)! - Fixed breaking Revive runtime change on PassetHub.
+
+- Updated dependencies [[`9c922df`](https://github.com/buffed-labs/reactive-dot/commit/9c922dfdc897249a6fece8c16ac61a3b6ca9d020)]:
+  - @reactive-dot/core@0.67.1
+
+## 0.67.0
+
+### Minor Changes
+
+- [#1079](https://github.com/buffed-labs/reactive-dot/pull/1079) [`f54b51a`](https://github.com/buffed-labs/reactive-dot/commit/f54b51a2b56c36fc4b5df85668371a81d896299f) Thanks [@tien](https://github.com/tien)! - For mutation functions, deprecated the `variables` parameter in favor of `input`. The new parameter name more accurately describes acceptable inputs, which can be objects, arrays, primitives, or other types.
+
+### Patch Changes
+
+- [#1075](https://github.com/buffed-labs/reactive-dot/pull/1075) [`e3275f5`](https://github.com/buffed-labs/reactive-dot/commit/e3275f5b3a936342b9e49b2480856375d50d5259) Thanks [@tien](https://github.com/tien)! - Preferred importing operators from `rxjs` instead of `rxjs/operators`.
+
+- Updated dependencies [[`e3275f5`](https://github.com/buffed-labs/reactive-dot/commit/e3275f5b3a936342b9e49b2480856375d50d5259)]:
+  - @reactive-dot/core@0.67.0
+
+## 0.66.0
+
+### Patch Changes
+
+- Updated dependencies [[`ba806d6`](https://github.com/buffed-labs/reactive-dot/commit/ba806d64fa895a1fa5ae3d18c7d4224d8d2a824f)]:
+  - @reactive-dot/core@0.66.0
+
+## 0.65.0
+
+### Patch Changes
+
+- Updated dependencies [[`c293e85`](https://github.com/buffed-labs/reactive-dot/commit/c293e85b54d902c5ec8235a3aaafd05c4366fa93)]:
+  - @reactive-dot/core@0.65.0
+
+## 0.64.1
+
+### Patch Changes
+
+- [#1040](https://github.com/buffed-labs/reactive-dot/pull/1040) [`70a76b9`](https://github.com/buffed-labs/reactive-dot/commit/70a76b93332b5333a1e8c83b04cba8c80086a355) Thanks [@tien](https://github.com/tien)! - Revert breaking wallets changes.
+
+- Updated dependencies [[`70a76b9`](https://github.com/buffed-labs/reactive-dot/commit/70a76b93332b5333a1e8c83b04cba8c80086a355)]:
+  - @reactive-dot/core@0.64.1
+
+## 0.64.0
+
+### Patch Changes
+
+- Updated dependencies [[`013c431`](https://github.com/buffed-labs/reactive-dot/commit/013c431f820152e681334aa43bd2618d51e9d2eb)]:
+  - @reactive-dot/core@0.64.0
+
 ## 0.63.0
 
 ### Patch Changes

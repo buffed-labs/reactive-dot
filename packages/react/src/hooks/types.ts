@@ -54,3 +54,12 @@ export type InferQueryArgumentResult<
         >,
         typeof idle
       >;
+
+export type BackwardCompatInputOptions<T> =
+  | {
+      input: T;
+    }
+  | {
+      /** @deprecated Use `input` instead. */
+      variables: T;
+    };

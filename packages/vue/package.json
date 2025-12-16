@@ -1,6 +1,6 @@
 {
   "name": "@reactive-dot/vue",
-  "version": "0.63.0",
+  "version": "0.67.1",
   "description": "Vue library for ReactiveDOT",
   "keywords": [
     "substrate",
@@ -37,14 +37,14 @@
   "devDependencies": {
     "@reactive-dot/eslint-config": "workspace:^",
     "@reactive-dot/test": "workspace:^",
-    "@tsconfig/recommended": "^1.0.11",
-    "@tsconfig/strictest": "^2.0.7",
-    "@types/jsdom": "^27",
-    "eslint": "^9.39.0",
-    "jsdom": "^27.1.0",
+    "@tsconfig/recommended": "^1.0.13",
+    "@tsconfig/strictest": "^2.0.8",
+    "@types/jsdom": "^27.0.0",
+    "eslint": "^9.39.2",
+    "jsdom": "^27.3.0",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.6",
-    "vue": "^3.5.22"
+    "vitest": "^4.0.15",
+    "vue": "^3.5.25"
   },
   "peerDependencies": {
     "vue": "3.x"

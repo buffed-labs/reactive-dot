@@ -54,8 +54,7 @@ import { atom, type Getter, type WritableAtom } from "jotai";
 import { soon, soonAll } from "jotai-eager";
 import { unwrap } from "jotai/utils";
 import { useMemo } from "react";
-import { from, type Observable } from "rxjs";
-import { switchMap } from "rxjs/operators";
+import { from, type Observable, switchMap } from "rxjs";
 
 type FetchOptions = {
   /**

@@ -19,9 +19,9 @@ When you pass `{ defer: true }` to the query, the result will now be either:
 
 ```vue
 <script setup lang="ts">
-import { useLazyLoadQuery } from "@reactive-dot/vue";
+import { useQuery } from "@reactive-dot/vue";
 
-const { data: tvl } = await useLazyLoadQuery((query) =>
+const { data: tvl } = await useQuery((query) =>
   query.storage("NominationPools", "TotalValueLocked", [], { defer: true }),
 );
 </script>
@@ -40,13 +40,13 @@ Take this basic example, where a component displays the total balance across mul
 
 ```vue
 <script setup lang="ts">
-import { useLazyLoadQuery } from "@reactive-dot/vue";
+import { useQuery } from "@reactive-dot/vue";
 
 const { addresses } = defineProps<{
   addresses: string[];
 }>();
 
-const { data: ledgers } = await useLazyLoadQuery((query) =>
+const { data: ledgers } = await useQuery((query) =>
   query.storages(
     "Staking",
     "Ledger",
@@ -80,13 +80,13 @@ This allows your UI to update incrementally as each item resolves:
 ```vue
 <script setup lang="ts">
 import { pending } from "@reactive-dot/core";
-import { useLazyLoadQuery } from "@reactive-dot/vue";
+import { useQuery } from "@reactive-dot/vue";
 
 const { addresses } = defineProps<{
   addresses: string[];
 }>();
 
-const { data: ledgers } = await useLazyLoadQuery((query) =>
+const { data: ledgers } = await useQuery((query) =>
   query.storages(
     "Staking",
     "Ledger",

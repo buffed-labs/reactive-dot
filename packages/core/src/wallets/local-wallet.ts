@@ -3,7 +3,7 @@ import { Wallet, type WalletOptions } from "./wallet.js";
 import { BehaviorSubject, skip, type Subscription } from "rxjs";
 
 type AccountStore<T extends Pick<PolkadotSignerAccount, "id">> = {
-  add(account: T): void;
+  add(account: Omit<T, "id">): void;
   clear(): void;
   delete(account: { id: T["id"] }): void;
   delete(accountId: T["id"]): void;
@@ -28,9 +28,15 @@ export abstract class LocalWallet<
   TOptions extends WalletOptions = WalletOptions,
   TStorageKey extends string = string,
 > extends Wallet<TOptions, "accounts" | TStorageKey> {
+  protected abstract accountId(
+    account: Omit<TAccount, "id">,
+  ): PolkadotSignerAccount["id"];
+
   protected abstract accountToJson(account: Omit<TAccount, "id">): TJsonAccount;
 
-  protected abstract accountFromJson(jsonAccount: TJsonAccount): TAccount;
+  protected abstract accountFromJson(
+    jsonAccount: TJsonAccount,
+  ): Omit<TAccount, "id">;
 
   protected localAccounts$: BehaviorSubject<TAccount[]> = new BehaviorSubject<
     TAccount[]
@@ -57,7 +63,10 @@ export abstract class LocalWallet<
   initialize() {
     this.localAccounts$.next(
       JSON.parse(this.storage.getItem("accounts") ?? JSON.stringify([])).map(
-        (rawAccount: TJsonAccount) => this.accountFromJson(rawAccount),
+        (rawAccount: TJsonAccount) => {
+          const account = this.accountFromJson(rawAccount);
+          return { ...account, id: this.accountId(account) };
+        },
       ),
     );
   }
@@ -66,11 +75,13 @@ export abstract class LocalWallet<
    * @experimental
    */
   accountStore: AccountStore<TAccount> = {
-    add: (account: TAccount) => {
+    add: (account: Omit<TAccount, "id">) => {
+      const id = this.accountId(account);
+
       this.localAccounts$.next(
         this.localAccounts$.value
-          .filter((storedAccount) => storedAccount.id !== account.id)
-          .concat([account]),
+          .filter((storedAccount) => storedAccount.id !== id)
+          .concat([{ ...account, id } as TAccount]),
       );
     },
     clear: () => {

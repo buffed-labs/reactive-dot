@@ -6,8 +6,7 @@ import { defineConfig, idle, pending } from "@reactive-dot/core";
 import { act, renderHook } from "@testing-library/react";
 import { atom } from "jotai";
 import type { PolkadotSigner, TxEvent } from "polkadot-api";
-import { from, of, throwError } from "rxjs";
-import { concatMap, delay } from "rxjs/operators";
+import { concatMap, delay, from, of, throwError } from "rxjs";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
 const mockSignSubmitAndWatch = vi.fn();
@@ -90,13 +89,13 @@ it("sign submit and watch", async () => {
   expect(result.current[0]).toMatchObject({ type: "finalized" });
 });
 
-it("accepts variables", async () => {
+it.each(["input", "variables"] as const)(`accepts %s`, async (key) => {
   const { result } = await act(() =>
     renderHook(
       () =>
-        useMutation((tx, variables: string) =>
+        useMutation((tx, input: string) =>
           // @ts-expect-error mocked call
-          tx.TestPallet!.testCall(variables),
+          tx.TestPallet!.testCall(input),
         ),
       {
         wrapper: ({ children }) => (
@@ -116,7 +115,7 @@ it("accepts variables", async () => {
 
   await act(() =>
     result.current[1]({
-      variables: "foo",
+      [key as "input"]: "foo",
     }),
   );
 

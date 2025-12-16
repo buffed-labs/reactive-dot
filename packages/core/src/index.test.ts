@@ -4,6 +4,7 @@ import { expect, it } from "vitest";
 it("should match inline snapshot", () =>
   expect(Object.keys(exports)).toMatchInlineSnapshot(`
     [
+      "whenAccountsChanged",
       "defineConfig",
       "defineContract",
       "BaseError",
@@ -15,16 +16,5 @@ it("should match inline snapshot", () =>
       "idle",
       "pending",
       "unsafeDescriptor",
-      "aggregateWallets",
-      "connectWallet",
-      "disconnectWallet",
-      "getAccounts",
-      "unstable_getBlockExtrinsics",
-      "getBlock",
-      "getClient",
-      "getConnectedWallets",
-      "initializeWallets",
-      "preflight",
-      "query",
     ]
   `));

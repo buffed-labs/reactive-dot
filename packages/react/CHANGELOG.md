@@ -1,5 +1,67 @@
 # @reactive-dot/react
 
+## 0.67.1
+
+### Patch Changes
+
+- [#1091](https://github.com/buffed-labs/reactive-dot/pull/1091) [`9c922df`](https://github.com/buffed-labs/reactive-dot/commit/9c922dfdc897249a6fece8c16ac61a3b6ca9d020) Thanks [@tien](https://github.com/tien)! - Fixed breaking Revive runtime change on PassetHub.
+
+- Updated dependencies [[`9c922df`](https://github.com/buffed-labs/reactive-dot/commit/9c922dfdc897249a6fece8c16ac61a3b6ca9d020)]:
+  - @reactive-dot/core@0.67.1
+
+## 0.67.0
+
+### Minor Changes
+
+- [#1079](https://github.com/buffed-labs/reactive-dot/pull/1079) [`f54b51a`](https://github.com/buffed-labs/reactive-dot/commit/f54b51a2b56c36fc4b5df85668371a81d896299f) Thanks [@tien](https://github.com/tien)! - For mutation functions, deprecated the `variables` parameter in favor of `input`. The new parameter name more accurately describes acceptable inputs, which can be objects, arrays, primitives, or other types.
+
+### Patch Changes
+
+- [#1080](https://github.com/buffed-labs/reactive-dot/pull/1080) [`1ee3bfa`](https://github.com/buffed-labs/reactive-dot/commit/1ee3bfa01d99976f9d2c6cc348fd6a708ea58f33) Thanks [@tien](https://github.com/tien)! - Bumped dependencies.
+
+- [#1075](https://github.com/buffed-labs/reactive-dot/pull/1075) [`e3275f5`](https://github.com/buffed-labs/reactive-dot/commit/e3275f5b3a936342b9e49b2480856375d50d5259) Thanks [@tien](https://github.com/tien)! - Preferred importing operators from `rxjs` instead of `rxjs/operators`.
+
+- Updated dependencies [[`e3275f5`](https://github.com/buffed-labs/reactive-dot/commit/e3275f5b3a936342b9e49b2480856375d50d5259)]:
+  - @reactive-dot/core@0.67.0
+
+## 0.66.0
+
+### Patch Changes
+
+- Updated dependencies [[`ba806d6`](https://github.com/buffed-labs/reactive-dot/commit/ba806d64fa895a1fa5ae3d18c7d4224d8d2a824f)]:
+  - @reactive-dot/core@0.66.0
+
+## 0.65.0
+
+### Patch Changes
+
+- [#1059](https://github.com/buffed-labs/reactive-dot/pull/1059) [`c207d46`](https://github.com/buffed-labs/reactive-dot/commit/c207d469c633d80d43d94bdbc54bea12d1a7975e) Thanks [@tien](https://github.com/tien)! - Bumped dependencies.
+
+- Updated dependencies [[`c293e85`](https://github.com/buffed-labs/reactive-dot/commit/c293e85b54d902c5ec8235a3aaafd05c4366fa93)]:
+  - @reactive-dot/core@0.65.0
+
+## 0.64.1
+
+### Patch Changes
+
+- [#1040](https://github.com/buffed-labs/reactive-dot/pull/1040) [`70a76b9`](https://github.com/buffed-labs/reactive-dot/commit/70a76b93332b5333a1e8c83b04cba8c80086a355) Thanks [@tien](https://github.com/tien)! - Revert breaking wallets changes.
+
+- Updated dependencies [[`70a76b9`](https://github.com/buffed-labs/reactive-dot/commit/70a76b93332b5333a1e8c83b04cba8c80086a355)]:
+  - @reactive-dot/core@0.64.1
+
+## 0.64.0
+
+### Patch Changes
+
+- Updated dependencies [[`013c431`](https://github.com/buffed-labs/reactive-dot/commit/013c431f820152e681334aa43bd2618d51e9d2eb)]:
+  - @reactive-dot/core@0.64.0
+
+## 0.63.2
+
+### Patch Changes
+
+- [#1031](https://github.com/buffed-labs/reactive-dot/pull/1031) [`67039a1`](https://github.com/buffed-labs/reactive-dot/commit/67039a15b4b80a91667dcbeb921d9b3af4c184d8) Thanks [@tien](https://github.com/tien)! - Renamed `usePromiseState` to `usePromiseValue`.
+
 ## 0.63.0
 
 ### Patch Changes
@@ -55,7 +117,7 @@
 
 ### Patch Changes
 
-- [#977](https://github.com/buffed-labs/reactive-dot/pull/977) [`80e6dc7`](https://github.com/buffed-labs/reactive-dot/commit/80e6dc7ed68fd58b47e7795fab96498f42ecd69b) Thanks [@tien](https://github.com/tien)! - Improved `usePromiseState`:
+- [#977](https://github.com/buffed-labs/reactive-dot/pull/977) [`80e6dc7`](https://github.com/buffed-labs/reactive-dot/commit/80e6dc7ed68fd58b47e7795fab96498f42ecd69b) Thanks [@tien](https://github.com/tien)! - Improved `usePromiseValue`:
   - Skip extra render when Promise is already fulfilled
   - Set fallback value in render rather than part of side effect
 
@@ -90,12 +152,12 @@
   BREAKING CHANGES
   - Removed the `useSpendableBalance(addresses: Address[])` overload, use `useSpendableBalances(addresses: Address[])` instead.
   - Removed `useLazyLoadQuery(queries: Array<{ chainId: ChainID; query: Query }>)` overload. Use `{ use: false }` instead to avoid suspense waterfall for multi-chain queries.
-  - Removed the `defer` option from `useAccounts` and `useSpendableBalance(s)`. To opt out of suspense, use `{ use: false }` and combine with `usePromiseState` when you need a stateful value:
+  - Removed the `defer` option from `useAccounts` and `useSpendableBalance(s)`. To opt out of suspense, use `{ use: false }` and combine with `usePromiseValue` when you need a stateful value:
 
     ```ts
-    import { useAccounts, usePromiseState } from "@reactive-dot/react";
+    import { useAccounts, usePromiseValue } from "@reactive-dot/react";
 
-    const accounts = usePromiseState(
+    const accounts = usePromiseValue(
       useAccounts({ use: false }),
       (prev) => prev ?? undefined,
     ); // WalletAccount[] | undefined

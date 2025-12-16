@@ -1,5 +1,79 @@
 # @reactive-dot/core
 
+## 0.67.2
+
+### Patch Changes
+
+- [#1094](https://github.com/buffed-labs/reactive-dot/pull/1094) [`59bfaf5`](https://github.com/buffed-labs/reactive-dot/commit/59bfaf592b185407d5ce1a0cf18f2d0494081011) Thanks [@tien](https://github.com/tien)! - Cache created Revive APIs.
+
+## 0.67.1
+
+### Patch Changes
+
+- [#1091](https://github.com/buffed-labs/reactive-dot/pull/1091) [`9c922df`](https://github.com/buffed-labs/reactive-dot/commit/9c922dfdc897249a6fece8c16ac61a3b6ca9d020) Thanks [@tien](https://github.com/tien)! - Fixed breaking Revive runtime change on PassetHub.
+
+## 0.67.0
+
+### Patch Changes
+
+- [#1075](https://github.com/buffed-labs/reactive-dot/pull/1075) [`e3275f5`](https://github.com/buffed-labs/reactive-dot/commit/e3275f5b3a936342b9e49b2480856375d50d5259) Thanks [@tien](https://github.com/tien)! - Preferred importing operators from `rxjs` instead of `rxjs/operators`.
+
+## 0.66.0
+
+### Minor Changes
+
+- [#1066](https://github.com/buffed-labs/reactive-dot/pull/1066) [`ba806d6`](https://github.com/buffed-labs/reactive-dot/commit/ba806d64fa895a1fa5ae3d18c7d4224d8d2a824f) Thanks [@tien](https://github.com/tien)! - Added top-level `whenAccountsChanged` API.
+
+## 0.65.1
+
+### Patch Changes
+
+- [#1061](https://github.com/buffed-labs/reactive-dot/pull/1061) [`b6794d0`](https://github.com/buffed-labs/reactive-dot/commit/b6794d0adfd957943fe5dbd607c8e06242ebe94b) Thanks [@tien](https://github.com/tien)! - Reduced unnecessary subscription updates in `watch-entries` queries when entries remain unchanged.
+
+## 0.65.0
+
+### Minor Changes
+
+- [#1058](https://github.com/buffed-labs/reactive-dot/pull/1058) [`c293e85`](https://github.com/buffed-labs/reactive-dot/commit/c293e85b54d902c5ec8235a3aaafd05c4366fa93) Thanks [@tien](https://github.com/tien)! - BREAKING: removed deprecated top-level action exports in preparation for stable top-level APIs.
+
+## 0.64.4
+
+### Patch Changes
+
+- [#1050](https://github.com/buffed-labs/reactive-dot/pull/1050) [`17257f5`](https://github.com/buffed-labs/reactive-dot/commit/17257f5cfaf47c2e17c7737afc0963bb7d32a6d6) Thanks [@tien](https://github.com/tien)! - Moved `abitype` to dev-dependencies.
+
+- [#1050](https://github.com/buffed-labs/reactive-dot/pull/1050) [`a9d05d8`](https://github.com/buffed-labs/reactive-dot/commit/a9d05d84177c36fe1aa88fb936b765b639a8fd55) Thanks [@tien](https://github.com/tien)! - Bumped dependencies.
+
+## 0.64.3
+
+### Patch Changes
+
+- [#1048](https://github.com/buffed-labs/reactive-dot/pull/1048) [`d99ed90`](https://github.com/buffed-labs/reactive-dot/commit/d99ed907f0343d5f1524a536d497e611b7f781f0) Thanks [@tien](https://github.com/tien)! - Fixed compatibility with latest Polkadot-API version.
+
+## 0.64.2
+
+### Patch Changes
+
+- [#1043](https://github.com/buffed-labs/reactive-dot/pull/1043) [`ac2ca03`](https://github.com/buffed-labs/reactive-dot/commit/ac2ca032ee9251199b4b0bb8cc42483168991157) Thanks [@tien](https://github.com/tien)! - Refactored account ID logic for local wallets.
+
+## 0.64.1
+
+### Patch Changes
+
+- [#1040](https://github.com/buffed-labs/reactive-dot/pull/1040) [`70a76b9`](https://github.com/buffed-labs/reactive-dot/commit/70a76b93332b5333a1e8c83b04cba8c80086a355) Thanks [@tien](https://github.com/tien)! - Revert breaking wallets changes.
+
+## 0.64.0
+
+### Minor Changes
+
+- [#1038](https://github.com/buffed-labs/reactive-dot/pull/1038) [`013c431`](https://github.com/buffed-labs/reactive-dot/commit/013c431f820152e681334aa43bd2618d51e9d2eb) Thanks [@tien](https://github.com/tien)! - Removed local ID from wallet accounts.
+
+## 0.63.3
+
+### Patch Changes
+
+- [#1034](https://github.com/buffed-labs/reactive-dot/pull/1034) [`1ac5653`](https://github.com/buffed-labs/reactive-dot/commit/1ac565336ea7e036255193295d649e5ebc411075) Thanks [@tien](https://github.com/tien)! - Fixed account not using fallback chainspec for SS58 format.
+
 ## 0.63.1
 
 ### Patch Changes

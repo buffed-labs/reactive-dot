@@ -1,18 +1,18 @@
 import { MutationEventSubjectContext } from "../contexts/mutation.js";
 import { SignerContext } from "../contexts/signer.js";
 import { tapTx } from "../utils/tap-tx.js";
-import type { ChainHookOptions } from "./types.js";
+import type { BackwardCompatInputOptions, ChainHookOptions } from "./types.js";
 import { useAsyncAction } from "./use-async-action.js";
 import { internal_useChainId } from "./use-chain-id.js";
+import { clientAtom } from "./use-client.js";
 import { useConfig } from "./use-config.js";
-import { typedApiAtom } from "./use-typed-api.js";
 import { MutationError } from "@reactive-dot/core";
 import {
   getSolidityContractTx,
   InkContract,
-  type PatchedReturnType,
   type InkMutationBuilder,
   type MutationBuilder,
+  type PatchedReturnType,
   type SolidityMutationBuilder,
   type TxOptionsOf,
 } from "@reactive-dot/core/internal.js";
@@ -23,8 +23,7 @@ import {
 import { useAtomCallback } from "jotai/utils";
 import type { PolkadotSigner } from "polkadot-api";
 import { use } from "react";
-import { from } from "rxjs";
-import { switchMap } from "rxjs/operators";
+import { from, switchMap } from "rxjs";
 
 /**
  * Hook for mutating (writing to) a contract.
@@ -38,7 +37,7 @@ export function useContractMutation<
   TAction extends (
     builder: MutationBuilder,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    variables: any,
+    input: any,
   ) => PatchedReturnType<MutationBuilder>,
 >(
   action: TAction,
@@ -62,8 +61,8 @@ export function useContractMutation<
     signer?: PolkadotSigner;
     txOptions?: TxOptionsOf<Awaited<ReturnType<TAction>>>;
   } & (Parameters<TAction>["length"] extends 2
-    ? { variables: Parameters<TAction>[1] }
-    : { variables?: Parameters<TAction>[1] });
+    ? BackwardCompatInputOptions<Parameters<TAction>[1]>
+    : Partial<BackwardCompatInputOptions<Parameters<TAction>[1]>>);
 
   return useAsyncAction(
     useAtomCallback(
@@ -89,7 +88,7 @@ export function useContractMutation<
         ) =>
           getInkContractTx(
             ...(await Promise.all([
-              get(typedApiAtom(config, chainId)),
+              get(clientAtom(config, chainId)),
               getInkClient(contract),
             ])),
             signer,
@@ -105,7 +104,7 @@ export function useContractMutation<
           ...[body]
         ) =>
           getSolidityContractTx(
-            await get(typedApiAtom(config, chainId)),
+            await get(clientAtom(config, chainId)),
             contract.abi,
             signer,
             address,
@@ -129,7 +128,13 @@ export function useContractMutation<
                   : solidityMutationBuilder(
                       ...(args as Parameters<SolidityMutationBuilder>),
                     ),
-              submitOptions?.variables,
+              submitOptions === undefined
+                ? undefined
+                : "input" in submitOptions
+                  ? submitOptions.input
+                  : "variables" in submitOptions
+                    ? submitOptions.variables
+                    : undefined,
             ),
           ),
         ).pipe(

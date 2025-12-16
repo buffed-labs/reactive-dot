@@ -5,7 +5,7 @@ import {
   LocalWallet,
   type PolkadotSignerAccount,
 } from "@reactive-dot/core/wallets.js";
-import { map } from "rxjs/operators";
+import { map } from "rxjs";
 
 type LedgerAccount = {
   id: string;
@@ -77,10 +77,13 @@ export class LedgerWallet extends LocalWallet<
     };
   }
 
+  protected override accountId(account: Omit<LedgerAccount, "id">) {
+    return Binary.fromBytes(account.publicKey).asHex();
+  }
+
   override accountFromJson(data: JsonLedgerAccount) {
     return {
       ...data,
-      id: data.publicKey,
       publicKey: Binary.fromHex(data.publicKey).asBytes(),
     };
   }
@@ -103,7 +106,6 @@ export class LedgerWallet extends LocalWallet<
     const publicKey = await ledgerSigner.getPubkey(path);
 
     return {
-      id: Binary.fromBytes(publicKey).asHex(),
       publicKey,
       path,
     } as LedgerAccount;

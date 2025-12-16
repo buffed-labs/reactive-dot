@@ -1,6 +1,6 @@
 {
   "name": "@reactive-dot/core",
-  "version": "0.63.1",
+  "version": "0.67.2",
   "description": "VanillaJS library for ReactiveDOT",
   "keywords": [
     "substrate",
@@ -21,7 +21,8 @@
   "type": "module",
   "files": [
     "src",
-    "build"
+    "build",
+    ".papi/descriptors/dist/*"
   ],
   "exports": {
     ".": "./build/index.js",
@@ -33,7 +34,7 @@
   },
   "scripts": {
     "dev": "tsc --build --watch",
-    "build": " tsc --build --clean && tsc --build",
+    "build": "papi generate && mv .papi/descriptors/dist/index.mjs .papi/descriptors/dist/index.js && tsc --build --clean && tsc --build",
     "lint": "eslint src",
     "test": "vitest"
   },
@@ -41,19 +42,19 @@
     "@noble/hashes": "^2.0.1",
     "@reactive-dot/utils": "workspace:^",
     "@substrate/smoldot-discovery": "^2.0.2",
-    "abitype": "^1.1.1",
-    "ox": "^0.9.14"
+    "ox": "^0.9.17"
   },
   "devDependencies": {
     "@reactive-dot/eslint-config": "workspace:^",
-    "@tsconfig/recommended": "^1.0.11",
-    "@tsconfig/strictest": "^2.0.7",
-    "eslint": "^9.39.0",
-    "polkadot-api": "^1.20.1",
+    "@tsconfig/recommended": "^1.0.13",
+    "@tsconfig/strictest": "^2.0.8",
+    "abitype": "^1.2.2",
+    "eslint": "^9.39.2",
+    "polkadot-api": "^1.23.1",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.6"
+    "vitest": "^4.0.15"
   },
   "peerDependencies": {
-    "polkadot-api": ">=1.19.x"
+    "polkadot-api": ">=1.21.1"
   }
 }

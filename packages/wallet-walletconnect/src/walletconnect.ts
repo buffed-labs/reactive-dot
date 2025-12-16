@@ -13,8 +13,7 @@ import type {
   IUniversalProvider,
   UniversalProviderOpts,
 } from "@walletconnect/universal-provider";
-import { BehaviorSubject } from "rxjs";
-import { map } from "rxjs/operators";
+import { BehaviorSubject, map } from "rxjs";
 
 export class WalletConnect extends DeepLinkWallet {
   readonly #providerOptions: UniversalProviderOpts;
@@ -63,9 +62,8 @@ export class WalletConnect extends DeepLinkWallet {
   }
 
   async initialize() {
-    const { UniversalProvider } = await import(
-      "@walletconnect/universal-provider"
-    );
+    const { UniversalProvider } =
+      await import("@walletconnect/universal-provider");
 
     this.#provider ??= await UniversalProvider.init(this.#providerOptions);
 

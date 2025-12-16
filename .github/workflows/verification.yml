@@ -1,5 +1,8 @@
 name: Verification
 
+permissions:
+  contents: read
+
 on: [workflow_call]
 
 jobs:
@@ -7,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - uses: ./.github/actions/setup
       - run: yarn prettier --check .
       - run: yarn lint

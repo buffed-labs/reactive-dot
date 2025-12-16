@@ -1,10 +1,11 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { CommonDescriptor } from "../chains.js";
 import type {
   InferInstructionResponse,
   SimpleQueryInstruction,
 } from "../query-builder.js";
 import type { ChainDefinition, TypedApi } from "polkadot-api";
-import { map } from "rxjs/operators";
+import { filter, map, type Observable } from "rxjs";
 
 export function query<
   TInstruction extends SimpleQueryInstruction,
@@ -17,11 +18,9 @@ export function query<
   switch (instruction.type) {
     case "constant":
       return (
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (api.constants[instruction.pallet]![instruction.constant] as any)()
-      );
+        api.constants[instruction.pallet]![instruction.constant] as any
+      )();
     case "runtime-api":
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       return (api.apis[instruction.api]![instruction.method] as any)(
         ...instruction.args,
         { signal: options?.signal, at: instruction.at },
@@ -29,7 +28,6 @@ export function query<
     case "storage": {
       const storageEntry = api.query[instruction.pallet]![
         instruction.storage
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ] as any;
 
       return instruction.at?.startsWith("0x")
@@ -41,8 +39,7 @@ export function query<
     }
     case "storage-entries":
       return instruction.at?.startsWith("0x")
-        ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (api.query[instruction.pallet]![instruction.storage] as any) // Comment to prevent formatting
+        ? (api.query[instruction.pallet]![instruction.storage] as any)
             .getEntries(...instruction.args, {
               signal: options?.signal,
               at: instruction.at,
@@ -57,26 +54,31 @@ export function query<
                 }),
               ),
             )
-        : // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          (api.query[instruction.pallet]![instruction.storage] as any) // Comment to prevent formatting
-            .watchEntries(...instruction.args, {
+        : ((
+            (
+              api.query[instruction.pallet]![instruction.storage] as any
+            ).watchEntries(...instruction.args, {
               at: instruction.at,
-            })
-            .pipe(
-              map(
-                (response: {
-                  entries: Array<{ args: unknown; value: unknown }>;
-                }) =>
-                  response.entries.map(({ args, value }) =>
-                    Object.assign([args, value], {
-                      /** @deprecated Use index access instead. */
-                      keyArgs: args,
-                      /** @deprecated Use index access instead. */
-                      value,
-                    }),
-                  ),
+            }) as Observable<{
+              entries: Array<{ args: unknown; value: unknown }>;
+              deltas: null | {
+                deleted: unknown[];
+                upserted: unknown[];
+              };
+            }>
+          ).pipe(
+            filter((response) => response.deltas !== null),
+            map((response) =>
+              response.entries.map(({ args, value }) =>
+                Object.assign([args, value], {
+                  /** @deprecated Use index access instead. */
+                  keyArgs: args,
+                  /** @deprecated Use index access instead. */
+                  value,
+                }),
               ),
-            );
+            ),
+          ) as InferInstructionResponse<TInstruction>);
   }
 }
 

@@ -3,8 +3,7 @@ import type { SolidityContract } from "../contract.js";
 import type { ContractCompatApi, ContractEvent } from "../types.js";
 import type { ExtractAbiEvent, ExtractAbiEventNames } from "abitype";
 import type { AbiEvent } from "ox";
-import { defer } from "rxjs";
-import { map, switchMap } from "rxjs/operators";
+import { defer, map, switchMap } from "rxjs";
 
 export type SolidityContractEventNames<TContract extends SolidityContract> =
   ExtractAbiEventNames<TContract["abi"]>;

@@ -26,7 +26,7 @@ watchEffect(() => {
   <label>
     New Number:
     <input v-model="value" type="number" />
-    <button type="button" @click="execute({ variables: BigInt(value) })">
+    <button type="button" @click="execute({ input: BigInt(value) })">
       Submit
     </button>
   </label>

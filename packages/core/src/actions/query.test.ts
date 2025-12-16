@@ -35,7 +35,10 @@ const fakeApi = {
         getEntries: (..._: unknown[]) =>
           Promise.resolve([{ keyArgs: "foo", value: "bar" }]),
         watchEntries: (..._: unknown[]) =>
-          of({ entries: [{ args: "foo", value: "bar" }] }),
+          of({
+            entries: [{ args: "foo", value: "bar" }],
+            deltas: { upserted: [{ args: "foo", value: "bar" }] },
+          }),
       },
     },
   },

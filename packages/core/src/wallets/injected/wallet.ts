@@ -5,8 +5,7 @@ import type {
   InjectedExtension,
   InjectedPolkadotAccount,
 } from "polkadot-api/pjs-signer";
-import { BehaviorSubject, Observable, of } from "rxjs";
-import { map, switchMap } from "rxjs/operators";
+import { BehaviorSubject, map, Observable, of, switchMap } from "rxjs";
 
 export type InjectedWalletOptions = WalletOptions & { originName?: string };
 
@@ -43,9 +42,8 @@ export class InjectedWallet extends Wallet<InjectedWalletOptions, "connected"> {
 
   async connect() {
     if (this.#extension$.getValue() === undefined) {
-      const { connectInjectedExtension } = await import(
-        "polkadot-api/pjs-signer"
-      );
+      const { connectInjectedExtension } =
+        await import("polkadot-api/pjs-signer");
 
       this.#extension$.next(
         await connectInjectedExtension(this.name, this.options?.originName),

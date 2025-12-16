@@ -1,0 +1,22 @@
+{
+  "version": 0,
+  "descriptorPath": ".papi/descriptors",
+  "options": {
+    "noDescriptorsPackage": true,
+    "whitelist": ".papi/whitelist.ts"
+  },
+  "entries": {
+    "passet": {
+      "wsUrl": "wss://testnet-passet-hub.polkadot.io",
+      "metadata": ".papi/metadata/passet.scale",
+      "genesis": "0xfd974cf9eaf028f5e44b9fdd1949ab039c6cf9cc54449b0b60d71b042e79aeb6",
+      "codeHash": "0xedc99e025ff3d49960fb34d8005e91f555638f4e7f997b602507946876c12f50"
+    },
+    "pasAh": {
+      "chain": "paseo_asset_hub",
+      "metadata": ".papi/metadata/pasAh.scale",
+      "genesis": "0xd6eec26135305a8ad257a20d003357284c8aa03d0bdb2b357ab0a22371e11ef2",
+      "codeHash": "0x580f8c8474f117c97f7027f89598e7dfa83d1c9cb5cdd24aee121a70787be206"
+    }
+  }
+}

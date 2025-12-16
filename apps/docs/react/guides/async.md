@@ -71,18 +71,18 @@ function App() {
 }
 ```
 
-### Using [`usePromiseState`](/react/api/react/functions/usePromiseState) for non-suspending UIs
+### Using [`usePromiseValue`](/react/api/react/functions/usePromiseValue) for non-suspending UIs
 
-When you want to handle loading states without suspense, use [`usePromiseState`](/react/api/react/functions/usePromiseState) to track promise state. This is particularly useful when creating reusable hooks where you don't want to surprise consumers with unexpected suspense behavior.
+When you want to handle loading states without suspense, use [`usePromiseValue`](/react/api/react/functions/usePromiseValue) to track promise state. This is particularly useful when creating reusable hooks where you don't want to surprise consumers with unexpected suspense behavior.
 
 ```tsx
 import { pending } from "@reactive-dot/core";
-import { useSpendableBalance, usePromiseState } from "@reactive-dot/react";
+import { useSpendableBalance, usePromiseValue } from "@reactive-dot/react";
 
 function UserBalance({ address }: { address: string }) {
   const balancePromise = useSpendableBalance(address, { use: false });
   // highlight-next-line
-  const balance = usePromiseState(balancePromise);
+  const balance = usePromiseValue(balancePromise);
 
   // highlight-next-line
   if (balance === pending) {
@@ -98,14 +98,14 @@ function UserBalance({ address }: { address: string }) {
 You can provide a fallback function to avoid the `pending` symbol entirely:
 
 ```tsx
-import { useSpendableBalance, usePromiseState } from "@reactive-dot/react";
+import { useSpendableBalance, usePromiseValue } from "@reactive-dot/react";
 
 function UserBalance({ address }: { address: string }) {
   const balancePromise = useSpendableBalance(address, { use: false });
 
   // highlight-start
   // Falls back to previous value or undefined while loading
-  const balance = usePromiseState(
+  const balance = usePromiseValue(
     balancePromise,
     (previousValue) => previousValue ?? undefined,
   );
@@ -128,7 +128,7 @@ This is useful for:
 
 :::tip Reusable hooks
 
-When building reusable hooks, consider using [`usePromiseState`](/react/api/react/functions/usePromiseState) over the default suspense mode. This gives consumers explicit control over how they handle loading states, avoiding unexpected suspense behavior.
+When building reusable hooks, consider using [`usePromiseValue`](/react/api/react/functions/usePromiseValue) over the default suspense mode. This gives consumers explicit control over how they handle loading states, avoiding unexpected suspense behavior.
 
 :::
 
@@ -208,7 +208,7 @@ function App() {
 | ------------------------------------------------------------------- | ----------------------------------------------------- |
 | **Default (Suspense)**                                              | Simplest approach, great for most cases               |
 | **`use`**                                                           | When you need promise control but still want suspense |
-| **[`usePromiseState`](/react/api/react/functions/usePromiseState)** | Custom loading states without suspense                |
+| **[`usePromiseValue`](/react/api/react/functions/usePromiseValue)** | Custom loading states without suspense                |
 | **[`usePromises`](/react/api/react/functions/usePromises)**         | Parallel data fetching with suspense                  |
 | **[`Await`](/react/api/react/functions/Await)**                     | Declarative promise handling, good for composition    |
 
@@ -264,7 +264,7 @@ Components using async hooks will throw errors that propagate up the component t
 
 1. **Start with suspense mode** - It's the simplest and most React-idiomatic approach
 2. **Use `{ use: false }` when you need control** - For custom loading states or parallel requests
-3. **Consider [`usePromiseState`](/react/api/react/functions/usePromiseState) for reusable hooks** - Avoids surprising consumers with suspense
+3. **Consider [`usePromiseValue`](/react/api/react/functions/usePromiseValue) for reusable hooks** - Avoids surprising consumers with suspense
 4. **Combine patterns** - Different parts of your app can use different patterns
 5. **Place Error Boundaries strategically** - Wrap sections of your app where you want errors to be caught and displayed, based on how granular you want your error UI to be
 
@@ -279,7 +279,7 @@ import {
   useBlock,
   useLazyLoadQuery,
   usePromises,
-  usePromiseState,
+  usePromiseValue,
   Await,
 } from "@reactive-dot/react";
 import { Suspense, use } from "react";
@@ -297,7 +297,7 @@ function QuickBalance({ address }: { address: string }) {
 // Non-suspending with explicit state control
 // highlight-end
 function SmoothBalance({ address }: { address: string }) {
-  const balance = usePromiseState(useSpendableBalance(address, { use: false }));
+  const balance = usePromiseValue(useSpendableBalance(address, { use: false }));
 
   return (
     <div className={balance === pending ? "loading" : ""}>

@@ -1,4 +1,4 @@
-import { usePromiseState } from "./use-promise-state.js";
+import { usePromiseValue } from "./use-promise-value.js";
 import { pending } from "@reactive-dot/core";
 import { act, renderHook } from "@testing-library/react";
 import { useCallback } from "react";
@@ -7,7 +7,7 @@ import { expect, it } from "vitest";
 it("returns resolved value", async () => {
   const { promise, resolve } = Promise.withResolvers<true>();
 
-  const { result } = renderHook(() => usePromiseState(promise));
+  const { result } = renderHook(() => usePromiseValue(promise));
 
   expect(result.current).toBe(pending);
 
@@ -20,7 +20,7 @@ it("returns fallback while promise is pending", async () => {
   const { promise, resolve } = Promise.withResolvers<true>();
 
   const { result } = renderHook(() =>
-    usePromiseState(
+    usePromiseValue(
       promise,
       useCallback(() => undefined, []),
     ),
@@ -36,7 +36,7 @@ it("returns fallback while promise is pending", async () => {
 it("throws rejected promise", async () => {
   const { promise, reject } = Promise.withResolvers<true>();
 
-  const { result } = renderHook(() => usePromiseState(promise));
+  const { result } = renderHook(() => usePromiseValue(promise));
 
   expect(result.current).toBe(pending);
 
@@ -56,7 +56,7 @@ it("reset to pending with a new promise", async () => {
     Promise.withResolvers<true>();
 
   const { result, rerender } = renderHook(
-    (promise: Promise<true>) => usePromiseState(promise),
+    (promise: Promise<true>) => usePromiseValue(promise),
     { initialProps: promise1 },
   );
 
@@ -83,7 +83,7 @@ it("keep previous value with a new promise", async () => {
 
   const { result, rerender } = renderHook(
     (promise: Promise<string>) =>
-      usePromiseState(promise, (prev) => prev ?? pending),
+      usePromiseValue(promise, (prev) => prev ?? pending),
     { initialProps: promise1 },
   );
 

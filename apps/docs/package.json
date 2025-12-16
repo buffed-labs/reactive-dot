@@ -22,8 +22,8 @@
     "@signalwire/docusaurus-plugin-llms-txt": "^1.2.2",
     "clsx": "^2.1.1",
     "prism-react-renderer": "^2.4.1",
-    "react": "^19.2.0",
-    "react-dom": "^19.2.0"
+    "react": "^19.2.1",
+    "react-dom": "^19.2.1"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "3.9.2",
@@ -34,7 +34,7 @@
     "@reactive-dot/utils": "workspace:^",
     "@reactive-dot/vue": "workspace:^",
     "docusaurus-plugin-typedoc": "^1.4.2",
-    "typedoc": "^0.28.14",
+    "typedoc": "^0.28.15",
     "typedoc-plugin-markdown": "^4.9.0",
     "typescript": "^5.9.3"
   },

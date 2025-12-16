@@ -4,14 +4,13 @@ import { useContractMutation } from "./use-contract-mutation.js";
 import { defineConfig, defineContract } from "@reactive-dot/core";
 import { getInkContractTx } from "@reactive-dot/core/internal/actions.js";
 import type { TxEvent } from "polkadot-api";
-import { from, of, throwError } from "rxjs";
-import { concatMap, delay } from "rxjs/operators";
+import { concatMap, delay, from, of, throwError } from "rxjs";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
 const mockSignSubmitAndWatch = vi.fn();
 
-vi.mock("./use-typed-api.js", () => ({
-  useTypedApiPromise: vi.fn(),
+vi.mock("./use-client.js", () => ({
+  useClientPromise: vi.fn(),
 }));
 
 vi.mock("@reactive-dot/core/internal/actions.js", () => ({
@@ -84,11 +83,11 @@ it("sign submit and watch", async () => {
   expect(result.data.value).toMatchObject({ type: "finalized" });
 });
 
-it("accepts variables", async () => {
+it.each(["input", "variables"] as const)(`accepts %s`, async (key) => {
   const { result } = withSetup(
     () =>
-      useContractMutation((mutate, variables: { message: string }) =>
-        mutate(testContract, "0x", variables.message, {}),
+      useContractMutation((mutate, input: { message: string }) =>
+        mutate(testContract, "0x", input.message, {}),
       ),
     {
       [configKey]: defineConfig({ chains: {} }),
@@ -99,7 +98,7 @@ it("accepts variables", async () => {
 
   expect(result.status.value).toBe("idle");
 
-  result.execute({ variables: { message: "test_message" } });
+  result.execute({ [key as "input"]: { message: "test_message" } });
 
   expect(result.status.value).toBe("pending");
 

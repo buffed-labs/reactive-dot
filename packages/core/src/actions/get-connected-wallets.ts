@@ -1,8 +1,7 @@
 import type { MaybeAsync } from "../types.js";
 import { toObservable } from "../utils/to-observable.js";
 import type { Wallet } from "../wallets/wallet.js";
-import { combineLatest, of } from "rxjs";
-import { map, switchMap } from "rxjs/operators";
+import { combineLatest, map, of, switchMap } from "rxjs";
 
 export function getConnectedWallets(wallets: MaybeAsync<Wallet[]>) {
   return toObservable(wallets).pipe(
