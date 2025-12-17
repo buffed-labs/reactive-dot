@@ -1,5 +1,14 @@
-<svg width="200" height="200" viewBox="0 0 200 200" stroke="#eaeaea" fill="#eaeaea"
+<svg viewBox="0 0 200 200" stroke="#212121" fill="#212121"
     xmlns="http://www.w3.org/2000/svg">
+    <style>
+        @media (prefers-color-scheme: dark) {
+        :root {
+        stroke: #eaeaea;
+        fill: #eaeaea;
+        }
+        }
+    </style>
+
     <!-- Background pattern using React elliptical orbits -->
     <g fill="none" stroke-width="7" opacity="0.8">
         <ellipse cx="100" cy="100" rx="55" ry="85" transform="rotate(30 100 100)" />
