@@ -9,12 +9,21 @@
   color: inherit;
 
   figure {
-    svg {
-      width: 14rem;
-    }
-
     figcaption {
       display: none;
     }
+  }
+}
+
+.opengov {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  p {
+    flex: 1;
+    font-family: var(--ifm-heading-font-family);
+    font-size: var(--ifm-h1-font-size);
+    margin-bottom: 0;
   }
 }

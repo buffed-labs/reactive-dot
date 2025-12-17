@@ -19,7 +19,7 @@ const commonApiDocsConfig = {
 const config: Config = {
   title: "ReactiveDOT",
   tagline: "A reactive library for building Polkadot front-ends",
-  favicon: "img/favicon.ico",
+  favicon: "img/favicon.svg",
 
   url: "https://reactivedot.dev",
   baseUrl: "/",
@@ -183,8 +183,8 @@ const config: Config = {
     },
     prism: {
       additionalLanguages: ["bash"],
-      theme: prismThemes.github,
-      darkTheme: prismThemes.dracula,
+      theme: prismThemes.vsLight,
+      darkTheme: prismThemes.vsDark,
     },
     algolia:
       process.env.ALGOLIA_APP_ID === undefined

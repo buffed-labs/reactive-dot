@@ -1,15 +1,15 @@
 @font-face {
-  font-family: "Manrope";
+  font-family: "DM Serif Display";
   src:
-    local("Manrope"),
-    url("/font/Manrope.woff2") format("woff2");
+    local("DM Serif Display"),
+    url("/font/DMSerifDisplay.ttf") format("truetype");
 }
 
 @font-face {
-  font-family: "Unbounded";
+  font-family: "DM Sans";
   src:
-    local("Unbounded"),
-    url("/font/Unbounded.woff2") format("woff2");
+    local("DM Sans"),
+    url("/font/DMSans.ttf") format("truetype");
 }
 
 @font-face {
@@ -22,26 +22,26 @@
 
 :root {
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
-  --ifm-color-primary: #ff2c9c;
-  --ifm-color-primary-dark: #ff0a8c;
-  --ifm-color-primary-darker: #fd0086;
-  --ifm-color-primary-darkest: #e6007a;
-  --ifm-color-primary-light: #cf006e;
-  --ifm-color-primary-lighter: #c40068;
-  --ifm-color-primary-lightest: #a10055;
-  --ifm-font-family-base: "Manrope", sans-serif;
-  --ifm-heading-font-family: "Unbounded", sans-serif;
-  --ifm-font-family-monospace: "Monaspace Neon", ui-monospace, monospace;
+  --ifm-color-primary: #212121;
+  --ifm-color-primary-dark: #1e1e1e;
+  --ifm-color-primary-darker: #1c1c1c;
+  --ifm-color-primary-darkest: #171717;
+  --ifm-color-primary-light: #242424;
+  --ifm-color-primary-lighter: #262626;
+  --ifm-color-primary-lightest: #2b2b2b;
+  --ifm-font-family-base: "DM Sans", ui-sans-serif, sans-serif;
+  --ifm-heading-font-family: "DM Serif Display", ui-serif, serif;
+  --ifm-font-family-monospace:
+    "Monaspace Neon", ui-monospace, ui-monospace, monospace;
 }
 
-/* For readability concerns, you should choose a lighter palette in dark mode. */
 [data-theme="dark"] {
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
-  --ifm-color-primary: #ff86c6;
-  --ifm-color-primary-dark: #ff59b1;
-  --ifm-color-primary-darker: #ff4aaa;
-  --ifm-color-primary-darkest: #ff2c9c;
-  --ifm-color-primary-light: #ff0e8e;
-  --ifm-color-primary-lighter: #fe0087;
-  --ifm-color-primary-lightest: #d1006f;
+  --ifm-color-primary: #eaeaea;
+  --ifm-color-primary-dark: #d3d3d3;
+  --ifm-color-primary-darker: #c7c7c7;
+  --ifm-color-primary-darkest: #a4a4a4;
+  --ifm-color-primary-light: #ffffff;
+  --ifm-color-primary-lighter: #ffffff;
+  --ifm-color-primary-lightest: #ffffff;
 }
