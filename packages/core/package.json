@@ -42,7 +42,7 @@
     "@noble/hashes": "^2.0.1",
     "@reactive-dot/utils": "workspace:^",
     "@substrate/smoldot-discovery": "^2.0.2",
-    "ox": "^0.9.17"
+    "ox": "^0.10.6"
   },
   "devDependencies": {
     "@reactive-dot/eslint-config": "workspace:^",

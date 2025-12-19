@@ -5031,7 +5031,7 @@ __metadata:
     "@tsconfig/strictest": "npm:^2.0.8"
     abitype: "npm:^1.2.2"
     eslint: "npm:^9.39.2"
-    ox: "npm:^0.9.17"
+    ox: "npm:^0.10.6"
     polkadot-api: "npm:^1.23.1"
     typescript: "npm:^5.9.3"
     vitest: "npm:^4.0.15"
@@ -7480,6 +7480,21 @@ __metadata:
     zod:
       optional: true
   checksum: 10c0/8bc97d6592282d01aa4a60536ca4374b5ade81cef6d5d7a7a8d52c8a792ec7a77290f01091c1fb1e3358ecd0f8773d6576b175b841a396ca45ac0ce76b2054b2
+  languageName: node
+  linkType: hard
+
+"abitype@npm:^1.2.3":
+  version: 1.2.3
+  resolution: "abitype@npm:1.2.3"
+  peerDependencies:
+    typescript: ">=5.0.4"
+    zod: ^3.22.0 || ^4.0.0
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+    zod:
+      optional: true
+  checksum: 10c0/c8740de1ae4961723a153224a52cb9a34a57903fb5c2ad61d5082b0b79b53033c9335381aa8c663c7ec213c9955a9853f694d51e95baceedef27356f7745c634
   languageName: node
   linkType: hard
 
@@ -15540,9 +15555,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ox@npm:^0.9.17":
-  version: 0.9.17
-  resolution: "ox@npm:0.9.17"
+"ox@npm:^0.10.6":
+  version: 0.10.6
+  resolution: "ox@npm:0.10.6"
   dependencies:
     "@adraffy/ens-normalize": "npm:^1.11.0"
     "@noble/ciphers": "npm:^1.3.0"
@@ -15550,14 +15565,14 @@ __metadata:
     "@noble/hashes": "npm:^1.8.0"
     "@scure/bip32": "npm:^1.7.0"
     "@scure/bip39": "npm:^1.6.0"
-    abitype: "npm:^1.0.9"
+    abitype: "npm:^1.2.3"
     eventemitter3: "npm:5.0.1"
   peerDependencies:
     typescript: ">=5.4.0"
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10c0/082b1a568cabbc1a7eea2b724d90ec0289fa3519cdcbad975122caa175cde68284174c2df8f497fb6e64445143c1ba689ddbdde089898f5c83f5506d1e1ea6c0
+  checksum: 10c0/b270a413ad1423be3060936c69d69bb13628228ad916ad3fe6d430501835d8d07c7716eeef5ada88c009961e58d2c566c8b985d0618fcb95c498d44887d5d450
   languageName: node
   linkType: hard
 
