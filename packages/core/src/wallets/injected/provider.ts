@@ -11,7 +11,7 @@ export class InjectedWalletProvider extends WalletProvider {
 
     if (globalThis.document.readyState !== "complete") {
       await new Promise<void>((resolve) =>
-        globalThis.addEventListener("load", () => resolve()),
+        globalThis.addEventListener("load", () => resolve(), { once: true }),
       );
     }
 
