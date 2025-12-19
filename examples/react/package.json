@@ -20,7 +20,7 @@
     "jotai-devtools": "^0.13.0",
     "polkadot-api": "^1.23.1",
     "react": "^19.2.1",
-    "react-dom": "^19.2.1",
+    "react-dom": "^19.2.3",
     "react-error-boundary": "^6.0.0",
     "react-hot-toast": "^2.6.0"
   },
