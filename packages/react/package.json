@@ -49,7 +49,7 @@
     "@types/react": "^19.2.7",
     "eslint": "^9.39.2",
     "jsdom": "^27.3.0",
-    "react": "^19.2.1",
+    "react": "^19.2.3",
     "typescript": "^5.9.3",
     "vitest": "^4.0.15",
     "wonka": "^6.3.5"
