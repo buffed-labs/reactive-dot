@@ -35,23 +35,23 @@
     "@reactive-dot/core": "workspace:^",
     "jotai": "^2.16.0",
     "jotai-eager": "^0.2.3",
-    "jotai-effect": "^2.1.7",
+    "jotai-effect": "^2.2.1",
     "jotai-suspense": "^0.4.2"
   },
   "devDependencies": {
     "@reactive-dot/eslint-config": "workspace:^",
     "@reactive-dot/test": "workspace:^",
     "@testing-library/dom": "^10.4.1",
-    "@testing-library/react": "^16.3.0",
+    "@testing-library/react": "^16.3.1",
     "@testing-library/user-event": "^14.6.1",
     "@tsconfig/recommended": "^1.0.13",
     "@tsconfig/strictest": "^2.0.8",
     "@types/react": "^19.2.7",
     "eslint": "^9.39.2",
     "jsdom": "^27.3.0",
-    "react": "^19.2.1",
+    "react": "^19.2.3",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.15",
+    "vitest": "^4.0.16",
     "wonka": "^6.3.5"
   },
   "peerDependencies": {
