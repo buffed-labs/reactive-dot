@@ -19,8 +19,8 @@
     "date-fns": "^4.1.0",
     "jotai-devtools": "^0.13.0",
     "polkadot-api": "^1.23.1",
-    "react": "^19.2.1",
-    "react-dom": "^19.2.1",
+    "react": "^19.2.3",
+    "react-dom": "^19.2.3",
     "react-error-boundary": "^6.0.0",
     "react-hot-toast": "^2.6.0"
   },
@@ -34,6 +34,6 @@
     "@vitejs/plugin-react": "^5.1.2",
     "eslint": "^9.39.2",
     "typescript": "^5.9.3",
-    "vite": "^7.2.7"
+    "vite": "^7.3.0"
   }
 }

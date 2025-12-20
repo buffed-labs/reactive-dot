@@ -43,8 +43,8 @@
     "eslint": "^9.39.2",
     "jsdom": "^27.3.0",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.15",
-    "vue": "^3.5.25"
+    "vitest": "^4.0.16",
+    "vue": "^3.5.26"
   },
   "peerDependencies": {
     "vue": "3.x"
