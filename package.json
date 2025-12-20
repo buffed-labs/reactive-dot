@@ -18,11 +18,11 @@
   "type": "module",
   "packageManager": "yarn@4.10.3",
   "volta": {
-    "node": "22.20.0",
-    "yarn": "4.10.3"
+    "node": "25.2.1",
+    "yarn": "4.12.0"
   },
   "engines": {
-    "node": "22.x"
+    "node": "25.x"
   },
   "workspaces": [
     "apps/*",
