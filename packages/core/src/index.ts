@@ -1,5 +1,7 @@
 export type { Address } from "./address.js";
 export { whenAccountsChanged } from "./apis/when-accounts-changed.js";
+export { whenConnectedWalletsChanged } from "./apis/when-connected-wallets-changed.js";
+export { whenWalletsChanged } from "./apis/when-wallets-changed.js";
 export type { AsyncValue } from "./async-state.js";
 export type { ChainId } from "./chains.js";
 export { defineConfig, type ChainConfig, type Config } from "./config.js";
