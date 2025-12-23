@@ -1,5 +1,11 @@
 # @reactive-dot/core
 
+## 0.68.0
+
+### Minor Changes
+
+- [#1105](https://github.com/buffed-labs/reactive-dot/pull/1105) [`aca6518`](https://github.com/buffed-labs/reactive-dot/commit/aca6518a5dfc53b4dd0dd920479c526f698d03ef) Thanks [@tien](https://github.com/tien)! - Added top-level `whenWalletsChanged` & `whenConnectedWalletsChanged` APIs.
+
 ## 0.67.3
 
 ### Patch Changes
