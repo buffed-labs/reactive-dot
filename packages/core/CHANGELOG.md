@@ -1,5 +1,11 @@
 # @reactive-dot/core
 
+## 0.68.1
+
+### Patch Changes
+
+- [#1108](https://github.com/buffed-labs/reactive-dot/pull/1108) [`34128aa`](https://github.com/buffed-labs/reactive-dot/commit/34128aa126d878aeeebd68687093452f383c8ef8) Thanks [@tien](https://github.com/tien)! - Simplified `LightClientProvider` type definition. This change addresses potential issues when `tsconfig.json` has `noEmit` set to `false`.
+
 ## 0.68.0
 
 ### Minor Changes
