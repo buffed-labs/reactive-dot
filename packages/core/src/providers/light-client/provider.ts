@@ -27,6 +27,23 @@ type LightClientOptions = {
   useExtensionProvider?: boolean;
 };
 
+type RelayLightClientProvider<T extends WellknownRelayChainId> =
+  LightClientProvider & {
+    addParachain<
+      TParachainId extends keyof (typeof wellknownChains)[T][1] extends never
+        ? WellknownParachainId
+        : keyof (typeof wellknownChains)[T][1],
+    >(
+      options: AddChainOptions<TParachainId>,
+    ): LightClientProvider;
+  };
+
+type RootLightClientProvider = {
+  addRelayChain<TRelayChainId extends WellknownRelayChainId>(
+    options: AddChainOptions<TRelayChainId>,
+  ): RelayLightClientProvider<TRelayChainId>;
+};
+
 export function createLightClientProvider({
   useExtensionProvider = true,
 }: LightClientOptions = {}) {
@@ -39,9 +56,7 @@ export function createLightClientProvider({
   });
 
   return {
-    addRelayChain<TRelayChainId extends WellknownRelayChainId>(
-      options: AddChainOptions<TRelayChainId>,
-    ) {
+    addRelayChain(options) {
       const getChainSpec = lazy(() =>
         "chainSpec" in options
           ? Promise.resolve(options.chainSpec)
@@ -64,12 +79,7 @@ export function createLightClientProvider({
           return getSmProvider(getRelayChain());
         },
 
-        addParachain<
-          TParachainId extends
-            keyof (typeof wellknownChains)[TRelayChainId][1] extends never
-              ? WellknownParachainId
-              : keyof (typeof wellknownChains)[TRelayChainId][1],
-        >(options: AddChainOptions<TParachainId>) {
+        addParachain(options) {
           return addLightClientProvider({
             [getProviderSymbol]() {
               const chainSpecPromise =
@@ -108,7 +118,7 @@ export function createLightClientProvider({
         },
       });
     },
-  };
+  } as RootLightClientProvider;
 }
 
 export function isLightClientProvider(

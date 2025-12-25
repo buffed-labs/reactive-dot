@@ -1,6 +1,6 @@
 {
   "name": "@reactive-dot/wallet-mimir",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Mimir adapter for ReactiveDOT",
   "keywords": [
     "substrate",
@@ -42,6 +42,6 @@
     "@tsconfig/strictest": "^2.0.8",
     "eslint": "^9.39.2",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.15"
+    "vitest": "^4.0.16"
   }
 }

@@ -1,16 +1,16 @@
-import { aggregateWallets } from "../actions/aggregate-wallets.js";
 import { getAccounts } from "../actions/get-accounts.js";
 import type { InferChainId } from "../chains.js";
 import type { Config } from "../config.js";
 import { getClient } from "./get-client.js";
+import { whenWalletsChanged } from "./when-wallets-changed.js";
 import { defer } from "rxjs";
 
 /**
- * Gets the accounts from the configured wallets.
+ * Subscribe to accounts changes.
  *
  * @param config - The configuration
  * @param options - Additional options
- * @returns The currently connected accounts
+ * @returns The currently connected accounts observable
  */
 export function whenAccountsChanged<TConfig extends Config>(
   config: TConfig,
@@ -19,7 +19,7 @@ export function whenAccountsChanged<TConfig extends Config>(
   const chainId = options?.chainId;
 
   return getAccounts(
-    defer(() => aggregateWallets(config.wallets ?? [])),
+    whenWalletsChanged(config),
     chainId === undefined
       ? undefined
       : defer(() =>

@@ -5,6 +5,8 @@ it("should match inline snapshot", () =>
   expect(Object.keys(exports)).toMatchInlineSnapshot(`
     [
       "whenAccountsChanged",
+      "whenConnectedWalletsChanged",
+      "whenWalletsChanged",
       "defineConfig",
       "defineContract",
       "BaseError",

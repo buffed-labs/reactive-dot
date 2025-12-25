@@ -1,5 +1,25 @@
 # @reactive-dot/core
 
+## 0.68.1
+
+### Patch Changes
+
+- [#1108](https://github.com/buffed-labs/reactive-dot/pull/1108) [`34128aa`](https://github.com/buffed-labs/reactive-dot/commit/34128aa126d878aeeebd68687093452f383c8ef8) Thanks [@tien](https://github.com/tien)! - Simplified `LightClientProvider` type definition. This change addresses potential issues when `tsconfig.json` has `noEmit` set to `false`.
+
+## 0.68.0
+
+### Minor Changes
+
+- [#1105](https://github.com/buffed-labs/reactive-dot/pull/1105) [`aca6518`](https://github.com/buffed-labs/reactive-dot/commit/aca6518a5dfc53b4dd0dd920479c526f698d03ef) Thanks [@tien](https://github.com/tien)! - Added top-level `whenWalletsChanged` & `whenConnectedWalletsChanged` APIs.
+
+## 0.67.3
+
+### Patch Changes
+
+- [#1100](https://github.com/buffed-labs/reactive-dot/pull/1100) [`8854e9a`](https://github.com/buffed-labs/reactive-dot/commit/8854e9a1f42f6f62914ab1ef534f1a128311df96) Thanks [@tien](https://github.com/tien)! - Fixed one event listener not being removed after document load.
+
+- [#1102](https://github.com/buffed-labs/reactive-dot/pull/1102) [`f197c1f`](https://github.com/buffed-labs/reactive-dot/commit/f197c1f2e3238d43db55a5b83d009bdc30f89908) Thanks [@tien](https://github.com/tien)! - Bumped dependencies.
+
 ## 0.67.2
 
 ### Patch Changes
