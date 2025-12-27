@@ -31,3 +31,5 @@ jobs:
       contents: read
       deployments: write
     secrets: inherit
+    [![Push](https://github.com/Ewelkaka/reactive-dot/actions/workflows/push.yml/badge.svg)](https://github.com/Ewelkaka/reactive-dot/actions/workflows/push.yml)
+    
