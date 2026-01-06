@@ -50,7 +50,7 @@
     "@tsconfig/strictest": "^2.0.8",
     "abitype": "^1.2.3",
     "eslint": "^9.39.2",
-    "polkadot-api": "^1.23.1",
+    "polkadot-api": "^1.23.2",
     "typescript": "^5.9.3",
     "vitest": "^4.0.16"
   },

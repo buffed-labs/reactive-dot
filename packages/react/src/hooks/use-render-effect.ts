@@ -6,13 +6,13 @@ import { useRef } from "react";
  * @group Hooks
  */
 export function useRenderEffect<T>(effect: () => void, key: T) {
-  const prevKey = useRef(key);
-  const currKey = useRef(prevKey.current);
+  const prevKeyRef = useRef(key);
+  const currKeyRef = useRef(prevKeyRef.current);
 
-  currKey.current = key;
+  currKeyRef.current = key;
 
-  if (prevKey.current !== currKey.current) {
-    prevKey.current = currKey.current;
+  if (prevKeyRef.current !== currKeyRef.current) {
+    prevKeyRef.current = currKeyRef.current;
     effect();
   }
 }
