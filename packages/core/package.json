@@ -34,7 +34,7 @@
   },
   "scripts": {
     "dev": "tsc --build --watch",
-    "build": "papi generate && mv .papi/descriptors/dist/index.mjs .papi/descriptors/dist/index.js && tsc --build --clean && tsc --build",
+    "build": "rm -f .papi/descriptors/generated.json && papi generate && mv .papi/descriptors/dist/index.mjs .papi/descriptors/dist/index.js && tsc --build --clean && tsc --build",
     "lint": "eslint src",
     "test": "vitest"
   },
