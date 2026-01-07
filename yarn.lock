@@ -5230,7 +5230,7 @@ __metadata:
     typescript: "npm:^5.9.3"
     vitest: "npm:^4.0.16"
   peerDependencies:
-    polkadot-api: ">=1.21.1"
+    polkadot-api: ">=1.23.2"
   languageName: unknown
   linkType: soft
 
