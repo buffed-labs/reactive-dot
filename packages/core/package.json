@@ -55,6 +55,6 @@
     "vitest": "^4.0.16"
   },
   "peerDependencies": {
-    "polkadot-api": ">=1.21.1"
+    "polkadot-api": ">=1.23.2"
   }
 }
