@@ -21,7 +21,7 @@
     "polkadot-api": "^1.23.2",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
-    "react-error-boundary": "^6.0.2",
+    "react-error-boundary": "^6.0.3",
     "react-hot-toast": "^2.6.0"
   },
   "devDependencies": {
