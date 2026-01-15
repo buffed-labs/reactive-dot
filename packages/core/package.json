@@ -52,7 +52,7 @@
     "eslint": "^9.39.2",
     "polkadot-api": "^1.23.2",
     "typescript": "^5.9.3",
-    "vitest": "^4.0.16"
+    "vitest": "^4.0.17"
   },
   "peerDependencies": {
     "polkadot-api": ">=1.23.2"
