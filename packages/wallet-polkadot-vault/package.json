@@ -32,8 +32,8 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@polkadot-api/signers-common": "^0.1.19",
-    "@polkadot-api/substrate-bindings": "^0.16.6",
+    "@polkadot-api/signers-common": "^0.1.20",
+    "@polkadot-api/substrate-bindings": "^0.17.0",
     "@polkadot-api/utils": "^0.2.0",
     "@reactive-dot/core": "workspace:^"
   },
