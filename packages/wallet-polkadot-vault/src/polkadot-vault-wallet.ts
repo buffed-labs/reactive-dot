@@ -160,7 +160,7 @@ export class PolkadotVaultWallet extends LocalWallet<
                 const decMeta = unifyMetadata(decAnyMetadata(metadata));
                 const extra: Array<Uint8Array> = [];
                 const additionalSigned: Array<Uint8Array> = [];
-                decMeta.extrinsic.signedExtensions.map(({ identifier }) => {
+                decMeta.extrinsic.signedExtensions[0]?.map(({ identifier }) => {
                   const signedExtension = signedExtensions[identifier];
                   if (!signedExtension)
                     throw new BaseError(
