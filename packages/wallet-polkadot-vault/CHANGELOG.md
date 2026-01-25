@@ -1,5 +1,13 @@
 # @reactive-dot/wallet-polkadot-vault
 
+## 0.2.8
+
+### Patch Changes
+
+- [#1138](https://github.com/buffed-labs/reactive-dot/pull/1138) [`a13b7d9`](https://github.com/buffed-labs/reactive-dot/commit/a13b7d98d383568f8f8d60911c3b868db2d2d9c6) Thanks [@tien](https://github.com/tien)! - Fixed incompatibility with multiple signed extensions when using the latest `@polkadot-api/substrate-bindings` version.
+
+- [#1138](https://github.com/buffed-labs/reactive-dot/pull/1138) [`9a94d76`](https://github.com/buffed-labs/reactive-dot/commit/9a94d769038c69e3bf5d2ae22be5512d4303d8eb) Thanks [@tien](https://github.com/tien)! - Bumped dependencies.
+
 ## 0.2.7
 
 ### Patch Changes
