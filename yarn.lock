@@ -5242,7 +5242,7 @@ __metadata:
     "@tsconfig/strictest": "npm:^2.0.8"
     abitype: "npm:^1.2.3"
     eslint: "npm:^9.39.2"
-    ox: "npm:^0.11.3"
+    ox: "npm:^0.12.0"
     polkadot-api: "npm:^1.23.3"
     typescript: "npm:^5.9.3"
     vitest: "npm:^4.0.18"
@@ -15844,9 +15844,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ox@npm:^0.11.3":
-  version: 0.11.3
-  resolution: "ox@npm:0.11.3"
+"ox@npm:^0.12.0":
+  version: 0.12.0
+  resolution: "ox@npm:0.12.0"
   dependencies:
     "@adraffy/ens-normalize": "npm:^1.11.0"
     "@noble/ciphers": "npm:^1.3.0"
@@ -15861,7 +15861,7 @@ __metadata:
   peerDependenciesMeta:
     typescript:
       optional: true
-  checksum: 10c0/aab488bb5ff2e9c9d688f4044ebceb5efc4f62e71c19c2813d1ba93509dfcf618c7c97dd06ed867843340ac9744911ef3f3a4504850711a67f220f94aa9d8feb
+  checksum: 10c0/c82dc203f8f4f52cc4ca469c2cbf771420ef817b4b3ee39dc828847aeafa0aa619692e2373f144c67225bb68b1eafdfcae4fe42c10b8a0cc751e8eb98a79cad1
   languageName: node
   linkType: hard
 
