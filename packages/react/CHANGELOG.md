@@ -1,5 +1,20 @@
 # @reactive-dot/react
 
+## 0.69.0
+
+### Minor Changes
+
+- [#1146](https://github.com/buffed-labs/reactive-dot/pull/1146) [`466ceb6`](https://github.com/buffed-labs/reactive-dot/commit/466ceb61c9614b014e62c6321c6202da7414990e) Thanks [@tien](https://github.com/tien)! - Allow passing account (`WalletAccount`) as signer.
+
+### Patch Changes
+
+- [#1147](https://github.com/buffed-labs/reactive-dot/pull/1147) [`67bf497`](https://github.com/buffed-labs/reactive-dot/commit/67bf497a61696b273f61e41f24df087f9e32a94f) Thanks [@tien](https://github.com/tien)! - Bumped dependencies.
+
+- [#1149](https://github.com/buffed-labs/reactive-dot/pull/1149) [`3a209be`](https://github.com/buffed-labs/reactive-dot/commit/3a209bec539bddd1c03c13b3da43cd34611fee7d) Thanks [@tien](https://github.com/tien)! - Fixed incorrect argument spreading in `useQueryErrorResetter`.
+
+- Updated dependencies [[`67bf497`](https://github.com/buffed-labs/reactive-dot/commit/67bf497a61696b273f61e41f24df087f9e32a94f)]:
+  - @reactive-dot/core@0.69.0
+
 ## 0.68.3
 
 ### Patch Changes

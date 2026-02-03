@@ -1,5 +1,12 @@
 # @reactive-dot/wallet-walletconnect
 
+## 0.18.8
+
+### Patch Changes
+
+- Updated dependencies [[`67bf497`](https://github.com/buffed-labs/reactive-dot/commit/67bf497a61696b273f61e41f24df087f9e32a94f)]:
+  - @reactive-dot/core@0.69.0
+
 ## 0.18.7
 
 ### Patch Changes

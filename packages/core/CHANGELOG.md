@@ -1,5 +1,11 @@
 # @reactive-dot/core
 
+## 0.69.0
+
+### Patch Changes
+
+- [#1147](https://github.com/buffed-labs/reactive-dot/pull/1147) [`67bf497`](https://github.com/buffed-labs/reactive-dot/commit/67bf497a61696b273f61e41f24df087f9e32a94f) Thanks [@tien](https://github.com/tien)! - Bumped dependencies.
+
 ## 0.68.2
 
 ### Patch Changes
