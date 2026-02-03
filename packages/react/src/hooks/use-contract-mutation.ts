@@ -10,18 +10,19 @@ import { MutationError } from "@reactive-dot/core";
 import {
   getSolidityContractTx,
   InkContract,
+  type Signer,
   type InkMutationBuilder,
   type MutationBuilder,
   type PatchedReturnType,
   type SolidityMutationBuilder,
   type TxOptionsOf,
+  extractPolkadotSigner,
 } from "@reactive-dot/core/internal.js";
 import {
   getInkClient,
   getInkContractTx,
 } from "@reactive-dot/core/internal/actions.js";
 import { useAtomCallback } from "jotai/utils";
-import type { PolkadotSigner } from "polkadot-api";
 import { use } from "react";
 import { from, switchMap } from "rxjs";
 
@@ -45,7 +46,7 @@ export function useContractMutation<
     /**
      * Override default signer
      */
-    signer?: PolkadotSigner;
+    signer?: Signer;
     /**
      * Additional transaction options
      */
@@ -58,7 +59,7 @@ export function useContractMutation<
   const mutationEventSubject = use(MutationEventSubjectContext);
 
   type SubmitOptions = {
-    signer?: PolkadotSigner;
+    signer?: Signer;
     txOptions?: TxOptionsOf<Awaited<ReturnType<TAction>>>;
   } & (Parameters<TAction>["length"] extends 2
     ? BackwardCompatInputOptions<Parameters<TAction>[1]>
@@ -73,8 +74,9 @@ export function useContractMutation<
           ? [submitOptions: SubmitOptions]
           : [submitOptions?: SubmitOptions]
       ) => {
-        const signer =
-          submitOptions?.signer ?? options?.signer ?? contextSigner;
+        const signer = extractPolkadotSigner(
+          submitOptions?.signer ?? options?.signer ?? contextSigner,
+        );
 
         if (signer === undefined) {
           throw new MutationError("No signer provided");

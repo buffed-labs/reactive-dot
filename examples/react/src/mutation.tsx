@@ -11,7 +11,7 @@ export function Mutation() {
       </header>
       <AccountSelect>
         {(selectedAccount) => (
-          <SignerProvider signer={selectedAccount.polkadotSigner}>
+          <SignerProvider signer={selectedAccount}>
             <RemarkMutation />
           </SignerProvider>
         )}

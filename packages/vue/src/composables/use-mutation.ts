@@ -10,13 +10,15 @@ import { useSigner } from "./use-signer.js";
 import { useTypedApiPromise } from "./use-typed-api.js";
 import type { ChainId } from "@reactive-dot/core";
 import { BaseError, MutationError } from "@reactive-dot/core";
-import type {
-  ChainDescriptorOf,
-  TxOptionsOf,
+import {
+  extractPolkadotSigner,
+  type ChainDescriptorOf,
+  type Signer,
+  type TxOptionsOf,
 } from "@reactive-dot/core/internal.js";
-import type { PolkadotSigner, Transaction, TypedApi } from "polkadot-api";
+import type { Transaction, TypedApi } from "polkadot-api";
 import { from, switchMap } from "rxjs";
-import { inject, type MaybeRefOrGetter, toValue } from "vue";
+import { inject, toValue, type MaybeRefOrGetter } from "vue";
 
 /**
  * Composable for sending transactions to chains.
@@ -39,7 +41,7 @@ export function useMutation<
     /**
      * Override default signer
      */
-    signer?: MaybeRefOrGetter<PolkadotSigner | undefined>;
+    signer?: MaybeRefOrGetter<Signer | undefined>;
     /**
      * Additional transaction options
      */
@@ -59,7 +61,7 @@ export function useMutation<
   );
 
   type SubmitOptions = {
-    signer?: PolkadotSigner;
+    signer?: Signer;
     txOptions?: TxOptionsOf<ReturnType<TAction>>;
   } & (Parameters<TAction>["length"] extends 2
     ? BackwardCompatInputOptions<Parameters<TAction>[1]>
@@ -71,8 +73,9 @@ export function useMutation<
         ? [submitOptions: SubmitOptions]
         : [submitOptions?: SubmitOptions]
     ) => {
-      const signer =
-        submitOptions?.signer ?? toValue(options?.signer) ?? injectedSigner;
+      const signer = extractPolkadotSigner(
+        submitOptions?.signer ?? toValue(options?.signer) ?? injectedSigner,
+      );
 
       if (signer === undefined) {
         throw new MutationError("No signer provided");

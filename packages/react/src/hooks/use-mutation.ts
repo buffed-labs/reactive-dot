@@ -8,12 +8,14 @@ import { useConfig } from "./use-config.js";
 import { typedApiAtom } from "./use-typed-api.js";
 import type { ChainId } from "@reactive-dot/core";
 import { MutationError } from "@reactive-dot/core";
-import type {
-  ChainDescriptorOf,
-  TxOptionsOf,
+import {
+  extractPolkadotSigner,
+  type ChainDescriptorOf,
+  type Signer,
+  type TxOptionsOf,
 } from "@reactive-dot/core/internal.js";
 import { useAtomCallback } from "jotai/utils";
-import type { PolkadotSigner, Transaction, TypedApi } from "polkadot-api";
+import type { Transaction, TypedApi } from "polkadot-api";
 import { use, useCallback } from "react";
 import { from, switchMap } from "rxjs";
 
@@ -39,7 +41,7 @@ export function useMutation<
     /**
      * Override default signer
      */
-    signer?: PolkadotSigner;
+    signer?: Signer;
     /**
      * Additional transaction options
      */
@@ -52,7 +54,7 @@ export function useMutation<
   const contextSigner = use(SignerContext);
 
   type SubmitOptions = {
-    signer?: PolkadotSigner;
+    signer?: Signer;
     txOptions?: TxOptionsOf<ReturnType<TAction>>;
   } & (Parameters<TAction>["length"] extends 2
     ? BackwardCompatInputOptions<Parameters<TAction>[1]>
@@ -68,8 +70,9 @@ export function useMutation<
             ? [submitOptions: SubmitOptions]
             : [submitOptions?: SubmitOptions]
         ) => {
-          const signer =
-            submitOptions?.signer ?? options?.signer ?? contextSigner;
+          const signer = extractPolkadotSigner(
+            submitOptions?.signer ?? options?.signer ?? contextSigner,
+          );
 
           if (signer === undefined) {
             throw new MutationError("No signer provided");
