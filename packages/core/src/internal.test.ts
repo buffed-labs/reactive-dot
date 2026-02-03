@@ -9,6 +9,7 @@ it("should match inline snapshot", () =>
       "SolidityContract",
       "getSolidityContractTx",
       "watchContractEvent",
+      "extractPolkadotSigner",
       "UnsafeDescriptor",
       "flatHead",
       "nativeTokenInfoFromChainSpecData",

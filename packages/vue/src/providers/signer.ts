@@ -1,7 +1,13 @@
 import { signerKey } from "../keys.js";
-import type { PolkadotSigner } from "@polkadot-api/polkadot-signer";
-import { provide, type MaybeRefOrGetter } from "vue";
+import {
+  extractPolkadotSigner,
+  type Signer,
+} from "@reactive-dot/core/internal.js";
+import { computed, provide, toValue, type MaybeRefOrGetter } from "vue";
 
-export function provideSigner(signer: MaybeRefOrGetter<PolkadotSigner>) {
-  provide(signerKey, signer);
+export function provideSigner(signer: MaybeRefOrGetter<Signer | undefined>) {
+  provide(
+    signerKey,
+    computed(() => extractPolkadotSigner(toValue(signer))),
+  );
 }

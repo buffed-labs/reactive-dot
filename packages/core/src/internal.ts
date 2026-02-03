@@ -18,9 +18,9 @@ export type {
   SolidityQueryInstruction,
 } from "./contract/solidity/query-builder.js";
 export {
+  watchContractEvent,
   type ContractEventNames,
   type ContractEventOf,
-  watchContractEvent,
 } from "./contract/watch-events.js";
 export type { DataStore } from "./data-store.js";
 export type { MutationEvent } from "./mutation-event.js";
@@ -31,6 +31,7 @@ export type {
   QueryInstruction,
   SimpleQueryInstruction,
 } from "./query-builder.js";
+export { extractPolkadotSigner, type Signer } from "./signer.js";
 export type { GenericTransaction, TxOptionsOf } from "./transaction.js";
 export type {
   Falsy,

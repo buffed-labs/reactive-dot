@@ -29,12 +29,13 @@ provideSigner(someSigner);
 ```vue
 <script setup lang="ts">
 import { useAccounts, useMutation } from "@reactive-dot/vue";
+import { computed } from "vue";
 
 const accounts = await useAccounts();
 
 const { execute, status } = useMutation(
   (tx) => tx.NominationPools.claim_payout(),
-  { signer: accounts.value.at(0)?.polkadotSigner },
+  { signer: computed(() => accounts.value.at(0)) },
 );
 </script>
 ```
@@ -44,12 +45,13 @@ const { execute, status } = useMutation(
 ```vue
 <script setup lang="ts">
 import { useAccounts, useMutation } from "@reactive-dot/vue";
+import { computed } from "vue";
 
 const accounts = await useAccounts();
 
 const { execute, status } = useMutation((tx) => tx.Identity.clear_identity());
 
-execute({ signer: accounts.value.at(0)?.polkadotSigner });
+execute({ signer: computed(() => accounts.value.at(0)) });
 </script>
 ```
 

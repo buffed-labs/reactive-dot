@@ -9,7 +9,7 @@ const selectedAccount = computed(() =>
   accounts.value.at(selectedAccountIndex.value),
 );
 
-provideSigner(computed(() => selectedAccount.value!.polkadotSigner));
+provideSigner(selectedAccount);
 </script>
 
 <template>

@@ -33,7 +33,7 @@ const accounts = useAccounts();
 
 const [claimState, claim] = useMutation(
   (tx) => tx.NominationPools.claim_payout(),
-  { signer: accounts.at(0)?.polkadotSigner },
+  { signer: accounts.at(0) },
 );
 ```
 
@@ -48,7 +48,7 @@ const [clearIdentityState, clearIdentity] = useMutation((tx) =>
   tx.Identity.clear_identity(),
 );
 
-clearIdentity({ signer: accounts.at(0)?.polkadotSigner });
+clearIdentity({ signer: accounts.at(0) });
 ```
 
 ## Submitting transaction

@@ -12,7 +12,7 @@ export const chainIdKey = Symbol("chainId") as InjectionKey<
 >;
 
 export const signerKey = Symbol("signer") as InjectionKey<
-  MaybeRefOrGetter<PolkadotSigner>
+  MaybeRefOrGetter<PolkadotSigner | undefined>
 >;
 
 /**

@@ -6,9 +6,7 @@ export function AccountGuard({ children }: PropsWithChildren) {
   return (
     <AccountSelect>
       {(selectedAccount) => (
-        <SignerProvider signer={selectedAccount.polkadotSigner}>
-          {children}
-        </SignerProvider>
+        <SignerProvider signer={selectedAccount}>{children}</SignerProvider>
       )}
     </AccountSelect>
   );
