@@ -14,7 +14,7 @@ export function useQueryErrorResetter() {
       const atomFamilyErrors = get(atomFamilyErrorsAtom);
 
       for (const error of atomFamilyErrors) {
-        error.atomFamily.delete(error.args);
+        error.atomFamily.delete(...error.args);
         atomFamilyErrors.delete(error);
       }
     }, []),

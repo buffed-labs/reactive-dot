@@ -4,18 +4,13 @@ import { type Atom, atom, type Getter, type WritableAtom } from "jotai";
 export const atomFamilyErrorsAtom = atom(
   () =>
     new Set<{
-      atomFamily: AtomFamily<
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        any[],
-        unknown
-      >;
-      args: unknown;
+      atomFamily: AtomFamily<unknown[], unknown>;
+      args: unknown[];
     }>(),
 );
 
 export function atomFamilyWithErrorCatcher<
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  TArguments extends any[],
+  TArguments extends unknown[],
   TCached,
 >(
   initializeAtom: (
@@ -40,7 +35,7 @@ export function atomFamilyWithErrorCatcher<
 
           return value.catch((error) => {
             get(atomFamilyErrorsAtom).add({
-              atomFamily: baseAtomFamily,
+              atomFamily: baseAtomFamily as AtomFamily<unknown[], unknown>,
               args,
             });
 
@@ -48,7 +43,7 @@ export function atomFamilyWithErrorCatcher<
           });
         } catch (error) {
           get(atomFamilyErrorsAtom).add({
-            atomFamily: baseAtomFamily,
+            atomFamily: baseAtomFamily as AtomFamily<unknown[], unknown>,
             args,
           });
 
@@ -66,8 +61,7 @@ export function atomFamilyWithErrorCatcher<
         : atom(read);
     };
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    return initializeAtom(withErrorCatcher as any, ...args);
+    return initializeAtom(withErrorCatcher as never, ...args);
   }, getKey);
 
   return baseAtomFamily;
