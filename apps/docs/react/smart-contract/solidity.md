@@ -1,16 +1,10 @@
 ---
-sidebar_position: 2
+sidebar_position: 1
 ---
 
 # Solidity
 
 ReactiveDOT works with [Solidity contracts](https://soliditylang.org/) on chains with PolkaVM support, such as [Polkadot Asset Hub](https://polkadot.com/platform/hub).
-
-:::warning
-
-Contract support via PolkaVM on Polkadot is still in development.
-
-:::
 
 :::tip
 
