@@ -1,5 +1,5 @@
 ---
-sidebar_position: 1
+sidebar_position: 2
 ---
 
 # Ink!
@@ -8,7 +8,7 @@ ReactiveDOT works with [Ink! contracts](https://use.ink) on chains with PolkaVM 
 
 :::warning
 
-Contract support via PolkaVM on Polkadot is still in development.
+Ink! contract support is deprecated. See [this post](https://forum.polkadot.network/t/discontinuation-of-ink-rust-smart-contract-language/16849) for more information.
 
 :::
 
