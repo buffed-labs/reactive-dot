@@ -28,6 +28,8 @@ vi.mock("@polkadot-api/ledger-signer", () => ({
 }));
 
 let wallet: LedgerWallet;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let mockGetNetworkInfo: any;
 
 beforeEach(() => {
   const inMemorySimpleStorage = {
@@ -48,6 +50,9 @@ beforeEach(() => {
     storage: inMemorySimpleStorage,
   });
 
+  mockGetNetworkInfo = vi
+    .fn()
+    .mockResolvedValue({ tokenSymbol: "DOT", tokenDecimals: 10 });
   wallet = new LedgerWallet({ storage: inMemoryStorage });
 
   vi.clearAllMocks();
@@ -193,6 +198,48 @@ it("should sign a transaction", async () => {
     .signTx(new Uint8Array([10, 11, 12]));
 
   expect(mockSignTx).toHaveBeenCalledWith(new Uint8Array([10, 11, 12]));
+});
+
+it("should sign a transaction with unstable_getNetworkInfo", async () => {
+  const inMemorySimpleStorage = {
+    items: new Map(),
+    getItem(key: string) {
+      return this.items.get(key) ?? null;
+    },
+    removeItem(key: string) {
+      this.items.delete(key);
+    },
+    setItem(key: string, value: string) {
+      this.items.set(key, value);
+    },
+  };
+
+  const inMemoryStorage = new WalletStorage({
+    prefix: "@reactive-dot",
+    storage: inMemorySimpleStorage,
+  });
+
+  const testWallet = new LedgerWallet({
+    storage: inMemoryStorage,
+    unstable_getNetworkInfo: mockGetNetworkInfo,
+  });
+  testWallet.initialize();
+
+  const account = {
+    publicKey: new Uint8Array([1, 2, 3]),
+    path: 0,
+  };
+
+  testWallet.accountStore.add(account);
+
+  const accounts = await firstValueFrom(testWallet.accounts$);
+  // When unstable_getNetworkInfo is provided, polkadotSigner is a PolkadotSigner object, not a function
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const polkadotSigner = accounts[0]!.polkadotSigner as any;
+  await polkadotSigner.signTx(new Uint8Array([10, 11, 12]));
+
+  expect(mockSignTx).toHaveBeenCalledWith(new Uint8Array([10, 11, 12]));
+  expect(mockGetNetworkInfo).toHaveBeenCalled();
 });
 
 it("should sign bytes", async () => {
