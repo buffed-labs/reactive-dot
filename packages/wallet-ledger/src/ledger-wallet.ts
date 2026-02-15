@@ -1,8 +1,9 @@
 import { AccountMismatchError } from "./errors.js";
-import type { LedgerSigner } from "@polkadot-api/ledger-signer";
+import type { LedgerSigner, PolkadotSigner } from "@polkadot-api/ledger-signer";
 import { Binary } from "@polkadot-api/substrate-bindings";
 import {
   LocalWallet,
+  type WalletOptions,
   type PolkadotSignerAccount,
 } from "@reactive-dot/core/wallets.js";
 import { map } from "rxjs";
@@ -18,9 +19,19 @@ type JsonLedgerAccount = Omit<LedgerAccount, "publicKey" | "id"> & {
   publicKey: `0x${string}`;
 };
 
+type NetworkInfo = {
+  tokenSymbol: string;
+  tokenDecimals: number;
+};
+
+type LedgerWalletOptions = WalletOptions & {
+  unstable_getNetworkInfo?: () => NetworkInfo | Promise<NetworkInfo>;
+};
+
 export class LedgerWallet extends LocalWallet<
   LedgerAccount,
-  JsonLedgerAccount
+  JsonLedgerAccount,
+  LedgerWalletOptions
 > {
   readonly id = "ledger";
 
@@ -30,37 +41,46 @@ export class LedgerWallet extends LocalWallet<
     map((accounts) =>
       accounts
         .toSorted((a, b) => a.path - b.path)
-        .map(
-          (account): PolkadotSignerAccount => ({
+        .map((account): PolkadotSignerAccount => {
+          const createPolkadotSigner = (
+            networkInfo: NetworkInfo | Promise<NetworkInfo>,
+          ): PolkadotSigner => ({
+            publicKey: account.publicKey,
+            signTx: async (...args) => {
+              const { tokenSymbol, tokenDecimals } = await networkInfo;
+              await this.#assertMatchingAccount(account);
+
+              const ledgerSigner = await this.#getOrCreateLedgerSigner();
+              const polkadotSigner = await ledgerSigner.getPolkadotSigner(
+                { tokenSymbol, decimals: tokenDecimals },
+                account.path,
+              );
+
+              return polkadotSigner.signTx(...args);
+            },
+            signBytes: async (...args) => {
+              const { tokenSymbol, tokenDecimals } = await networkInfo;
+              await this.#assertMatchingAccount(account);
+
+              const ledgerSigner = await this.#getOrCreateLedgerSigner();
+              const polkadotSigner = await ledgerSigner.getPolkadotSigner(
+                { tokenSymbol, decimals: tokenDecimals },
+                account.path,
+              );
+
+              return polkadotSigner.signBytes(...args);
+            },
+          });
+
+          return {
             id: account.id,
             ...(account.name === undefined ? {} : { name: account.name }),
-            polkadotSigner: ({ tokenSymbol, tokenDecimals }) => ({
-              publicKey: account.publicKey,
-              signTx: async (...args) => {
-                await this.#assertMatchingAccount(account);
-
-                const ledgerSigner = await this.#getOrCreateLedgerSigner();
-                const polkadotSigner = await ledgerSigner.getPolkadotSigner(
-                  { tokenSymbol, decimals: tokenDecimals },
-                  account.path,
-                );
-
-                return polkadotSigner.signTx(...args);
-              },
-              signBytes: async (...args) => {
-                await this.#assertMatchingAccount(account);
-
-                const ledgerSigner = await this.#getOrCreateLedgerSigner();
-                const polkadotSigner = await ledgerSigner.getPolkadotSigner(
-                  { tokenSymbol, decimals: tokenDecimals },
-                  account.path,
-                );
-
-                return polkadotSigner.signBytes(...args);
-              },
-            }),
-          }),
-        ),
+            polkadotSigner:
+              this.options?.unstable_getNetworkInfo !== undefined
+                ? createPolkadotSigner(this.options.unstable_getNetworkInfo())
+                : (networkInfo) => createPolkadotSigner(networkInfo),
+          };
+        }),
     ),
   );
 
@@ -69,6 +89,10 @@ export class LedgerWallet extends LocalWallet<
   );
 
   #ledgerSigner?: LedgerSigner;
+
+  constructor(options: LedgerWalletOptions) {
+    super(options);
+  }
 
   override accountToJson(account: Omit<LedgerAccount, "id">) {
     return {
