@@ -1,5 +1,11 @@
 # @reactive-dot/wallet-ledger
 
+## 0.19.0
+
+### Minor Changes
+
+- [#1161](https://github.com/buffed-labs/reactive-dot/pull/1161) [`e8d9108`](https://github.com/buffed-labs/reactive-dot/commit/e8d910893f1f38ceb87c604af7613c858eb9dea2) Thanks [@tien](https://github.com/tien)! - Added escape hatch to manually specify network info.
+
 ## 0.18.11
 
 ### Patch Changes
