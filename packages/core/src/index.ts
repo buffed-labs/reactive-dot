@@ -1,5 +1,6 @@
 export type { Address } from "./address.js";
 export { whenAccountsChanged } from "./apis/when-accounts-changed.js";
+export { whenClientChanged } from "./apis/when-client-changed.js";
 export { whenConnectedWalletsChanged } from "./apis/when-connected-wallets-changed.js";
 export { whenWalletsChanged } from "./apis/when-wallets-changed.js";
 export type { AsyncValue } from "./async-state.js";
