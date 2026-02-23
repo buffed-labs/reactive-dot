@@ -90,7 +90,7 @@ export class LedgerWallet extends LocalWallet<
 
   #ledgerSigner?: LedgerSigner;
 
-  constructor(options: LedgerWalletOptions) {
+  constructor(options?: LedgerWalletOptions) {
     super(options);
   }
 
