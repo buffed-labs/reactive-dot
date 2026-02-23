@@ -1,5 +1,11 @@
 # @reactive-dot/wallet-ledger
 
+## 0.19.2
+
+### Patch Changes
+
+- [#1172](https://github.com/buffed-labs/reactive-dot/pull/1172) [`506cff3`](https://github.com/buffed-labs/reactive-dot/commit/506cff39646cfc6ef7ced80fcda14054a7aaf5fd) Thanks [@tien](https://github.com/tien)! - Fixed incorrect optionality for constructor parameter.
+
 ## 0.19.1
 
 ### Patch Changes
