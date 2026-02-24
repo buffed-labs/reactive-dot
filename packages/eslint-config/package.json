@@ -10,13 +10,13 @@
   "devDependencies": {
     "@eslint-react/eslint-plugin": "^2.13.0",
     "@eslint/compat": "^2.0.2",
-    "@eslint/js": "^9.39.2",
+    "@eslint/js": "^10.0.1",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-react-hooks": "^7.0.1",
     "eslint-plugin-tsdoc": "^0.5.0",
     "eslint-plugin-vue": "^10.8.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.55.0",
+    "typescript-eslint": "^8.56.1",
     "vue-eslint-parser": "^10.4.0"
   },
   "peerDependencies": {
