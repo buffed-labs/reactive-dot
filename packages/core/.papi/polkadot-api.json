@@ -2,8 +2,7 @@
   "version": 0,
   "descriptorPath": ".papi/descriptors",
   "options": {
-    "noDescriptorsPackage": true,
-    "whitelist": ".papi/whitelist.ts"
+    "noDescriptorsPackage": true
   },
   "entries": {
     "passet": {

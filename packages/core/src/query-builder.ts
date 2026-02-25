@@ -37,9 +37,12 @@ type OmitCallOptions<T extends unknown[]> = T extends [
   : [];
 
 type InferPapiStorageEntry<T> = T extends {
-  watchValue: (...args: [...infer Args, infer _]) => infer Response;
+  watchValue: (...args: [...infer Args, infer _]) => Observable<{
+    value: infer Value;
+    block: infer _;
+  }>;
 }
-  ? { args: Args; response: Response }
+  ? { args: Args; response: Observable<Value> }
   : { args: unknown[]; response: unknown };
 
 type InferPapiStorageEntries<T> = T extends {

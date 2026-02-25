@@ -17,7 +17,7 @@ import { LedgerWallet } from "@reactive-dot/wallet-ledger";
 import { MimirWalletProvider } from "@reactive-dot/wallet-mimir";
 import { ReadonlyWallet } from "@reactive-dot/wallet-readonly";
 import { WalletConnect } from "@reactive-dot/wallet-walletconnect";
-import { getWsProvider } from "polkadot-api/ws-provider";
+import { getWsProvider } from "polkadot-api/ws";
 
 const lightClientProvider = createLightClientProvider();
 

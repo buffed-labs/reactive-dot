@@ -4,7 +4,7 @@ import {
   Binary,
   type SizedHex,
   type SS58String,
-} from "@polkadot-api/substrate-bindings";
+} from "polkadot-api";
 
 export type Address = SS58String | `0x${string}`;
 

@@ -36,14 +36,15 @@ export const mockedTypedApi = {
       test_storage: {
         watchValue: (key?: unknown) => {
           if (key === delayKey) {
-            return from(delay.promise).pipe(map(() => "storage-value"));
+            return from(delay.promise).pipe(map(() => ({ value: "storage-value" })));
           }
 
-          return of(
-            key === undefined
-              ? "storage-value"
-              : `storage-value-${String(key)}`,
-          );
+          return of({
+            value:
+              key === undefined
+                ? "storage-value"
+                : `storage-value-${String(key)}`,
+          });
         },
       },
     },

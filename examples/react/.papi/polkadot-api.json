@@ -21,25 +21,25 @@
       "codeHash": "0x19d152fef983bf5be332cd07dc6f5c7291d842a4e2d5501eca02a86c10df211d"
     },
     "kusama": {
-      "chain": "ksmcc3",
+      "chain": "kusama",
       "metadata": ".papi/metadata/kusama.scale",
       "genesis": "0xb0a8d493285c2df73290dfb7e61f870f17b41801197a149ca93654499ea3dafe",
       "codeHash": "0xd905ea233b779dfae428febc319661bbcc0ee861dcec336d18e5a3dc6ee667f6"
     },
     "kusama_asset_hub": {
-      "chain": "ksmcc3_asset_hub",
+      "chain": "kusama_asset_hub",
       "metadata": ".papi/metadata/kusama_asset_hub.scale",
       "genesis": "0x48239ef607d7928874027a43a67689209727dfb3d3dc5e5b03a39bdc2eda771a",
       "codeHash": "0x56577fbd62cfa8e53effa2b3817b576bdd084aba30be90880ab7caa790a8f912"
     },
     "westend": {
-      "chain": "westend2",
+      "chain": "westend",
       "metadata": ".papi/metadata/westend.scale",
       "genesis": "0xe143f23803ac50e8f6f8e62695d1ce9e4e1d68aa36c1cd2cfd15340213f3423e",
       "codeHash": "0x2e3ec4cf2d056a808288ba8b404f469eb92eedb9161b110da7e7f60f229b126b"
     },
     "westend_asset_hub": {
-      "chain": "westend2_asset_hub",
+      "chain": "westend_asset_hub",
       "metadata": ".papi/metadata/westend_asset_hub.scale",
       "genesis": "0x67f9723393ef76214df0118c34bbbd3dbebc8ed46a10973a8c969d48fe7598c9",
       "codeHash": "0xac70e823f8800dd6bfa9eacfd0b52a6b6a7426bb97682fa7f8c5b077051bb4fa"
