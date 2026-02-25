@@ -3,7 +3,8 @@ import type { SolidityContract } from "../contract.js";
 import type { ContractCompatApi, ContractEvent } from "../types.js";
 import type { ExtractAbiEvent, ExtractAbiEventNames } from "abitype";
 import type { AbiEvent } from "ox";
-import { defer, map, switchMap } from "rxjs";
+import { Binary } from "polkadot-api";
+import { defer, map, mergeMap, from, switchMap } from "rxjs";
 
 export type SolidityContractEventNames<TContract extends SolidityContract> =
   ExtractAbiEventNames<TContract["abi"]>;
@@ -30,36 +31,44 @@ export function watchSolidityContractEvent<
       const eventAbi = AbiEvent.fromAbi(contract.abi, eventName as string);
       const { topics } = AbiEvent.encode(eventAbi);
 
-      return api.event.Revive.ContractEmitted.watch((event) => {
-        if (
-          address !== undefined &&
-          !isEqual(event.contract.asHex(), address)
-        ) {
-          return false;
-        }
+      return api.event.Revive.ContractEmitted.watch().pipe(
+        mergeMap(({ block, events }) =>
+          from(
+            events
+              .filter((event) => {
+                const payload = event.payload;
+                if (
+                  address !== undefined &&
+                  !isEqual(payload.contract, address)
+                ) {
+                  return false;
+                }
 
-        return event.topics.every((topic, index) => {
-          const filterTopic = topics[index];
+                return payload.topics.every((topic, index) => {
+                  const filterTopic = topics[index];
 
-          return (
-            filterTopic === undefined ||
-            filterTopic === null ||
-            (typeof filterTopic === "string" &&
-              topic.asHex() === filterTopic) ||
-            (Array.isArray(filterTopic) &&
-              filterTopic.some((candidate) => topic.asHex() === candidate))
-          );
-        });
-      }).pipe(
+                  return (
+                    filterTopic === undefined ||
+                    filterTopic === null ||
+                    (typeof filterTopic === "string" &&
+                      topic === filterTopic) ||
+                    (Array.isArray(filterTopic) &&
+                      filterTopic.some((candidate) => topic === candidate))
+                  );
+                });
+              })
+              .map((event) => ({ payload: event.payload, block })),
+          ),
+        ),
         map((event) => {
           const decoded = AbiEvent.decode(eventAbi, {
-            data: event.payload.data.asHex(),
-            topics: event.payload.topics.map((topic) => topic.asHex()),
+            data: Binary.toHex(event.payload.data) as `0x${string}`,
+            topics: event.payload.topics as `0x${string}`[],
           });
 
           return {
-            block: event.meta.block,
-            contract: event.payload.contract.asHex(),
+            block: event.block,
+            contract: event.payload.contract,
             name: eventName,
             data: decoded,
           } as SolidityContractEventOf<TContract, TEventName>;

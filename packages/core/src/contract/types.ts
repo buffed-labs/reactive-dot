@@ -3,21 +3,20 @@
 import type { Address } from "../address.js";
 import type {
   ApisTypedef,
-  Binary,
   BlockInfo,
   Enum,
-  FixedSizeBinary,
   PalletsTypedef,
   PlainDescriptor,
   ResultPayload,
   RuntimeDescriptor,
+  SizedHex,
   SS58String,
   StorageDescriptor,
   TxDescriptor,
   TypedApi,
 } from "polkadot-api";
 
-export type ContractAddress = Address | FixedSizeBinary<20>;
+export type ContractAddress = Address | SizedHex<20>;
 
 export type ContractEvent<TName extends string = string, TData = unknown> = {
   block: BlockInfo;
@@ -47,11 +46,11 @@ export type ContractApis<TEvent = any, TError = any> = ApisTypedef<{
     call: RuntimeDescriptor<
       [
         origin: SS58String,
-        dest: FixedSizeBinary<20>,
+        dest: SizedHex<20>,
         value: bigint,
         weight_limit: Gas | undefined,
         storage_deposit_limit: bigint | undefined,
-        input_data: Binary,
+        input_data: Uint8Array,
       ],
       {
         gas_consumed: bigint;
@@ -63,7 +62,7 @@ export type ContractApis<TEvent = any, TError = any> = ApisTypedef<{
         result: ResultPayload<
           {
             flags: number;
-            data: Binary;
+            data: Uint8Array;
           },
           TError
         >;
@@ -78,9 +77,9 @@ export type ContractApis<TEvent = any, TError = any> = ApisTypedef<{
      * doesn't exist, or doesn't have a contract then `Err` is returned.
      */
     get_storage: RuntimeDescriptor<
-      [address: FixedSizeBinary<20>, key: FixedSizeBinary<32>],
+      [address: SizedHex<20>, key: SizedHex<32>],
       ResultPayload<
-        Binary | undefined,
+        Uint8Array | undefined,
         Enum<{
           DoesntExist: undefined;
           KeyDecodingFailed: undefined;
@@ -95,9 +94,9 @@ export type ContractApis<TEvent = any, TError = any> = ApisTypedef<{
      * doesn't exist, or doesn't have a contract then `Err` is returned.
      */
     get_storage_var_key: RuntimeDescriptor<
-      [address: FixedSizeBinary<20>, key: Binary],
+      [address: SizedHex<20>, key: Uint8Array],
       ResultPayload<
-        Binary | undefined,
+        Uint8Array | undefined,
         Enum<{
           DoesntExist: undefined;
           KeyDecodingFailed: undefined;
@@ -114,8 +113,8 @@ export type ContractPallets = PalletsTypedef<
        * A mapping from a contract's code hash to its code.
        */
       PristineCode: StorageDescriptor<
-        [Key: FixedSizeBinary<32>],
-        Binary,
+        [Key: SizedHex<32>],
+        Uint8Array,
         true,
         never
       >;
@@ -123,7 +122,7 @@ export type ContractPallets = PalletsTypedef<
        * A mapping from a contract's code hash to its code info.
        */
       CodeInfoOf: StorageDescriptor<
-        [Key: FixedSizeBinary<32>],
+        [Key: SizedHex<32>],
         {
           owner: SS58String;
           deposit: bigint;
@@ -138,10 +137,10 @@ export type ContractPallets = PalletsTypedef<
        * The code associated with a given account.
        */
       ContractInfoOf: StorageDescriptor<
-        [Key: FixedSizeBinary<20>],
+        [Key: SizedHex<20>],
         {
-          trie_id: Binary;
-          code_hash: FixedSizeBinary<32>;
+          trie_id: Uint8Array;
+          code_hash: SizedHex<32>;
           storage_bytes: number;
           storage_items: number;
           storage_byte_deposit: bigint;
@@ -156,8 +155,8 @@ export type ContractPallets = PalletsTypedef<
        * The immutable data associated with a given account.
        */
       ImmutableDataOf: StorageDescriptor<
-        [Key: FixedSizeBinary<20>],
-        Binary,
+        [Key: SizedHex<20>],
+        Uint8Array,
         true,
         never
       >;
@@ -167,7 +166,7 @@ export type ContractPallets = PalletsTypedef<
        * Child trie deletion is a heavy operation depending on the amount of storage items
        * stored in said trie. Therefore this operation is performed lazily in `on_idle`.
        */
-      DeletionQueue: StorageDescriptor<[Key: number], Binary, true, never>;
+      DeletionQueue: StorageDescriptor<[Key: number], Uint8Array, true, never>;
       /**
        * A pair of monotonic counters used to track the latest contract marked for deletion
        * and the latest deleted contract in queue.
@@ -189,8 +188,8 @@ export type ContractPallets = PalletsTypedef<
        * use it with this pallet.
        */
       AddressSuffix: StorageDescriptor<
-        [Key: FixedSizeBinary<20>],
-        FixedSizeBinary<12>,
+        [Key: SizedHex<20>],
+        SizedHex<12>,
         true,
         never
       >;
@@ -199,11 +198,11 @@ export type ContractPallets = PalletsTypedef<
   {
     Revive: {
       call: TxDescriptor<{
-        dest: FixedSizeBinary<20>;
+        dest: SizedHex<20>;
         value: bigint;
         weight_limit: Gas;
         storage_deposit_limit: bigint;
-        data: Binary;
+        data: Uint8Array;
       }>;
     };
   },
@@ -213,17 +212,17 @@ export type ContractPallets = PalletsTypedef<
         /**
          * The contract that emitted the event.
          */
-        contract: FixedSizeBinary<20>;
+        contract: SizedHex<20>;
         /**
          * Data supplied by the contract. Metadata generated during contract compilation
          * is needed to decode it.
          */
-        data: Binary;
+        data: Uint8Array;
         /**
          * A list of topics used to index the event.
          * Number of topics is capped by [`limits::NUM_EVENT_TOPICS`].
          */
-        topics: FixedSizeBinary<32>[];
+        topics: SizedHex<32>[];
       }>;
     };
   },

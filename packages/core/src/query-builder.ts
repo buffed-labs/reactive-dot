@@ -67,8 +67,7 @@ type InferPapiRuntimeCall<T> = T extends (...args: infer Args) => infer Response
   : { args: unknown[]; response: unknown };
 
 type InferPapiConstantEntry<T> = T extends {
-  (): Promise<infer Payload>;
-  (runtime: infer _): infer Payload;
+  (options?: infer _): Promise<infer Payload>;
 }
   ? Promise<Payload>
   : unknown;
@@ -253,11 +252,13 @@ export type InferInstructionResponse<
 type ResponsePayload<T> =
   T extends Promise<infer Payload>
     ? Payload
-    : T extends Observable<infer Payload>
-      ? Payload
-      : T extends Array<infer _>
-        ? { [P in keyof T]: ResponsePayload<T[P]> }
-        : T;
+    : T extends Observable<{ value: infer Value; block: infer _ }>
+      ? Value
+      : T extends Observable<infer Payload>
+        ? Payload
+        : T extends Array<infer _>
+          ? { [P in keyof T]: ResponsePayload<T[P]> }
+          : T;
 
 export type InferInstructionPayload<
   TInstruction extends QueryInstruction,
@@ -389,7 +390,28 @@ export class Query<
       >["args"]
     >,
     options?: { at?: At; defer?: TDefer; stream?: TStream },
-  ) {
+  ): Query<
+    [
+      ...TInstructions,
+      {
+        type: "storage";
+        pallet: TPallet;
+        storage: TStorage;
+        keys: Array<
+          InferPapiStorageEntry<
+            TypedApi<TDescriptor>["query"][TPallet][TStorage]
+          >["args"]
+        >;
+        at: At | undefined;
+        multi: true;
+        directives: {
+          defer: NoInfer<TDefer>;
+          stream: NoInfer<TStream>;
+        };
+      },
+    ],
+    TDescriptor
+  > {
     return this.#append({
       type: "storage",
       pallet,
@@ -401,13 +423,18 @@ export class Query<
         defer: options?.defer as NoInfer<TDefer>,
         stream: options?.stream as NoInfer<TStream>,
       },
-    } satisfies MultiStorageReadInstruction);
+    } satisfies MultiStorageReadInstruction) as Query<
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      any,
+      TDescriptor
+    >;
   }
 
   /**
    * @deprecated Use {@link Query.storages} instead.
    */
-  readStorages = this.storages;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  readStorages: any = this.storages;
 
   storageEntries<
     const TPallet extends StringKeyOf<TypedApi<TDescriptor>["query"]>,

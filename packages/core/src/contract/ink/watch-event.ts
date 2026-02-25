@@ -4,7 +4,7 @@ import type { InkContract } from "../contract.js";
 import { getInkClient } from "../ink/get-ink-client.js";
 import type { ContractCompatApi, ContractEvent } from "../types.js";
 import type { EventSpecV5 } from "@polkadot-api/ink-contracts";
-import { combineLatest, defer, map } from "rxjs";
+import { combineLatest, defer, map, mergeMap, from } from "rxjs";
 
 export type InkContractEventNames<TContract extends InkContract> =
   TContract["descriptor"]["__types"]["event"]["type"];
@@ -46,19 +46,35 @@ export function watchInkContractEvent<
 
   return combineLatest([
     defer(() => getInkClient(contract)),
-    api.event.Revive.ContractEmitted.watch((event) => {
-      if (address !== undefined && !isEqual(event.contract.asHex(), address)) {
-        return false;
-      }
-
-      return event.topics.some((topic) => topic.asHex() === signatureTopic);
-    }),
+    api.event.Revive.ContractEmitted.watch().pipe(
+      mergeMap(({ block, events }) =>
+        from(
+          events
+            .filter((event) => {
+              const payload = event.payload;
+              if (
+                address !== undefined &&
+                !isEqual(payload.contract, address)
+              ) {
+                return false;
+              }
+              return payload.topics.some(
+                (topic) => topic === signatureTopic,
+              );
+            })
+            .map((event) => ({
+              payload: event.payload,
+              block,
+            })),
+        ),
+      ),
+    ),
   ]).pipe(
     map(([inkClient, event]) => {
       const decoded = inkClient.event.decode(event.payload, signatureTopic);
       return {
-        block: event.meta.block,
-        contract: event.payload.contract.asHex(),
+        block: event.block,
+        contract: event.payload.contract,
         name: decoded.type,
         data: decoded.value,
       } as InkContractEventOf<TContract, TEventName>;

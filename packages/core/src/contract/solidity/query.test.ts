@@ -47,7 +47,7 @@ describe("querySolidity", () => {
           call: vi.fn(async () => ({
             result: {
               success: false,
-              value: { data: Binary.fromHex("0x").asHex() },
+              value: { data: Binary.fromHex("0x") },
             },
           })),
         },

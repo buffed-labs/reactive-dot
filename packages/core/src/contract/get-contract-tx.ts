@@ -1,10 +1,8 @@
 import type { PasAh, Passet } from "../../.papi/descriptors/dist/index.js";
 import { omitUndefinedProperties } from "../utils/omit-undefined-properties.js";
 import {
-  type Binary,
-  CompatibilityLevel,
-  type FixedSizeBinary,
   type PolkadotClient,
+  type SizedHex,
   type SS58String,
   type TypedApi,
 } from "polkadot-api";
@@ -12,16 +10,14 @@ import {
 export async function getContractTx(
   client: PolkadotClient,
   origin: SS58String,
-  dest: FixedSizeBinary<20>,
+  dest: SizedHex<20>,
   value: bigint,
-  data: Binary,
+  data: Uint8Array,
   options?: { signal?: AbortSignal },
 ) {
   const passetApi = await getPassetApi(client);
 
-  if (
-    await passetApi.apis.ReviveApi.call.isCompatible(CompatibilityLevel.Partial)
-  ) {
+  try {
     const dryRunResult = await passetApi.apis.ReviveApi.call(
       origin,
       dest,
@@ -39,27 +35,27 @@ export async function getContractTx(
       storage_deposit_limit: dryRunResult.storage_deposit.value,
       data,
     });
+  } catch {
+    const pasAhApi = await getPasAhApi(client);
+
+    const dryRunResult = await pasAhApi.apis.ReviveApi.call(
+      origin,
+      dest,
+      value,
+      undefined,
+      undefined,
+      data,
+      omitUndefinedProperties({ signal: options?.signal }),
+    );
+
+    return pasAhApi.tx.Revive.call({
+      dest,
+      value,
+      gas_limit: dryRunResult.gas_required,
+      storage_deposit_limit: dryRunResult.storage_deposit.value,
+      data,
+    });
   }
-
-  const pasAhApi = await getPasAhApi(client);
-
-  const dryRunResult = await pasAhApi.apis.ReviveApi.call(
-    origin,
-    dest,
-    value,
-    undefined,
-    undefined,
-    data,
-    omitUndefinedProperties({ signal: options?.signal }),
-  );
-
-  return pasAhApi.tx.Revive.call({
-    dest,
-    value,
-    gas_limit: dryRunResult.gas_required,
-    storage_deposit_limit: dryRunResult.storage_deposit.value,
-    data,
-  });
 }
 
 const passetApiCache = new WeakMap<PolkadotClient, TypedApi<Passet>>();

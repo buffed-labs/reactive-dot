@@ -1,15 +1,15 @@
 import { isEqual, toH160Hex, toSs58String } from "./address.js";
-import { AccountId, FixedSizeBinary } from "polkadot-api";
+import { AccountId, Binary } from "polkadot-api";
 import { describe, expect, it, test } from "vitest";
 
 const ss58Alice = "5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY"; // Alice's address (default/format 42)
 const h160HexForAliceSs58Derived = "0x9621dde636de098b43efb0fa9b61facfe328f99d";
 
 const genericH160Hex = "0x1234567890123456789012345678901234567890";
-const genericH160FixedBinary = FixedSizeBinary.fromHex(genericH160Hex);
+const genericH160Bytes = Binary.fromHex(genericH160Hex);
 
 const genericPaddedBytes = new Uint8Array(32).fill(0xee);
-genericPaddedBytes.set(genericH160FixedBinary.asBytes()); // First 20 bytes
+genericPaddedBytes.set(genericH160Bytes); // First 20 bytes
 
 const ss58Format42ForGenericH160 = AccountId(42).dec(genericPaddedBytes);
 const ss58Format0ForGenericH160 = AccountId(0).dec(genericPaddedBytes);

@@ -1,7 +1,8 @@
 import { keccak_256 } from "@noble/hashes/sha3.js";
 import {
   AccountId,
-  FixedSizeBinary,
+  Binary,
+  type SizedHex,
   type SS58String,
 } from "@polkadot-api/substrate-bindings";
 
@@ -21,7 +22,7 @@ export function toSs58String(
   if (address.startsWith("0x")) {
     return accountId.dec(
       new Uint8Array([
-        ...FixedSizeBinary.fromHex(address).asBytes().slice(0, 20),
+        ...Binary.fromHex(address).slice(0, 20),
         ...Array.from<number>({ length: 12 }).fill(padInt),
       ]),
     );
@@ -30,16 +31,14 @@ export function toSs58String(
   return accountId.dec(accountId.enc(address));
 }
 
-export function toH160Bytes(address: Address): FixedSizeBinary<20> {
+export function toH160Bytes(address: Address): SizedHex<20> {
   if (address.startsWith("0x")) {
-    return FixedSizeBinary.fromHex(address);
+    return address as SizedHex<20>;
   }
 
-  return FixedSizeBinary.fromBytes(
-    keccak_256(FixedSizeBinary.fromAccountId32<32>(address).asBytes()).slice(
-      12,
-    ),
-  );
+  return Binary.toHex(
+    keccak_256(AccountId().enc(address)).slice(12),
+  ) as SizedHex<20>;
 }
 
 export function toH160Hex(address: Address): `0x${string}` {
@@ -47,7 +46,7 @@ export function toH160Hex(address: Address): `0x${string}` {
     return address as `0x${string}`;
   }
 
-  return toH160Bytes(address).asHex();
+  return toH160Bytes(address) as `0x${string}`;
 }
 
 export function isEqual(address1: Address, address2: Address): boolean {

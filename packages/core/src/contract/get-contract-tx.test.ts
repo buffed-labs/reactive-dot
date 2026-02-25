@@ -7,8 +7,6 @@ import {
 import { getContractTx } from "./get-contract-tx.js";
 import {
   Binary,
-  CompatibilityLevel,
-  FixedSizeBinary,
   type PolkadotClient,
   type SS58String,
   type TypedApi,
@@ -23,8 +21,8 @@ vi.mock("../../.papi/descriptors/dist/index.js", () => ({
 
 const mockOrigin =
   "5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY" as SS58String;
-const mockDest = FixedSizeBinary.fromArray(
-  Array.from<number>({ length: 20 }).fill(0),
+const mockDest = Binary.toHex(
+  new Uint8Array(20).fill(0),
 );
 const mockValue = 100n;
 const mockData = Binary.fromText("foo");
@@ -46,7 +44,6 @@ beforeEach(() => {
       },
     },
   } as never;
-  mockPassetApi.apis.ReviveApi.call.isCompatible = vi.fn();
 
   mockPasAhApi = {
     apis: {
@@ -70,12 +67,7 @@ beforeEach(() => {
   } as unknown as PolkadotClient;
 });
 
-it("should use passet API when ReviveApi is compatible", async () => {
-  // Setup compatibility check to return true
-  vi.mocked(mockPassetApi.apis.ReviveApi.call.isCompatible).mockResolvedValue(
-    true,
-  );
-
+it("should use passet API when ReviveApi call succeeds", async () => {
   // Setup dry run result
   const dryRunResult = {
     weight_required: { ref_time: 100n, proof_size: 200n },
@@ -92,14 +84,9 @@ it("should use passet API when ReviveApi is compatible", async () => {
   const result = await getContractTx(
     mockClient,
     mockOrigin,
-    mockDest,
+    mockDest as never,
     mockValue,
     mockData,
-  );
-
-  // Verify compatibility check
-  expect(mockPassetApi.apis.ReviveApi.call.isCompatible).toHaveBeenCalledWith(
-    CompatibilityLevel.Partial,
   );
 
   // Verify dry run call
@@ -125,10 +112,10 @@ it("should use passet API when ReviveApi is compatible", async () => {
   expect(result).toBe(mockTx);
 });
 
-it("should use pasAh API when passet ReviveApi is NOT compatible", async () => {
-  // Setup compatibility check to return false
-  vi.mocked(mockPassetApi.apis.ReviveApi.call.isCompatible).mockResolvedValue(
-    false,
+it("should use pasAh API when passet ReviveApi call fails", async () => {
+  // Setup passet call to throw
+  vi.mocked(mockPassetApi.apis.ReviveApi.call).mockRejectedValue(
+    new Error("not compatible"),
   );
 
   // Setup dry run result for pasAh
@@ -146,14 +133,9 @@ it("should use pasAh API when passet ReviveApi is NOT compatible", async () => {
   const result = await getContractTx(
     mockClient,
     mockOrigin,
-    mockDest,
+    mockDest as never,
     mockValue,
     mockData,
-  );
-
-  // Verify compatibility check
-  expect(mockPassetApi.apis.ReviveApi.call.isCompatible).toHaveBeenCalledWith(
-    CompatibilityLevel.Partial,
   );
 
   // Verify dry run call on pasAh
@@ -180,10 +162,6 @@ it("should use pasAh API when passet ReviveApi is NOT compatible", async () => {
 });
 
 it("should pass abort signal to dry run calls", async () => {
-  vi.mocked(mockPassetApi.apis.ReviveApi.call.isCompatible).mockResolvedValue(
-    true,
-  );
-
   const dryRunResult = {
     weight_required: { ref_time: 100n, proof_size: 200n },
     storage_deposit: { value: 50n },
@@ -199,7 +177,7 @@ it("should pass abort signal to dry run calls", async () => {
   await getContractTx(
     mockClient,
     mockOrigin,
-    mockDest,
+    mockDest as never,
     mockValue,
     mockData,
     options,

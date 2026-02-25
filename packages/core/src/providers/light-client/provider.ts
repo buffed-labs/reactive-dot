@@ -8,7 +8,7 @@ import {
 import type { getSmoldotExtensionProviders } from "@substrate/smoldot-discovery";
 import { createClient } from "polkadot-api";
 import { getSmProvider } from "polkadot-api/sm-provider";
-import type { JsonRpcProvider } from "polkadot-api/ws-provider";
+import type { JsonRpcProvider } from "polkadot-api";
 
 const getProviderSymbol = Symbol("getProvider");
 
@@ -76,7 +76,7 @@ export function createLightClientProvider({
 
       return addLightClientProvider({
         [getProviderSymbol]() {
-          return getSmProvider(getRelayChain());
+          return getSmProvider(() => getRelayChain()) as JsonRpcProvider;
         },
 
         addParachain(options) {
@@ -112,7 +112,7 @@ export function createLightClientProvider({
                     })(),
               );
 
-              return getSmProvider(parachainPromise);
+              return getSmProvider(() => parachainPromise) as JsonRpcProvider;
             },
           });
         },
@@ -130,7 +130,7 @@ export function isLightClientProvider(
 export function createClientFromLightClientProvider(
   provider: LightClientProvider,
 ) {
-  return createClient(provider[getProviderSymbol]());
+  return createClient(provider[getProviderSymbol]() as JsonRpcProvider);
 }
 
 const lightClientProviders = new WeakSet<LightClientProvider>();

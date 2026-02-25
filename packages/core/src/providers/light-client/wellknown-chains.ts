@@ -13,12 +13,12 @@ export const wellknownChains = {
     },
   ],
   kusama: [
-    () => import("polkadot-api/chains/ksmcc3"),
+    () => import("polkadot-api/chains/kusama"),
     {
-      kusama_asset_hub: () => import("polkadot-api/chains/ksmcc3_asset_hub"),
-      kusama_bridge_hub: () => import("polkadot-api/chains/ksmcc3_bridge_hub"),
-      kusama_encointer: () => import("polkadot-api/chains/ksmcc3_encointer"),
-      kusama_people: () => import("polkadot-api/chains/ksmcc3_people"),
+      kusama_asset_hub: () => import("polkadot-api/chains/kusama_asset_hub"),
+      kusama_bridge_hub: () => import("polkadot-api/chains/kusama_bridge_hub"),
+      kusama_encointer: () => import("polkadot-api/chains/kusama_encointer"),
+      kusama_people: () => import("polkadot-api/chains/kusama_people"),
     },
   ],
   paseo: [
@@ -29,14 +29,14 @@ export const wellknownChains = {
     },
   ],
   westend: [
-    () => import("polkadot-api/chains/westend2"),
+    () => import("polkadot-api/chains/westend"),
     {
-      westend_asset_hub: () => import("polkadot-api/chains/westend2_asset_hub"),
+      westend_asset_hub: () => import("polkadot-api/chains/westend_asset_hub"),
       westend_bridge_hub: () =>
-        import("polkadot-api/chains/westend2_bridge_hub"),
+        import("polkadot-api/chains/westend_bridge_hub"),
       westend_collectives: () =>
-        import("polkadot-api/chains/westend2_collectives"),
-      westend_people: () => import("polkadot-api/chains/westend2_people"),
+        import("polkadot-api/chains/westend_collectives"),
+      westend_people: () => import("polkadot-api/chains/westend_people"),
     },
   ],
 } as const;

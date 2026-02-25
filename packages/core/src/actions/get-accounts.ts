@@ -84,7 +84,7 @@ export function getAccounts(
                     address:
                       type === "substrate"
                         ? ss58AccountId.dec(publicKey)
-                        : checksum(Binary.fromBytes(publicKey).asHex()),
+                        : checksum(Binary.toHex(publicKey)),
                     wallet,
                   };
                 })

@@ -21,7 +21,7 @@ describe("getSolidityContractTx", () => {
   it("builds a tx from abi, signer and body (dry-run -> tx)", async () => {
     const h160 = "0x1234567890123456789012345678901234567890";
 
-    const h160Fixed = Binary.fromHex(h160).asBytes();
+    const h160Fixed = Binary.fromHex(h160);
     const padded = new Uint8Array(32);
     padded.set(h160Fixed, 0);
 
@@ -46,8 +46,8 @@ describe("getSolidityContractTx", () => {
 
     expect(getContractTx).toHaveBeenCalled();
 
-    const data = vi.mocked(getContractTx).mock.calls.at(0)?.at(4) as Binary;
+    const data = vi.mocked(getContractTx).mock.calls.at(0)?.at(4) as Uint8Array;
 
-    expect((data as Binary).asHex()).toBe("0xdeadbeef");
+    expect(Binary.toHex(data)).toBe("0xdeadbeef");
   });
 });

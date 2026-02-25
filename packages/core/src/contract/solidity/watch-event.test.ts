@@ -2,8 +2,8 @@ import { defineContract } from "../contract.js";
 import type { ContractCompatApi } from "../types.js";
 import { watchSolidityContractEvent } from "./watch-event.js";
 import { AbiEvent } from "ox";
-import { Binary, type FixedSizeBinary } from "polkadot-api";
-import { filter, from, lastValueFrom, map, toArray } from "rxjs";
+import { Binary, type SizedHex } from "polkadot-api";
+import { lastValueFrom, Subject, toArray } from "rxjs";
 import { beforeEach, expect, it, vi } from "vitest";
 
 const transferEvent = AbiEvent.from(
@@ -12,24 +12,22 @@ const transferEvent = AbiEvent.from(
 
 const bsEvent = AbiEvent.from("event Bs(address indexed clown)");
 
-let eventSubject = from(
-  [] as Array<{
-    contract: FixedSizeBinary<20>;
-    data: Binary;
-    topics: FixedSizeBinary<32>[];
-  }>,
-);
+let eventSubject = new Subject<{
+  block: unknown;
+  events: Array<{
+    payload: {
+      contract: SizedHex<20>;
+      data: Uint8Array;
+      topics: SizedHex<32>[];
+    };
+  }>;
+}>();
 
 const mockApi = {
   event: {
     Revive: {
       ContractEmitted: {
-        watch: vi.fn((filterFn: (event: unknown) => boolean) =>
-          eventSubject.pipe(
-            filter(filterFn),
-            map((event) => ({ meta: { block: {} }, payload: event })),
-          ),
-        ),
+        watch: vi.fn(() => eventSubject.asObservable()),
       },
     },
   },
@@ -51,7 +49,7 @@ const mockContract = defineContract({
 });
 
 beforeEach(() => {
-  eventSubject = from([]);
+  eventSubject = new Subject();
 });
 
 it("filters the right events", async () => {
@@ -64,30 +62,6 @@ it("filters the right events", async () => {
     clown: "0xC791486a99fB038A63ff51622A879c53EE4EA9ac",
   });
 
-  eventSubject = from([
-    {
-      contract: Binary.fromHex("0x"),
-      data: Binary.fromHex(
-        "0x12342235243524123421342131324123421412341324124123412341234123412343231",
-      ),
-      topics: firstValidTopics(transferEventTopics),
-    },
-    {
-      contract: Binary.fromHex("0x"),
-      data: Binary.fromHex(
-        "0x12342235243524123421342131324123421412341324124123412341234123412343231",
-      ),
-      topics: firstValidTopics(bsEventTopics),
-    },
-    {
-      contract: Binary.fromHex("0x"),
-      data: Binary.fromHex(
-        "0x12342235243524123421342131324123421412341324124123412341234123412343231",
-      ),
-      topics: firstValidTopics(transferEventTopics),
-    },
-  ]);
-
   const subscription = watchSolidityContractEvent(
     mockApi,
     mockContract,
@@ -95,8 +69,56 @@ it("filters the right events", async () => {
     "Transfer",
   );
 
-  expect(await lastValueFrom(subscription.pipe(toArray())))
-    .toMatchInlineSnapshot(`
+  const resultPromise = lastValueFrom(subscription.pipe(toArray()));
+
+  // Wait for defer(() => import("ox")) to resolve
+  await new Promise((r) => setTimeout(r, 0));
+
+  const dataHex =
+    "0x12342235243524123421342131324123421412341324124123412341234123412343231";
+
+  eventSubject.next({
+    block: {},
+    events: [
+      {
+        payload: {
+          contract: "0x" as SizedHex<20>,
+          data: Binary.fromHex(dataHex),
+          topics: firstValidTopics(transferEventTopics),
+        },
+      },
+    ],
+  });
+
+  eventSubject.next({
+    block: {},
+    events: [
+      {
+        payload: {
+          contract: "0x" as SizedHex<20>,
+          data: Binary.fromHex(dataHex),
+          topics: firstValidTopics(bsEventTopics),
+        },
+      },
+    ],
+  });
+
+  eventSubject.next({
+    block: {},
+    events: [
+      {
+        payload: {
+          contract: "0x" as SizedHex<20>,
+          data: Binary.fromHex(dataHex),
+          topics: firstValidTopics(transferEventTopics),
+        },
+      },
+    ],
+  });
+
+  eventSubject.complete();
+
+  expect(await resultPromise).toMatchInlineSnapshot(`
     [
       {
         "block": {},
@@ -128,30 +150,6 @@ it("filters by contract address", async () => {
     to: "0xE94c9f9A1893f23be38A5C0394E46Ac05e8a5f8C",
   });
 
-  eventSubject = from([
-    {
-      contract: Binary.fromHex("0x123456"),
-      data: Binary.fromHex(
-        "0x12342235243524123421342131324123421412341324124123412341234123412343231",
-      ),
-      topics: firstValidTopics(transferEventTopics),
-    },
-    {
-      contract: Binary.fromHex("0x678910"),
-      data: Binary.fromHex(
-        "0x12342235243524123421342131324123421412341324124123412341234123412343231",
-      ),
-      topics: firstValidTopics(transferEventTopics),
-    },
-    {
-      contract: Binary.fromHex("0x123456"),
-      data: Binary.fromHex(
-        "0x12342235243524123421342131324123421412341324124123412341234123412343231",
-      ),
-      topics: firstValidTopics(transferEventTopics),
-    },
-  ]);
-
   const subscription = watchSolidityContractEvent(
     mockApi,
     mockContract,
@@ -159,8 +157,56 @@ it("filters by contract address", async () => {
     "Transfer",
   );
 
-  expect(await lastValueFrom(subscription.pipe(toArray())))
-    .toMatchInlineSnapshot(`
+  const resultPromise = lastValueFrom(subscription.pipe(toArray()));
+
+  // Wait for defer(() => import("ox")) to resolve
+  await new Promise((r) => setTimeout(r, 0));
+
+  const dataHex =
+    "0x12342235243524123421342131324123421412341324124123412341234123412343231";
+
+  eventSubject.next({
+    block: {},
+    events: [
+      {
+        payload: {
+          contract: "0x123456" as SizedHex<20>,
+          data: Binary.fromHex(dataHex),
+          topics: firstValidTopics(transferEventTopics),
+        },
+      },
+    ],
+  });
+
+  eventSubject.next({
+    block: {},
+    events: [
+      {
+        payload: {
+          contract: "0x678910" as SizedHex<20>,
+          data: Binary.fromHex(dataHex),
+          topics: firstValidTopics(transferEventTopics),
+        },
+      },
+    ],
+  });
+
+  eventSubject.next({
+    block: {},
+    events: [
+      {
+        payload: {
+          contract: "0x123456" as SizedHex<20>,
+          data: Binary.fromHex(dataHex),
+          topics: firstValidTopics(transferEventTopics),
+        },
+      },
+    ],
+  });
+
+  eventSubject.complete();
+
+  expect(await resultPromise).toMatchInlineSnapshot(`
     [
       {
         "block": {},
@@ -192,14 +238,14 @@ function firstValidTopics(
     ...(`0x${string}` | readonly `0x${string}`[] | null)[],
   ],
 ) {
-  const topicToBinary = (topic: `0x${string}` | null) =>
+  const topicToHex = (topic: `0x${string}` | null): SizedHex<32> =>
     topic === null
-      ? (Binary.fromBytes(new Uint8Array()) as FixedSizeBinary<32>)
-      : (Binary.fromHex(topic) as FixedSizeBinary<32>);
+      ? (Binary.toHex(new Uint8Array()) as SizedHex<32>)
+      : (topic as SizedHex<32>);
 
   return topics.map((topic) =>
     topic === null || typeof topic === "string"
-      ? topicToBinary(topic)
-      : topicToBinary(topic.at(0)!),
+      ? topicToHex(topic)
+      : topicToHex(topic.at(0)!),
   );
 }
