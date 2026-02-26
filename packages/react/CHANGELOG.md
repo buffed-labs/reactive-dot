@@ -1,5 +1,11 @@
 # @reactive-dot/react
 
+## 0.71.2
+
+### Patch Changes
+
+- [#1182](https://github.com/buffed-labs/reactive-dot/pull/1182) [`4bd21e5`](https://github.com/buffed-labs/reactive-dot/commit/4bd21e520055b30baf39f8309cd61e70565e9f78) Thanks [@tien](https://github.com/tien)! - Fixed Jotai dependency incompatibility [bug](https://github.com/jotaijs/jotai-suspense/pull/12/changes).
+
 ## 0.71.0
 
 ### Minor Changes
