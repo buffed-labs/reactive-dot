@@ -7,8 +7,8 @@ import {
 } from "./wellknown-chains.js";
 import type { getSmoldotExtensionProviders } from "@substrate/smoldot-discovery";
 import { createClient } from "polkadot-api";
-import { getSmProvider } from "polkadot-api/sm-provider";
 import type { JsonRpcProvider } from "polkadot-api";
+import { getSmProvider } from "polkadot-api/sm-provider";
 
 const getProviderSymbol = Symbol("getProvider");
 

@@ -24,7 +24,9 @@ async function _getClient(chainConfig: ChainConfig) {
   }
 
   // Hack to detect wether function is a `JsonRpcProvider` or a getter of `JsonRpcProvider`
-  const providerOrController = await ((providerOrGetter as (...args: unknown[]) => unknown).length > 0
+  const providerOrController = await ((
+    providerOrGetter as (...args: unknown[]) => unknown
+  ).length > 0
     ? (providerOrGetter as unknown as JsonRpcProvider | LightClientProvider)
     : (
         providerOrGetter as Exclude<

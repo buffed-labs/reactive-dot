@@ -58,9 +58,7 @@ export function watchInkContractEvent<
               ) {
                 return false;
               }
-              return payload.topics.some(
-                (topic) => topic === signatureTopic,
-              );
+              return payload.topics.some((topic) => topic === signatureTopic);
             })
             .map((event) => ({
               payload: event.payload,

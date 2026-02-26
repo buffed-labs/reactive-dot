@@ -21,9 +21,7 @@ vi.mock("../../.papi/descriptors/dist/index.js", () => ({
 
 const mockOrigin =
   "5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY" as SS58String;
-const mockDest = Binary.toHex(
-  new Uint8Array(20).fill(0),
-);
+const mockDest = Binary.toHex(new Uint8Array(20).fill(0));
 const mockValue = 100n;
 const mockData = Binary.fromText("foo");
 
