@@ -80,7 +80,9 @@ export function useQueryObservable<
 >(query: TQuery, options?: ChainComposableOptions<TChainId>) {
   return queryObservable(
     internal_useChainId(options),
-    useTypedApiPromise(options),
+    useTypedApiPromise(options) as MaybeRefOrGetter<
+      Promise<TypedApi<ChainDefinition>>
+    >,
     query,
     useLazyValuesCache(),
   );

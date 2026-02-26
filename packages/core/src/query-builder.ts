@@ -27,23 +27,26 @@ type PapiCallOptions = Partial<{
   signal: AbortSignal;
 }>;
 
-type OmitCallOptions<T extends unknown[]> = T extends [
-  infer Head,
-  ...infer Tail,
-]
-  ? [Head] extends [PapiCallOptions]
-    ? OmitCallOptions<Tail>
-    : [Head, ...OmitCallOptions<Tail>]
-  : [];
+type OmitCallOptions<T extends unknown[]> = number extends T["length"]
+  ? T
+  : T extends [infer Head, ...infer Tail]
+    ? [Head] extends [PapiCallOptions]
+      ? OmitCallOptions<Tail>
+      : [Head, ...OmitCallOptions<Tail>]
+    : [];
 
 type InferPapiStorageEntry<T> = T extends {
-  watchValue: (...args: [...infer Args, infer _]) => Observable<{
-    value: infer Value;
-    block: infer _;
-  }>;
+  getValues: (
+    keys: Array<[...infer Args]>,
+    ...rest: infer _
+  ) => Promise<Array<infer Value>>;
 }
   ? { args: Args; response: Observable<Value> }
-  : { args: unknown[]; response: unknown };
+  : T extends {
+        getValue: (options?: infer _) => Promise<infer Value>;
+      }
+    ? { args: []; response: Observable<Value> }
+    : { args: unknown[]; response: unknown };
 
 type InferPapiStorageEntries<T> = T extends {
   getEntries: (
@@ -65,9 +68,11 @@ type InferPapiStorageEntries<T> = T extends {
     }
   : { args: unknown[]; response: unknown };
 
-type InferPapiRuntimeCall<T> = T extends (...args: infer Args) => infer Response
-  ? { args: OmitCallOptions<Args>; response: Response }
-  : { args: unknown[]; response: unknown };
+type InferPapiRuntimeCall<T> = 0 extends 1 & T
+  ? { args: unknown[]; response: unknown }
+  : T extends (...args: infer Args) => infer Response
+    ? { args: OmitCallOptions<Args>; response: Response }
+    : { args: unknown[]; response: unknown };
 
 type InferPapiConstantEntry<T> = T extends {
   (options?: infer _): Promise<infer Payload>;

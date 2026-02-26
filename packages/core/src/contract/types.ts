@@ -237,6 +237,7 @@ export type GenericDefinition<TPallet, TApis> = {
     apis: TApis;
   };
   asset: any;
+  extensions?: Record<string, { value?: any; additionalSigned?: any }>;
   metadataTypes: any;
   getMetadata: any;
   genesis: any;
