@@ -1,8 +1,10 @@
 import { getAccounts } from "../actions/get-accounts.js";
 import type { InferChainId } from "../chains.js";
 import type { Config } from "../config.js";
+import type { MaybeAsync } from "../types.js";
 import { getClient } from "./get-client.js";
 import { whenWalletsChanged } from "./when-wallets-changed.js";
+import type { ChainSpecData } from "@polkadot-api/substrate-client";
 import { defer } from "rxjs";
 
 /**
@@ -14,19 +16,23 @@ import { defer } from "rxjs";
  */
 export function whenAccountsChanged<TConfig extends Config>(
   config: TConfig,
-  options?: { chainId?: InferChainId<TConfig> },
+  options?: {
+    chainId?: InferChainId<TConfig>;
+    chainSpec?: MaybeAsync<ChainSpecData>;
+  },
 ) {
   const chainId = options?.chainId;
 
   return getAccounts(
     whenWalletsChanged(config),
-    chainId === undefined
-      ? undefined
-      : defer(() =>
-          getClient(config, { chainId }).then((client) =>
-            client.getChainSpecData(),
-          ),
-        ),
+    options?.chainSpec ??
+      (chainId === undefined
+        ? undefined
+        : defer(() =>
+            getClient(config, { chainId }).then((client) =>
+              client.getChainSpecData(),
+            ),
+          )),
     undefined,
     config.includeEvmAccounts === undefined
       ? undefined
