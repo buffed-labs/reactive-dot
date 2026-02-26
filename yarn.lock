@@ -5414,7 +5414,7 @@ __metadata:
     "@tsconfig/strictest": "npm:^2.0.8"
     "@types/react": "npm:^19.2.14"
     eslint: "npm:^9.39.2"
-    jotai: "npm:^2.17.1"
+    jotai: "npm:^2.18.0"
     jotai-eager: "npm:^0.2.4"
     jotai-effect: "npm:^2.2.3"
     jotai-suspense: "npm:^0.4.2"
@@ -13471,9 +13471,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jotai@npm:^2.17.1":
-  version: 2.17.1
-  resolution: "jotai@npm:2.17.1"
+"jotai@npm:^2.18.0":
+  version: 2.18.0
+  resolution: "jotai@npm:2.18.0"
   peerDependencies:
     "@babel/core": ">=7.0.0"
     "@babel/template": ">=7.0.0"
@@ -13488,7 +13488,7 @@ __metadata:
       optional: true
     react:
       optional: true
-  checksum: 10c0/45e52a77a7d33d0947f3ceafe8930a161e170e1d28e934572a325267fdc0177f766761f06b38b884955f468deb27ebb530646658566ea5bbba68991317fb09a4
+  checksum: 10c0/df40027ad6deef6b61e159ce311bc39bf7b3e5ee33b3289c94d3a6d55c552cc3bcf4fb2f7ad41d2f23f1ec10d3a511183bd3de6c89590e1391fa3e8d31610e41
   languageName: node
   linkType: hard
 
