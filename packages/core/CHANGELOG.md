@@ -1,5 +1,11 @@
 # @reactive-dot/core
 
+## 0.71.1
+
+### Patch Changes
+
+- [#1180](https://github.com/buffed-labs/reactive-dot/pull/1180) [`d71e9ef`](https://github.com/buffed-labs/reactive-dot/commit/d71e9efcccb3bbdf0b030043aa7cb29dfb22888a) Thanks [@tien](https://github.com/tien)! - Added missing `chainSpec` option to `whenAccountsChanged`, bringing parity with `useAccounts` hook/composable.
+
 ## 0.71.0
 
 ### Minor Changes
