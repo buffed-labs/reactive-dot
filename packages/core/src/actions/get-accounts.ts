@@ -11,7 +11,7 @@ import { combineLatest, map, of, switchMap } from "rxjs";
 export function getAccounts(
   wallets: MaybeAsync<Wallet[]>,
   chainSpec?: MaybeAsync<ChainSpecData>,
-  fallbackChainSpec?: MaybeAsync<ChainSpecData>,
+  fallbackChainSpec: MaybeAsync<ChainSpecData> = polkadotAssetHubChainSpec,
   options?: { includeEvmAccounts?: boolean },
 ) {
   return combineLatest([
@@ -108,3 +108,14 @@ export function getAccounts(
     }),
   );
 }
+
+const polkadotAssetHubChainSpec: ChainSpecData = {
+  name: "Polkadot",
+  genesisHash:
+    "0x68d56f15f85d3136970ec16946040bc1752654e906147f7e43e9d539d7c3de2f",
+  properties: {
+    ss58Format: 0,
+    tokenDecimals: 10,
+    tokenSymbol: "DOT",
+  },
+};

@@ -1,6 +1,7 @@
 import { chainIdKey, configKey } from "../keys.js";
 import { withSetup } from "../test-utils.js";
 import { useAccounts } from "./use-accounts.js";
+import type { ChainSpecData } from "@polkadot-api/substrate-client";
 import { type ChainConfig, defineConfig } from "@reactive-dot/core";
 import * as internals from "@reactive-dot/core/internal/actions.js";
 import { MockWallet } from "@reactive-dot/test";
@@ -102,6 +103,45 @@ it("ignores injected chainId when chainId is null", async () => {
   expect(getAccounts).toHaveBeenCalledWith(
     expect.anything(),
     undefined,
+    undefined,
+    undefined,
+  );
+});
+
+it("uses chainSpec when provided", async () => {
+  const wallets = [
+    new MockWallet(
+      [
+        {
+          id: "1",
+          polkadotSigner: { publicKey: new Uint8Array() } as PolkadotSigner,
+        },
+      ],
+      true,
+    ),
+  ];
+
+  const config = defineConfig({
+    chains: { "test-chain": {} as ChainConfig },
+    wallets,
+  });
+
+  const chainSpec = {
+    name: "Custom Chain",
+    properties: { ss58Format: 42 },
+    genesisHash: "0x00",
+  } as ChainSpecData;
+
+  const { result } = withSetup(() => useAccounts({ chainSpec: chainSpec }), {
+    [configKey]: config,
+    [chainIdKey]: "test-chain",
+  });
+
+  await result;
+
+  expect(getAccounts).toHaveBeenCalledWith(
+    expect.anything(),
+    chainSpec,
     undefined,
     undefined,
   );

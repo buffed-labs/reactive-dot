@@ -17,7 +17,7 @@ import {
   toValue,
 } from "vue";
 
-type Key = string | number;
+type Key = string | number | undefined;
 
 /**
  * @internal

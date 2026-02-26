@@ -1,6 +1,7 @@
 import { ChainProvider } from "../contexts/chain.js";
 import { ReactiveDotProvider } from "../contexts/provider.js";
 import { useAccounts } from "./use-accounts.js";
+import type { ChainSpecData } from "@polkadot-api/substrate-client";
 import { defineConfig } from "@reactive-dot/core";
 import * as internals from "@reactive-dot/core/internal/actions.js";
 import { MockWallet } from "@reactive-dot/test";
@@ -99,6 +100,44 @@ it("ignores context chainId when chainId is null", async () => {
   expect(getAccounts).toHaveBeenCalledWith(
     expect.anything(),
     undefined,
+    undefined,
+    undefined,
+  );
+});
+
+it("uses chainSpec when provided", async () => {
+  const wallets = [
+    new MockWallet(
+      [
+        {
+          id: "1",
+          polkadotSigner: { publicKey: new Uint8Array() } as PolkadotSigner,
+        },
+      ],
+      true,
+    ),
+  ];
+
+  const config = defineConfig({ chains: {}, wallets });
+  const chainSpec = {
+    name: "Custom Chain",
+    properties: { ss58Format: 42 },
+    genesisHash: "0x00",
+  } as ChainSpecData;
+
+  await act(() =>
+    renderHook(() => useAccounts({ chainSpec: chainSpec }), {
+      wrapper: ({ children }) => (
+        <ReactiveDotProvider config={config}>
+          <Suspense>{children}</Suspense>
+        </ReactiveDotProvider>
+      ),
+    }),
+  );
+
+  expect(getAccounts).toHaveBeenCalledWith(
+    expect.anything(),
+    chainSpec,
     undefined,
     undefined,
   );

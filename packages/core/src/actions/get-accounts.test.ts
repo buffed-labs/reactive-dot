@@ -180,7 +180,11 @@ it("should handle account.polkadotSigner as a function", async () => {
   expect(accounts[0]?.address).toBeDefined();
 });
 
-it("should handle account.polkadotSigner as a function and return undefined if chainSpec is undefined", async () => {
+it("uses the default polkadot chainSpec when chainSpec is undefined", async () => {
+  const polkadotSigner = vi.fn().mockReturnValue({
+    sign: vi.fn(),
+    publicKey: new Uint8Array([1, 2, 3]),
+  });
   const mockWallet = {
     accounts$: of([
       {
@@ -188,17 +192,18 @@ it("should handle account.polkadotSigner as a function and return undefined if c
         name: "Account 1",
         type: "ed25519",
         genesisHash: "genesisHash1",
-        polkadotSigner: vi.fn().mockReturnValue({
-          sign: vi.fn(),
-          publicKey: new Uint8Array([1, 2, 3]),
-        }),
+        polkadotSigner,
       },
     ]),
   } as unknown as Wallet;
 
   const accounts = await firstValueFrom(getAccounts([mockWallet], undefined));
 
-  expect(accounts.length).toBe(0);
+  expect(accounts.length).toBe(1);
+  expect(polkadotSigner).toHaveBeenCalledWith({
+    tokenSymbol: "DOT",
+    tokenDecimals: 10,
+  });
 });
 
 it("should handle account.polkadotSigner as a function and return undefined if it returns undefined", async () => {
@@ -263,7 +268,7 @@ it("handles EVM and Substrate accounts", async () => {
 
   expect(accounts.length).toBe(2);
   expect(accounts[0]?.address).toMatchInlineSnapshot(
-    `"5C62W7ELLAAfjCQeBU3me9ykaYomD8XTg2B9Hk6ki6Cm3v58"`,
+    `"12KeSVQBwS9AjRA976mnJouSAoQuS5bkWudT367GBEHE8Ls"`,
   );
   expect(accounts[1]?.address).toMatchInlineSnapshot(
     `"0x0102030405060708090a0B0c0d0e0f1011121314"`,
@@ -304,6 +309,6 @@ it("filters out EVM accounts when `includeEvmAccounts` is false", async () => {
 
   expect(accounts.length).toBe(1);
   expect(accounts[0]?.address).toMatchInlineSnapshot(
-    `"5C62W7ELLAAfjCQeBU3me9ykaYomD8XTg2B9Hk6ki6Cm3v58"`,
+    `"12KeSVQBwS9AjRA976mnJouSAoQuS5bkWudT367GBEHE8Ls"`,
   );
 });
