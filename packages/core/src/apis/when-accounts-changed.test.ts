@@ -5,6 +5,7 @@ import type { PolkadotSignerAccount } from "../wallets/account.js";
 import { Wallet } from "../wallets/wallet.js";
 import { getClient } from "./get-client.js";
 import { whenAccountsChanged } from "./when-accounts-changed.js";
+import type { ChainSpecData } from "@polkadot-api/substrate-client";
 import type { PolkadotClient } from "polkadot-api";
 import { lastValueFrom, Observable } from "rxjs";
 import { afterEach, expect, it, vi } from "vitest";
@@ -63,6 +64,26 @@ it("fetches wallets with chain-spec", () => {
     genesisHash: "0x",
     properties: {},
   });
+});
+
+it("uses the provided chainSpec when supplied", async () => {
+  const wallet = new MockWallet();
+  const chainSpec = {
+    name: "Custom",
+    genesisHash: "0x123",
+    properties: { ss58Format: 42 },
+  } as ChainSpecData;
+
+  whenAccountsChanged(defineConfig({ chains: {}, wallets: [wallet] }), {
+    chainSpec,
+  });
+
+  expect(getAccounts).toHaveBeenCalledWith(
+    expect.any(Observable),
+    chainSpec,
+    undefined,
+    undefined,
+  );
 });
 
 it("fetches wallets with EVM accounts", () => {
