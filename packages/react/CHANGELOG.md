@@ -1,5 +1,16 @@
 # @reactive-dot/react
 
+## 0.71.0
+
+### Minor Changes
+
+- [#1176](https://github.com/buffed-labs/reactive-dot/pull/1176) [`1d32182`](https://github.com/buffed-labs/reactive-dot/commit/1d321829aef61eabc5f6f1d7aeb0ba5b33146489) Thanks [@tien](https://github.com/tien)! - Allow specifying chain spec for account resolution, defaulting to Polkadot.
+
+### Patch Changes
+
+- Updated dependencies [[`1d32182`](https://github.com/buffed-labs/reactive-dot/commit/1d321829aef61eabc5f6f1d7aeb0ba5b33146489)]:
+  - @reactive-dot/core@0.71.0
+
 ## 0.70.0
 
 ### Patch Changes
