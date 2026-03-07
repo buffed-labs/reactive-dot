@@ -1,5 +1,11 @@
 # @reactive-dot/react
 
+## 0.71.3
+
+### Patch Changes
+
+- [#1189](https://github.com/buffed-labs/reactive-dot/pull/1189) [`79a7bb4`](https://github.com/buffed-labs/reactive-dot/commit/79a7bb47d33926f56e5ed505f965e32baf01760f) Thanks [@tien](https://github.com/tien)! - Removed no longer needed patch.
+
 ## 0.71.2
 
 ### Patch Changes
