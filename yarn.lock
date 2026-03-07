@@ -5417,7 +5417,7 @@ __metadata:
     jotai: "npm:^2.18.0"
     jotai-eager: "npm:^0.2.4"
     jotai-effect: "npm:^2.2.3"
-    jotai-suspense: "npm:^0.4.2"
+    jotai-suspense: "npm:^0.5.0"
     jsdom: "npm:^28.1.0"
     react: "npm:^19.2.4"
     typescript: "npm:^5.9.3"
@@ -13461,13 +13461,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jotai-suspense@npm:^0.4.2":
-  version: 0.4.2
-  resolution: "jotai-suspense@npm:0.4.2"
+"jotai-suspense@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "jotai-suspense@npm:0.5.0"
   peerDependencies:
-    jotai: ">=2.12.2"
+    jotai: ">=2.18.0"
     react: ">=18.0.0"
-  checksum: 10c0/6a77c590698fad65868aaefb0e3ff78437afc2ae4bda2faf4fda9c955e2bbf76618979ca6e276d53d98df19e7652da5d3ac08304b72980f8f04a1bf9ab03c8c2
+  checksum: 10c0/2b811df3ffa014533524bb873c99491999f2e0ff9fc505c1446715401b4ad6ea54d0ed800c0ae9a7382953fe89a77edb4b69cdbae396fd15baa94d5dfb918a28
   languageName: node
   linkType: hard
 

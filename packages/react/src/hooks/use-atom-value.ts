@@ -1,4 +1,4 @@
-import { useAtomValue as useAtomValueBase } from "./patched-use-atom-value.js";
+import { useAtomValue as useAtomValueBase } from "jotai-suspense";
 
 export const useAtomValue: typeof useAtomValueBase = (
   atom: Parameters<typeof useAtomValueBase>[0],
