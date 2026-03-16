@@ -40,7 +40,7 @@ export function internal_useChainId<TOptionalChainId extends boolean = false>({
 }: ChainHookOptions & {
   optionalChainId?: TOptionalChainId;
 } = {}) {
-  // eslint-disable-next-line react-hooks/rules-of-hooks
+  // eslint-disable-next-line @eslint-react/rules-of-hooks, react-hooks/rules-of-hooks
   const contextChainId = use(ChainIdContext);
   const chainId = options?.chainId ?? contextChainId;
 

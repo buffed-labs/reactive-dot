@@ -54,6 +54,7 @@ it("should change from inactive to active when subscription status change", asyn
   const subject = new BehaviorSubject("initial");
   const valueAtom = atomWithObservableAndPromise(() => subject);
 
+  // eslint-disable-next-line @eslint-react/component-hook-factories
   const Wrapper = ({ children }: PropsWithChildren) => (
     <QueryOptionsProvider
       active={use(useStablePromise(useAtomValue(activeAtom)))}

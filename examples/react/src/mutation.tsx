@@ -2,6 +2,7 @@ import { AccountSelect } from "./account-select";
 import { idle, MutationError, pending } from "@reactive-dot/core";
 import { SignerProvider, useMutation } from "@reactive-dot/react";
 import { Binary } from "polkadot-api";
+import { useMemo } from "react";
 
 export function Mutation() {
   return (
@@ -32,7 +33,7 @@ function RemarkMutation() {
         Hello
       </button>
       <p>
-        {(() => {
+        {useMemo(() => {
           switch (remarkState) {
             case idle:
               return null;
@@ -49,7 +50,7 @@ function RemarkMutation() {
                 </span>
               );
           }
-        })()}
+        }, [remarkState])}
       </p>
     </article>
   );
