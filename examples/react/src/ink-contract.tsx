@@ -6,7 +6,7 @@ import {
   useContractMutation,
   useLazyLoadQuery,
 } from "@reactive-dot/react";
-import { useState, useTransition } from "react";
+import { useMemo, useState, useTransition } from "react";
 
 export function InkContracts() {
   return (
@@ -40,7 +40,12 @@ function Psp22TokenInfo({ address }: ContractProps) {
       <h3>PSP22</h3>
       <dl>
         <dt>Timestamp</dt>
-        <dd>{new Date(Number(timestamp)).toLocaleString()}</dd>
+        <dd>
+          {useMemo(
+            () => new Date(Number(timestamp)).toLocaleString(),
+            [timestamp],
+          )}
+        </dd>
 
         <dt>Token name</dt>
         <dd>{tokenName ?? "N/A"}</dd>

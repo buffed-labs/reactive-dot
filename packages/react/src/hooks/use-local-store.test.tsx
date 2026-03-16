@@ -25,6 +25,7 @@ it("provides a distinct store for each hook instance without Provider", () => {
 it("returns the context store when a custom store is provided", () => {
   const customStore = createStore();
 
+  // eslint-disable-next-line @eslint-react/component-hook-factories
   const Wrapper = ({ children }: PropsWithChildren) => (
     <Provider store={customStore}>{children}</Provider>
   );

@@ -15,11 +15,12 @@ export function useSsrValue<T>(clientValue: T, serverValue: T) {
   useEffect(
     () => {
       if (enabled) {
-        // eslint-disable-next-line @eslint-react/hooks-extra/no-direct-set-state-in-use-effect
+        // eslint-disable-next-line @eslint-react/set-state-in-effect, react-hooks/set-state-in-effect
         setCurrentValue(clientValue);
       }
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    // eslint-disable-next-line @eslint-react/exhaustive-deps, react-hooks/exhaustive-deps
     [],
   );
 

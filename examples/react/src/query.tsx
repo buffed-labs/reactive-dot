@@ -8,7 +8,7 @@ import {
   useSpendableBalance,
 } from "@reactive-dot/react";
 import { formatDistance } from "date-fns";
-import { Suspense, useState, useTransition } from "react";
+import { Suspense, useMemo, useState, useTransition } from "react";
 
 export function Query() {
   const block = useBlock();
@@ -52,7 +52,11 @@ export function Query() {
       <article>
         <h4>Current block</h4>
         <p>
-          {block.number} @ {new Date(Number(timestamp)).toLocaleString()}
+          {block.number} @{" "}
+          {useMemo(
+            () => new Date(Number(timestamp)).toLocaleString(),
+            [timestamp],
+          )}
         </p>
       </article>
       <article>

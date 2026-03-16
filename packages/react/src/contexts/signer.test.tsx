@@ -7,6 +7,7 @@ import { expect, it } from "vitest";
 it("should provide signer value to children", () => {
   const mockSigner = {} as unknown as PolkadotSigner;
 
+  // eslint-disable-next-line @eslint-react/component-hook-factories
   function TestComponent() {
     const signer = use(SignerContext);
     return <div data-testid="test">{signer ? "has-signer" : "no-signer"}</div>;
@@ -22,6 +23,7 @@ it("should provide signer value to children", () => {
 });
 
 it("should handle undefined signer", () => {
+  // eslint-disable-next-line @eslint-react/component-hook-factories
   function TestComponent() {
     const signer = use(SignerContext);
     return <div data-testid="test">{signer ? "has-signer" : "no-signer"}</div>;
