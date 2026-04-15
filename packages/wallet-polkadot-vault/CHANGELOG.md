@@ -1,5 +1,16 @@
 # @reactive-dot/wallet-polkadot-vault
 
+## 0.3.0
+
+### Minor Changes
+
+- [#1219](https://github.com/buffed-labs/reactive-dot/pull/1219) [`f047f2c`](https://github.com/buffed-labs/reactive-dot/commit/f047f2c7ed7be03769b892e67d5f585f9b87564e) Thanks [@tien](https://github.com/tien)! - Added support for Polkadot-API v2.
+
+### Patch Changes
+
+- Updated dependencies [[`48e0bdb`](https://github.com/buffed-labs/reactive-dot/commit/48e0bdbcff39396c6a243ca1d4f42ce7f66a388c), [`f047f2c`](https://github.com/buffed-labs/reactive-dot/commit/f047f2c7ed7be03769b892e67d5f585f9b87564e)]:
+  - @reactive-dot/core@0.72.0
+
 ## 0.2.11
 
 ### Patch Changes
