@@ -38,7 +38,7 @@ vi.mock("./wellknown-chains.js", () => ({
   },
 }));
 
-global.Worker = class {
+globalThis.Worker = class {
   constructor() {}
   postMessage = vi.fn();
   addEventListener = vi.fn();

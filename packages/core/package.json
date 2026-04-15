@@ -49,10 +49,10 @@
     "@tsconfig/recommended": "^1.0.13",
     "@tsconfig/strictest": "^2.0.8",
     "abitype": "^1.2.3",
-    "eslint": "^10.0.3",
+    "eslint": "^10.2.0",
     "polkadot-api": "^2.0.1",
-    "typescript": "^5.9.3",
-    "vitest": "^4.1.0"
+    "typescript": "^6.0.2",
+    "vitest": "^4.1.4"
   },
   "peerDependencies": {
     "polkadot-api": ">=2.0.1"

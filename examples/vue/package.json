@@ -14,15 +14,15 @@
     "@reactive-dot/vue": "workspace:^",
     "@reactive-dot/wallet-readonly": "workspace:^",
     "polkadot-api": "^2.0.1",
-    "vue": "^3.5.30"
+    "vue": "^3.5.32"
   },
   "devDependencies": {
     "@reactive-dot/eslint-config": "workspace:^",
     "@tsconfig/recommended": "^1.0.13",
     "@tsconfig/strictest": "^2.0.8",
-    "@vitejs/plugin-vue": "^6.0.5",
-    "eslint": "^10.0.3",
-    "typescript": "^5.9.3",
-    "vite": "^8.0.0"
+    "@vitejs/plugin-vue": "^6.0.6",
+    "eslint": "^10.2.0",
+    "typescript": "^6.0.2",
+    "vite": "^8.0.8"
   }
 }
