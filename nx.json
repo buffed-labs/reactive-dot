@@ -10,5 +10,6 @@
     },
     "lint": { "cache": true }
   },
-  "parallel": 12
+  "parallel": 12,
+  "analytics": false
 }

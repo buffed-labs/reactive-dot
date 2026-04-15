@@ -17,10 +17,10 @@
     "@reactive-dot/wallet-readonly": "workspace:^",
     "@reactive-dot/wallet-walletconnect": "workspace:^",
     "date-fns": "^4.1.0",
-    "jotai-devtools": "^0.13.0",
+    "jotai-devtools": "^0.13.1",
     "polkadot-api": "^2.0.1",
-    "react": "^19.2.4",
-    "react-dom": "^19.2.4",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
     "react-error-boundary": "^6.1.1",
     "react-hot-toast": "^2.6.0"
   },
@@ -32,8 +32,8 @@
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^6.0.1",
-    "eslint": "^10.0.3",
-    "typescript": "^5.9.3",
-    "vite": "^8.0.0"
+    "eslint": "^10.2.0",
+    "typescript": "^6.0.2",
+    "vite": "^8.0.8"
   }
 }
