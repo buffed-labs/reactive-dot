@@ -1,8 +1,7 @@
 import { type MutationEvent } from "../contexts/mutation.js";
 import type { ChainId } from "@reactive-dot/core";
 import { MutationError, pending } from "@reactive-dot/core";
-import type { GenericTransaction } from "@reactive-dot/core/internal.js";
-import type { TxEvent } from "polkadot-api";
+import type { Transaction, TxEvent } from "polkadot-api";
 import {
   catchError,
   tap,
@@ -14,7 +13,7 @@ import {
 export function tapTx<T extends TxEvent>(
   mutationEventSubject: Subject<MutationEvent>,
   chainId: ChainId,
-  transaction: GenericTransaction,
+  transaction: Transaction,
 ): MonoTypeOperatorFunction<T> {
   return (source: Observable<T>) => {
     const eventProps = {

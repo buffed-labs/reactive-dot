@@ -1,8 +1,7 @@
 import type { MutationEvent } from "../types.js";
 import { tapTx } from "./tap-tx.js";
 import { MutationError } from "@reactive-dot/core";
-import type { GenericTransaction } from "@reactive-dot/core/internal.js";
-import type { TxEvent } from "polkadot-api";
+import type { Transaction, TxEvent } from "polkadot-api";
 import { of, throwError, lastValueFrom } from "rxjs";
 import { describe, it, expect } from "vitest";
 import { ref } from "vue";
@@ -11,7 +10,7 @@ describe("tapTx", () => {
   const chainId = 1 as const;
   const dummyTx = {
     decodedCall: { type: "0x123", args: [] },
-  } as unknown as GenericTransaction;
+  } as unknown as Transaction;
 
   it("should set pending then success with data", async () => {
     const mutationRef = ref<MutationEvent | undefined>();

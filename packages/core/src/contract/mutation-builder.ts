@@ -1,5 +1,4 @@
 import type { Address } from "../address.js";
-import type { GenericTransaction } from "../transaction.js";
 import type {
   ExtractExactProperties,
   MaybePromise,
@@ -9,6 +8,7 @@ import type { InkContract, SolidityContract } from "./contract.js";
 import type { GenericInkDescriptors, InkTxBody } from "./ink/types.js";
 import type { SolidityTxBody } from "./solidity/types.js";
 import type { Abi, ExtractAbiFunctionNames } from "abitype";
+import type { Transaction } from "polkadot-api";
 
 export type MutationBuilder = {
   <
@@ -29,7 +29,7 @@ export type MutationBuilder = {
     >
       ? [body?: InkTxBody<TDescriptor, TMessageName>]
       : [body: InkTxBody<TDescriptor, TMessageName>]
-  ): MaybePromise<GenericTransaction>;
+  ): MaybePromise<Transaction>;
   <
     TAbi extends Abi,
     TFunctionName extends ExtractAbiFunctionNames<
@@ -43,5 +43,5 @@ export type MutationBuilder = {
     ...[body]: SolidityTxBody<TAbi, TFunctionName> extends Record<string, never>
       ? [body?: SolidityTxBody<TAbi, TFunctionName>]
       : [body: SolidityTxBody<TAbi, TFunctionName>]
-  ): MaybePromise<GenericTransaction>;
+  ): MaybePromise<Transaction>;
 };
