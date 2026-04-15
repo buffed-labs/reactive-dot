@@ -32,8 +32,7 @@ export function useMutation<
     tx: TypedApi<ChainDescriptorOf<TChainId>>["tx"],
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     input: any,
-  ) => // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  Transaction<any, any, any, any>,
+  ) => Transaction,
   TChainId extends ChainId | undefined,
 >(
   action: TAction,

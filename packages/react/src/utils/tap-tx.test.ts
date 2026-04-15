@@ -1,16 +1,15 @@
 import type { MutationEvent } from "../contexts/mutation.js";
 import { tapTx } from "./tap-tx.js";
 import { MutationError, pending, type ChainId } from "@reactive-dot/core";
-import type { GenericTransaction } from "@reactive-dot/core/internal.js";
 import { waitFor } from "@testing-library/dom";
-import type { TxEvent } from "polkadot-api";
+import type { Transaction, TxEvent } from "polkadot-api";
 import { Subject, of, throwError, type Observable } from "rxjs";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 
 let mutationEventSubject: Subject<MutationEvent>;
 const chainId: ChainId = "test-chain" as ChainId;
 
-const mockTransaction: GenericTransaction = {
+const mockTransaction: Transaction = {
   decodedCall: {
     // @ts-expect-error Mocking a transaction call
     pallet: "system",

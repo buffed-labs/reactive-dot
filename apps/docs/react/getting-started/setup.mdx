@@ -142,9 +142,9 @@ export const config = defineConfig({
 ```ts title="config.ts"
 // `polkadot_asset_hub` is the name we gave to `npx papi add`
 import { polkadot_asset_hub } from "@polkadot-api/descriptors";
-import { getWsProvider } from "@polkadot-api/ws-provider";
 import { defineConfig } from "@reactive-dot/core";
 import { InjectedWalletProvider } from "@reactive-dot/core/wallets.js";
+import { getWsProvider } from "polkadot-api/ws";
 
 export const config = defineConfig({
   chains: {

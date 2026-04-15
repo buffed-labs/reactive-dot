@@ -1,5 +1,5 @@
 import { compact } from "@polkadot-api/substrate-bindings";
-import { mergeUint8 } from "@polkadot-api/utils";
+import { mergeUint8 } from "polkadot-api/utils";
 
 // https://github.com/novasamatech/parity-signer/blob/738e34f0b60f86b718267cfe1ca766bd291640ed/docs/src/development/UOS.md
 export const vaultQrHeader = new Uint8Array([0x53]);

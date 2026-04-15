@@ -1,4 +1,4 @@
-import { toH160Bytes, toSs58String, type Address } from "../../address.js";
+import { toH160Hex, toSs58String, type Address } from "../../address.js";
 import { QueryError } from "../../errors.js";
 import { flatHead } from "../../internal.js";
 import { fallbackOrigin } from "../consts.js";
@@ -36,7 +36,7 @@ export async function querySolidity<
 
       const response = await api.apis.ReviveApi.call(
         toSs58String(origin),
-        toH160Bytes(address),
+        toH160Hex(address),
         0n,
         undefined,
         undefined,
@@ -51,7 +51,7 @@ export async function querySolidity<
       return flatHead(
         AbiFunction.decodeResult(
           abiFunction,
-          response.result.value.data.asHex(),
+          Binary.toHex(response.result.value.data) as `0x${string}`,
         ),
       );
     }

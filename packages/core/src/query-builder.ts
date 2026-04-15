@@ -37,9 +37,11 @@ type OmitCallOptions<T extends unknown[]> = T extends [
   : [];
 
 type InferPapiStorageEntry<T> = T extends {
-  watchValue: (...args: [...infer Args, infer _]) => infer Response;
+  watchValue: (
+    ...args: [...infer Args, infer _]
+  ) => Observable<{ value: infer Payload }>;
 }
-  ? { args: Args; response: Response }
+  ? { args: Args; response: Observable<Payload> }
   : { args: unknown[]; response: unknown };
 
 type InferPapiStorageEntries<T> = T extends {
@@ -66,10 +68,9 @@ type InferPapiRuntimeCall<T> = T extends (...args: infer Args) => infer Response
   ? { args: OmitCallOptions<Args>; response: Response }
   : { args: unknown[]; response: unknown };
 
-type InferPapiConstantEntry<T> = T extends {
-  (): Promise<infer Payload>;
-  (runtime: infer _): infer Payload;
-}
+type InferPapiConstantEntry<T> = T extends (
+  ...args: infer _
+) => Promise<infer Payload>
   ? Promise<Payload>
   : unknown;
 
@@ -394,7 +395,14 @@ export class Query<
       type: "storage",
       pallet,
       storage,
-      keys,
+      // TODO: investigate why this is needed after migration to PAPI v2
+      keys: keys as NoInfer<
+        Array<
+          InferPapiStorageEntry<
+            TypedApi<TDescriptor>["query"][TPallet][TStorage]
+          >["args"]
+        >
+      >,
       at: options?.at,
       multi: true,
       directives: {

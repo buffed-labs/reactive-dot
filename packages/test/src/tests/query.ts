@@ -36,14 +36,18 @@ export const mockedTypedApi = {
       test_storage: {
         watchValue: (key?: unknown) => {
           if (key === delayKey) {
-            return from(delay.promise).pipe(map(() => "storage-value"));
+            return from(delay.promise).pipe(
+              map(() => ({ block: {}, value: "storage-value" })),
+            );
           }
 
-          return of(
-            key === undefined
-              ? "storage-value"
-              : `storage-value-${String(key)}`,
-          );
+          return of({
+            block: {},
+            value:
+              key === undefined
+                ? "storage-value"
+                : `storage-value-${String(key)}`,
+          });
         },
       },
     },
@@ -128,8 +132,8 @@ export const multiQueries = new Query()
   .constant("test_pallet", "test_constant")
   .storage("test_pallet", "test_storage", ["key"])
   .storages("test_pallet", "test_storage", [["key1"], ["key2"]])
-  .runtimeApi("test_pallet", "test_api", ["key"])
-  .runtimeApis("test_pallet", "test_api", [["key1"], ["key2"]])
+  .runtimeApi("test_pallet", "test_api", ["key"] as never)
+  .runtimeApis("test_pallet", "test_api", [["key1"], ["key2"]] as never)
   .contract(testInkContract, "0x", (query) =>
     query
       .rootStorage()
@@ -175,11 +179,11 @@ export const streamingQueries = new Query()
   .storages("test_pallet", "test_storage", [[delayKey], [delayKey]], {
     stream: true,
   })
-  .runtimeApi("test_pallet", "test_api", [delayKey], { defer: true })
-  .runtimeApis("test_pallet", "test_api", [[delayKey], [delayKey]], {
+  .runtimeApi("test_pallet", "test_api", [delayKey] as never, { defer: true })
+  .runtimeApis("test_pallet", "test_api", [[delayKey], [delayKey]] as never, {
     defer: true,
   })
-  .runtimeApis("test_pallet", "test_api", [[delayKey], [delayKey]], {
+  .runtimeApis("test_pallet", "test_api", [[delayKey], [delayKey]] as never, {
     stream: true,
   })
   .contract(testInkContract, "0x", (query) =>

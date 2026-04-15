@@ -1,15 +1,9 @@
-import {
-  type PasAh,
-  pasAh,
-  type Passet,
-  passet,
-} from "../../.papi/descriptors/dist/index.js";
+import { pasAh, passet } from "../../.papi/descriptors/dist/index.js";
 import { getContractTx } from "./get-contract-tx.js";
 import {
   Binary,
-  CompatibilityLevel,
-  FixedSizeBinary,
   type PolkadotClient,
+  type SizedHex,
   type SS58String,
   type TypedApi,
 } from "polkadot-api";
@@ -23,15 +17,13 @@ vi.mock("../../.papi/descriptors/dist/index.js", () => ({
 
 const mockOrigin =
   "5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY" as SS58String;
-const mockDest = FixedSizeBinary.fromArray(
-  Array.from<number>({ length: 20 }).fill(0),
-);
+const mockDest = "0x0000000000000000000000000000000000000000" as SizedHex<20>;
 const mockValue = 100n;
 const mockData = Binary.fromText("foo");
 
 let mockClient: PolkadotClient;
-let mockPassetApi: TypedApi<Passet>;
-let mockPasAhApi: TypedApi<PasAh>;
+let mockPassetApi: TypedApi<passet>;
+let mockPasAhApi: TypedApi<pasAh>;
 
 beforeEach(() => {
   mockPassetApi = {
@@ -46,7 +38,6 @@ beforeEach(() => {
       },
     },
   } as never;
-  mockPassetApi.apis.ReviveApi.call.isCompatible = vi.fn();
 
   mockPasAhApi = {
     apis: {
@@ -70,13 +61,8 @@ beforeEach(() => {
   } as unknown as PolkadotClient;
 });
 
-it("should use passet API when ReviveApi is compatible", async () => {
-  // Setup compatibility check to return true
-  vi.mocked(mockPassetApi.apis.ReviveApi.call.isCompatible).mockResolvedValue(
-    true,
-  );
-
-  // Setup dry run result
+it("should use passet API when dry run result has weight_required", async () => {
+  // Setup dry run result with weight_required (passet shape)
   const dryRunResult = {
     weight_required: { ref_time: 100n, proof_size: 200n },
     storage_deposit: { value: 50n },
@@ -95,11 +81,6 @@ it("should use passet API when ReviveApi is compatible", async () => {
     mockDest,
     mockValue,
     mockData,
-  );
-
-  // Verify compatibility check
-  expect(mockPassetApi.apis.ReviveApi.call.isCompatible).toHaveBeenCalledWith(
-    CompatibilityLevel.Partial,
   );
 
   // Verify dry run call
@@ -125,35 +106,35 @@ it("should use passet API when ReviveApi is compatible", async () => {
   expect(result).toBe(mockTx);
 });
 
-it("should use pasAh API when passet ReviveApi is NOT compatible", async () => {
-  // Setup compatibility check to return false
-  vi.mocked(mockPassetApi.apis.ReviveApi.call.isCompatible).mockResolvedValue(
-    false,
+it("should fall back to pasAh API when dry run result does NOT have weight_required", async () => {
+  // Setup dry run result without weight_required (pasAh shape)
+  const passetDryRunResult = {
+    gas_required: { ref_time: 100n, proof_size: 200n },
+    storage_deposit: { value: 50n },
+  };
+  vi.mocked(mockPassetApi.apis.ReviveApi.call).mockResolvedValue(
+    passetDryRunResult as never,
   );
 
   // Setup dry run result for pasAh
-  const dryRunResult = {
+  const pasAhDryRunResult = {
     gas_required: { ref_time: 300n, proof_size: 400n },
     storage_deposit: { value: 60n },
   };
   vi.mocked(mockPasAhApi.apis.ReviveApi.call).mockResolvedValue(
-    dryRunResult as never,
+    pasAhDryRunResult as never,
   );
 
   // Setup tx creation for pasAh
   const mockTx = { signAndSubmit: vi.fn() };
   vi.mocked(mockPasAhApi.tx.Revive.call).mockReturnValue(mockTx as never);
+
   const result = await getContractTx(
     mockClient,
     mockOrigin,
     mockDest,
     mockValue,
     mockData,
-  );
-
-  // Verify compatibility check
-  expect(mockPassetApi.apis.ReviveApi.call.isCompatible).toHaveBeenCalledWith(
-    CompatibilityLevel.Partial,
   );
 
   // Verify dry run call on pasAh
@@ -171,8 +152,8 @@ it("should use pasAh API when passet ReviveApi is NOT compatible", async () => {
   expect(mockPasAhApi.tx.Revive.call).toHaveBeenCalledWith({
     dest: mockDest,
     value: mockValue,
-    gas_limit: dryRunResult.gas_required,
-    storage_deposit_limit: dryRunResult.storage_deposit.value,
+    gas_limit: pasAhDryRunResult.gas_required,
+    storage_deposit_limit: pasAhDryRunResult.storage_deposit.value,
     data: mockData,
   });
 
@@ -180,10 +161,6 @@ it("should use pasAh API when passet ReviveApi is NOT compatible", async () => {
 });
 
 it("should pass abort signal to dry run calls", async () => {
-  vi.mocked(mockPassetApi.apis.ReviveApi.call.isCompatible).mockResolvedValue(
-    true,
-  );
-
   const dryRunResult = {
     weight_required: { ref_time: 100n, proof_size: 200n },
     storage_deposit: { value: 50n },

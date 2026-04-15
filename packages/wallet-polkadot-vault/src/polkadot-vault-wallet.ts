@@ -5,17 +5,17 @@ import {
 } from "./vendor.js";
 import { createV4Tx } from "@polkadot-api/signers-common";
 import {
-  Binary,
   decAnyMetadata,
   getSs58AddressInfo,
   unifyMetadata,
 } from "@polkadot-api/substrate-bindings";
-import { mergeUint8 } from "@polkadot-api/utils";
 import { BaseError } from "@reactive-dot/core";
 import {
   LocalWallet,
   type PolkadotSignerAccount,
 } from "@reactive-dot/core/wallets.js";
+import { Binary } from "polkadot-api";
+import { mergeUint8 } from "polkadot-api/utils";
 import { BehaviorSubject, map } from "rxjs";
 
 type BaseVaultRequest<TType extends string, TData = void> = TData extends void
@@ -52,23 +52,20 @@ export class PolkadotVaultWallet extends LocalWallet<
   override readonly name = "Polkadot Vault";
 
   protected override accountId(account: Omit<VaultAccount, "id">) {
-    return [
-      account.genesisHash,
-      Binary.fromBytes(account.publicKey).asHex(),
-    ].join();
+    return [account.genesisHash, Binary.toHex(account.publicKey)].join();
   }
 
   protected override accountToJson(account: Omit<VaultAccount, "id">) {
     return {
       ...account,
-      publicKey: Binary.fromBytes(account.publicKey).asHex(),
+      publicKey: Binary.toHex(account.publicKey) as `0x${string}`,
     };
   }
 
   protected override accountFromJson(data: JsonVaultAccount) {
     return {
       ...data,
-      publicKey: Binary.fromHex(data.publicKey).asBytes(),
+      publicKey: Binary.fromHex(data.publicKey),
     };
   }
 
@@ -121,16 +118,14 @@ export class PolkadotVaultWallet extends LocalWallet<
     }
 
     return {
-      id: [genesisHash, Binary.fromBytes(account.publicKey).asHex()].join(),
+      id: [genesisHash, Binary.toHex(account.publicKey)].join(),
       publicKey: account.publicKey,
       genesisHash,
     } as VaultAccount;
   }
 
   async #requestSignature(data: Uint8Array) {
-    return Binary.fromHex(
-      await this.#request({ type: "signature", data }),
-    ).asBytes();
+    return Binary.fromHex(await this.#request({ type: "signature", data }));
   }
 
   override readonly accounts$ = this.localAccounts$.pipe(
@@ -147,11 +142,11 @@ export class PolkadotVaultWallet extends LocalWallet<
                   vaultQrEncryption.sr25519,
                   publicKey,
                   mergeUint8([
-                    Binary.fromText("<Bytes>").asBytes(),
+                    Binary.fromText("<Bytes>"),
                     data,
-                    Binary.fromText("</Bytes>").asBytes(),
+                    Binary.fromText("</Bytes>"),
                   ]),
-                  Binary.fromHex(genesisHash).asBytes(),
+                  Binary.fromHex(genesisHash),
                 );
 
                 return this.#requestSignature(qrPayload);
@@ -173,7 +168,7 @@ export class PolkadotVaultWallet extends LocalWallet<
 
                 const genesisBytes =
                   signedExtensions["CheckGenesis"]?.additionalSigned ??
-                  Binary.fromHex(genesisHash).asBytes();
+                  Binary.fromHex(genesisHash);
 
                 const qrPayload = createQrTransaction(
                   vaultQrEncryption.sr25519,

@@ -32,7 +32,7 @@ export type {
   SimpleQueryInstruction,
 } from "./query-builder.js";
 export { extractPolkadotSigner, type Signer } from "./signer.js";
-export type { GenericTransaction, TxOptionsOf } from "./transaction.js";
+export type { TxOptionsOf } from "./transaction.js";
 export type {
   Falsy,
   FalsyGuard,

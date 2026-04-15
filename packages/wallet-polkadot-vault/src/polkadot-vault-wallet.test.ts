@@ -1,7 +1,6 @@
 import { PolkadotVaultWallet } from "./polkadot-vault-wallet.js";
-import { AccountId, Binary } from "@polkadot-api/substrate-bindings";
 import { BaseError } from "@reactive-dot/core";
-import type { PolkadotSigner } from "polkadot-api";
+import { AccountId, Binary, type PolkadotSigner } from "polkadot-api";
 import { firstValueFrom } from "rxjs";
 import { beforeEach, describe, expect, it, test, vi } from "vitest";
 
@@ -46,10 +45,10 @@ describe("getNewAccount", () => {
     expect(account.genesisHash).toBe(
       "0x91b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3",
     );
-    expect(Binary.fromBytes(account.publicKey).asHex()).toBe(
-      Binary.fromBytes(
+    expect(Binary.toHex(account.publicKey)).toBe(
+      Binary.toHex(
         AccountId().enc("5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY"),
-      ).asHex(),
+      ),
     );
   });
 
@@ -151,11 +150,11 @@ describe("signing requests", () => {
     expect(signRequest).toBeDefined();
     expect(signRequest?.type).toBe("signature");
 
-    signRequest!.response.resolve(Binary.fromHex("0x0a0b0c").asHex());
+    signRequest!.response.resolve("0x0a0b0c");
 
     const signedBytes = await signedBytesPromise;
 
-    expect(Binary.fromBytes(signedBytes).asHex()).toBe("0x0a0b0c");
+    expect(Binary.toHex(signedBytes)).toBe("0x0a0b0c");
   });
 
   test.todo("sign transaction");

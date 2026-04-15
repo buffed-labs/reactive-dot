@@ -1,9 +1,9 @@
 import type { Address } from "../../address.js";
-import type { GenericTransaction } from "../../transaction.js";
 import type { MaybePromise } from "../../types.js";
 import type { SolidityContract } from "../contract.js";
 import type { SolidityTxBody } from "./types.js";
 import type { Abi, ExtractAbiFunctionNames } from "abitype";
+import type { Transaction } from "polkadot-api";
 
 export type SolidityMutationBuilder = <
   TAbi extends Abi,
@@ -15,4 +15,4 @@ export type SolidityMutationBuilder = <
   ...[body]: SolidityTxBody<TAbi, TFunctionName> extends readonly []
     ? [body?: SolidityTxBody<TAbi, TFunctionName>]
     : [body: SolidityTxBody<TAbi, TFunctionName>]
-) => MaybePromise<GenericTransaction>;
+) => MaybePromise<Transaction>;

@@ -1,4 +1,3 @@
-import { getPolkadotSignerFromPjs } from "@polkadot-api/pjs-signer";
 import { type Address, BaseError } from "@reactive-dot/core";
 import {
   DeepLinkWallet,
@@ -13,6 +12,7 @@ import type {
   IUniversalProvider,
   UniversalProviderOpts,
 } from "@walletconnect/universal-provider";
+import { getPolkadotSignerFromPjs } from "polkadot-api/pjs-signer";
 import { BehaviorSubject, map } from "rxjs";
 
 export class WalletConnect extends DeepLinkWallet {

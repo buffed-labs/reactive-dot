@@ -178,6 +178,7 @@ export const contractInstructionPayloadAtom: AtomFamily<
             soonAll([typedApiPromise, getInkClient(contract)]),
             ([api, inkClient]) =>
               queryInk(
+                // @ts-expect-error TODO: fix this
                 api,
                 inkClient,
                 address,
@@ -189,6 +190,7 @@ export const contractInstructionPayloadAtom: AtomFamily<
 
         return soon(typedApiPromise, (api) =>
           querySolidity(
+            // @ts-expect-error TODO: fix this
             api,
             contract.abi,
             address,

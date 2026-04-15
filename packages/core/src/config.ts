@@ -2,7 +2,7 @@ import type { LightClientProvider } from "./providers/light-client/provider.js";
 import type { Gettable } from "./types.js";
 import type { UnsafeDescriptor } from "./unsafe-descriptor.js";
 import type { Wallet, WalletProvider } from "./wallets/index.js";
-import type { JsonRpcProvider } from "@polkadot-api/json-rpc-provider";
+import type { JsonRpcProvider } from "polkadot-api";
 import type { ChainDefinition } from "polkadot-api";
 
 export type ChainConfig = {

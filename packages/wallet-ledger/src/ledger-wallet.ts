@@ -1,11 +1,11 @@
 import { AccountMismatchError } from "./errors.js";
 import type { LedgerSigner, PolkadotSigner } from "@polkadot-api/ledger-signer";
-import { Binary } from "@polkadot-api/substrate-bindings";
 import {
   LocalWallet,
   type WalletOptions,
   type PolkadotSignerAccount,
 } from "@reactive-dot/core/wallets.js";
+import { Binary } from "polkadot-api";
 import { map } from "rxjs";
 
 type LedgerAccount = {
@@ -97,18 +97,18 @@ export class LedgerWallet extends LocalWallet<
   override accountToJson(account: Omit<LedgerAccount, "id">) {
     return {
       ...account,
-      publicKey: Binary.fromBytes(account.publicKey).asHex(),
+      publicKey: Binary.toHex(account.publicKey) as `0x${string}`,
     };
   }
 
   protected override accountId(account: Omit<LedgerAccount, "id">) {
-    return Binary.fromBytes(account.publicKey).asHex();
+    return Binary.toHex(account.publicKey);
   }
 
   override accountFromJson(data: JsonLedgerAccount) {
     return {
       ...data,
-      publicKey: Binary.fromHex(data.publicKey).asBytes(),
+      publicKey: Binary.fromHex(data.publicKey),
     };
   }
 
@@ -139,10 +139,7 @@ export class LedgerWallet extends LocalWallet<
     const ledgerSigner = await this.#getOrCreateLedgerSigner();
     const publicKey = await ledgerSigner.getPubkey(account.path);
 
-    if (
-      Binary.fromBytes(account.publicKey).asHex() !==
-      Binary.fromBytes(publicKey).asHex()
-    ) {
+    if (Binary.toHex(account.publicKey) !== Binary.toHex(publicKey)) {
       throw new AccountMismatchError();
     }
   }

@@ -33,6 +33,7 @@ export function watchContractEvent<
   watchEffect(() => {
     const subscriptionPromise = toValue(typedApiPromise).then((typedApi) =>
       baseWatchContractEvent(
+        // @ts-expect-error TODO: fix this
         typedApi,
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         contract as any,

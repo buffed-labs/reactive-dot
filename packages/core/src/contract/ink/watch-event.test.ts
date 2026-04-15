@@ -27,7 +27,18 @@ const mockContract = {
   },
 } as unknown as InkContract;
 
-const contractEmitted$ = new Subject();
+type MockBlockEvents = {
+  block: unknown;
+  events: Array<{
+    payload: {
+      contract: string;
+      data: Uint8Array;
+      topics: string[];
+    };
+  }>;
+};
+
+const contractEmitted$ = new Subject<MockBlockEvents>();
 const mockApi = {
   event: {
     Revive: {
@@ -79,20 +90,26 @@ it("watches for events and decodes them", async () => {
 
   const eventPromise = firstValueFrom(watch$);
 
-  const mockRawEvent = {
-    contract: { asHex: () => address },
-    topics: [{ asHex: () => signatureTopic }],
-    payload: { contract: { asHex: () => address } },
-    meta: { block: "0xblock" },
-  };
-
   const decodedEvent = {
     type: "Event1",
     value: { data: "decoded" },
   };
   mockInkClient.event.decode.mockReturnValue(decodedEvent);
 
-  contractEmitted$.next(mockRawEvent);
+  await new Promise<void>((resolve) => setTimeout(resolve));
+
+  contractEmitted$.next({
+    block: "0xblock",
+    events: [
+      {
+        payload: {
+          contract: address,
+          data: new Uint8Array(),
+          topics: [signatureTopic],
+        },
+      },
+    ],
+  });
 
   const result = await eventPromise;
 
@@ -122,61 +139,130 @@ it("filters events by contract address", async () => {
     address,
     eventName,
   );
+
+  const decodedEvent = {
+    type: "Event1",
+    value: { data: "decoded" },
+  };
+  mockInkClient.event.decode.mockReturnValue(decodedEvent);
+
   const receivedEvents: unknown[] = [];
   watch$.subscribe((e) => receivedEvents.push(e));
 
-  const watchFilter = vi.mocked(mockApi.event.Revive.ContractEmitted.watch).mock
-    .calls[0]![0]!;
+  await new Promise<void>((resolve) => setTimeout(resolve));
 
-  const eventFromOtherContract = {
-    contract: { asHex: () => otherAddress },
-    topics: [{ asHex: () => signatureTopic }],
-  };
-  expect(watchFilter(eventFromOtherContract as never)).toBe(false);
+  // Emit a block with events from both contracts
+  contractEmitted$.next({
+    block: "0xblock",
+    events: [
+      {
+        payload: {
+          contract: otherAddress,
+          data: new Uint8Array(),
+          topics: [signatureTopic],
+        },
+      },
+      {
+        payload: {
+          contract: address,
+          data: new Uint8Array(),
+          topics: [signatureTopic],
+        },
+      },
+    ],
+  });
 
-  const eventFromCorrectContract = {
-    contract: { asHex: () => address },
-    topics: [{ asHex: () => signatureTopic }],
-  };
-  expect(watchFilter(eventFromCorrectContract as never)).toBe(true);
+  // Only the event from the correct contract should be received
+  expect(receivedEvents).toHaveLength(1);
+  expect(receivedEvents[0]).toEqual(
+    expect.objectContaining({ contract: address }),
+  );
 });
 
 it("does not filter by address if address is undefined", async () => {
   const eventName = "Event1";
   const signatureTopic = "0x1111";
 
-  watchInkContractEvent(mockApi, mockContract, undefined, eventName);
+  const watch$ = watchInkContractEvent(
+    mockApi,
+    mockContract,
+    undefined,
+    eventName,
+  );
 
-  const watchFilter = vi.mocked(mockApi.event.Revive.ContractEmitted.watch).mock
-    .calls[0]![0]!;
-
-  const eventFromAnyContract = {
-    contract: { asHex: () => "0xanyaddress" },
-    topics: [{ asHex: () => signatureTopic }],
+  const decodedEvent = {
+    type: "Event1",
+    value: { data: "decoded" },
   };
-  expect(watchFilter(eventFromAnyContract as never)).toBe(true);
+  mockInkClient.event.decode.mockReturnValue(decodedEvent);
+
+  const receivedEvents: unknown[] = [];
+  watch$.subscribe((e) => receivedEvents.push(e));
+
+  await new Promise<void>((resolve) => setTimeout(resolve));
+
+  contractEmitted$.next({
+    block: "0xblock",
+    events: [
+      {
+        payload: {
+          contract: "0xanyaddress",
+          data: new Uint8Array(),
+          topics: [signatureTopic],
+        },
+      },
+    ],
+  });
+
+  // Event from any contract should be received when address is undefined
+  expect(receivedEvents).toHaveLength(1);
 });
 
-it("filters events by signature topic", () => {
+it("filters events by signature topic", async () => {
   const address = "0x1234";
   const eventName = "Event1";
   const signatureTopic = "0x1111";
   const otherSignatureTopic = "0x9999";
 
-  watchInkContractEvent(mockApi, mockContract, address, eventName);
+  const watch$ = watchInkContractEvent(
+    mockApi,
+    mockContract,
+    address,
+    eventName,
+  );
 
-  const watchFilter = vi.mocked(mockApi.event.Revive.ContractEmitted.watch).mock
-    .calls[0]![0]!;
-
-  const eventWithWrongTopic = {
-    contract: { asHex: () => address },
-    topics: [{ asHex: () => otherSignatureTopic }],
+  const decodedEvent = {
+    type: "Event1",
+    value: { data: "decoded" },
   };
-  expect(watchFilter(eventWithWrongTopic as never)).toBe(false);
+  mockInkClient.event.decode.mockReturnValue(decodedEvent);
 
-  const eventWithCorrectTopic = {
-    contract: { asHex: () => address },
-    topics: [{ asHex: () => signatureTopic }],
-  };
-  expect(watchFilter(eventWithCorrectTopic as never)).toBe(true);
+  const receivedEvents: unknown[] = [];
+  watch$.subscribe((e) => receivedEvents.push(e));
+
+  await new Promise<void>((resolve) => setTimeout(resolve));
+
+  // Emit a block with an event with wrong topic and correct topic
+  contractEmitted$.next({
+    block: "0xblock",
+    events: [
+      {
+        payload: {
+          contract: address,
+          data: new Uint8Array(),
+          topics: [otherSignatureTopic],
+        },
+      },
+      {
+        payload: {
+          contract: address,
+          data: new Uint8Array(),
+          topics: [signatureTopic],
+        },
+      },
+    ],
+  });
+
+  // Only the event with the correct signature topic should be received
+  expect(receivedEvents).toHaveLength(1);
 });

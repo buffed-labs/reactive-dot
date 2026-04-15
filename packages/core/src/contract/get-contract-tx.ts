@@ -1,10 +1,8 @@
-import type { PasAh, Passet } from "../../.papi/descriptors/dist/index.js";
+import type { pasAh, passet } from "../../.papi/descriptors/dist/index.js";
 import { omitUndefinedProperties } from "../utils/omit-undefined-properties.js";
 import {
-  type Binary,
-  CompatibilityLevel,
-  type FixedSizeBinary,
   type PolkadotClient,
+  type SizedHex,
   type SS58String,
   type TypedApi,
 } from "polkadot-api";
@@ -12,26 +10,24 @@ import {
 export async function getContractTx(
   client: PolkadotClient,
   origin: SS58String,
-  dest: FixedSizeBinary<20>,
+  dest: SizedHex<20>,
   value: bigint,
-  data: Binary,
+  data: Uint8Array,
   options?: { signal?: AbortSignal },
 ) {
   const passetApi = await getPassetApi(client);
 
-  if (
-    await passetApi.apis.ReviveApi.call.isCompatible(CompatibilityLevel.Partial)
-  ) {
-    const dryRunResult = await passetApi.apis.ReviveApi.call(
-      origin,
-      dest,
-      value,
-      undefined,
-      undefined,
-      data,
-      omitUndefinedProperties({ signal: options?.signal }),
-    );
+  const dryRunResult = await passetApi.apis.ReviveApi.call(
+    origin,
+    dest,
+    value,
+    undefined,
+    undefined,
+    data,
+    omitUndefinedProperties({ signal: options?.signal }),
+  );
 
+  if (dryRunResult.weight_required) {
     return passetApi.tx.Revive.call({
       dest,
       value,
@@ -43,7 +39,7 @@ export async function getContractTx(
 
   const pasAhApi = await getPasAhApi(client);
 
-  const dryRunResult = await pasAhApi.apis.ReviveApi.call(
+  const pasAhDryRunResult = await pasAhApi.apis.ReviveApi.call(
     origin,
     dest,
     value,
@@ -56,13 +52,13 @@ export async function getContractTx(
   return pasAhApi.tx.Revive.call({
     dest,
     value,
-    gas_limit: dryRunResult.gas_required,
-    storage_deposit_limit: dryRunResult.storage_deposit.value,
+    gas_limit: pasAhDryRunResult.gas_required,
+    storage_deposit_limit: pasAhDryRunResult.storage_deposit.value,
     data,
   });
 }
 
-const passetApiCache = new WeakMap<PolkadotClient, TypedApi<Passet>>();
+const passetApiCache = new WeakMap<PolkadotClient, TypedApi<passet>>();
 
 async function getPassetApi(client: PolkadotClient) {
   const { passet } = await import("../../.papi/descriptors/dist/index.js");
@@ -73,7 +69,7 @@ async function getPassetApi(client: PolkadotClient) {
   );
 }
 
-const pasAhApiCache = new WeakMap<PolkadotClient, TypedApi<PasAh>>();
+const pasAhApiCache = new WeakMap<PolkadotClient, TypedApi<pasAh>>();
 
 async function getPasAhApi(client: PolkadotClient) {
   const { pasAh } = await import("../../.papi/descriptors/dist/index.js");
