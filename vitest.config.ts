@@ -1,4 +1,4 @@
-import { coverageConfigDefaults, defineConfig } from "vitest/config";
+import { defineConfig } from "vitest/config";
 
 export default defineConfig({
   test: {
@@ -6,12 +6,12 @@ export default defineConfig({
     coverage: {
       reporter: ["text", "json-summary", "json"],
       reportOnFailure: true,
-      include: ["packages/**"],
+      include: ["packages/**/*.{ts,tsx}"],
       exclude: [
         "**/build/**",
+        "**/.papi/**",
         "packages/eslint-config",
         "packages/test",
-        ...coverageConfigDefaults.exclude,
       ],
     },
   },
