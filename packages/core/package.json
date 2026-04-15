@@ -34,7 +34,7 @@
   },
   "scripts": {
     "dev": "tsc --build --watch",
-    "build": "rm -f .papi/descriptors/generated.json && papi generate && mv .papi/descriptors/dist/index.mjs .papi/descriptors/dist/index.js && tsc --build --clean && tsc --build",
+    "build": "rm -f .papi/descriptors/generated.json && tsc --build --clean && tsc --build",
     "lint": "eslint src",
     "test": "vitest"
   },
@@ -50,11 +50,11 @@
     "@tsconfig/strictest": "^2.0.8",
     "abitype": "^1.2.3",
     "eslint": "^10.0.3",
-    "polkadot-api": "^1.23.3",
+    "polkadot-api": "^2.0.1",
     "typescript": "^5.9.3",
     "vitest": "^4.1.0"
   },
   "peerDependencies": {
-    "polkadot-api": ">=1.23.2"
+    "polkadot-api": ">=2.0.1"
   }
 }

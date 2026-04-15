@@ -13,12 +13,11 @@ import {
   type V15,
 } from "@polkadot-api/substrate-bindings";
 import type {
-  Binary,
   ChainDefinition,
   Codec,
   Enum,
-  FixedSizeBinary,
   PolkadotClient,
+  SizedHex,
   SS58String,
   TypedApi,
 } from "polkadot-api";
@@ -26,15 +25,15 @@ import type {
 type MultiAddress = Enum<{
   Id: SS58String;
   Index: number | bigint;
-  Raw: Binary;
-  Address32: FixedSizeBinary<32>;
-  Address20: FixedSizeBinary<20>;
+  Raw: Uint8Array;
+  Address32: SizedHex<32>;
+  Address20: SizedHex<20>;
 }>;
 
 type MultiSignature = Enum<{
-  Ed25519: FixedSizeBinary<64>;
-  Sr25519: FixedSizeBinary<64>;
-  Ecdsa: FixedSizeBinary<65>;
+  Ed25519: SizedHex<64>;
+  Sr25519: SizedHex<64>;
+  Ecdsa: SizedHex<65>;
 }>;
 
 type Extra = Partial<{
@@ -74,14 +73,14 @@ export async function unstable_getBlockExtrinsics(
   const v15MetadataBinary = await (
     typedApi.apis["Metadata"]!["metadata_at_version"]! as (
       version: number,
-    ) => Promise<Binary | undefined>
+    ) => Promise<Uint8Array | undefined>
   )(15);
 
   if (v15MetadataBinary === undefined) {
     return;
   }
 
-  const metadataResult = metadataCodec.dec(v15MetadataBinary.asBytes());
+  const metadataResult = metadataCodec.dec(v15MetadataBinary);
 
   if (metadataResult.metadata.tag !== "v15") {
     return;

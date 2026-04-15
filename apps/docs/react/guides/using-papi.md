@@ -28,12 +28,17 @@ The `TypedApi` allows easy interaction with the runtime metadata, with a great d
 
 ```ts
 import { useTypedApi } from "@reactive-dot/react";
+import { filter, mergeMap, take } from "rxjs";
 
 function Component() {
   const typedApi = useTypedApi();
 
   useEffect(() => {
-    typedApi.event.Balances.Burned.watch(({ amount }) => amount > 10n ** 10n)
+    typedApi.event.Balances.Burned.watch()
+      .pipe(
+        mergeMap(({ events }) => events),
+        filter((evt) => evt.payload.amount > 10n ** 10n),
+      )
       .pipe(take(5))
       .forEach(console.log);
   }, [typedApi]);

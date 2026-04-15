@@ -6,8 +6,8 @@ export function stringify<T>(queryInstruction: T) {
       return value.toString();
     }
 
-    if (value instanceof Binary) {
-      return value.asHex();
+    if (value instanceof Uint8Array) {
+      return Binary.toHex(value);
     }
 
     if (isPlainObject(value)) {

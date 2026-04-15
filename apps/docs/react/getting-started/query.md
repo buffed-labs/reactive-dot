@@ -86,6 +86,8 @@ const [rewards, metadatum] = useLazyLoadQuery((builder) =>
 Result of a query can be used as variables in subsequent queries.
 
 ```tsx
+import { Binary } from "polkadot-api";
+
 function Query() {
   const pools = useLazyLoadQuery((builder) =>
     builder.storageEntries("NominationPools", "BondedPools"),
@@ -104,7 +106,7 @@ function Query() {
       <h1>Pool names</h1>
       <ul>
         {poolMetadatum.map((metadata, index) => (
-          <li key={index}>{metadata.asText()}</li>
+          <li key={index}>{Binary.toText(metadata)}</li>
         ))}
       </ul>
     </section>

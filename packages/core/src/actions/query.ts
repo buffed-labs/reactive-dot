@@ -32,10 +32,14 @@ export function query<
 
       return instruction.at?.startsWith("0x")
         ? storageEntry.getValue(...instruction.keys, { at: instruction.at })
-        : storageEntry.watchValue(
-            ...instruction.keys,
-            ...[instruction.at].filter((x) => x !== undefined),
-          );
+        : ((
+            storageEntry.watchValue(
+              ...instruction.keys,
+              ...(instruction.at !== undefined ? [{ at: instruction.at }] : []),
+            ) as Observable<{ value: unknown }>
+          ).pipe(
+            map((result) => result.value),
+          ) as InferInstructionResponse<TInstruction>);
     }
     case "storage-entries":
       return instruction.at?.startsWith("0x")

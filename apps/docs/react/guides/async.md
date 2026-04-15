@@ -143,6 +143,7 @@ import {
   useLazyLoadQuery,
   usePromises,
 } from "@reactive-dot/react";
+import { Binary } from "polkadot-api";
 import { Suspense } from "react";
 
 function UserProfile({ address }: { address: string }) {
@@ -161,7 +162,9 @@ function UserProfile({ address }: { address: string }) {
     <div>
       <p>Balance: {balance.toLocaleString()}</p>
       <p>Block: {block.number.toLocaleString()}</p>
-      <p>Identity: {identity?.info.display.asText() ?? "None"}</p>
+      <p>
+        Identity: {identity ? Binary.toText(identity.info.display) : "None"}
+      </p>
     </div>
   );
 }
@@ -282,6 +285,7 @@ import {
   usePromiseValue,
   Await,
 } from "@reactive-dot/react";
+import { Binary } from "polkadot-api";
 import { Suspense, use } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
@@ -323,7 +327,9 @@ function UserDashboard({ address }: { address: string }) {
     <div>
       <p>Balance: {balance.toLocaleString()}</p>
       <p>Block: #{block.number.toLocaleString()}</p>
-      <p>Identity: {identity?.info.display.asText() ?? "None"}</p>
+      <p>
+        Identity: {identity ? Binary.toText(identity.info.display) : "None"}
+      </p>
     </div>
   );
 }

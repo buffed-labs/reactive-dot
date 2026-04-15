@@ -4,8 +4,11 @@ import {
   isLightClientProvider,
   type LightClientProvider,
 } from "../providers/light-client/provider.js";
-import { createClient, type PolkadotClient } from "polkadot-api";
-import type { JsonRpcProvider } from "polkadot-api/ws-provider";
+import {
+  createClient,
+  type JsonRpcProvider,
+  type PolkadotClient,
+} from "polkadot-api";
 
 const clientCache = new WeakMap<ChainConfig, Promise<PolkadotClient>>();
 

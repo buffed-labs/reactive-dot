@@ -80,6 +80,7 @@ export function useQueryObservable<
 >(query: TQuery, options?: ChainComposableOptions<TChainId>) {
   return queryObservable(
     internal_useChainId(options),
+    // @ts-expect-error TODO: fix this
     useTypedApiPromise(options),
     query,
     useLazyValuesCache(),
@@ -408,6 +409,7 @@ export function queryContractInstruction(
       ]),
       async () =>
         queryInk(
+          // @ts-expect-error TODO: fix this
           await toValue(typedApiPromise),
           await toValue(inkClient),
           toValue(address),
@@ -429,6 +431,7 @@ export function queryContractInstruction(
       ]),
       async () =>
         querySolidity(
+          // @ts-expect-error TODO: fix this
           await toValue(typedApiPromise),
           contract.abi,
           toValue(address),

@@ -6,9 +6,8 @@ import {
   type WellknownRelayChainId,
 } from "./wellknown-chains.js";
 import type { getSmoldotExtensionProviders } from "@substrate/smoldot-discovery";
-import { createClient } from "polkadot-api";
+import { createClient, type JsonRpcProvider } from "polkadot-api";
 import { getSmProvider } from "polkadot-api/sm-provider";
-import type { JsonRpcProvider } from "polkadot-api/ws-provider";
 
 const getProviderSymbol = Symbol("getProvider");
 
@@ -76,7 +75,7 @@ export function createLightClientProvider({
 
       return addLightClientProvider({
         [getProviderSymbol]() {
-          return getSmProvider(getRelayChain());
+          return getSmProvider(() => getRelayChain());
         },
 
         addParachain(options) {
@@ -112,7 +111,7 @@ export function createLightClientProvider({
                     })(),
               );
 
-              return getSmProvider(parachainPromise);
+              return getSmProvider(() => parachainPromise);
             },
           });
         },

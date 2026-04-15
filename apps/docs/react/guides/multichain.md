@@ -14,8 +14,8 @@ Download the latest metadata from all chains you want to connect to and generate
 
 ```sh
 npx papi add dot -n polkadot
-npx papi add ksm -n ksmcc3
-npx papi add wnd -n westend2
+npx papi add ksm -n kusama
+npx papi add wnd -n westend
 npx papi
 ```
 

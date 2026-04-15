@@ -30,15 +30,18 @@ The `TypedApi` allows easy interaction with the runtime metadata, with a great d
 ```vue
 <script setup lang="ts">
 import { useClient } from "@reactive-dot/vue";
+import { filter, mergeMap, take } from "rxjs";
 import { useTypedApi } from "vue";
 
 const { data: typedApi } = await useTypedApi();
 
 watchEffect(() => {
-  typedApi.value.event.Balances.Burned.watch(
-    ({ amount }) => amount > 10n ** 10n,
-  )
-    .pipe(take(5))
+  typedApi.value.event.Balances.Burned.watch()
+    .pipe(
+      mergeMap(({ events }) => events),
+      filter((evt) => evt.payload.amount > 10n ** 10n),
+      take(5),
+    )
     .forEach(console.log);
 });
 </script>

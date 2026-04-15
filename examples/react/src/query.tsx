@@ -8,6 +8,7 @@ import {
   useSpendableBalance,
 } from "@reactive-dot/react";
 import { formatDistance } from "date-fns";
+import { Binary } from "polkadot-api";
 import { Suspense, useMemo, useState, useTransition } from "react";
 
 export function Query() {
@@ -101,7 +102,7 @@ export function Query() {
         <h4>First 4 pools</h4>
         {poolMetadatum.map((x, index) => (
           // eslint-disable-next-line @eslint-react/no-array-index-key
-          <p key={index}>{x.asText()}</p>
+          <p key={index}>{Binary.toText(x)}</p>
         ))}
       </article>
       <SpendableBalances />

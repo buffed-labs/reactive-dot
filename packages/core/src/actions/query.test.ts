@@ -28,9 +28,12 @@ const fakeApi = {
           }),
         watchValue: (...args: unknown[]) =>
           of({
-            type: "watchValue",
-            args,
-            ...dummyValue,
+            block: {},
+            value: {
+              type: "watchValue",
+              args,
+              ...dummyValue,
+            },
           }),
         getEntries: (..._: unknown[]) =>
           Promise.resolve([{ keyArgs: "foo", value: "bar" }]),

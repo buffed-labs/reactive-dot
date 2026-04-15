@@ -1,14 +1,14 @@
-import { type Address, toH160Bytes } from "../../address.js";
+import { type Address, toH160Hex } from "../../address.js";
 import { BaseError } from "../../errors.js";
 import type { ExtractExactProperties, StringKeyOf } from "../../types.js";
 import { getContractTx } from "../get-contract-tx.js";
 import type { GenericInkDescriptors, InkTxBody } from "./types.js";
-import type { InkClient } from "@polkadot-api/ink-contracts";
 import {
   AccountId,
   type PolkadotClient,
   type PolkadotSigner,
 } from "polkadot-api";
+import type { getInkClient } from "polkadot-api/ink";
 
 export async function getInkContractTx<
   TDescriptor extends GenericInkDescriptors,
@@ -20,7 +20,7 @@ export async function getInkContractTx<
   >,
 >(
   client: PolkadotClient,
-  inkClient: InkClient<GenericInkDescriptors>,
+  inkClient: ReturnType<typeof getInkClient>,
   signer: PolkadotSigner,
   contract: Address,
   messageName: TMessageName,
@@ -37,7 +37,7 @@ export async function getInkContractTx<
 
   const origin = toSs58(signer.publicKey);
 
-  const dest = toH160Bytes(contract);
+  const dest = toH160Hex(contract);
 
   const data = message.encode(
     body !== undefined && "data" in body

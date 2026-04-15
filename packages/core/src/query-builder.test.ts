@@ -78,9 +78,15 @@ it("should append a multi storage instruction using storages", () => {
 
 it("should append a storage-entries instruction", () => {
   const query = new Query();
-  const newQuery = query.storageEntries("TestPallet", "TestStorage", ["arg1"], {
-    at: "best",
-  });
+  const newQuery = query.storageEntries(
+    "TestPallet",
+    "TestStorage",
+    // @ts-expect-error TODO: fix this
+    ["arg1"],
+    {
+      at: "best",
+    },
+  );
   const instructions = newQuery.instructions;
 
   expect(instructions).toHaveLength(1);
@@ -102,9 +108,15 @@ it("should append a storage-entries instruction", () => {
 
 it("should append a runtime-api instruction", () => {
   const query = new Query();
-  const newQuery = query.runtimeApi("TestPallet", "TestApi", ["arg1"], {
-    at: "best",
-  });
+  const newQuery = query.runtimeApi(
+    "TestPallet",
+    "TestApi",
+    // @ts-expect-error TODO: fix this
+    ["arg1"],
+    {
+      at: "best",
+    },
+  );
   const instructions = newQuery.instructions;
 
   expect(instructions).toHaveLength(1);
@@ -129,6 +141,7 @@ it("should append a multi runtime-api instruction using runtimeApis", () => {
   const newQuery = query.runtimeApis(
     "TestPallet",
     "TestApi",
+    // @ts-expect-error TODO: fix this
     [["arg1"], ["arg2"]],
     { at: "finalized" },
   );

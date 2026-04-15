@@ -1,4 +1,4 @@
-import { type Address, toH160Bytes } from "../../address.js";
+import { type Address, toH160Hex } from "../../address.js";
 import { getContractTx } from "../get-contract-tx.js";
 import type { SolidityTxBody } from "./types.js";
 import type { Abi, ExtractAbiFunctionNames } from "abitype";
@@ -23,7 +23,7 @@ export async function getSolidityContractTx<
 ) {
   const origin = toSs58(signer.publicKey);
 
-  const dest = toH160Bytes(contract);
+  const dest = toH160Hex(contract);
 
   const { AbiFunction } = await import("ox");
 

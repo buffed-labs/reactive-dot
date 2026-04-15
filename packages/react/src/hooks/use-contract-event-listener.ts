@@ -35,6 +35,7 @@ export function useContractEventListener<
 
   useEffect(() => {
     const subscription = watchContractEvent(
+      // @ts-expect-error TODO: fix this
       typedApi,
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       contract as any,
