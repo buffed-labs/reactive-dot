@@ -39,10 +39,10 @@
     "test": "vitest"
   },
   "dependencies": {
-    "@noble/hashes": "^2.0.1",
+    "@noble/hashes": "^2.2.0",
     "@reactive-dot/utils": "workspace:^",
     "@substrate/smoldot-discovery": "^2.0.2",
-    "ox": "^0.14.5"
+    "ox": "^0.14.16"
   },
   "devDependencies": {
     "@reactive-dot/eslint-config": "workspace:^",
