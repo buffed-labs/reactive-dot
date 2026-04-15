@@ -12,12 +12,10 @@ it("should match snapshot", async () =>
               JSON.parse((await getRelayChainSpec()).chainSpec)["id"],
               Object.fromEntries(
                 await Promise.all(
-                  Object.entries(parachains).map(
-                    async ([parachainName, getParachainSpec]) => [
-                      parachainName,
-                      JSON.parse((await getParachainSpec()).chainSpec)["id"],
-                    ],
-                  ),
+                  Object.entries(parachains).map(async ([parachainName, getParachainSpec]) => [
+                    parachainName,
+                    JSON.parse((await getParachainSpec()).chainSpec)["id"],
+                  ]),
                 ),
               ),
             ],

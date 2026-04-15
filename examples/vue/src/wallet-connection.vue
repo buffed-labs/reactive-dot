@@ -9,8 +9,7 @@ import {
 const { data: wallets } = await useWallets();
 const { data: connectedWallets } = await useConnectedWallets();
 const { execute: connect, status: connectStatus } = useWalletConnector();
-const { execute: disconnect, status: disconnectStatus } =
-  useWalletDisconnector();
+const { execute: disconnect, status: disconnectStatus } = useWalletDisconnector();
 </script>
 
 <template>
@@ -24,18 +23,14 @@ const { execute: disconnect, status: disconnectStatus } =
         {{ wallet.name }}:
         <button
           v-if="!connectedWallets.includes(wallet)"
-          :disabled="
-            connectStatus === 'pending' || disconnectStatus === 'pending'
-          "
+          :disabled="connectStatus === 'pending' || disconnectStatus === 'pending'"
           @click="connect(wallet)"
         >
           Connect
         </button>
         <button
           v-if="connectedWallets.includes(wallet)"
-          :disabled="
-            connectStatus === 'pending' || disconnectStatus === 'pending'
-          "
+          :disabled="connectStatus === 'pending' || disconnectStatus === 'pending'"
           @click="disconnect(wallet)"
         >
           Disconnect

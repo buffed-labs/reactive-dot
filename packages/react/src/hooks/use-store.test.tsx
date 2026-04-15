@@ -72,9 +72,7 @@ test("invalidateQuery", async () => {
     renderHook(
       () => {
         return [
-          useLazyLoadQuery((query) =>
-            query.runtimeApi("foo", "bar", []).runtimeApi("x", "y", []),
-          ),
+          useLazyLoadQuery((query) => query.runtimeApi("foo", "bar", []).runtimeApi("x", "y", [])),
           useStore(),
         ] as const;
       },
@@ -132,8 +130,7 @@ test("invalidateChainQueries", async () => {
 
   await act(() =>
     result.current[1].invalidateChainQueries(
-      (instruction) =>
-        instruction.type === "runtime-api" && instruction.api === "foo",
+      (instruction) => instruction.type === "runtime-api" && instruction.api === "foo",
     ),
   );
 
@@ -154,12 +151,8 @@ test("invalidateContractQueries", async () => {
         return [
           useLazyLoadQuery((query) =>
             query
-              .contract(mockContract, "0x", (query) =>
-                query.message("foo").message("bar"),
-              )
-              .contract(mockContract, "0x1", (query) =>
-                query.message("foo").message("bar"),
-              ),
+              .contract(mockContract, "0x", (query) => query.message("foo").message("bar"))
+              .contract(mockContract, "0x1", (query) => query.message("foo").message("bar")),
           ),
           useStore(),
         ] as const;

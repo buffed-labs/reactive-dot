@@ -9,9 +9,7 @@ import type {
 import type { TxEvent } from "polkadot-api";
 import type { MaybeRef, MaybeRefOrGetter, Ref } from "vue";
 
-export type ChainComposableOptions<
-  TChainId extends ChainId | undefined = ChainId | undefined,
-> = {
+export type ChainComposableOptions<TChainId extends ChainId | undefined = ChainId | undefined> = {
   /**
    * Override default chain ID
    */
@@ -26,18 +24,13 @@ export type MutableAsyncState<TData, TError = unknown, TDefault = undefined> = {
   status: Ref<"idle" | "pending" | "success" | "error">;
 };
 
-export type AsyncState<
-  TData,
-  TError = unknown,
-  TDefault = undefined,
-> = DeepReadonly<MutableAsyncState<TData, TError, TDefault>> & {
+export type AsyncState<TData, TError = unknown, TDefault = undefined> = DeepReadonly<
+  MutableAsyncState<TData, TError, TDefault>
+> & {
   refresh: () => void;
 };
 
-export type PromiseLikeAsyncState<TData, TError = unknown> = AsyncState<
-  TData,
-  TError
-> &
+export type PromiseLikeAsyncState<TData, TError = unknown> = AsyncState<TData, TError> &
   PromiseLike<AsyncState<TData, TError, TData>>;
 
 export type MutationEvent = BaseMutationEvent &

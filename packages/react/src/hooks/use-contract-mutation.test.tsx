@@ -2,12 +2,7 @@ import { ChainProvider } from "../contexts/chain.js";
 import { ReactiveDotProvider } from "../contexts/provider.js";
 import { SignerProvider } from "../contexts/signer.js";
 import { useContractMutation } from "./use-contract-mutation.js";
-import {
-  defineConfig,
-  defineContract,
-  idle,
-  pending,
-} from "@reactive-dot/core";
+import { defineConfig, defineContract, idle, pending } from "@reactive-dot/core";
 import { getInkContractTx } from "@reactive-dot/core/internal/actions.js";
 import { act, renderHook } from "@testing-library/react";
 import { atom } from "jotai";
@@ -21,16 +16,13 @@ vi.mock("./use-client.js", () => ({
   clientAtom: vi.fn(() => atom()),
 }));
 
-vi.mock(
-  "@reactive-dot/core/internal/actions.js",
-  async (getOriginalModule) => ({
-    ...(await getOriginalModule()),
-    getInkContractTx: vi.fn(async () => ({
-      signSubmitAndWatch: mockSignSubmitAndWatch,
-    })),
-    getInkClient: vi.fn(),
-  }),
-);
+vi.mock("@reactive-dot/core/internal/actions.js", async (getOriginalModule) => ({
+  ...(await getOriginalModule()),
+  getInkContractTx: vi.fn(async () => ({
+    signSubmitAndWatch: mockSignSubmitAndWatch,
+  })),
+  getInkClient: vi.fn(),
+}));
 
 vi.useFakeTimers();
 
@@ -58,17 +50,12 @@ const testContract = defineContract({
 it("sign submit and watch", async () => {
   const { result } = await act(() =>
     renderHook(
-      () =>
-        useContractMutation((mutate) =>
-          mutate(testContract, "0x", "test_message", {}),
-        ),
+      () => useContractMutation((mutate) => mutate(testContract, "0x", "test_message", {})),
       {
         wrapper: ({ children }) => (
           <ReactiveDotProvider config={defineConfig({ chains: {} })}>
             <ChainProvider chainId="test_chain">
-              <SignerProvider signer={{} as PolkadotSigner}>
-                {children}
-              </SignerProvider>
+              <SignerProvider signer={{} as PolkadotSigner}>{children}</SignerProvider>
             </ChainProvider>
           </ReactiveDotProvider>
         ),
@@ -110,9 +97,7 @@ it.each(["input", "variables"] as const)(`accepts %s`, async (key) => {
         wrapper: ({ children }) => (
           <ReactiveDotProvider config={defineConfig({ chains: {} })}>
             <ChainProvider chainId="test_chain">
-              <SignerProvider signer={{} as PolkadotSigner}>
-                {children}
-              </SignerProvider>
+              <SignerProvider signer={{} as PolkadotSigner}>{children}</SignerProvider>
             </ChainProvider>
           </ReactiveDotProvider>
         ),
@@ -124,16 +109,9 @@ it.each(["input", "variables"] as const)(`accepts %s`, async (key) => {
 
   await act(() => result.current[1]({ [key as "input"]: 123n }));
 
-  expect(getInkContractTx).toHaveBeenCalledWith(
-    undefined,
-    undefined,
-    {},
-    "0x",
-    "test_message",
-    {
-      value: 123n,
-    },
-  );
+  expect(getInkContractTx).toHaveBeenCalledWith(undefined, undefined, {}, "0x", "test_message", {
+    value: 123n,
+  });
 
   expect(result.current[0]).toBe(pending);
 
@@ -145,17 +123,12 @@ it.each(["input", "variables"] as const)(`accepts %s`, async (key) => {
 it("catches error", async () => {
   const { result } = await act(() =>
     renderHook(
-      () =>
-        useContractMutation((mutate) =>
-          mutate(testContract, "0x", "test_message", {}),
-        ),
+      () => useContractMutation((mutate) => mutate(testContract, "0x", "test_message", {})),
       {
         wrapper: ({ children }) => (
           <ReactiveDotProvider config={defineConfig({ chains: {} })}>
             <ChainProvider chainId="test_chain">
-              <SignerProvider signer={{} as PolkadotSigner}>
-                {children}
-              </SignerProvider>
+              <SignerProvider signer={{} as PolkadotSigner}>{children}</SignerProvider>
             </ChainProvider>
           </ReactiveDotProvider>
         ),

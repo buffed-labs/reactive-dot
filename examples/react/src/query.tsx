@@ -38,10 +38,7 @@ export function Query() {
   );
 
   const bondingDurationMs =
-    Number(expectedBlockTime) *
-    Number(epochDuration) *
-    sessionsPerEra *
-    bondingDuration;
+    Number(expectedBlockTime) * Number(epochDuration) * sessionsPerEra * bondingDuration;
 
   const nativeTokenAmountFromPlanck = useNativeTokenAmountFromPlanck();
 
@@ -54,10 +51,7 @@ export function Query() {
         <h4>Current block</h4>
         <p>
           {block.number} @{" "}
-          {useMemo(
-            () => new Date(Number(timestamp)).toLocaleString(),
-            [timestamp],
-          )}
+          {useMemo(() => new Date(Number(timestamp)).toLocaleString(), [timestamp])}
         </p>
       </article>
       <article>
@@ -78,15 +72,9 @@ export function Query() {
           <p>
             <Suspense fallback="...">
               <QueryRenderer
-                query={(builder) =>
-                  builder.storage("Staking", "ErasTotalStake", [
-                    activeEra.index,
-                  ])
-                }
+                query={(builder) => builder.storage("Staking", "ErasTotalStake", [activeEra.index])}
               >
-                {(totalStaked) =>
-                  nativeTokenAmountFromPlanck(totalStaked).toLocaleString()
-                }
+                {(totalStaked) => nativeTokenAmountFromPlanck(totalStaked).toLocaleString()}
               </QueryRenderer>
             </Suspense>
           </p>
@@ -94,9 +82,7 @@ export function Query() {
       )}
       <article>
         <h4>Total value locked in nomination Pools</h4>
-        <p>
-          {useNativeTokenAmountFromPlanck(totalValueLocked).toLocaleString()}
-        </p>
+        <p>{useNativeTokenAmountFromPlanck(totalValueLocked).toLocaleString()}</p>
       </article>
       <article>
         <h4>First 4 pools</h4>
@@ -128,10 +114,7 @@ function SpendableBalances() {
       <h4>Spendable balances</h4>
       <ul>
         {accounts.map((account) => (
-          <SpendableBalance
-            key={account.wallet.id + account.id}
-            account={account}
-          />
+          <SpendableBalance key={account.wallet.id + account.id} account={account} />
         ))}
       </ul>
     </article>
@@ -145,8 +128,7 @@ type SpendableBalanceProps = {
 function SpendableBalance({ account }: SpendableBalanceProps) {
   return (
     <li>
-      {account.name ?? account.address}:{" "}
-      {useSpendableBalance(account.address).toLocaleString()}
+      {account.name ?? account.address}: {useSpendableBalance(account.address).toLocaleString()}
     </li>
   );
 }
@@ -157,8 +139,7 @@ function PendingPoolRewards() {
   const [fetchCount, setFetchCount] = useState(0);
   const [isPending, startTransition] = useTransition();
 
-  const refreshPendingRewards = () =>
-    startTransition(() => setFetchCount((count) => count + 1));
+  const refreshPendingRewards = () => startTransition(() => setFetchCount((count) => count + 1));
 
   const pendingRewards = useLazyLoadQuery(
     (builder) =>
@@ -207,8 +188,7 @@ type PendingRewardsProps = {
 function PendingRewards({ account, rewards }: PendingRewardsProps) {
   return (
     <li>
-      {account.name ?? account.address}:{" "}
-      {useNativeTokenAmountFromPlanck(rewards).toLocaleString()}
+      {account.name ?? account.address}: {useNativeTokenAmountFromPlanck(rewards).toLocaleString()}
     </li>
   );
 }

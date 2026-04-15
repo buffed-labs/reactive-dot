@@ -36,7 +36,5 @@ it("should handle a wallet that fails to disconnect", async () => {
     disconnect: vi.fn().mockRejectedValue(new Error("Failed to disconnect")),
   } as unknown as Wallet;
 
-  await expect(disconnectWallet(mockWallet)).rejects.toThrow(
-    "Failed to disconnect",
-  );
+  await expect(disconnectWallet(mockWallet)).rejects.toThrow("Failed to disconnect");
 });

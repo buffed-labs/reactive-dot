@@ -46,10 +46,7 @@ it("should append a storage instruction", () => {
 
 it("should append a multi storage instruction using storages", () => {
   const query = new Query();
-  const newQuery = query.storages("TestPallet", "TestStorage", [
-    ["arg1"],
-    ["arg2"],
-  ]);
+  const newQuery = query.storages("TestPallet", "TestStorage", [["arg1"], ["arg2"]]);
   const instructions = newQuery.instructions;
 
   expect(instructions).toHaveLength(1);
@@ -179,19 +176,13 @@ const mockContract = defineContract({
   descriptor: mockContractDescriptor,
 });
 
-const mockInkQueryBuilder = (
-  query: InkQuery<typeof mockContractDescriptor, []>,
-) => {
+const mockInkQueryBuilder = (query: InkQuery<typeof mockContractDescriptor, []>) => {
   return query.message("testMessage", {});
 };
 
 it("should append a contract instruction", () => {
   const query = new Query();
-  const newQuery = query.contract(
-    mockContract,
-    "contractAddress123",
-    mockInkQueryBuilder,
-  );
+  const newQuery = query.contract(mockContract, "contractAddress123", mockInkQueryBuilder);
   const instructions = newQuery.instructions;
 
   expect(instructions).toHaveLength(1);
@@ -224,11 +215,7 @@ it("should append a contract instruction", () => {
 
 it("should append a multi contract instruction using contracts", () => {
   const query = new Query();
-  const newQuery = query.contracts(
-    mockContract,
-    ["address1", "address2"],
-    mockInkQueryBuilder,
-  );
+  const newQuery = query.contracts(mockContract, ["address1", "address2"], mockInkQueryBuilder);
   const instructions = newQuery.instructions;
 
   expect(instructions).toHaveLength(1);

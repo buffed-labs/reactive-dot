@@ -15,9 +15,7 @@ export class MimirWallet extends Wallet<MimirWalletOptions, "connected"> {
 
   readonly name = "Mimir";
 
-  readonly #mimir$ = new BehaviorSubject<MimirPAPISigner | undefined>(
-    undefined,
-  );
+  readonly #mimir$ = new BehaviorSubject<MimirPAPISigner | undefined>(undefined);
 
   readonly connected$ = this.#mimir$.pipe(map((mimir) => mimir !== undefined));
 
@@ -60,9 +58,7 @@ export class MimirWallet extends Wallet<MimirWalletOptions, "connected"> {
   async connect() {
     const signer = new MimirPAPISigner();
 
-    const { result } = await signer.enable(
-      this.options?.originName ?? globalThis.origin,
-    );
+    const { result } = await signer.enable(this.options?.originName ?? globalThis.origin);
 
     if (!result) {
       throw new BaseError("Failed to connect to Mimir");
@@ -77,10 +73,7 @@ export class MimirWallet extends Wallet<MimirWalletOptions, "connected"> {
     this.storage.removeItem("connected");
   }
 
-  #toPolkadotSignerAccount(
-    mimir: MimirPAPISigner,
-    accounts: InjectedAccount[],
-  ) {
+  #toPolkadotSignerAccount(mimir: MimirPAPISigner, accounts: InjectedAccount[]) {
     return accounts.map(
       (account, index) =>
         ({

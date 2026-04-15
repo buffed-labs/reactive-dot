@@ -42,9 +42,7 @@ it("should use createClientFromLightClientProvider when provider is a light clie
   const client = await getClient(chainConfig);
 
   expect(isLightClientProvider).toHaveBeenCalledWith(fakeLightClient);
-  expect(createClientFromLightClientProvider).toHaveBeenCalledWith(
-    fakeLightClient,
-  );
+  expect(createClientFromLightClientProvider).toHaveBeenCalledWith(fakeLightClient);
   expect(client).toEqual({ client: "light", provider: fakeLightClient });
 });
 
@@ -71,9 +69,7 @@ it("should execute a zero-argument provider function and use createClientFromLig
   const client = await getClient(chainConfig);
 
   expect(isLightClientProvider).toHaveBeenCalledWith(fakeLightClient);
-  expect(createClientFromLightClientProvider).toHaveBeenCalledWith(
-    fakeLightClient,
-  );
+  expect(createClientFromLightClientProvider).toHaveBeenCalledWith(fakeLightClient);
   expect(client).toEqual({ client: "light", provider: fakeLightClient });
 });
 

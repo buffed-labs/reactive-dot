@@ -14,15 +14,9 @@ export type InkContractEventOf<
   TEventName extends InkContractEventNames<TContract>,
 > = ContractEvent<
   TEventName,
-  Extract<
-    TContract["descriptor"]["__types"]["event"],
-    { type: TEventName }
-  > extends never
+  Extract<TContract["descriptor"]["__types"]["event"], { type: TEventName }> extends never
     ? never
-    : Extract<
-        TContract["descriptor"]["__types"]["event"],
-        { type: TEventName }
-      >["value"]
+    : Extract<TContract["descriptor"]["__types"]["event"], { type: TEventName }>["value"]
 >;
 
 export function watchInkContractEvent<
@@ -51,19 +45,13 @@ export function watchInkContractEvent<
           events
             .filter((evt) => {
               const payload = evt.payload;
-              if (
-                address !== undefined &&
-                !isEqual(payload.contract, address)
-              ) {
+              if (address !== undefined && !isEqual(payload.contract, address)) {
                 return false;
               }
               return payload.topics.some((topic) => topic === signatureTopic);
             })
             .map((evt) => {
-              const decoded = inkClient.event.decode(
-                evt.payload,
-                signatureTopic,
-              );
+              const decoded = inkClient.event.decode(evt.payload, signatureTopic);
               return {
                 block,
                 contract: evt.payload.contract,

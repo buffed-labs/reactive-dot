@@ -61,9 +61,7 @@ it("should return a promise atom that resolves with the first value from the obs
 
 it("should return a promise atom that will be updated from an observable atom mounted elsewhere", async () => {
   const subject$ = new BehaviorSubject("initial");
-  const { promiseAtom, observableAtom } = atomWithObservableAndPromise(
-    () => subject$,
-  );
+  const { promiseAtom, observableAtom } = atomWithObservableAndPromise(() => subject$);
   const render = await act(() =>
     renderHook(() => use(useStablePromise(useAtomValue(promiseAtom)))),
   );
@@ -89,9 +87,7 @@ it("should populate the observable atom initial value with result from promise a
     }),
   );
 
-  const { promiseAtom, observableAtom } = atomWithObservableAndPromise(
-    () => observable$,
-  );
+  const { promiseAtom, observableAtom } = atomWithObservableAndPromise(() => observable$);
 
   const promiseRender = await act(() =>
     renderHook(() => use(useStablePromise(useAtomValue(promiseAtom)))),
@@ -153,9 +149,7 @@ it("should handle errors in the observable", async () => {
 
 it("should propagate errors from the observable atom to the promise atom", async () => {
   const observable$ = new BehaviorSubject("initial");
-  const { promiseAtom, observableAtom } = atomWithObservableAndPromise(
-    () => observable$,
-  );
+  const { promiseAtom, observableAtom } = atomWithObservableAndPromise(() => observable$);
 
   const render = await act(() =>
     renderHook(() => use(useStablePromise(useAtomValue(promiseAtom)))),

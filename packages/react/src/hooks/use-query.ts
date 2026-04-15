@@ -22,14 +22,7 @@ import { useQueryRefresher } from "./use-query-refresher.js";
 import { useRenderEffect } from "./use-render-effect.js";
 import { useStablePromise } from "./use-stable-promise.js";
 import { typedApiAtom } from "./use-typed-api.js";
-import {
-  type Address,
-  type ChainId,
-  type Config,
-  idle,
-  pending,
-  Query,
-} from "@reactive-dot/core";
+import { type Address, type ChainId, type Config, idle, pending, Query } from "@reactive-dot/core";
 import {
   type Contract,
   type DataStore,
@@ -75,24 +68,17 @@ export function useLazyLoadQuery<
   TChainId extends ChainId | undefined,
   TQuery extends QueryArgument<TChainId>,
   TUse extends boolean = true,
->(
-  query: TQuery,
-  options?: ChainHookOptions<TChainId> & SuspenseOptions<TUse> & FetchOptions,
-) {
+>(query: TQuery, options?: ChainHookOptions<TChainId> & SuspenseOptions<TUse> & FetchOptions) {
   const refresh = useQueryRefresher(query, options);
 
-  const fetchKey =
-    options !== undefined && "fetchKey" in options
-      ? options.fetchKey
-      : undefined;
+  const fetchKey = options !== undefined && "fetchKey" in options ? options.fetchKey : undefined;
 
   useRenderEffect(() => {
     refresh();
   }, fetchKey);
 
   const queryValue = useMemo(
-    () =>
-      !query ? undefined : query instanceof Query ? query : query(new Query()),
+    () => (!query ? undefined : query instanceof Query ? query : query(new Query())),
     [query],
   );
 
@@ -130,9 +116,7 @@ export function useLazyLoadQueryWithRefresh<
   query: TQuery,
   options?: ChainHookOptions<TChainId>,
 ): [data: InferQueryArgumentResult<TChainId, TQuery>, refresh: () => void];
-export function useLazyLoadQueryWithRefresh(
-  ...args: unknown[]
-): [unknown, unknown] {
+export function useLazyLoadQueryWithRefresh(...args: unknown[]): [unknown, unknown] {
   // @ts-expect-error need to spread args
   const data = useLazyLoadQuery(...args);
   // @ts-expect-error need to spread args
@@ -155,9 +139,7 @@ export const contractInstructionPayloadAtom: AtomFamily<
     __meta: {
       config: Config;
       chainId: ChainId;
-      instruction: Parameters<
-        Parameters<DataStore["invalidateContractQueries"]>[0]
-      >[0];
+      instruction: Parameters<Parameters<DataStore["invalidateContractQueries"]>[0]>[0];
     };
   }
 > = atomFamilyWithErrorCatcher(
@@ -174,17 +156,15 @@ export const contractInstructionPayloadAtom: AtomFamily<
         const typedApiPromise = get(typedApiAtom(config, chainId));
 
         if (contract instanceof InkContract) {
-          return soon(
-            soonAll([typedApiPromise, getInkClient(contract)]),
-            ([api, inkClient]) =>
-              queryInk(
-                // @ts-expect-error TODO: fix this
-                api,
-                inkClient,
-                address,
-                instruction as SimpleInkQueryInstruction,
-                { signal },
-              ),
+          return soon(soonAll([typedApiPromise, getInkClient(contract)]), ([api, inkClient]) =>
+            queryInk(
+              // @ts-expect-error TODO: fix this
+              api,
+              inkClient,
+              address,
+              instruction as SimpleInkQueryInstruction,
+              { signal },
+            ),
           );
         }
 
@@ -211,9 +191,7 @@ export const contractInstructionPayloadAtom: AtomFamily<
           kind: contract instanceof InkContract ? "ink" : "solidity",
           contract,
           address,
-        } as Parameters<
-          Parameters<DataStore["invalidateContractQueries"]>[0]
-        >[0],
+        } as Parameters<Parameters<DataStore["invalidateContractQueries"]>[0]>[0],
       },
     };
   },
@@ -228,12 +206,7 @@ export const contractInstructionPayloadAtom: AtomFamily<
 );
 
 export const instructionPayloadAtom = atomFamilyWithErrorCatcher(
-  (
-    withErrorCatcher,
-    config: Config,
-    chainId: ChainId,
-    instruction: SimpleQueryInstruction,
-  ) =>
+  (withErrorCatcher, config: Config, chainId: ChainId, instruction: SimpleQueryInstruction) =>
     Object.assign(
       (() => {
         switch (preflight(instruction)) {
@@ -255,9 +228,7 @@ export const instructionPayloadAtom = atomFamilyWithErrorCatcher(
             return atomWithObservableAndPromise(
               (get) =>
                 from(Promise.resolve(get(typedApiAtom(config, chainId)))).pipe(
-                  switchMap(
-                    (api) => query(api, instruction) as Observable<unknown>,
-                  ),
+                  switchMap((api) => query(api, instruction) as Observable<unknown>),
                 ),
               withErrorCatcher,
             );
@@ -276,11 +247,7 @@ export const instructionPayloadAtom = atomFamilyWithErrorCatcher(
 /**
  * @internal
  */
-export function getQueryInstructionPayloadAtoms(
-  config: Config,
-  chainId: ChainId,
-  query: Query,
-) {
+export function getQueryInstructionPayloadAtoms(config: Config, chainId: ChainId, query: Query) {
   return query.instructions.map((instruction) => {
     const responseAtom = (() => {
       if (instruction.type === "contract") {
@@ -361,10 +328,7 @@ export function getQueryInstructionPayloadAtoms(
                 }
               })();
 
-              return maybeDeferInstructionResponse(
-                responseAtom,
-                instruction.directives.defer,
-              );
+              return maybeDeferInstructionResponse(responseAtom, instruction.directives.defer);
             }),
           );
         };
@@ -372,10 +336,7 @@ export function getQueryInstructionPayloadAtoms(
         const { contract } = instruction;
 
         if (!("multi" in instruction)) {
-          return processContractInstructions(
-            instruction.address,
-            instruction.instructions,
-          );
+          return processContractInstructions(instruction.address, instruction.instructions);
         }
 
         const { addresses, multi, ...rest } = instruction;
@@ -402,25 +363,23 @@ export function getQueryInstructionPayloadAtoms(
         return instructionPayloadAtom(config, chainId, instruction);
       }
 
-      return ("keys" in instruction ? instruction.keys : instruction.args).map(
-        (args) => {
-          const { multi, directives, ...rest } = instruction;
+      return ("keys" in instruction ? instruction.keys : instruction.args).map((args) => {
+        const { multi, directives, ...rest } = instruction;
 
-          const argsObj = "keys" in rest ? { keys: args } : { args };
+        const argsObj = "keys" in rest ? { keys: args } : { args };
 
-          const atom = instructionPayloadAtom(config, chainId, {
-            ...rest,
-            ...argsObj,
-            directives,
-          });
+        const atom = instructionPayloadAtom(config, chainId, {
+          ...rest,
+          ...argsObj,
+          directives,
+        });
 
-          if (!directives.stream) {
-            return atom;
-          }
+        if (!directives.stream) {
+          return atom;
+        }
 
-          return asDeferred(atom);
-        },
-      );
+        return asDeferred(atom);
+      });
     })();
 
     return maybeDeferInstructionResponse(
@@ -437,16 +396,8 @@ export function getQueryInstructionPayloadAtoms(
  * https://github.com/pmndrs/jotai/discussions/1553
  */
 export const queryPayloadAtom = atomFamilyWithErrorCatcher(
-  (
-    withErrorCatcher,
-    config: Config,
-    params: { chainId: ChainId; query: Query },
-  ) => {
-    const atoms = getQueryInstructionPayloadAtoms(
-      config,
-      params.chainId,
-      params.query,
-    );
+  (withErrorCatcher, config: Config, params: { chainId: ChainId; query: Query }) => {
+    const atoms = getQueryInstructionPayloadAtoms(config, params.chainId, params.query);
 
     return {
       promiseAtom: withErrorCatcher(
@@ -458,11 +409,7 @@ export const queryPayloadAtom = atomFamilyWithErrorCatcher(
     };
   },
   (config, params) =>
-    [
-      objectId(config),
-      params.chainId,
-      stringify(params.query.instructions),
-    ].join(),
+    [objectId(config), params.chainId, stringify(params.query.instructions)].join(),
 );
 
 function unwrapObservableOrPromiseAtom(
@@ -504,9 +451,7 @@ function getNestedAtoms<T extends unknown[]>(
 }
 
 function maybeDeferInstructionResponse(
-  originalAtom:
-    | ObservableAndPromiseAtom<unknown>
-    | ObservableAndPromiseAtom<unknown>[],
+  originalAtom: ObservableAndPromiseAtom<unknown> | ObservableAndPromiseAtom<unknown>[],
   defer: boolean | undefined,
 ) {
   if (!defer) {
@@ -523,10 +468,6 @@ function maybeDeferInstructionResponse(
   });
 }
 
-function asDeferred<TAtom extends ObservableAndPromiseAtom<unknown>>(
-  atom: TAtom,
-) {
-  return mapAtomWithObservableAndPromise(atom, (atom) =>
-    unwrap(atom, () => pending),
-  );
+function asDeferred<TAtom extends ObservableAndPromiseAtom<unknown>>(atom: TAtom) {
+  return mapAtomWithObservableAndPromise(atom, (atom) => unwrap(atom, () => pending));
 }

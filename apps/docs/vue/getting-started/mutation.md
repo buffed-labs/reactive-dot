@@ -33,10 +33,9 @@ import { computed } from "vue";
 
 const accounts = await useAccounts();
 
-const { execute, status } = useMutation(
-  (tx) => tx.NominationPools.claim_payout(),
-  { signer: computed(() => accounts.value.at(0)) },
-);
+const { execute, status } = useMutation((tx) => tx.NominationPools.claim_payout(), {
+  signer: computed(() => accounts.value.at(0)),
+});
 </script>
 ```
 

@@ -33,13 +33,9 @@ describe("atomWithPromise", () => {
   it("should refresh when triggered", async () => {
     let counter = 0;
 
-    const refreshAtom = atomWithPromise(() =>
-      Promise.resolve(`value ${++counter}`),
-    );
+    const refreshAtom = atomWithPromise(() => Promise.resolve(`value ${++counter}`));
 
-    const { result, rerender } = await act(() =>
-      renderHook(() => useAtom(refreshAtom)),
-    );
+    const { result, rerender } = await act(() => renderHook(() => useAtom(refreshAtom)));
 
     expect(result.current[0]).toBe("value 1");
 
@@ -57,14 +53,10 @@ describe("atomWithPromise", () => {
     const abortSpy = vi.fn();
     const promiseWithAbort = atomWithPromise((_, { signal }) => {
       signal.addEventListener("abort", abortSpy);
-      return new Promise((resolve) =>
-        setTimeout(() => resolve("late value"), 10000),
-      );
+      return new Promise((resolve) => setTimeout(() => resolve("late value"), 10000));
     });
 
-    const { unmount } = await act(() =>
-      renderHook(() => useAtomValue(promiseWithAbort)),
-    );
+    const { unmount } = await act(() => renderHook(() => useAtomValue(promiseWithAbort)));
 
     unmount();
 

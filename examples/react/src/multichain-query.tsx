@@ -25,10 +25,10 @@ export function MultichainQuery() {
     useLazyLoadQuery((builder) => builder.storage("Paras", "Parachains"), {
       use: false,
     }),
-    useLazyLoadQuery(
-      (builder) => builder.storage("ParachainInfo", "ParachainId"),
-      { chainId: parachainId, use: false },
-    ),
+    useLazyLoadQuery((builder) => builder.storage("ParachainInfo", "ParachainId"), {
+      chainId: parachainId,
+      use: false,
+    }),
   ]);
 
   return (

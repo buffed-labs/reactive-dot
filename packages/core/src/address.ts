@@ -1,18 +1,9 @@
 import { keccak_256 } from "@noble/hashes/sha3.js";
-import {
-  Binary,
-  type SizedHex,
-  type SS58String,
-  AccountId,
-} from "polkadot-api";
+import { Binary, type SizedHex, type SS58String, AccountId } from "polkadot-api";
 
 export type Address = SS58String | `0x${string}`;
 
-export function toSs58String(
-  address: Address,
-  ss58Format?: number,
-  padInt = 0xee,
-) {
+export function toSs58String(address: Address, ss58Format?: number, padInt = 0xee) {
   if (!address.startsWith("0x") && ss58Format === undefined) {
     return address;
   }
@@ -40,7 +31,5 @@ export function toH160Hex(address: Address): SizedHex<20> {
 }
 
 export function isEqual(address1: Address, address2: Address): boolean {
-  return (
-    toH160Hex(address1).toLowerCase() === toH160Hex(address2).toLowerCase()
-  );
+  return toH160Hex(address1).toLowerCase() === toH160Hex(address2).toLowerCase();
 }

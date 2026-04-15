@@ -1,8 +1,4 @@
-import {
-  createQrMessage,
-  createQrTransaction,
-  vaultQrEncryption,
-} from "./vendor.js";
+import { createQrMessage, createQrTransaction, vaultQrEncryption } from "./vendor.js";
 import { createV4Tx } from "@polkadot-api/signers-common";
 import {
   decAnyMetadata,
@@ -10,10 +6,7 @@ import {
   unifyMetadata,
 } from "@polkadot-api/substrate-bindings";
 import { BaseError } from "@reactive-dot/core";
-import {
-  LocalWallet,
-  type PolkadotSignerAccount,
-} from "@reactive-dot/core/wallets.js";
+import { LocalWallet, type PolkadotSignerAccount } from "@reactive-dot/core/wallets.js";
 import { Binary } from "polkadot-api";
 import { mergeUint8 } from "polkadot-api/utils";
 import { BehaviorSubject, map } from "rxjs";
@@ -22,9 +15,7 @@ type BaseVaultRequest<TType extends string, TData = void> = TData extends void
   ? { type: TType }
   : { type: TType; data: TData };
 
-type VaultRequestPayload =
-  | BaseVaultRequest<"account">
-  | BaseVaultRequest<"signature", Uint8Array>;
+type VaultRequestPayload = BaseVaultRequest<"account"> | BaseVaultRequest<"signature", Uint8Array>;
 
 export type VaultRequest = VaultRequestPayload & {
   response: PromiseWithResolvers<string>;
@@ -43,10 +34,7 @@ type JsonVaultAccount = {
   name?: string;
 };
 
-export class PolkadotVaultWallet extends LocalWallet<
-  VaultAccount,
-  JsonVaultAccount
-> {
+export class PolkadotVaultWallet extends LocalWallet<VaultAccount, JsonVaultAccount> {
   override readonly id = "polkadot-vault";
 
   override readonly name = "Polkadot Vault";
@@ -102,11 +90,7 @@ export class PolkadotVaultWallet extends LocalWallet<
       genesisHash: `0x${string}`,
     ];
 
-    if (
-      split[0] !== "substrate" ||
-      split.length != 3 ||
-      !split[2]!.startsWith("0x")
-    ) {
+    if (split[0] !== "substrate" || split.length != 3 || !split[2]!.startsWith("0x")) {
       throw new BaseError("Invalid response");
     }
 
@@ -141,11 +125,7 @@ export class PolkadotVaultWallet extends LocalWallet<
                 const qrPayload = createQrMessage(
                   vaultQrEncryption.sr25519,
                   publicKey,
-                  mergeUint8([
-                    Binary.fromText("<Bytes>"),
-                    data,
-                    Binary.fromText("</Bytes>"),
-                  ]),
+                  mergeUint8([Binary.fromText("<Bytes>"), data, Binary.fromText("</Bytes>")]),
                   Binary.fromHex(genesisHash),
                 );
 
@@ -158,17 +138,14 @@ export class PolkadotVaultWallet extends LocalWallet<
                 decMeta.extrinsic.signedExtensions[0]?.map(({ identifier }) => {
                   const signedExtension = signedExtensions[identifier];
                   if (!signedExtension)
-                    throw new BaseError(
-                      `Missing ${identifier} signed extension`,
-                    );
+                    throw new BaseError(`Missing ${identifier} signed extension`);
                   extra.push(signedExtension.value);
                   additionalSigned.push(signedExtension.additionalSigned);
                 });
                 const extensions = mergeUint8([...extra, ...additionalSigned]);
 
                 const genesisBytes =
-                  signedExtensions["CheckGenesis"]?.additionalSigned ??
-                  Binary.fromHex(genesisHash);
+                  signedExtensions["CheckGenesis"]?.additionalSigned ?? Binary.fromHex(genesisHash);
 
                 const qrPayload = createQrTransaction(
                   vaultQrEncryption.sr25519,
@@ -199,7 +176,5 @@ export class PolkadotVaultWallet extends LocalWallet<
     ),
   );
 
-  override readonly connected$ = this.accounts$.pipe(
-    map((accounts) => accounts.length > 0),
-  );
+  override readonly connected$ = this.accounts$.pipe(map((accounts) => accounts.length > 0));
 }

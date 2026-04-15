@@ -3,8 +3,8 @@
   "version": "0.72.0",
   "description": "VanillaJS library for ReactiveDOT",
   "keywords": [
-    "substrate",
-    "polkadot"
+    "polkadot",
+    "substrate"
   ],
   "homepage": "https://reactivedot.dev/",
   "bugs": {
@@ -18,12 +18,12 @@
     "url": "https://github.com/buffed-labs/reactive-dot.git",
     "directory": "packages/core"
   },
-  "type": "module",
   "files": [
     "src",
     "build",
     ".papi/descriptors/dist/*"
   ],
+  "type": "module",
   "exports": {
     ".": "./build/index.js",
     "./providers/light-client.js": "./build/providers/light-client/index.js",

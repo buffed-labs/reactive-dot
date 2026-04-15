@@ -17,9 +17,7 @@ export function useWalletDisconnector(wallets?: Wallet | Wallet[]) {
 
   return useAsyncAction(async (wallets?: Wallet | Wallet[]) => {
     const walletsToDisconnect =
-      wallets ??
-      composableWallets ??
-      (await firstValueFrom(connectedWalletsObservable.value));
+      wallets ?? composableWallets ?? (await firstValueFrom(connectedWalletsObservable.value));
 
     await disconnectWallet(walletsToDisconnect);
   });

@@ -1,9 +1,5 @@
 import type { Address } from "../../address.js";
-import type {
-  StringKeyOf,
-  ExtractExactProperties,
-  MaybePromise,
-} from "../../types.js";
+import type { StringKeyOf, ExtractExactProperties, MaybePromise } from "../../types.js";
 import type { InkContract } from "../contract.js";
 import type { GenericInkDescriptors, InkTxBody } from "./types.js";
 import type { Transaction } from "polkadot-api";
@@ -11,10 +7,7 @@ import type { Transaction } from "polkadot-api";
 export type InkMutationBuilder = <
   TDescriptor extends GenericInkDescriptors,
   TMessageName extends StringKeyOf<
-    ExtractExactProperties<
-      TDescriptor["__types"]["messages"],
-      { mutates: true }
-    >
+    ExtractExactProperties<TDescriptor["__types"]["messages"], { mutates: true }>
   >,
 >(
   contract: InkContract<TDescriptor>,

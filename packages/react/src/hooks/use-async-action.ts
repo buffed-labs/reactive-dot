@@ -1,9 +1,4 @@
-import {
-  idle,
-  MutationError,
-  pending,
-  type AsyncValue,
-} from "@reactive-dot/core";
+import { idle, MutationError, pending, type AsyncValue } from "@reactive-dot/core";
 import { useCallback, useState } from "react";
 import { ReplaySubject, type Observable } from "rxjs";
 
@@ -24,10 +19,7 @@ export function useAsyncAction<
 
   const [state, setState] = useState<AsyncValue<Value, MutationError>>(idle);
 
-  const setError = useCallback(
-    (reason?: unknown) => setState(MutationError.from(reason)),
-    [],
-  );
+  const setError = useCallback((reason?: unknown) => setState(MutationError.from(reason)), []);
 
   type ExecuteReturn =
     TReturn extends Promise<infer Value>

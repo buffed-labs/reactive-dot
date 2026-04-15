@@ -98,11 +98,7 @@ declare module "@reactive-dot/core" {
 ```ts title="config.ts"
 // ...
 // highlight-next-line
-import {
-  polkadot,
-  polkadot_asset_hub,
-  polkadot_people,
-} from "@polkadot-api/descriptors";
+import { polkadot, polkadot_asset_hub, polkadot_people } from "@polkadot-api/descriptors";
 
 const lightClientProvider = createLightClientProvider();
 
@@ -213,9 +209,7 @@ export function MyComponent() {
         ))}
       </ul>
       <section>
-        <div>
-          Latest block timestamp: {new Date(Number(timestamp)).toLocaleString()}
-        </div>
+        <div>Latest block timestamp: {new Date(Number(timestamp)).toLocaleString()}</div>
         <div>Total issuance: {totalIssuance.toString()}</div>
       </section>
     </div>

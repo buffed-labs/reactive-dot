@@ -18,10 +18,7 @@ import {
   type TxOptionsOf,
   extractPolkadotSigner,
 } from "@reactive-dot/core/internal.js";
-import {
-  getInkClient,
-  getInkContractTx,
-} from "@reactive-dot/core/internal/actions.js";
+import { getInkClient, getInkContractTx } from "@reactive-dot/core/internal/actions.js";
 import { useAtomCallback } from "jotai/utils";
 import { use } from "react";
 import { from, switchMap } from "rxjs";
@@ -89,10 +86,7 @@ export function useContractMutation<
           ...[body]
         ) =>
           getInkContractTx(
-            ...(await Promise.all([
-              get(clientAtom(config, chainId)),
-              getInkClient(contract),
-            ])),
+            ...(await Promise.all([get(clientAtom(config, chainId)), getInkClient(contract)])),
             signer,
             address,
             message,
@@ -118,18 +112,10 @@ export function useContractMutation<
           Promise.resolve(
             action(
               // @ts-expect-error TODO: fix this
-              (
-                ...args: Parameters<
-                  InkMutationBuilder | SolidityMutationBuilder
-                >
-              ) =>
+              (...args: Parameters<InkMutationBuilder | SolidityMutationBuilder>) =>
                 args[0] instanceof InkContract
-                  ? inkMutationBuilder(
-                      ...(args as Parameters<InkMutationBuilder>),
-                    )
-                  : solidityMutationBuilder(
-                      ...(args as Parameters<SolidityMutationBuilder>),
-                    ),
+                  ? inkMutationBuilder(...(args as Parameters<InkMutationBuilder>))
+                  : solidityMutationBuilder(...(args as Parameters<SolidityMutationBuilder>)),
               submitOptions === undefined
                 ? undefined
                 : "input" in submitOptions
@@ -142,10 +128,7 @@ export function useContractMutation<
         ).pipe(
           switchMap((tx) =>
             tx
-              .signSubmitAndWatch(
-                signer,
-                submitOptions?.txOptions ?? options?.txOptions,
-              )
+              .signSubmitAndWatch(signer, submitOptions?.txOptions ?? options?.txOptions)
               .pipe(tapTx(mutationEventSubject, chainId, tx)),
           ),
         );

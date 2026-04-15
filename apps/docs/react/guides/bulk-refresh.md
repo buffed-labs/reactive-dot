@@ -12,21 +12,15 @@ import { useStore } from "@reactive-dot/react";
 const store = useStore();
 
 // Refresh all runtime-api queries
-store.invalidateChainQueries(
-  (instruction) => instruction.type === "runtime-api",
-);
+store.invalidateChainQueries((instruction) => instruction.type === "runtime-api");
 
 // Refresh all "NominationPoolsApi" runtime-api queries
 store.invalidateChainQueries(
-  (instruction) =>
-    instruction.type === "runtime-api" &&
-    instruction.api === "NominationPoolsApi",
+  (instruction) => instruction.type === "runtime-api" && instruction.api === "NominationPoolsApi",
 );
 
 // Refresh all queries to a specific contract
-store.invalidateContractQueries(
-  (instruction) => instruction.address === "CONTRACT_ADDRESS",
-);
+store.invalidateContractQueries((instruction) => instruction.address === "CONTRACT_ADDRESS");
 
 // Refresh all balanceOf queries to a contract
 store.invalidateContractQueries(

@@ -17,13 +17,11 @@ export type MaybeAsync<T> = T | Promise<T> | Observable<T>;
 
 export type Gettable<T> = MaybePromise<T> | (() => MaybePromise<T>);
 
-export type FlatHead<TArray extends readonly unknown[]> =
-  TArray extends readonly [infer Head] ? Head : TArray;
+export type FlatHead<TArray extends readonly unknown[]> = TArray extends readonly [infer Head]
+  ? Head
+  : TArray;
 
-export type Flatten<T extends unknown[]> = T extends [
-  infer First,
-  ...infer Rest,
-]
+export type Flatten<T extends unknown[]> = T extends [infer First, ...infer Rest]
   ? First extends unknown[]
     ? Flatten<[...First, ...Rest]>
     : [First, ...Rest]
@@ -46,11 +44,10 @@ export type ExcludeExactProperties<T, U> = {
 };
 
 export type UndefinedToOptional<T> = {
-  [P in keyof T as T[P] extends undefined
-    ? never
-    : undefined extends T[P]
-      ? P
-      : never]?: Exclude<T[P], undefined>;
+  [P in keyof T as T[P] extends undefined ? never : undefined extends T[P] ? P : never]?: Exclude<
+    T[P],
+    undefined
+  >;
 } & {
   [P in keyof T as undefined extends T[P] ? never : P]: T[P];
 };

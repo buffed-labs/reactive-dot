@@ -35,8 +35,7 @@ const fakeApi = {
               ...dummyValue,
             },
           }),
-        getEntries: (..._: unknown[]) =>
-          Promise.resolve([{ keyArgs: "foo", value: "bar" }]),
+        getEntries: (..._: unknown[]) => Promise.resolve([{ keyArgs: "foo", value: "bar" }]),
         watchEntries: (..._: unknown[]) =>
           of({
             entries: [{ args: "foo", value: "bar" }],
@@ -198,9 +197,7 @@ it('should handle "storage-entries" instruction with at starting with "0x" (usin
 
   const result = await query(fakeApi, instruction);
 
-  expect(result).toMatchObject([
-    Object.assign(["foo", "bar"], { keyArgs: "foo", value: "bar" }),
-  ]);
+  expect(result).toMatchObject([Object.assign(["foo", "bar"], { keyArgs: "foo", value: "bar" })]);
 });
 
 it('should handle "storage-entries" instruction without at or non-hex at (using watchEntries)', async () => {
@@ -216,7 +213,5 @@ it('should handle "storage-entries" instruction without at or non-hex at (using 
     query(fakeApi, instruction),
   );
 
-  expect(result).toMatchObject([
-    Object.assign(["foo", "bar"], { keyArgs: "foo", value: "bar" }),
-  ]);
+  expect(result).toMatchObject([Object.assign(["foo", "bar"], { keyArgs: "foo", value: "bar" })]);
 });

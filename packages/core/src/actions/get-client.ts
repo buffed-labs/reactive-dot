@@ -4,11 +4,7 @@ import {
   isLightClientProvider,
   type LightClientProvider,
 } from "../providers/light-client/provider.js";
-import {
-  createClient,
-  type JsonRpcProvider,
-  type PolkadotClient,
-} from "polkadot-api";
+import { createClient, type JsonRpcProvider, type PolkadotClient } from "polkadot-api";
 
 const clientCache = new WeakMap<ChainConfig, Promise<PolkadotClient>>();
 
@@ -30,10 +26,7 @@ async function _getClient(chainConfig: ChainConfig) {
   const providerOrController = await (providerOrGetter.length > 0
     ? (providerOrGetter as JsonRpcProvider | LightClientProvider)
     : (
-        providerOrGetter as Exclude<
-          typeof providerOrGetter,
-          JsonRpcProvider | LightClientProvider
-        >
+        providerOrGetter as Exclude<typeof providerOrGetter, JsonRpcProvider | LightClientProvider>
       )());
 
   if (isLightClientProvider(providerOrController)) {

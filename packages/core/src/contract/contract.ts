@@ -1,9 +1,7 @@
 import type { GenericInkDescriptors } from "./ink/types.js";
 import type { Abi } from "abitype";
 
-export class InkContract<
-  T extends GenericInkDescriptors = GenericInkDescriptors,
-> {
+export class InkContract<T extends GenericInkDescriptors = GenericInkDescriptors> {
   constructor(
     /** @internal */
     readonly id: string,

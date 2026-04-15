@@ -2,12 +2,7 @@ import { type Address, toH160Hex } from "../../address.js";
 import { getContractTx } from "../get-contract-tx.js";
 import type { SolidityTxBody } from "./types.js";
 import type { Abi, ExtractAbiFunctionNames } from "abitype";
-import {
-  AccountId,
-  Binary,
-  type PolkadotClient,
-  type PolkadotSigner,
-} from "polkadot-api";
+import { AccountId, Binary, type PolkadotClient, type PolkadotSigner } from "polkadot-api";
 
 export async function getSolidityContractTx<
   TAbi extends Abi,

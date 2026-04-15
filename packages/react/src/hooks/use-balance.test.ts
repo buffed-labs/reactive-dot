@@ -20,46 +20,44 @@ vi.mocked(useConfig).mockReturnValue({ chains: {} });
 
 vi.mocked(internal_useChainId).mockReturnValue("foo");
 
-vi.mocked(instructionPayloadAtom).mockImplementation(
-  (config, chainId, instruction) => {
-    const value = Promise.resolve(
-      (() => {
-        if (
-          instruction.type === "constant" &&
-          instruction.pallet === "Balances" &&
-          instruction.constant === "ExistentialDeposit"
-        ) {
-          return 100n;
-        } else if (
-          instruction.type === "storage" &&
-          instruction.pallet === "System" &&
-          instruction.storage === "Account"
-        ) {
-          return {
-            nonce: 0,
-            consumers: 0,
-            providers: 0,
-            sufficients: 0,
-            data: {
-              free,
-              reserved: 1000n,
-              frozen: 50n,
-              flags: 0n,
-            },
-          };
-        } else {
-          throw new Error("Invalid instruction");
-        }
-      })(),
-    );
+vi.mocked(instructionPayloadAtom).mockImplementation((config, chainId, instruction) => {
+  const value = Promise.resolve(
+    (() => {
+      if (
+        instruction.type === "constant" &&
+        instruction.pallet === "Balances" &&
+        instruction.constant === "ExistentialDeposit"
+      ) {
+        return 100n;
+      } else if (
+        instruction.type === "storage" &&
+        instruction.pallet === "System" &&
+        instruction.storage === "Account"
+      ) {
+        return {
+          nonce: 0,
+          consumers: 0,
+          providers: 0,
+          sufficients: 0,
+          data: {
+            free,
+            reserved: 1000n,
+            frozen: 50n,
+            flags: 0n,
+          },
+        };
+      } else {
+        throw new Error("Invalid instruction");
+      }
+    })(),
+  );
 
-    return {
-      observableAtom: atom(value),
-      promiseAtom: atom(value),
-      __meta: { config, chainId, instruction },
-    };
-  },
-);
+  return {
+    observableAtom: atom(value),
+    promiseAtom: atom(value),
+    __meta: { config, chainId, instruction },
+  };
+});
 
 let mockPromise = Promise.withResolvers<void>();
 
@@ -79,9 +77,7 @@ beforeEach(() => {
 
 it("should return spendable balance for single address", async () => {
   const { result } = await act(() =>
-    renderHook(() =>
-      useSpendableBalance("5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY"),
-    ),
+    renderHook(() => useSpendableBalance("5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY")),
   );
 
   await act(() => mockPromise.resolve());
@@ -102,27 +98,18 @@ it("should return spendable balances array for multiple addresses", async () => 
   await act(() => mockPromise.resolve());
 
   expect(result.current).toEqual(
-    expect.arrayContaining([
-      expect.any(DenominatedNumber),
-      expect.any(DenominatedNumber),
-    ]),
+    expect.arrayContaining([expect.any(DenominatedNumber), expect.any(DenominatedNumber)]),
   );
 });
 
 it("should return spendable balances array for an array of one address", async () => {
   const { result } = await act(() =>
-    renderHook(() =>
-      useSpendableBalances([
-        "5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY",
-      ]),
-    ),
+    renderHook(() => useSpendableBalances(["5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY"])),
   );
 
   await act(() => mockPromise.resolve());
 
-  expect(result.current).toEqual(
-    expect.arrayContaining([expect.any(DenominatedNumber)]),
-  );
+  expect(result.current).toEqual(expect.arrayContaining([expect.any(DenominatedNumber)]));
 });
 
 it("should handle includesExistentialDeposit option", async () => {

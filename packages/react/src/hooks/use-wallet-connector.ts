@@ -21,8 +21,7 @@ export function useWalletConnector(wallets?: Wallet | Wallet[]) {
     useAtomCallback(
       useCallback(
         async (get, _, wallets?: Wallet | Wallet[]) => {
-          const walletsToConnect =
-            wallets ?? hookWallets ?? (await get(walletsAtom(config)));
+          const walletsToConnect = wallets ?? hookWallets ?? (await get(walletsAtom(config)));
           await connectWallet(walletsToConnect);
           return true as const;
         },

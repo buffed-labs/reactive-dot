@@ -8,6 +8,4 @@ export type MutationEvent = BaseMutationEvent & {
   value: Exclude<AsyncValue<TxEvent, MutationError>, typeof idle>;
 };
 
-export const MutationEventSubjectContext = createContext(
-  new Subject<MutationEvent>(),
-);
+export const MutationEventSubjectContext = createContext(new Subject<MutationEvent>());

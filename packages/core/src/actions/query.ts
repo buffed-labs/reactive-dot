@@ -1,9 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import type { CommonDescriptor } from "../chains.js";
-import type {
-  InferInstructionResponse,
-  SimpleQueryInstruction,
-} from "../query-builder.js";
+import type { InferInstructionResponse, SimpleQueryInstruction } from "../query-builder.js";
 import type { ChainDefinition, TypedApi } from "polkadot-api";
 import { filter, map, type Observable } from "rxjs";
 
@@ -17,18 +14,14 @@ export function query<
 ): InferInstructionResponse<TInstruction> {
   switch (instruction.type) {
     case "constant":
-      return (
-        api.constants[instruction.pallet]![instruction.constant] as any
-      )();
+      return (api.constants[instruction.pallet]![instruction.constant] as any)();
     case "runtime-api":
-      return (api.apis[instruction.api]![instruction.method] as any)(
-        ...instruction.args,
-        { signal: options?.signal, at: instruction.at },
-      );
+      return (api.apis[instruction.api]![instruction.method] as any)(...instruction.args, {
+        signal: options?.signal,
+        at: instruction.at,
+      });
     case "storage": {
-      const storageEntry = api.query[instruction.pallet]![
-        instruction.storage
-      ] as any;
+      const storageEntry = api.query[instruction.pallet]![instruction.storage] as any;
 
       return instruction.at?.startsWith("0x")
         ? storageEntry.getValue(...instruction.keys, { at: instruction.at })
@@ -37,9 +30,7 @@ export function query<
               ...instruction.keys,
               ...(instruction.at !== undefined ? [{ at: instruction.at }] : []),
             ) as Observable<{ value: unknown }>
-          ).pipe(
-            map((result) => result.value),
-          ) as InferInstructionResponse<TInstruction>);
+          ).pipe(map((result) => result.value)) as InferInstructionResponse<TInstruction>);
     }
     case "storage-entries":
       return instruction.at?.startsWith("0x")
@@ -59,11 +50,12 @@ export function query<
               ),
             )
         : ((
-            (
-              api.query[instruction.pallet]![instruction.storage] as any
-            ).watchEntries(...instruction.args, {
-              at: instruction.at,
-            }) as Observable<{
+            (api.query[instruction.pallet]![instruction.storage] as any).watchEntries(
+              ...instruction.args,
+              {
+                at: instruction.at,
+              },
+            ) as Observable<{
               entries: Array<{ args: unknown; value: unknown }>;
               deltas: null | {
                 deleted: unknown[];

@@ -36,15 +36,10 @@ export function useNativeTokenAmountFromPlanck<TUse extends boolean = true>(
   Promise<(planck: bigint | number | string) => DenominatedNumber>
 >;
 export function useNativeTokenAmountFromPlanck<TUse extends boolean = true>(
-  planckOrOptions?:
-    | bigint
-    | number
-    | string
-    | (ChainHookOptions & SuspenseOptions<TUse>),
+  planckOrOptions?: bigint | number | string | (ChainHookOptions & SuspenseOptions<TUse>),
   maybeOptions?: ChainHookOptions & SuspenseOptions<TUse>,
 ) {
-  const options =
-    typeof planckOrOptions === "object" ? planckOrOptions : maybeOptions;
+  const options = typeof planckOrOptions === "object" ? planckOrOptions : maybeOptions;
 
   // TODO: very dangerous hack, require tapping into internals
   const chainSpecDataPromise = useChainSpecData({ ...options, use: false }) as
@@ -56,13 +51,11 @@ export function useNativeTokenAmountFromPlanck<TUse extends boolean = true>(
       useMemo(
         () =>
           soon(
-            "status" in chainSpecDataPromise &&
-              chainSpecDataPromise.status === "resolved"
+            "status" in chainSpecDataPromise && chainSpecDataPromise.status === "resolved"
               ? chainSpecDataPromise.value
               : chainSpecDataPromise,
             (chainSpecData) => {
-              const nativeTokenInfo =
-                nativeTokenInfoFromChainSpecData(chainSpecData);
+              const nativeTokenInfo = nativeTokenInfoFromChainSpecData(chainSpecData);
 
               switch (typeof planckOrOptions) {
                 case "bigint":
@@ -117,14 +110,10 @@ export function useNativeTokenAmountFromNumber<TUse extends boolean = true>(
   Promise<(number: number | string) => DenominatedNumber>
 >;
 export function useNativeTokenAmountFromNumber<TUse extends boolean = true>(
-  numberOrOptions?:
-    | number
-    | string
-    | (ChainHookOptions & SuspenseOptions<TUse>),
+  numberOrOptions?: number | string | (ChainHookOptions & SuspenseOptions<TUse>),
   maybeOptions?: ChainHookOptions & SuspenseOptions<TUse>,
 ) {
-  const options =
-    typeof numberOrOptions === "object" ? numberOrOptions : maybeOptions;
+  const options = typeof numberOrOptions === "object" ? numberOrOptions : maybeOptions;
 
   const chainSpecDataPromise = useChainSpecData({ ...options, use: false });
 
@@ -138,8 +127,7 @@ export function useNativeTokenAmountFromNumber<TUse extends boolean = true>(
               ? chainSpecDataPromise.value
               : chainSpecDataPromise,
             (chainSpecData) => {
-              const nativeTokenInfo =
-                nativeTokenInfoFromChainSpecData(chainSpecData);
+              const nativeTokenInfo = nativeTokenInfoFromChainSpecData(chainSpecData);
 
               switch (typeof numberOrOptions) {
                 case "number":

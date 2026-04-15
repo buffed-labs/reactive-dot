@@ -15,8 +15,7 @@ export function useWalletConnector(wallets?: Wallet | Wallet[]) {
   const walletsPromise = useWalletsPromise();
 
   return useAsyncAction(async (wallets?: Wallet | Wallet[]) => {
-    const walletsToConnect =
-      wallets ?? composableWallets ?? (await walletsPromise.value);
+    const walletsToConnect = wallets ?? composableWallets ?? (await walletsPromise.value);
 
     await connectWallet(walletsToConnect);
   });

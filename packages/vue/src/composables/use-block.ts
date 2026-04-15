@@ -24,10 +24,7 @@ export function useBlock(
   return useAsyncData(
     useLazyValue(
       computed(() => ["block", chainId.value, toValue(tag)]),
-      () =>
-        from(client.value).pipe(
-          switchMap((client) => getBlock(client, { tag: toValue(tag) })),
-        ),
+      () => from(client.value).pipe(switchMap((client) => getBlock(client, { tag: toValue(tag) }))),
     ),
   );
 }

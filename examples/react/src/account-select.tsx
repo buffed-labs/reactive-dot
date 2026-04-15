@@ -12,9 +12,7 @@ export function AccountSelect({ children }: AccountSelectProps) {
 
   const [selectedAccountIndex, setSelectedAccountIndex] = useState(0);
   const selectedAccount =
-    selectedAccountIndex === undefined
-      ? undefined
-      : accounts.at(selectedAccountIndex);
+    selectedAccountIndex === undefined ? undefined : accounts.at(selectedAccountIndex);
 
   return (
     <div>
@@ -25,9 +23,7 @@ export function AccountSelect({ children }: AccountSelectProps) {
           <h4>Signer</h4>
           <select
             value={selectedAccountIndex}
-            onChange={(event) =>
-              setSelectedAccountIndex(Number(event.target.value))
-            }
+            onChange={(event) => setSelectedAccountIndex(Number(event.target.value))}
           >
             {accounts.map((account, index) => (
               // eslint-disable-next-line @eslint-react/no-array-index-key

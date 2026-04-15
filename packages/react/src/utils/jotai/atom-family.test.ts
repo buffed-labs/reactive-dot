@@ -23,9 +23,8 @@ it("should return same atom for same arguments", () => {
 });
 
 it("should return same atom for multiple arguments with matching order and values", () => {
-  const arrayAtomFamily = atomFamily(
-    (number: number, object: object, string: string) =>
-      atom([number, object, string]),
+  const arrayAtomFamily = atomFamily((number: number, object: object, string: string) =>
+    atom([number, object, string]),
   );
 
   const obj = {};

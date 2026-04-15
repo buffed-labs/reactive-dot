@@ -1,10 +1,5 @@
 import { useWallets } from "./use-wallets.js";
-import {
-  idle,
-  pending,
-  type AsyncValue,
-  type BaseError,
-} from "@reactive-dot/core";
+import { idle, pending, type AsyncValue, type BaseError } from "@reactive-dot/core";
 import { initializeWallets } from "@reactive-dot/core/internal/actions.js";
 import { useCallback, useState } from "react";
 
@@ -25,8 +20,5 @@ export function useWalletsInitializer() {
     await initializeWallets(wallets);
   }, [wallets]);
 
-  return [state, initialize] as [
-    state: typeof state,
-    initialize: typeof initialize,
-  ];
+  return [state, initialize] as [state: typeof state, initialize: typeof initialize];
 }

@@ -97,12 +97,7 @@ it("ignores context chainId when chainId is null", async () => {
     }),
   );
 
-  expect(getAccounts).toHaveBeenCalledWith(
-    expect.anything(),
-    undefined,
-    undefined,
-    undefined,
-  );
+  expect(getAccounts).toHaveBeenCalledWith(expect.anything(), undefined, undefined, undefined);
 });
 
 it("uses chainSpec when provided", async () => {
@@ -135,10 +130,5 @@ it("uses chainSpec when provided", async () => {
     }),
   );
 
-  expect(getAccounts).toHaveBeenCalledWith(
-    expect.anything(),
-    chainSpec,
-    undefined,
-    undefined,
-  );
+  expect(getAccounts).toHaveBeenCalledWith(expect.anything(), chainSpec, undefined, undefined);
 });

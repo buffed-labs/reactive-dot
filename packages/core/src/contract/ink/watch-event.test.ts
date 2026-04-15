@@ -65,15 +65,8 @@ afterEach(() => {
 
 it("throws an error if event does not have a signature topic", () => {
   expect(() =>
-    watchInkContractEvent(
-      mockApi,
-      mockContract,
-      undefined,
-      "EventWithoutTopic",
-    ),
-  ).toThrow(
-    new BaseError("Event EventWithoutTopic does not have a signature topic"),
-  );
+    watchInkContractEvent(mockApi, mockContract, undefined, "EventWithoutTopic"),
+  ).toThrow(new BaseError("Event EventWithoutTopic does not have a signature topic"));
 });
 
 it("watches for events and decodes them", async () => {
@@ -81,12 +74,7 @@ it("watches for events and decodes them", async () => {
   const eventName = "Event1";
   const signatureTopic = "0x1111";
 
-  const watch$ = watchInkContractEvent(
-    mockApi,
-    mockContract,
-    address,
-    eventName,
-  );
+  const watch$ = watchInkContractEvent(mockApi, mockContract, address, eventName);
 
   const eventPromise = firstValueFrom(watch$);
 
@@ -115,10 +103,7 @@ it("watches for events and decodes them", async () => {
 
   expect(getInkClient).toHaveBeenCalledWith(mockContract);
   expect(mockApi.event.Revive.ContractEmitted.watch).toHaveBeenCalled();
-  expect(mockInkClient.event.decode).toHaveBeenCalledWith(
-    expect.anything(),
-    signatureTopic,
-  );
+  expect(mockInkClient.event.decode).toHaveBeenCalledWith(expect.anything(), signatureTopic);
   expect(result).toEqual({
     block: "0xblock",
     contract: address,
@@ -133,12 +118,7 @@ it("filters events by contract address", async () => {
   const eventName = "Event1";
   const signatureTopic = "0x1111";
 
-  const watch$ = watchInkContractEvent(
-    mockApi,
-    mockContract,
-    address,
-    eventName,
-  );
+  const watch$ = watchInkContractEvent(mockApi, mockContract, address, eventName);
 
   const decodedEvent = {
     type: "Event1",
@@ -174,21 +154,14 @@ it("filters events by contract address", async () => {
 
   // Only the event from the correct contract should be received
   expect(receivedEvents).toHaveLength(1);
-  expect(receivedEvents[0]).toEqual(
-    expect.objectContaining({ contract: address }),
-  );
+  expect(receivedEvents[0]).toEqual(expect.objectContaining({ contract: address }));
 });
 
 it("does not filter by address if address is undefined", async () => {
   const eventName = "Event1";
   const signatureTopic = "0x1111";
 
-  const watch$ = watchInkContractEvent(
-    mockApi,
-    mockContract,
-    undefined,
-    eventName,
-  );
+  const watch$ = watchInkContractEvent(mockApi, mockContract, undefined, eventName);
 
   const decodedEvent = {
     type: "Event1",
@@ -224,12 +197,7 @@ it("filters events by signature topic", async () => {
   const signatureTopic = "0x1111";
   const otherSignatureTopic = "0x9999";
 
-  const watch$ = watchInkContractEvent(
-    mockApi,
-    mockContract,
-    address,
-    eventName,
-  );
+  const watch$ = watchInkContractEvent(mockApi, mockContract, address, eventName);
 
   const decodedEvent = {
     type: "Event1",

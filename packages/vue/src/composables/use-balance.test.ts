@@ -19,9 +19,7 @@ vi.mocked(useQueryObservable).mockImplementation(
   // @ts-expect-error TODO: fix type
   (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    builder: <T extends Query<any[], ChainDefinition>>(
-      query: Query<[], ChainDefinition>,
-    ) => T,
+    builder: <T extends Query<any[], ChainDefinition>>(query: Query<[], ChainDefinition>) => T,
   ) => {
     const query = builder(new Query());
 
@@ -71,8 +69,7 @@ vi.mocked(useNativeTokenPromise).mockImplementation(() =>
 
 it("should return spendable balance for single address", async () => {
   const { result } = withSetup(
-    () =>
-      useSpendableBalance("5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY"),
+    () => useSpendableBalance("5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY"),
     { [chainIdKey]: "test-chain-id" },
   );
 
@@ -90,19 +87,13 @@ it("should return spendable balances array for multiple addresses", async () => 
   );
 
   expect((await result).data.value).toEqual(
-    expect.arrayContaining([
-      expect.any(DenominatedNumber),
-      expect.any(DenominatedNumber),
-    ]),
+    expect.arrayContaining([expect.any(DenominatedNumber), expect.any(DenominatedNumber)]),
   );
 });
 
 it("should return spendable balances array for an array of one address", async () => {
   const { result } = withSetup(
-    () =>
-      useSpendableBalances([
-        "5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY",
-      ]),
+    () => useSpendableBalances(["5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY"]),
     { [chainIdKey]: "test-chain-id" },
   );
 

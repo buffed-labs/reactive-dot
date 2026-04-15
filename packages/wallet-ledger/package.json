@@ -3,9 +3,9 @@
   "version": "0.20.0",
   "description": "Ledger adapter for ReactiveDOT",
   "keywords": [
-    "substrate",
+    "ledger",
     "polkadot",
-    "ledger"
+    "substrate"
   ],
   "homepage": "https://reactivedot.dev/",
   "bugs": {
@@ -19,11 +19,11 @@
     "url": "https://github.com/buffed-labs/reactive-dot.git",
     "directory": "packages/wallet-ledger"
   },
-  "type": "module",
   "files": [
     "src",
     "build"
   ],
+  "type": "module",
   "exports": "./build/index.js",
   "scripts": {
     "dev": "tsc --build --watch",

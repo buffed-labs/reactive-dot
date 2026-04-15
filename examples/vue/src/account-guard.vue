@@ -5,9 +5,7 @@ import { computed, ref } from "vue";
 const { data: accounts } = await useAccounts();
 
 const selectedAccountIndex = ref(0);
-const selectedAccount = computed(() =>
-  accounts.value.at(selectedAccountIndex.value),
-);
+const selectedAccount = computed(() => accounts.value.at(selectedAccountIndex.value));
 
 provideSigner(selectedAccount);
 </script>
@@ -21,11 +19,7 @@ provideSigner(selectedAccount);
       <header><h4>Signer</h4></header>
       <p v-if="accounts.length === 0">Please connect a wallet</p>
       <select v-else v-model="selectedAccountIndex">
-        <option
-          v-for="(account, index) in accounts"
-          :key="account.id"
-          :value="index"
-        >
+        <option v-for="(account, index) in accounts" :key="account.id" :value="index">
           {{ account.name ?? account.address }}
         </option>
       </select>

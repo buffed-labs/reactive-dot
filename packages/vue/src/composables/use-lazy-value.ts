@@ -1,9 +1,5 @@
 import { lazyValuesKey } from "../keys.js";
-import {
-  refresh,
-  type Refreshable,
-  refreshable,
-} from "../utils/refreshable.js";
+import { refresh, type Refreshable, refreshable } from "../utils/refreshable.js";
 import { BaseError } from "@reactive-dot/core";
 import { catchError, isObservable, shareReplay } from "rxjs";
 import {
@@ -51,8 +47,7 @@ export function lazyValue<T>(
   cache: MaybeRefOrGetter<Map<string, ShallowRef<unknown>>>,
   metadata?: MaybeRefOrGetter<unknown>,
 ) {
-  const makeRefreshable = <T extends Ref>(ref: T) =>
-    refreshable(ref, () => void put(true));
+  const makeRefreshable = <T extends Ref>(ref: T) => refreshable(ref, () => void put(true));
 
   const put = (force = false) => {
     const stringKey = toValue(key).join("/");
@@ -74,8 +69,7 @@ export function lazyValue<T>(
             .get(stringKey)!
     ) as ShallowRef<T>;
 
-    const tagAsErrored = () =>
-      Object.assign(refValue, { [erroredSymbol]: true });
+    const tagAsErrored = () => Object.assign(refValue, { [erroredSymbol]: true });
 
     if (!hasValue || force) {
       try {
@@ -107,10 +101,7 @@ export function lazyValue<T>(
   return makeRefreshable(computed(() => put()));
 }
 
-export function mapLazyValue<T, U>(
-  value: Refreshable<ComputedRef<T>>,
-  mapper: (value: T) => U,
-) {
+export function mapLazyValue<T, U>(value: Refreshable<ComputedRef<T>>, mapper: (value: T) => U) {
   return refreshable(
     computed(() => mapper(value.value)),
     () => refresh(value),

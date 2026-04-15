@@ -50,8 +50,6 @@ export function internal_useChainId<TOptionalChainId extends boolean = false>({
       throw new BaseError("No chain ID provided");
     }
 
-    return chainId as TOptionalChainId extends false
-      ? ChainId
-      : ChainId | undefined;
+    return chainId as TOptionalChainId extends false ? ChainId : ChainId | undefined;
   });
 }

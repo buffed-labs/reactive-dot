@@ -19,11 +19,7 @@ export function useQueryRefresher<
   const store = useStore();
 
   return useCallback(() => {
-    const queryValue = !query
-      ? undefined
-      : query instanceof Query
-        ? query
-        : query(new Query());
+    const queryValue = !query ? undefined : query instanceof Query ? query : query(new Query());
 
     if (!queryValue) {
       return;

@@ -9,9 +9,7 @@ const { address } = defineProps<{
 }>();
 
 const { data: value, refresh } = await useQuery((builder) =>
-  builder.contract(solidityStorage, address, (builder) =>
-    builder.func("retrieve"),
-  ),
+  builder.contract(solidityStorage, address, (builder) => builder.func("retrieve")),
 );
 </script>
 

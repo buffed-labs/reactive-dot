@@ -1,7 +1,4 @@
-import type {
-  InferQueryArgumentResult,
-  QueryArgument,
-} from "../hooks/types.js";
+import type { InferQueryArgumentResult, QueryArgument } from "../hooks/types.js";
 import { useLazyLoadQuery } from "../hooks/use-query.js";
 import type { ChainId } from "@reactive-dot/core";
 import type { ReactNode } from "react";

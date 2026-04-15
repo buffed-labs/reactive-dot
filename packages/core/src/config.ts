@@ -11,13 +11,8 @@ export type ChainConfig = {
 };
 
 export type Config<
-  TChains extends Readonly<Record<string, ChainConfig>> = Readonly<
-    Record<string, ChainConfig>
-  >,
-  TTargetChainIds extends Extract<keyof TChains, string>[] = Extract<
-    keyof TChains,
-    string
-  >[],
+  TChains extends Readonly<Record<string, ChainConfig>> = Readonly<Record<string, ChainConfig>>,
+  TTargetChainIds extends Extract<keyof TChains, string>[] = Extract<keyof TChains, string>[],
 > = {
   readonly chains: TChains;
   readonly targetChains?: TTargetChainIds;

@@ -3,20 +3,13 @@ import { BaseError } from "../../errors.js";
 import type { ExtractExactProperties, StringKeyOf } from "../../types.js";
 import { getContractTx } from "../get-contract-tx.js";
 import type { GenericInkDescriptors, InkTxBody } from "./types.js";
-import {
-  AccountId,
-  type PolkadotClient,
-  type PolkadotSigner,
-} from "polkadot-api";
+import { AccountId, type PolkadotClient, type PolkadotSigner } from "polkadot-api";
 import type { getInkClient } from "polkadot-api/ink";
 
 export async function getInkContractTx<
   TDescriptor extends GenericInkDescriptors,
   TMessageName extends StringKeyOf<
-    ExtractExactProperties<
-      TDescriptor["__types"]["messages"],
-      { mutates: true }
-    >
+    ExtractExactProperties<TDescriptor["__types"]["messages"], { mutates: true }>
   >,
 >(
   client: PolkadotClient,

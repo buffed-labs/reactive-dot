@@ -31,10 +31,9 @@ import { useAccounts, useMutation } from "@reactive-dot/react";
 
 const accounts = useAccounts();
 
-const [claimState, claim] = useMutation(
-  (tx) => tx.NominationPools.claim_payout(),
-  { signer: accounts.at(0) },
-);
+const [claimState, claim] = useMutation((tx) => tx.NominationPools.claim_payout(), {
+  signer: accounts.at(0),
+});
 ```
 
 ### 2. Passing signer to the final submission
@@ -44,9 +43,7 @@ import { useAccounts, useMutation } from "@reactive-dot/react";
 
 const accounts = useAccounts();
 
-const [clearIdentityState, clearIdentity] = useMutation((tx) =>
-  tx.Identity.clear_identity(),
-);
+const [clearIdentityState, clearIdentity] = useMutation((tx) => tx.Identity.clear_identity());
 
 clearIdentity({ signer: accounts.at(0) });
 ```
@@ -75,8 +72,8 @@ function Component() {
 
       return (
         <div>
-          Submitted tx with hash: {remarkState.txHash}, with the current state
-          of: {remarkState.type}
+          Submitted tx with hash: {remarkState.txHash}, with the current state of:{" "}
+          {remarkState.type}
         </div>
       );
   }

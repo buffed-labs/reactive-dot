@@ -45,9 +45,7 @@ it("should emit a pending event initially", () => {
   const events: MutationEvent[] = [];
   mutationEventSubject.subscribe((event) => events.push(event));
 
-  source$
-    .pipe(tapTx(mutationEventSubject, chainId, mockTransaction))
-    .subscribe();
+  source$.pipe(tapTx(mutationEventSubject, chainId, mockTransaction)).subscribe();
 
   waitFor(() => expect(events.length).toBe(1));
   expect(events[0]).toEqual({
@@ -65,9 +63,7 @@ it("should emit subsequent events with the correct value", () => {
   const events: MutationEvent[] = [];
   mutationEventSubject.subscribe((event) => events.push(event));
 
-  source$
-    .pipe(tapTx(mutationEventSubject, chainId, mockTransaction))
-    .subscribe();
+  source$.pipe(tapTx(mutationEventSubject, chainId, mockTransaction)).subscribe();
 
   expect(events.length).toBe(3); // pending + 2 events
   expect(events[0]?.value).toBe(pending);
@@ -91,13 +87,11 @@ it("should emit a MutationError event when the source observable errors", () => 
   const events: MutationEvent[] = [];
   mutationEventSubject.subscribe((event) => events.push(event));
 
-  source$
-    .pipe(tapTx(mutationEventSubject, chainId, mockTransaction))
-    .subscribe({
-      error: () => {
-        /* consume error */
-      },
-    });
+  source$.pipe(tapTx(mutationEventSubject, chainId, mockTransaction)).subscribe({
+    error: () => {
+      /* consume error */
+    },
+  });
 
   expect(events.length).toBe(2); // pending + error
   expect(events[0]?.value).toBe(pending);
@@ -114,11 +108,9 @@ it("should re-throw the error after emitting the MutationError event", () => {
   const source$ = throwError(() => error) as Observable<TxEvent>;
   const errorHandler = vi.fn();
 
-  source$
-    .pipe(tapTx(mutationEventSubject, chainId, mockTransaction))
-    .subscribe({
-      error: errorHandler,
-    });
+  source$.pipe(tapTx(mutationEventSubject, chainId, mockTransaction)).subscribe({
+    error: errorHandler,
+  });
 
   expect(errorHandler).toHaveBeenCalledTimes(1);
   expect(errorHandler).toHaveBeenCalledWith(error);

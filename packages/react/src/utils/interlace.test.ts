@@ -44,8 +44,6 @@ it.each([
 ])(
   "should produce the following: $itemsWithIndexes -> $array = $expected",
   ({ array, itemsWithIndexes, expected }) => {
-    expect(interlace<string | number>(array, itemsWithIndexes)).toEqual(
-      expected,
-    );
+    expect(interlace<string | number>(array, itemsWithIndexes)).toEqual(expected);
   },
 );

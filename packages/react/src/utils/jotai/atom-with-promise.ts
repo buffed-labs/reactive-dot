@@ -4,10 +4,7 @@ import { startTransition } from "react";
 type Data<T> = { value: T } | { error: unknown };
 
 export function atomWithPromise<TValue>(
-  getPromise: (
-    get: Getter,
-    options: { signal: AbortSignal },
-  ) => TValue | Promise<TValue>,
+  getPromise: (get: Getter, options: { signal: AbortSignal }) => TValue | Promise<TValue>,
 ) {
   const countAtom = atom(0);
 

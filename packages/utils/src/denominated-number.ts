@@ -13,20 +13,14 @@ export class DenominatedNumber extends Number {
     this.planck = BigInt(planck);
   }
 
-  static fromNumber(
-    number: number | string,
-    decimals: number,
-    denomination?: string,
-  ) {
+  static fromNumber(number: number | string, decimals: number, denomination?: string) {
     DenominatedNumber.#verifyDecimals(decimals);
 
     const numberString = number.toString();
 
     const badCharacter = numberString.match(/[^0-9.]/);
     if (badCharacter) {
-      throw new Error(
-        `Invalid character at position ${(badCharacter.index ?? 0) + 1}`,
-      );
+      throw new Error(`Invalid character at position ${(badCharacter.index ?? 0) + 1}`);
     }
 
     let whole: string;
@@ -41,9 +35,7 @@ export class DenominatedNumber extends Number {
       switch (parts.length) {
         case 0:
         case 1:
-          throw new Error(
-            "Fewer than two elements in split result. This must not happen here.",
-          );
+          throw new Error("Fewer than two elements in split result. This must not happen here.");
         case 2:
           if (!parts[1]) throw new Error("Fractional part missing");
 
@@ -70,12 +62,8 @@ export class DenominatedNumber extends Number {
 
   override toString() {
     const paddedPlanck = this.planck.toString().padStart(this.decimals, "0");
-    const whole = paddedPlanck
-      .slice(0, paddedPlanck.length - this.decimals)
-      .padStart(1, "0");
-    const fractional = paddedPlanck
-      .slice(paddedPlanck.length - this.decimals)
-      .replace(/0+$/, "");
+    const whole = paddedPlanck.slice(0, paddedPlanck.length - this.decimals).padStart(1, "0");
+    const fractional = paddedPlanck.slice(paddedPlanck.length - this.decimals).replace(/0+$/, "");
 
     if (fractional.length === 0) {
       return whole;
@@ -107,17 +95,11 @@ export class DenominatedNumber extends Number {
       newOptions.currency = "XTS";
     }
 
-    return this.valueOf()
-      .toLocaleString(locales, newOptions)
-      .replace("XTS", this.denomination);
+    return this.valueOf().toLocaleString(locales, newOptions).replace("XTS", this.denomination);
   }
 
   mapPlanck(mapper: (planck: bigint) => bigint) {
-    return new DenominatedNumber(
-      mapper(this.planck),
-      this.decimals,
-      this.denomination,
-    );
+    return new DenominatedNumber(mapper(this.planck), this.decimals, this.denomination);
   }
 
   /**
@@ -126,11 +108,7 @@ export class DenominatedNumber extends Number {
   mapFromPlanck = this.mapPlanck;
 
   mapNumber(mapper: (number: number) => number) {
-    return DenominatedNumber.fromNumber(
-      mapper(this.valueOf()),
-      this.decimals,
-      this.denomination,
-    );
+    return DenominatedNumber.fromNumber(mapper(this.valueOf()), this.decimals, this.denomination);
   }
 
   /**
@@ -139,13 +117,10 @@ export class DenominatedNumber extends Number {
   mapFromNumber = this.mapNumber;
 
   static #verifyDecimals(fractionalDigits: number): void {
-    if (!Number.isInteger(fractionalDigits))
-      throw new Error("Decimals is not an integer");
+    if (!Number.isInteger(fractionalDigits)) throw new Error("Decimals is not an integer");
     if (fractionalDigits < 0) throw new Error("Decimals must not be negative");
     if (fractionalDigits > DenominatedNumber.#maxDecimal) {
-      throw new Error(
-        `Decimals must not exceed ${DenominatedNumber.#maxDecimal}`,
-      );
+      throw new Error(`Decimals must not exceed ${DenominatedNumber.#maxDecimal}`);
     }
   }
 }

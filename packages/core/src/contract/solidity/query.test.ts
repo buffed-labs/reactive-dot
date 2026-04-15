@@ -57,12 +57,11 @@ describe("querySolidity", () => {
     const abi = [{ type: "function" }];
 
     await expect(
-      querySolidity(
-        fakeApi as any,
-        abi as any,
-        "0x1234567890123456789012345678901234567890",
-        { type: "function", name: "foo", args: [1] } as any,
-      ),
+      querySolidity(fakeApi as any, abi as any, "0x1234567890123456789012345678901234567890", {
+        type: "function",
+        name: "foo",
+        args: [1],
+      } as any),
     ).rejects.toBeInstanceOf(QueryError);
   });
 });

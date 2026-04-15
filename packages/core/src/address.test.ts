@@ -31,9 +31,7 @@ describe("toSs58String", () => {
   it("should return the same SS58 address if input is SS58String with specified format (2)", () => {
     const accountId = AccountId(2);
 
-    expect(toSs58String(ss58Alice, 2)).toBe(
-      accountId.dec(accountId.enc(ss58Alice)),
-    );
+    expect(toSs58String(ss58Alice, 2)).toBe(accountId.dec(accountId.enc(ss58Alice)));
   });
 });
 
@@ -56,9 +54,7 @@ describe("toH160Hex", () => {
 test("isEqual", () => {
   expect(isEqual(ss58Alice, h160HexForAliceSs58Derived)).toBeTruthy();
 
-  expect(
-    isEqual(ss58Format0ForGenericH160, ss58Format42ForGenericH160),
-  ).toBeTruthy();
+  expect(isEqual(ss58Format0ForGenericH160, ss58Format42ForGenericH160)).toBeTruthy();
 
   expect(isEqual(ss58Alice, genericH160Hex)).toBeFalsy();
 

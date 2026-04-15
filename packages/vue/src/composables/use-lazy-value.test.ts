@@ -1,8 +1,4 @@
-import {
-  erroredSymbol,
-  lazyValue,
-  useLazyValuesCache,
-} from "./use-lazy-value.js";
+import { erroredSymbol, lazyValue, useLazyValuesCache } from "./use-lazy-value.js";
 import { BaseError } from "@reactive-dot/core";
 import { firstValueFrom, Observable, of, throwError } from "rxjs";
 import { beforeEach, expect, it, vi } from "vitest";

@@ -6,8 +6,9 @@ import type { AbiEvent } from "ox";
 import { Binary } from "polkadot-api";
 import { defer, mergeMap, switchMap } from "rxjs";
 
-export type SolidityContractEventNames<TContract extends SolidityContract> =
-  ExtractAbiEventNames<TContract["abi"]>;
+export type SolidityContractEventNames<TContract extends SolidityContract> = ExtractAbiEventNames<
+  TContract["abi"]
+>;
 
 export type SolidityContractEventOf<
   TContract extends SolidityContract,
@@ -36,10 +37,7 @@ export function watchSolidityContractEvent<
           events
             .filter((evt) => {
               const payload = evt.payload;
-              if (
-                address !== undefined &&
-                !isEqual(payload.contract, address)
-              ) {
+              if (address !== undefined && !isEqual(payload.contract, address)) {
                 return false;
               }
 

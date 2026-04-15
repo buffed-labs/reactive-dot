@@ -219,10 +219,7 @@ describe("message", () => {
 
 describe("messages", () => {
   it("should add multi message send instruction without options", () => {
-    const query = new InkQuery().messages("test-message", [
-      { foo: "bar1" },
-      { foo: "bar2" },
-    ]);
+    const query = new InkQuery().messages("test-message", [{ foo: "bar1" }, { foo: "bar2" }]);
     expect(query.instructions).toMatchInlineSnapshot(`
       [
         {
@@ -249,11 +246,9 @@ describe("messages", () => {
   });
 
   it("should add multi message send instruction with options", () => {
-    const query = new InkQuery().messages(
-      "test-message",
-      [{ foo: "bar1" }, { foo: "bar2" }],
-      { at: "finalized" as Finality },
-    );
+    const query = new InkQuery().messages("test-message", [{ foo: "bar1" }, { foo: "bar2" }], {
+      at: "finalized" as Finality,
+    });
     expect(query.instructions).toMatchInlineSnapshot(`
       [
         {

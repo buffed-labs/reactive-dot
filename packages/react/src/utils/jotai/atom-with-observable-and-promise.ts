@@ -1,7 +1,4 @@
-import {
-  atomWithObservable,
-  empty as emptyInitial,
-} from "./atom-with-observable.js";
+import { atomWithObservable, empty as emptyInitial } from "./atom-with-observable.js";
 import { atom, type Atom, type Getter } from "jotai";
 import { withAtomEffect } from "jotai-effect";
 import { firstValueFrom, shareReplay, type Observable } from "rxjs";
@@ -17,9 +14,7 @@ export type ObservableAndPromiseAtom<T> = {
 
 export function atomWithObservableAndPromise<
   TValue,
-  TAtomEnhancer extends <TAtomType extends Atom<unknown>>(
-    atomType: TAtomType,
-  ) => TAtomType,
+  TAtomEnhancer extends <TAtomType extends Atom<unknown>>(atomType: TAtomType) => TAtomType,
 >(
   getObservable: (get: Getter) => Observable<TValue>,
   enhanceAtom: TAtomEnhancer = ((atomCreator) => atomCreator) as TAtomEnhancer,
@@ -81,10 +76,7 @@ export function mapAtomWithObservableAndPromise<
     ObservableAndPromiseAtom<// eslint-disable-next-line @typescript-eslint/no-explicit-any
     any>,
   TOut,
->(
-  atom: TAtom,
-  mapper: (atom: TAtom["observableAtom"] | TAtom["promiseAtom"]) => TOut,
-) {
+>(atom: TAtom, mapper: (atom: TAtom["observableAtom"] | TAtom["promiseAtom"]) => TOut) {
   return {
     promiseAtom: mapper(atom.promiseAtom),
     observableAtom: mapper(atom.observableAtom),

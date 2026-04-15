@@ -1,8 +1,4 @@
-import {
-  type Contract,
-  InkContract,
-  type SolidityContract,
-} from "./contract.js";
+import { type Contract, InkContract, type SolidityContract } from "./contract.js";
 import {
   type InkContractEventNames,
   type InkContractEventOf,
@@ -14,12 +10,11 @@ import {
   watchSolidityContractEvent,
 } from "./solidity/watch-event.js";
 
-export type ContractEventNames<TContract extends Contract> =
-  TContract extends InkContract
-    ? InkContractEventNames<TContract>
-    : TContract extends SolidityContract
-      ? SolidityContractEventNames<TContract>
-      : never;
+export type ContractEventNames<TContract extends Contract> = TContract extends InkContract
+  ? InkContractEventNames<TContract>
+  : TContract extends SolidityContract
+    ? SolidityContractEventNames<TContract>
+    : never;
 
 export type ContractEventOf<
   TContract extends Contract,
@@ -35,15 +30,9 @@ export type ContractEventOf<
     : never;
 
 export const watchContractEvent = function watchContractEvent(
-  ...args: Parameters<
-    typeof watchInkContractEvent & typeof watchSolidityContractEvent
-  >
+  ...args: Parameters<typeof watchInkContractEvent & typeof watchSolidityContractEvent>
 ) {
   return args[1] instanceof InkContract
-    ? watchInkContractEvent(
-        ...(args as unknown as Parameters<typeof watchInkContractEvent>),
-      )
-    : watchSolidityContractEvent(
-        ...(args as Parameters<typeof watchSolidityContractEvent>),
-      );
+    ? watchInkContractEvent(...(args as unknown as Parameters<typeof watchInkContractEvent>))
+    : watchSolidityContractEvent(...(args as Parameters<typeof watchSolidityContractEvent>));
 } as typeof watchInkContractEvent & typeof watchSolidityContractEvent;

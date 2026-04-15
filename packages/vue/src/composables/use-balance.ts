@@ -1,7 +1,4 @@
-import type {
-  ChainComposableOptions,
-  PromiseLikeAsyncState,
-} from "../types.js";
+import type { ChainComposableOptions, PromiseLikeAsyncState } from "../types.js";
 import { useAsyncData } from "./use-async-data.js";
 import { internal_useChainId } from "./use-chain-id.js";
 import { useLazyValue } from "./use-lazy-value.js";
@@ -87,38 +84,25 @@ export function useSpendableBalance(
 
   return useAsyncData(
     useLazyValue(
-      computed(() => [
-        "spendable-balances",
-        chainId.value,
-        ...addresses.value.toSorted(),
-      ]),
+      computed(() => ["spendable-balances", chainId.value, ...addresses.value.toSorted()]),
       () => {
-        const includesExistentialDepositValue =
-          includesExistentialDeposit.value;
+        const includesExistentialDepositValue = includesExistentialDeposit.value;
 
-        return combineLatest([
-          dataObservable.value,
-          from(nativeTokenPromise.value),
-        ]).pipe(
+        return combineLatest([dataObservable.value, from(nativeTokenPromise.value)]).pipe(
           map(([[existentialDeposit, accounts], { amountFromPlanck }]) =>
-            (accounts as SystemAccount[]).map(
-              ({ data: { free, reserved, frozen } }) =>
-                amountFromPlanck(
-                  spendableBalance({
-                    free,
-                    reserved,
-                    frozen,
-                    existentialDeposit: existentialDeposit as bigint,
-                    includesExistentialDeposit: includesExistentialDepositValue,
-                  }),
-                ),
+            (accounts as SystemAccount[]).map(({ data: { free, reserved, frozen } }) =>
+              amountFromPlanck(
+                spendableBalance({
+                  free,
+                  reserved,
+                  frozen,
+                  existentialDeposit: existentialDeposit as bigint,
+                  includesExistentialDeposit: includesExistentialDepositValue,
+                }),
+              ),
             ),
           ),
-          map((balances) =>
-            Array.isArray(toValue(addressOrAddresses))
-              ? balances
-              : balances[0]!,
-          ),
+          map((balances) => (Array.isArray(toValue(addressOrAddresses)) ? balances : balances[0]!)),
         );
       },
     ),
@@ -132,9 +116,6 @@ export function useSpendableBalance(
  * @param options - Additional options
  * @returns The accounts’ spendable balances
  */
-export function useSpendableBalances(
-  addresses: MaybeRefOrGetter<Address[]>,
-  options?: Options,
-) {
+export function useSpendableBalances(addresses: MaybeRefOrGetter<Address[]>, options?: Options) {
   return useSpendableBalance(addresses, options);
 }

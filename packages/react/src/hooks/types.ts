@@ -17,12 +17,13 @@ type ChainOptions<TChainId extends ChainId | undefined> = {
   chainId: TChainId | undefined;
 };
 
-export type ChainHookOptions<
-  TChainId extends ChainId | undefined = ChainId | undefined,
-> = Partial<ChainOptions<TChainId>>;
+export type ChainHookOptions<TChainId extends ChainId | undefined = ChainId | undefined> = Partial<
+  ChainOptions<TChainId>
+>;
 
-export type QueryOptions<TChainId extends ChainId | undefined> =
-  ChainOptions<TChainId> & { query: QueryArgument<TChainId> };
+export type QueryOptions<TChainId extends ChainId | undefined> = ChainOptions<TChainId> & {
+  query: QueryArgument<TChainId>;
+};
 
 export type QueryArgument<TChainId extends ChainId | undefined> =
   | Query<QueryInstruction[], ChainDescriptorOf<TChainId>>
@@ -49,9 +50,7 @@ export type InferQueryArgumentResult<
     ? InferQueryPayload<TQuery>
     : FalsyGuard<
         ReturnType<Exclude<TQuery, Falsy | Query>>,
-        InferQueryPayload<
-          Exclude<ReturnType<Exclude<TQuery, Falsy | Query>>, Falsy>
-        >,
+        InferQueryPayload<Exclude<ReturnType<Exclude<TQuery, Falsy | Query>>, Falsy>>,
         typeof idle
       >;
 

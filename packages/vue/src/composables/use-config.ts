@@ -29,8 +29,7 @@ export function useChainConfig(options?: ChainComposableOptions) {
   const chainId = useChainId();
 
   return computed(() => {
-    const chainConfig =
-      config.value.chains[toValue(options?.chainId) ?? chainId.value];
+    const chainConfig = config.value.chains[toValue(options?.chainId) ?? chainId.value];
 
     if (chainConfig === undefined) {
       throw new BaseError("No chain's config found", {

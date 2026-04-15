@@ -15,8 +15,8 @@ const FeatureList: FeatureItem[] = [
     emoji: "🚀",
     description: (
       <>
-        Multiple reads of the same value throughout the application will only be
-        fetched once, cached, and is kept up to date everywhere.
+        Multiple reads of the same value throughout the application will only be fetched once,
+        cached, and is kept up to date everywhere.
       </>
     ),
   },
@@ -25,8 +25,8 @@ const FeatureList: FeatureItem[] = [
     emoji: "🖼️",
     description: (
       <>
-        All values are reactive with React suspense being the first class
-        citizen for async & error handling.
+        All values are reactive with React suspense being the first class citizen for async & error
+        handling.
       </>
     ),
   },
@@ -42,9 +42,8 @@ const FeatureList: FeatureItem[] = [
     emoji: "🛠️",
     description: (
       <>
-        The meticulously crafted suite of libraries, each designed to be
-        composable, modular, and fundamentally aligned with a "light-client
-        first" philosophy.
+        The meticulously crafted suite of libraries, each designed to be composable, modular, and
+        fundamentally aligned with a "light-client first" philosophy.
       </>
     ),
   },

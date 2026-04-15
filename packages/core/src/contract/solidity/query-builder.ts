@@ -57,10 +57,7 @@ export type InferSolidityInstructionsPayload<
 > = FlatHead<
   Extract<
     {
-      [Index in keyof TInstructions]: InferSolidityInstructionPayload<
-        TInstructions[Index],
-        TAbi
-      >;
+      [Index in keyof TInstructions]: InferSolidityInstructionPayload<TInstructions[Index], TAbi>;
     },
     unknown[]
   >
@@ -68,14 +65,11 @@ export type InferSolidityInstructionsPayload<
 
 export class SolidityQuery<
   TAbi extends Abi = Abi,
-  const TInstructions extends SolidityQueryInstruction[] =
-    SolidityQueryInstruction[],
+  const TInstructions extends SolidityQueryInstruction[] = SolidityQueryInstruction[],
 > {
   readonly #instructions: TInstructions;
 
-  constructor(
-    instructions: TInstructions = [] as SolidityQueryInstruction[] as TInstructions,
-  ) {
+  constructor(instructions: TInstructions = [] as SolidityQueryInstruction[] as TInstructions) {
     this.#instructions = instructions;
   }
 
@@ -131,12 +125,10 @@ export class SolidityQuery<
     });
   }
 
-  #append<const TInstruction extends SolidityQueryInstruction>(
-    instruction: TInstruction,
-  ) {
-    return new SolidityQuery([
-      ...this.#instructions,
-      instruction,
-    ]) as SolidityQuery<TAbi, [...TInstructions, TInstruction]>;
+  #append<const TInstruction extends SolidityQueryInstruction>(instruction: TInstruction) {
+    return new SolidityQuery([...this.#instructions, instruction]) as SolidityQuery<
+      TAbi,
+      [...TInstructions, TInstruction]
+    >;
   }
 }

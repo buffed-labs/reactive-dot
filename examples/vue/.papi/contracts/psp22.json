@@ -1163,9 +1163,7 @@
             "docs": ["New allowance amount."]
           }
         ],
-        "docs": [
-          "Event emitted when allowance by `owner` to `spender` changes."
-        ]
+        "docs": ["Event emitted when allowance by `owner` to `spender` changes."]
       },
       {
         "label": "Transfer",

@@ -14,8 +14,7 @@ export interface Chains extends InferChains<ResolvedRegister["config"]> {}
 
 export type ChainId = keyof Chains;
 
-type UnwrapDescriptor<T> =
-  T extends UnsafeDescriptor<infer Descriptor> ? Descriptor : T;
+type UnwrapDescriptor<T> = T extends UnsafeDescriptor<infer Descriptor> ? Descriptor : T;
 
 export type CommonDescriptor = Chains[keyof Chains] extends never
   ? ChainDefinition
@@ -23,9 +22,8 @@ export type CommonDescriptor = Chains[keyof Chains] extends never
     ? Chains[keyof Chains]
     : Chains[NonNullable<ResolvedRegister["config"]["targetChains"]>[number]];
 
-export type ChainDescriptorOf<T extends ChainId | undefined> =
-  undefined extends T
-    ? CommonDescriptor
-    : T extends ChainId
-      ? Chains[T]
-      : never;
+export type ChainDescriptorOf<T extends ChainId | undefined> = undefined extends T
+  ? CommonDescriptor
+  : T extends ChainId
+    ? Chains[T]
+    : never;

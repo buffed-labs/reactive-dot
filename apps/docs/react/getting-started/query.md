@@ -12,9 +12,7 @@ The [`useLazyLoadQuery`](/react/api/react/functions/useLazyLoadQuery) hook allow
 
 ```tsx
 function ActiveEra() {
-  const activeEra = useLazyLoadQuery((builder) =>
-    builder.storage("Staking", "ActiveEra"),
-  );
+  const activeEra = useLazyLoadQuery((builder) => builder.storage("Staking", "ActiveEra"));
 
   return <div>Active era: {activeEra}</div>;
 }
@@ -40,12 +38,11 @@ Fetching multiple data can be done by chaining queries together, [`useLazyLoadQu
 
 ```tsx
 function MultiQuery() {
-  const [expectedBlockTime, epochDuration, proposalCount] = useLazyLoadQuery(
-    (builder) =>
-      builder
-        .constant("Babe", "ExpectedBlockTime")
-        .constant("Babe", "EpochDuration")
-        .storage("Treasury", "ProposalCount"),
+  const [expectedBlockTime, epochDuration, proposalCount] = useLazyLoadQuery((builder) =>
+    builder
+      .constant("Babe", "ExpectedBlockTime")
+      .constant("Babe", "EpochDuration")
+      .storage("Treasury", "ProposalCount"),
   );
 
   return (
@@ -68,16 +65,8 @@ Multiple queries of the same type can also be fetched using [`runtimeApis`](/rea
 ```tsx
 const [rewards, metadatum] = useLazyLoadQuery((builder) =>
   builder
-    .runtimeApis("NominationPoolsApi", "pending_rewards", [
-      [ADDRESS_1],
-      [ADDRESS_2],
-      [ADDRESS_3],
-    ])
-    .storages("NominationPools", "Metadata", [
-      [POOL_ID_1],
-      [POOL_ID_2],
-      [POOL_ID_3],
-    ]),
+    .runtimeApis("NominationPoolsApi", "pending_rewards", [[ADDRESS_1], [ADDRESS_2], [ADDRESS_3]])
+    .storages("NominationPools", "Metadata", [[POOL_ID_1], [POOL_ID_2], [POOL_ID_3]]),
 );
 ```
 
@@ -124,9 +113,7 @@ import { idle } from "@reactive-dot/core";
 const conditionalReturn = useLazyLoadQuery((builder) =>
   account === undefined
     ? undefined
-    : builder.runtimeApi("NominationPoolsApi", "pending_rewards", [
-        account.address,
-      ]),
+    : builder.runtimeApi("NominationPoolsApi", "pending_rewards", [account.address]),
 );
 
 // Or
@@ -134,10 +121,7 @@ const conditionalReturn = useLazyLoadQuery((builder) =>
 const conditionalFunction = useLazyLoadQuery(
   account === undefined
     ? undefined
-    : (builder) =>
-        builder.runtimeApi("NominationPoolsApi", "pending_rewards", [
-          account.address,
-        ]),
+    : (builder) => builder.runtimeApi("NominationPoolsApi", "pending_rewards", [account.address]),
 );
 
 // Result will be `idle` if the query hasn't been executed
@@ -159,10 +143,7 @@ function QueryWithRefresh() {
   const [isPending, startTransition] = useTransition();
 
   const pendingRewards = useLazyLoadQuery(
-    (builder) =>
-      builder.runtimeApi("NominationPoolsApi", "pending_rewards", [
-        ACCOUNT_ADDRESS,
-      ]),
+    (builder) => builder.runtimeApi("NominationPoolsApi", "pending_rewards", [ACCOUNT_ADDRESS]),
     { fetchKey: fetchCount },
   );
 
@@ -170,9 +151,7 @@ function QueryWithRefresh() {
     <div>
       <p>{pendingRewards.toLocaleString()}</p>
       <button
-        onClick={() =>
-          startTransition(() => setFetchCount((count) => count + 1))
-        }
+        onClick={() => startTransition(() => setFetchCount((count) => count + 1))}
         disabled={isPending}
       >
         Refresh
@@ -205,9 +184,7 @@ function QueryWithRefresh() {
         onClick={() =>
           startTransition(() =>
             store.invalidateQuery((builder) =>
-              builder.runtimeApi("NominationPoolsApi", "pending_rewards", [
-                ACCOUNT_ADDRESS_2,
-              ]),
+              builder.runtimeApi("NominationPoolsApi", "pending_rewards", [ACCOUNT_ADDRESS_2]),
             ),
           )
         }
@@ -232,9 +209,7 @@ function ErrorFallback(props: FallbackProps) {
   return (
     <article>
       <header>Oops, something went wrong!</header>
-      <button onClick={() => props.resetErrorBoundary(props.error)}>
-        Retry
-      </button>
+      <button onClick={() => props.resetErrorBoundary(props.error)}>Retry</button>
     </article>
   );
 }
@@ -243,10 +218,7 @@ function AppErrorBoundary() {
   const resetQueryError = useQueryErrorResetter();
 
   return (
-    <ErrorBoundary
-      FallbackComponent={ErrorFallback}
-      onReset={() => resetQueryError()}
-    >
+    <ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => resetQueryError()}>
       {/* ... */}
     </ErrorBoundary>
   );

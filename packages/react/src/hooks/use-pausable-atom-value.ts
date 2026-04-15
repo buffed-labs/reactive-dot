@@ -12,9 +12,7 @@ export function usePausableAtomValue<T>(
   options?: Parameters<typeof useAtomValue>[1],
 ) {
   return useAtomValue(
-    use(SubscriptionContext).active
-      ? pausableAtom.observableAtom
-      : pausableAtom.promiseAtom,
+    use(SubscriptionContext).active ? pausableAtom.observableAtom : pausableAtom.promiseAtom,
     options,
   );
 }

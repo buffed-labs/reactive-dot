@@ -46,9 +46,7 @@ describe("getNewAccount", () => {
       "0x91b171bb158e2d3848fa23a9f1c25182fb8e20313b2c1eb49219da7a70ce90c3",
     );
     expect(Binary.toHex(account.publicKey)).toBe(
-      Binary.toHex(
-        AccountId().enc("5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY"),
-      ),
+      Binary.toHex(AccountId().enc("5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY")),
     );
   });
 
@@ -75,8 +73,7 @@ describe("getNewAccount", () => {
   });
 
   it("throws error for invalid genesis hash", async () => {
-    const response =
-      "substrate:5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY:invalidhash";
+    const response = "substrate:5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY:invalidhash";
 
     const promise = wallet.getNewAccount();
 

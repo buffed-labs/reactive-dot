@@ -47,9 +47,7 @@ it("should handle multiple wallets where one fails to connect", async () => {
     connect: vi.fn().mockRejectedValue(new Error("Failed to connect")),
   } as unknown as Wallet;
 
-  await expect(connectWallet([wallet1, wallet2])).rejects.toThrow(
-    "Failed to connect",
-  );
+  await expect(connectWallet([wallet1, wallet2])).rejects.toThrow("Failed to connect");
   expect(wallet1.connect).toHaveBeenCalledTimes(1);
   expect(wallet2.connect).toHaveBeenCalledTimes(1);
 });

@@ -22,8 +22,7 @@ export function useWalletDisconnector(wallets?: Wallet | Wallet[]) {
     useAtomCallback(
       useCallback(
         async (get, _, wallets?: Wallet | Wallet[]) => {
-          const walletsToDisconnect =
-            wallets ?? hookWallets ?? (await get(walletsAtom(config)));
+          const walletsToDisconnect = wallets ?? hookWallets ?? (await get(walletsAtom(config)));
           await disconnectWallet(walletsToDisconnect);
           return true as const;
         },

@@ -29,10 +29,7 @@ describe("getSolidityContractTx", () => {
 
     const abi = [{ type: "function" }];
 
-    const body = { args: [1, 2, 3], value: 5n } as unknown as SolidityTxBody<
-      Abi,
-      never
-    >;
+    const body = { args: [1, 2, 3], value: 5n } as unknown as SolidityTxBody<Abi, never>;
 
     // cast to any to avoid cumbersome generic type plumbing in tests
     await getSolidityContractTx(

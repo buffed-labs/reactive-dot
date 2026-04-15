@@ -3,17 +3,13 @@ import { lazyValuesKey, mutationEventKey } from "./keys.js";
 import type { Component, InjectionKey } from "vue";
 import { createApp, defineComponent, h, provide, shallowRef } from "vue";
 
-type InstanceType<V> = V extends { new (...arg: unknown[]): infer X }
-  ? X
-  : never;
+type InstanceType<V> = V extends { new (...arg: unknown[]): infer X } ? X : never;
 type VM<V> = InstanceType<V> & { unmount: () => void };
 
 export function withSetup<TResult>(
   composable: () => TResult,
   injections: {
-    [key: InjectionKey<unknown>]: typeof key extends InjectionKey<infer Value>
-      ? Value
-      : never;
+    [key: InjectionKey<unknown>]: typeof key extends InjectionKey<infer Value> ? Value : never;
   } = {},
 ) {
   let result!: TResult;

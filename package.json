@@ -1,10 +1,11 @@
 {
   "name": "reactive-dot",
+  "private": true,
   "description": "A reactive library for building Polkadot front-ends",
   "keywords": [
-    "substrate",
     "polkadot",
-    "react"
+    "react",
+    "substrate"
   ],
   "homepage": "https://reactivedot.dev/",
   "bugs": {
@@ -14,23 +15,20 @@
   "license": "LGPL-3.0-or-later",
   "author": "Tiến Nguyễn Khắc <tien.nguyenkhac@icloud.com> (https://tien.zone/)",
   "repository": "github:buffed-labs/reactive-dot",
-  "private": true,
-  "type": "module",
-  "packageManager": "yarn@4.13.0",
-  "engines": {
-    "node": "24.x"
-  },
   "workspaces": [
     "apps/*",
     "examples/*",
     "packages/*"
   ],
+  "type": "module",
   "scripts": {
     "dev": "nx run-many -t dev",
     "build": "nx run-many -t build",
     "build:packages": "nx run-many -t build --projects='packages/*'",
     "publish:packages": "yarn build:packages && scripts/publish.sh",
     "lint": "nx run-many -t lint -- --max-warnings=0",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check",
     "test": "vitest",
     "postinstall": "husky"
   },
@@ -39,12 +37,15 @@
     "@changesets/cli": "^2.30.0",
     "@commitlint/cli": "^20.5.0",
     "@commitlint/config-conventional": "^20.5.0",
-    "@trivago/prettier-plugin-sort-imports": "^6.0.2",
     "@vitest/coverage-v8": "4.1.4",
     "esbuild": "^0.28.0",
     "husky": "^9.1.7",
     "nx": "^22.6.5",
-    "prettier": "^3.8.3",
+    "oxfmt": "^0.45.0",
     "vitest": "^4.1.4"
-  }
+  },
+  "engines": {
+    "node": "24.x"
+  },
+  "packageManager": "yarn@4.13.0"
 }

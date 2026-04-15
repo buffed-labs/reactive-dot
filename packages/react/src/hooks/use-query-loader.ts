@@ -3,10 +3,7 @@ import { internal_useChainId } from "./use-chain-id.js";
 import { useConfig } from "./use-config.js";
 import { queryPayloadAtom } from "./use-query.js";
 import { type ChainId, Query } from "@reactive-dot/core";
-import type {
-  ChainDescriptorOf,
-  QueryInstruction,
-} from "@reactive-dot/core/internal.js";
+import type { ChainDescriptorOf, QueryInstruction } from "@reactive-dot/core/internal.js";
 import type { Getter } from "jotai";
 import { useAtomCallback } from "jotai/utils";
 import { useCallback } from "react";

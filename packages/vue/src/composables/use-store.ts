@@ -60,14 +60,11 @@ export function useStore(): DataStore {
       const _chainId = options?.chainId ?? toValue(chainId);
       toValue(cache).forEach((value, key) => {
         if (
-          (key.startsWith(inkQueryCacheKeyPrefix) ||
-            key.startsWith(solidityQueryCacheKeyPrefix)) &&
+          (key.startsWith(inkQueryCacheKeyPrefix) || key.startsWith(solidityQueryCacheKeyPrefix)) &&
           canRefresh(value) &&
           metadataSymbol in value
         ) {
-          const metadata = value[
-            metadataSymbol
-          ] as QueryContractInstructionMetadata;
+          const metadata = value[metadataSymbol] as QueryContractInstructionMetadata;
 
           if (
             (_chainId === undefined || _chainId === metadata.chainId) &&

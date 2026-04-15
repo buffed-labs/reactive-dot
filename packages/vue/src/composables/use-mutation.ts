@@ -1,8 +1,5 @@
 import { mutationEventKey } from "../keys.js";
-import type {
-  BackwardCompatInputOptions,
-  ChainComposableOptions,
-} from "../types.js";
+import type { BackwardCompatInputOptions, ChainComposableOptions } from "../types.js";
 import { tapTx } from "../utils/tap-tx.js";
 import { useAsyncAction } from "./use-async-action.js";
 import { useChainId } from "./use-chain-id.js";
@@ -104,10 +101,7 @@ export function useMutation<
           mutationEventRef.value = { ...eventProps, status: "pending" };
 
           return transaction
-            .signSubmitAndWatch(
-              signer,
-              submitOptions?.txOptions ?? toValue(options?.txOptions),
-            )
+            .signSubmitAndWatch(signer, submitOptions?.txOptions ?? toValue(options?.txOptions))
             .pipe(tapTx(mutationEventRef, chainId.value, transaction));
         }),
       );

@@ -21,9 +21,7 @@ const { data } = await useQuery((builder) =>
 
 const [timestamp, psp22Data] = toRefs(data.value);
 
-const [tokenName, tokenDecimals, tokenSymbol, totalSupply] = toRefs(
-  psp22Data.value,
-);
+const [tokenName, tokenDecimals, tokenSymbol, totalSupply] = toRefs(psp22Data.value);
 </script>
 
 <template>

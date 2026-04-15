@@ -11,11 +11,7 @@ type Result<T> =
     };
 
 export type UnwrapResult<T> =
-  T extends Result<infer _>
-    ? T extends { success: true }
-      ? T["value"]
-      : never
-    : T;
+  T extends Result<infer _> ? (T extends { success: true } ? T["value"] : never) : T;
 
 export function unwrapResult<T>(result: Result<T>): T;
 export function unwrapResult<T>(notResult: T): T;

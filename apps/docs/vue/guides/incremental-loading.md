@@ -54,9 +54,7 @@ const { data: ledgers } = await useQuery((query) =>
   ),
 );
 
-const totalStaked = computed(() =>
-  ledgers.value.reduce((prev, curr) => prev + curr.total, 0n),
-);
+const totalStaked = computed(() => ledgers.value.reduce((prev, curr) => prev + curr.total, 0n));
 </script>
 
 <template>
@@ -95,9 +93,7 @@ const { data: ledgers } = await useQuery((query) =>
   ),
 );
 
-const loadedLedgers = computed(() =>
-  ledgers.value.filter((ledger) => ledger !== pending),
-);
+const loadedLedgers = computed(() => ledgers.value.filter((ledger) => ledger !== pending));
 
 const totalStaked = computed(() =>
   loadedLedgers.value.reduce((prev, curr) => prev + curr.total, 0n),

@@ -24,7 +24,5 @@ it("throws if message is readonly (mutates=false)", async () => {
       "someMessage",
       {},
     ),
-  ).rejects.toThrow(
-    `Readonly message someMessage cannot be used in a mutating transaction`,
-  );
+  ).rejects.toThrow(`Readonly message someMessage cannot be used in a mutating transaction`);
 });

@@ -45,9 +45,7 @@ it("should return accounts from multiple wallets", async () => {
     ]),
   } as unknown as Wallet;
 
-  const accounts = await firstValueFrom(
-    getAccounts([mockWallet1, mockWallet2]),
-  );
+  const accounts = await firstValueFrom(getAccounts([mockWallet1, mockWallet2]));
 
   expect(accounts.length).toBe(2);
   expect(accounts[0]?.address).toBeDefined();
@@ -242,8 +240,8 @@ it("handles EVM and Substrate accounts", async () => {
         polkadotSigner: {
           sign: vi.fn(),
           publicKey: new Uint8Array([
-            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
-            20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
+            25, 26, 27, 28, 29, 30, 31, 32,
           ]),
         },
       },
@@ -252,8 +250,7 @@ it("handles EVM and Substrate accounts", async () => {
         polkadotSigner: {
           sign: vi.fn(),
           publicKey: new Uint8Array([
-            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
-            20,
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
           ]),
         },
       },
@@ -283,8 +280,8 @@ it("filters out EVM accounts when `includeEvmAccounts` is false", async () => {
         polkadotSigner: {
           sign: vi.fn(),
           publicKey: new Uint8Array([
-            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
-            20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32,
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24,
+            25, 26, 27, 28, 29, 30, 31, 32,
           ]),
         },
       },
@@ -293,8 +290,7 @@ it("filters out EVM accounts when `includeEvmAccounts` is false", async () => {
         polkadotSigner: {
           sign: vi.fn(),
           publicKey: new Uint8Array([
-            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
-            20,
+            1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
           ]),
         },
       },

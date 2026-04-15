@@ -18,11 +18,7 @@ import { use } from "react";
  * @returns Polkadot-API client
  */
 export function useClient(options?: ChainHookOptions) {
-  return use(
-    useStablePromise(
-      useAtomValue(clientAtom(useConfig(), internal_useChainId(options))),
-    ),
-  );
+  return use(useStablePromise(useAtomValue(clientAtom(useConfig(), internal_useChainId(options)))));
 }
 
 /**

@@ -22,8 +22,8 @@ type ContractProps = {
 };
 
 function Psp22TokenInfo({ address }: ContractProps) {
-  const [timestamp, [tokenName, tokenDecimals, tokenSymbol, totalSupply]] =
-    useLazyLoadQuery((builder) =>
+  const [timestamp, [tokenName, tokenDecimals, tokenSymbol, totalSupply]] = useLazyLoadQuery(
+    (builder) =>
       builder
         .storage("Timestamp", "Now")
         .contract(psp22, address, (builder) =>
@@ -33,19 +33,14 @@ function Psp22TokenInfo({ address }: ContractProps) {
             .message("PSP22Metadata::token_symbol")
             .message("PSP22::total_supply"),
         ),
-    );
+  );
 
   return (
     <article>
       <h3>PSP22</h3>
       <dl>
         <dt>Timestamp</dt>
-        <dd>
-          {useMemo(
-            () => new Date(Number(timestamp)).toLocaleString(),
-            [timestamp],
-          )}
-        </dd>
+        <dd>{useMemo(() => new Date(Number(timestamp)).toLocaleString(), [timestamp])}</dd>
 
         <dt>Token name</dt>
         <dd>{tokenName ?? "N/A"}</dd>
@@ -68,8 +63,7 @@ function Flipper({ address }: ContractProps) {
   const [fetchKey, setFetchKey] = useState(0);
 
   const flipped = useLazyLoadQuery(
-    (builder) =>
-      builder.contract(flipper, address, (builder) => builder.message("get")),
+    (builder) => builder.contract(flipper, address, (builder) => builder.message("get")),
     { fetchKey },
   );
 
@@ -95,16 +89,10 @@ function Flipper({ address }: ContractProps) {
 type FlipProps = ContractProps;
 
 function Flip({ address }: FlipProps) {
-  const [flipStatus, flip] = useContractMutation((mutate) =>
-    mutate(flipper, address, "flip"),
-  );
+  const [flipStatus, flip] = useContractMutation((mutate) => mutate(flipper, address, "flip"));
 
   return (
-    <button
-      type="button"
-      onClick={() => flip()}
-      disabled={flipStatus === pending}
-    >
+    <button type="button" onClick={() => flip()} disabled={flipStatus === pending}>
       {flipStatus === pending ? "Flipping" : "Flip"}
     </button>
   );

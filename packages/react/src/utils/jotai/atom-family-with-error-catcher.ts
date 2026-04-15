@@ -9,22 +9,15 @@ export const atomFamilyErrorsAtom = atom(
     }>(),
 );
 
-export function atomFamilyWithErrorCatcher<
-  TArguments extends unknown[],
-  TCached,
->(
+export function atomFamilyWithErrorCatcher<TArguments extends unknown[], TCached>(
   initializeAtom: (
-    withErrorCatcher: <TAtomType extends Atom<unknown>>(
-      atom: TAtomType,
-    ) => TAtomType,
+    withErrorCatcher: <TAtomType extends Atom<unknown>>(atom: TAtomType) => TAtomType,
     ...args: TArguments
   ) => TCached,
   getKey?: (...args: TArguments) => unknown,
 ): AtomFamily<TArguments, TCached> {
   const baseAtomFamily = atomFamily((...args: TArguments) => {
-    const withErrorCatcher = <TAtomType extends Atom<unknown>>(
-      childAtom: TAtomType,
-    ) => {
+    const withErrorCatcher = <TAtomType extends Atom<unknown>>(childAtom: TAtomType) => {
       const read = (get: Getter) => {
         try {
           const value = get(childAtom);
@@ -53,10 +46,7 @@ export function atomFamilyWithErrorCatcher<
 
       return "write" in childAtom
         ? atom(read, (_, set, ...args: unknown[]) =>
-            set(
-              childAtom as unknown as WritableAtom<unknown, unknown[], unknown>,
-              ...args,
-            ),
+            set(childAtom as unknown as WritableAtom<unknown, unknown[], unknown>, ...args),
           )
         : atom(read);
     };

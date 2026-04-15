@@ -1,10 +1,6 @@
 import { MimirWallet } from "./mimir-wallet.js";
 import { MimirPAPISigner } from "@mimirdev/papi-signer";
-import {
-  type Address,
-  BaseError,
-  Storage as WalletStorage,
-} from "@reactive-dot/core";
+import { type Address, BaseError, Storage as WalletStorage } from "@reactive-dot/core";
 import { firstValueFrom } from "rxjs";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -111,9 +107,7 @@ describe("$accounts", () => {
       enable: vi.fn().mockResolvedValue({ result: true }),
       getAccounts: vi.fn().mockResolvedValue([]),
       subscribeAccounts: subscribeAccountsMock,
-      getPolkadotSigner: vi
-        .fn()
-        .mockImplementation((address: Address) => ({ address })),
+      getPolkadotSigner: vi.fn().mockImplementation((address: Address) => ({ address })),
     };
 
     vi.mocked(MimirPAPISigner).mockImplementation(
@@ -158,9 +152,7 @@ describe("$accounts", () => {
 
 describe("getAccounts", () => {
   it("should throw error when not connected", async () => {
-    await expect(wallet.getAccounts()).rejects.toThrow(
-      "Mimir is not connected",
-    );
+    await expect(wallet.getAccounts()).rejects.toThrow("Mimir is not connected");
   });
 
   it("should return accounts when connected", async () => {

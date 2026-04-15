@@ -17,10 +17,6 @@ export function spendableBalance({
 }: SpendableBalanceParam) {
   return BigIntMath.max(
     0n,
-    free -
-      BigIntMath.max(
-        frozen - reserved,
-        includesExistentialDeposit ? 0n : existentialDeposit,
-      ),
+    free - BigIntMath.max(frozen - reserved, includesExistentialDeposit ? 0n : existentialDeposit),
   );
 }

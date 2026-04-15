@@ -15,9 +15,7 @@ it("should return observable atom when subscription is set to active", async () 
 
   const { result } = await act(() =>
     renderHook(() => usePausableAtomValue(valueAtom), {
-      wrapper: ({ children }) => (
-        <QueryOptionsProvider active>{children}</QueryOptionsProvider>
-      ),
+      wrapper: ({ children }) => <QueryOptionsProvider active>{children}</QueryOptionsProvider>,
     }),
   );
 
@@ -56,9 +54,7 @@ it("should change from inactive to active when subscription status change", asyn
 
   // eslint-disable-next-line @eslint-react/component-hook-factories
   const Wrapper = ({ children }: PropsWithChildren) => (
-    <QueryOptionsProvider
-      active={use(useStablePromise(useAtomValue(activeAtom)))}
-    >
+    <QueryOptionsProvider active={use(useStablePromise(useAtomValue(activeAtom)))}>
       {children}
     </QueryOptionsProvider>
   );

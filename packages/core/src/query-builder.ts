@@ -1,10 +1,6 @@
 import type { Address } from "./address.js";
 import type { CommonDescriptor } from "./chains.js";
-import {
-  type Contract,
-  InkContract,
-  type SolidityContract,
-} from "./contract/contract.js";
+import { type Contract, InkContract, type SolidityContract } from "./contract/contract.js";
 import {
   type InferInkInstructionsPayload,
   InkQuery,
@@ -27,27 +23,20 @@ type PapiCallOptions = Partial<{
   signal: AbortSignal;
 }>;
 
-type OmitCallOptions<T extends unknown[]> = T extends [
-  infer Head,
-  ...infer Tail,
-]
+type OmitCallOptions<T extends unknown[]> = T extends [infer Head, ...infer Tail]
   ? [Head] extends [PapiCallOptions]
     ? OmitCallOptions<Tail>
     : [Head, ...OmitCallOptions<Tail>]
   : [];
 
 type InferPapiStorageEntry<T> = T extends {
-  watchValue: (
-    ...args: [...infer Args, infer _]
-  ) => Observable<{ value: infer Payload }>;
+  watchValue: (...args: [...infer Args, infer _]) => Observable<{ value: infer Payload }>;
 }
   ? { args: Args; response: Observable<Payload> }
   : { args: unknown[]; response: unknown };
 
 type InferPapiStorageEntries<T> = T extends {
-  getEntries: (
-    ...args: infer Args
-  ) => Promise<Array<{ keyArgs: infer Key; value: infer Value }>>;
+  getEntries: (...args: infer Args) => Promise<Array<{ keyArgs: infer Key; value: infer Value }>>;
 }
   ? {
       args: OmitCallOptions<Args>;
@@ -68,9 +57,7 @@ type InferPapiRuntimeCall<T> = T extends (...args: infer Args) => infer Response
   ? { args: OmitCallOptions<Args>; response: Response }
   : { args: unknown[]; response: unknown };
 
-type InferPapiConstantEntry<T> = T extends (
-  ...args: infer _
-) => Promise<infer Payload>
+type InferPapiConstantEntry<T> = T extends (...args: infer _) => Promise<infer Payload>
   ? Promise<Payload>
   : unknown;
 
@@ -111,18 +98,14 @@ export type StorageReadInstruction = BaseInstruction<"storage"> & {
   at: At | undefined;
 };
 
-export type MultiStorageReadInstruction = MultiInstruction<
-  StorageReadInstruction,
-  "keys"
->;
+export type MultiStorageReadInstruction = MultiInstruction<StorageReadInstruction, "keys">;
 
-export type StorageEntriesReadInstruction =
-  BaseInstruction<"storage-entries"> & {
-    pallet: string;
-    storage: string;
-    args: unknown[];
-    at: At | undefined;
-  };
+export type StorageEntriesReadInstruction = BaseInstruction<"storage-entries"> & {
+  pallet: string;
+  storage: string;
+  args: unknown[];
+  at: At | undefined;
+};
 
 export type ApiCallInstruction = BaseInstruction<"runtime-api"> & {
   api: string;
@@ -143,9 +126,7 @@ type SolidityContractReadInstruction = BaseInstruction<"contract"> & {
   instructions: SolidityQuery["instructions"];
 };
 
-export type ContractReadInstruction =
-  | InkContractReadInstruction
-  | SolidityContractReadInstruction;
+export type ContractReadInstruction = InkContractReadInstruction | SolidityContractReadInstruction;
 
 export type MultiContractReadInstruction = MultiInstruction<
   ContractReadInstruction,
@@ -188,21 +169,18 @@ type StorageEntriesReadResponse<
 >["response"];
 
 type ApiCallResponse<
-  TInstruction extends
-    | ApiCallInstruction
-    | MultiInstruction<ApiCallInstruction>,
+  TInstruction extends ApiCallInstruction | MultiInstruction<ApiCallInstruction>,
   TDescriptor extends ChainDefinition = CommonDescriptor,
 > = InferPapiRuntimeCall<
   TypedApi<TDescriptor>["apis"][TInstruction["api"]][TInstruction["method"]]
 >["response"];
 
-type InferContractReadResponse<
-  T extends ContractReadInstruction | MultiContractReadInstruction,
-> = T extends InkContractReadInstruction
-  ? InferInkInstructionsPayload<T["instructions"], T["contract"]["descriptor"]>
-  : T extends SolidityContractReadInstruction
-    ? InferSolidityInstructionsPayload<T["instructions"], T["contract"]["abi"]>
-    : never;
+type InferContractReadResponse<T extends ContractReadInstruction | MultiContractReadInstruction> =
+  T extends InkContractReadInstruction
+    ? InferInkInstructionsPayload<T["instructions"], T["contract"]["descriptor"]>
+    : T extends SolidityContractReadInstruction
+      ? InferSolidityInstructionsPayload<T["instructions"], T["contract"]["abi"]>
+      : never;
 
 type InferInstructionResponsePreDirectives<
   TInstruction extends QueryInstruction,
@@ -215,9 +193,7 @@ type InferInstructionResponsePreDirectives<
       ? StorageEntriesReadResponse<TInstruction, TDescriptor>
       : TInstruction extends ApiCallInstruction
         ? ApiCallResponse<TInstruction, TDescriptor>
-        : TInstruction extends
-              | ContractReadInstruction
-              | MultiContractReadInstruction
+        : TInstruction extends ContractReadInstruction | MultiContractReadInstruction
           ? InferContractReadResponse<TInstruction>
           : never;
 
@@ -237,9 +213,7 @@ export type InstructionResponseWithDirectives<
           : TResponse)
   : TInstruction extends BaseMultiInstruction
     ? Array<
-        true extends TInstruction["directives"]["stream"]
-          ? TResponse | typeof pending
-          : TResponse
+        true extends TInstruction["directives"]["stream"] ? TResponse | typeof pending : TResponse
       >
     : TResponse;
 
@@ -269,10 +243,7 @@ export type InferInstructionsResponse<
   TInstructions extends QueryInstruction[],
   TDescriptor extends ChainDefinition = CommonDescriptor,
 > = {
-  [P in keyof TInstructions]: InferInstructionResponse<
-    TInstructions[P],
-    TDescriptor
-  >;
+  [P in keyof TInstructions]: InferInstructionResponse<TInstructions[P], TDescriptor>;
 };
 
 export type InferInstructionsPayload<
@@ -280,10 +251,7 @@ export type InferInstructionsPayload<
   TDescriptor extends ChainDefinition = CommonDescriptor,
 > = Extract<
   {
-    [P in keyof TInstructions]: InferInstructionPayload<
-      TInstructions[P],
-      TDescriptor
-    >;
+    [P in keyof TInstructions]: InferInstructionPayload<TInstructions[P], TDescriptor>;
   },
   unknown[]
 >;
@@ -304,9 +272,7 @@ export class Query<
 > {
   readonly #instructions: TInstructions;
 
-  constructor(
-    instructions: TInstructions = [] as QueryInstruction[] as TInstructions,
-  ) {
+  constructor(instructions: TInstructions = [] as QueryInstruction[] as TInstructions) {
     this.#instructions = instructions;
   }
 
@@ -316,9 +282,7 @@ export class Query<
 
   constant<
     const TPallet extends StringKeyOf<TypedApi<TDescriptor>["constants"]>,
-    const TConstant extends StringKeyOf<
-      TypedApi<TDescriptor>["constants"][TPallet]
-    >,
+    const TConstant extends StringKeyOf<TypedApi<TDescriptor>["constants"][TPallet]>,
     const TDefer extends boolean = false,
   >(pallet: TPallet, constant: TConstant, options?: { defer?: TDefer }) {
     return this.#append({
@@ -347,15 +311,11 @@ export class Query<
       TypedApi<TDescriptor>["query"][TPallet][TStorage]
     >["args"] extends []
       ? [
-          args?: InferPapiStorageEntry<
-            TypedApi<TDescriptor>["query"][TPallet][TStorage]
-          >["args"],
+          args?: InferPapiStorageEntry<TypedApi<TDescriptor>["query"][TPallet][TStorage]>["args"],
           options?: { at?: At; defer?: TDefer },
         ]
       : [
-          args: InferPapiStorageEntry<
-            TypedApi<TDescriptor>["query"][TPallet][TStorage]
-          >["args"],
+          args: InferPapiStorageEntry<TypedApi<TDescriptor>["query"][TPallet][TStorage]>["args"],
           options?: { at?: At; defer?: TDefer },
         ]
   ) {
@@ -384,11 +344,7 @@ export class Query<
   >(
     pallet: TPallet,
     storage: TStorage,
-    keys: Array<
-      InferPapiStorageEntry<
-        TypedApi<TDescriptor>["query"][TPallet][TStorage]
-      >["args"]
-    >,
+    keys: Array<InferPapiStorageEntry<TypedApi<TDescriptor>["query"][TPallet][TStorage]>["args"]>,
     options?: { at?: At; defer?: TDefer; stream?: TStream },
   ) {
     return this.#append({
@@ -397,11 +353,7 @@ export class Query<
       storage,
       // TODO: investigate why this is needed after migration to PAPI v2
       keys: keys as NoInfer<
-        Array<
-          InferPapiStorageEntry<
-            TypedApi<TDescriptor>["query"][TPallet][TStorage]
-          >["args"]
-        >
+        Array<InferPapiStorageEntry<TypedApi<TDescriptor>["query"][TPallet][TStorage]>["args"]>
       >,
       at: options?.at,
       multi: true,
@@ -424,9 +376,7 @@ export class Query<
   >(
     pallet: TPallet,
     storage: TStorage,
-    args?: InferPapiStorageEntries<
-      TypedApi<TDescriptor>["query"][TPallet][TStorage]
-    >["args"],
+    args?: InferPapiStorageEntries<TypedApi<TDescriptor>["query"][TPallet][TStorage]>["args"],
     options?: { at?: At; defer?: TDefer },
   ) {
     return this.#append({
@@ -457,15 +407,11 @@ export class Query<
       TypedApi<TDescriptor>["apis"][TApi][TMethod]
     >["args"] extends []
       ? [
-          args?: InferPapiRuntimeCall<
-            TypedApi<TDescriptor>["apis"][TApi][TMethod]
-          >["args"],
+          args?: InferPapiRuntimeCall<TypedApi<TDescriptor>["apis"][TApi][TMethod]>["args"],
           options?: { at?: Finality; defer?: TDefer },
         ]
       : [
-          args: InferPapiRuntimeCall<
-            TypedApi<TDescriptor>["apis"][TApi][TMethod]
-          >["args"],
+          args: InferPapiRuntimeCall<TypedApi<TDescriptor>["apis"][TApi][TMethod]>["args"],
           options?: { at?: Finality; defer?: TDefer },
         ]
   ) {
@@ -492,9 +438,7 @@ export class Query<
   >(
     api: TApi,
     method: TMethod,
-    args: Array<
-      InferPapiRuntimeCall<TypedApi<TDescriptor>["apis"][TApi][TMethod]>["args"]
-    >,
+    args: Array<InferPapiRuntimeCall<TypedApi<TDescriptor>["apis"][TApi][TMethod]>["args"]>,
     options?: { at?: Finality; defer?: TDefer; stream?: TStream },
   ) {
     return this.#append({
@@ -549,9 +493,7 @@ export class Query<
   >(
     contract: SolidityContract<TAbi>,
     address: Address,
-    builder: (
-      query: SolidityQuery<TAbi, []>,
-    ) => SolidityQuery<TAbi, TContractInstructions>,
+    builder: (query: SolidityQuery<TAbi, []>) => SolidityQuery<TAbi, TContractInstructions>,
     options?: { defer?: TDefer },
   ): Query<
     [
@@ -634,9 +576,7 @@ export class Query<
   >(
     contract: SolidityContract<TAbi>,
     addresses: Address[],
-    builder: (
-      query: SolidityQuery<TAbi, []>,
-    ) => SolidityQuery<TAbi, TContractInstructions>,
+    builder: (query: SolidityQuery<TAbi, []>) => SolidityQuery<TAbi, TContractInstructions>,
     options?: {
       defer?: TDefer;
       stream?: TStream;
@@ -700,10 +640,7 @@ export class Query<
       [
         ...TInstructions,
         ...Flatten<{
-          [P in keyof TQueries]: TQueries[P] extends Query<
-            infer Instructions,
-            infer _
-          >
+          [P in keyof TQueries]: TQueries[P] extends Query<infer Instructions, infer _>
             ? Instructions
             : never;
         }>,

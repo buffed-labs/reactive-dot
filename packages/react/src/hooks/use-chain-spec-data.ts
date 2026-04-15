@@ -20,11 +20,7 @@ export function useChainSpecData<TUse extends boolean = true>(
   options?: ChainHookOptions & SuspenseOptions<TUse>,
 ) {
   return useMaybeUse(
-    useStablePromise(
-      useAtomValue(
-        chainSpecDataAtom(useConfig(), internal_useChainId(options)),
-      ),
-    ),
+    useStablePromise(useAtomValue(chainSpecDataAtom(useConfig(), internal_useChainId(options)))),
     options,
   );
 }
@@ -34,9 +30,5 @@ export function useChainSpecData<TUse extends boolean = true>(
  */
 export const chainSpecDataAtom = atomFamilyWithErrorCatcher(
   (withErrorCatcher, config: Config, chainId: ChainId) =>
-    withErrorCatcher(
-      derive([clientAtom(config, chainId)], (client) =>
-        client.getChainSpecData(),
-      ),
-    ),
+    withErrorCatcher(derive([clientAtom(config, chainId)], (client) => client.getChainSpecData())),
 );

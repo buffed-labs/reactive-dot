@@ -3,9 +3,9 @@
   "version": "0.3.0",
   "description": "Polkadot Vault adapter for ReactiveDOT",
   "keywords": [
-    "substrate",
     "polkadot",
-    "polkadot-vault"
+    "polkadot-vault",
+    "substrate"
   ],
   "homepage": "https://reactivedot.dev/",
   "bugs": {
@@ -19,11 +19,11 @@
     "url": "https://github.com/buffed-labs/reactive-dot.git",
     "directory": "packages/wallet-polkadot-vault"
   },
-  "type": "module",
   "files": [
     "src",
     "build"
   ],
+  "type": "module",
   "exports": "./build/index.js",
   "scripts": {
     "dev": "tsc --build --watch",

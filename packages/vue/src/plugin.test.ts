@@ -37,10 +37,7 @@ it("should provide empty Map using lazyValuesKey", () => {
 it("should provide shallowRef using mutationEventKey", () => {
   ReactiveDotPlugin.install(mockApp, mockConfig);
 
-  expect(mockApp.provide).toHaveBeenCalledWith(
-    mutationEventKey,
-    expect.any(Object),
-  );
+  expect(mockApp.provide).toHaveBeenCalledWith(mutationEventKey, expect.any(Object));
 });
 
 it("should initialize wallets", () => {

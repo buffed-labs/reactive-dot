@@ -66,18 +66,12 @@ describe("fromNumber", () => {
     expect(() => DenominatedNumber.fromNumber("1.3.5", 5)).toThrow(
       /more than one separator found/i,
     );
-    expect(() => DenominatedNumber.fromNumber("1..3", 5)).toThrow(
-      /more than one separator found/i,
-    );
-    expect(() => DenominatedNumber.fromNumber("..", 5)).toThrow(
-      /more than one separator found/i,
-    );
+    expect(() => DenominatedNumber.fromNumber("1..3", 5)).toThrow(/more than one separator found/i);
+    expect(() => DenominatedNumber.fromNumber("..", 5)).toThrow(/more than one separator found/i);
   });
 
   it("throws for separator only", () => {
-    expect(() => DenominatedNumber.fromNumber(".", 5)).toThrow(
-      /fractional part missing/i,
-    );
+    expect(() => DenominatedNumber.fromNumber(".", 5)).toThrow(/fractional part missing/i);
   });
 
   it.skip("throws for more decimals than supported", () => {
@@ -94,28 +88,24 @@ describe("fromNumber", () => {
     expect(() => DenominatedNumber.fromNumber("1", Number.NaN)).toThrow(
       /Decimals is not an integer/i,
     );
-    expect(() =>
-      DenominatedNumber.fromNumber("1", Number.POSITIVE_INFINITY),
-    ).toThrow(/Decimals is not an integer/i);
-    expect(() =>
-      DenominatedNumber.fromNumber("1", Number.NEGATIVE_INFINITY),
-    ).toThrow(/Decimals is not an integer/i);
+    expect(() => DenominatedNumber.fromNumber("1", Number.POSITIVE_INFINITY)).toThrow(
+      /Decimals is not an integer/i,
+    );
+    expect(() => DenominatedNumber.fromNumber("1", Number.NEGATIVE_INFINITY)).toThrow(
+      /Decimals is not an integer/i,
+    );
     expect(() => DenominatedNumber.fromNumber("1", 1.78945544484)).toThrow(
       /Decimals is not an integer/i,
     );
 
     // negative
-    expect(() => DenominatedNumber.fromNumber("1", -1)).toThrow(
+    expect(() => DenominatedNumber.fromNumber("1", -1)).toThrow(/Decimals must not be negative/i);
+    expect(() => DenominatedNumber.fromNumber("1", Number.MIN_SAFE_INTEGER)).toThrow(
       /Decimals must not be negative/i,
     );
-    expect(() =>
-      DenominatedNumber.fromNumber("1", Number.MIN_SAFE_INTEGER),
-    ).toThrow(/Decimals must not be negative/i);
 
     // exceeds supported range
-    expect(() => DenominatedNumber.fromNumber("1", 101)).toThrow(
-      /Decimals must not exceed 100/i,
-    );
+    expect(() => DenominatedNumber.fromNumber("1", 101)).toThrow(/Decimals must not exceed 100/i);
   });
 
   it("returns correct value", () => {
@@ -131,15 +121,9 @@ describe("fromNumber", () => {
     expect(DenominatedNumber.fromNumber("44.1", 6).planck).toEqual(44100000n);
     expect(DenominatedNumber.fromNumber("44.12", 6).planck).toEqual(44120000n);
     expect(DenominatedNumber.fromNumber("44.123", 6).planck).toEqual(44123000n);
-    expect(DenominatedNumber.fromNumber("44.1234", 6).planck).toEqual(
-      44123400n,
-    );
-    expect(DenominatedNumber.fromNumber("44.12345", 6).planck).toEqual(
-      44123450n,
-    );
-    expect(DenominatedNumber.fromNumber("44.123456", 6).planck).toEqual(
-      44123456n,
-    );
+    expect(DenominatedNumber.fromNumber("44.1234", 6).planck).toEqual(44123400n);
+    expect(DenominatedNumber.fromNumber("44.12345", 6).planck).toEqual(44123450n);
+    expect(DenominatedNumber.fromNumber("44.123456", 6).planck).toEqual(44123456n);
   });
 
   it("cuts leading zeros", () => {
@@ -154,9 +138,7 @@ describe("fromNumber", () => {
     expect(DenominatedNumber.fromNumber("4.1200", 5).planck).toEqual(412000n);
     expect(DenominatedNumber.fromNumber("4.12000", 5).planck).toEqual(412000n);
     expect(DenominatedNumber.fromNumber("4.120000", 5).planck).toEqual(412000n);
-    expect(DenominatedNumber.fromNumber("4.1200000", 5).planck).toEqual(
-      412000n,
-    );
+    expect(DenominatedNumber.fromNumber("4.1200000", 5).planck).toEqual(412000n);
   });
 
   it("interprets the empty string as zero", () => {
@@ -188,9 +170,7 @@ describe("toString", () => {
   it("only shows significant digits", () => {
     expect(DenominatedNumber.fromNumber("44.1", 2).toString()).toEqual("44.1");
     expect(DenominatedNumber.fromNumber("44.10", 2).toString()).toEqual("44.1");
-    expect(DenominatedNumber.fromNumber("44.100", 2).toString()).toEqual(
-      "44.1",
-    );
+    expect(DenominatedNumber.fromNumber("44.100", 2).toString()).toEqual("44.1");
   });
 
   it("fills up leading zeros", () => {
@@ -212,12 +192,8 @@ describe("toNumber", () => {
     expect(DenominatedNumber.fromNumber("1.5", 5).valueOf()).toEqual(1.5);
     expect(DenominatedNumber.fromNumber("0.1", 5).valueOf()).toEqual(0.1);
 
-    expect(
-      DenominatedNumber.fromNumber("1234500000000000", 5).valueOf(),
-    ).toEqual(1.2345e15);
-    expect(
-      DenominatedNumber.fromNumber("1234500000000000.002", 5).valueOf(),
-    ).toEqual(1.2345e15);
+    expect(DenominatedNumber.fromNumber("1234500000000000", 5).valueOf()).toEqual(1.2345e15);
+    expect(DenominatedNumber.fromNumber("1234500000000000.002", 5).valueOf()).toEqual(1.2345e15);
   });
 });
 
@@ -236,10 +212,9 @@ describe("toLocaleString", () => {
   });
 
   it("keep compact notation", () => {
-    const string = new DenominatedNumber(30000, 0, "DOT").toLocaleString(
-      "en-NZ",
-      { notation: "compact" },
-    );
+    const string = new DenominatedNumber(30000, 0, "DOT").toLocaleString("en-NZ", {
+      notation: "compact",
+    });
 
     expect(string).toContain("DOT");
     expect(string).toContain("30K");
@@ -247,17 +222,13 @@ describe("toLocaleString", () => {
 });
 
 test("mapPlanck", () => {
-  const number = new DenominatedNumber(30, 0, "DOT").mapPlanck(
-    (planck) => planck * 2n,
-  );
+  const number = new DenominatedNumber(30, 0, "DOT").mapPlanck((planck) => planck * 2n);
 
   expect(number.toString()).toEqual("60");
 });
 
 test("mapNumber", () => {
-  const number = new DenominatedNumber(30, 0, "DOT").mapNumber(
-    (number) => number * 2,
-  );
+  const number = new DenominatedNumber(30, 0, "DOT").mapNumber((number) => number * 2);
 
   expect(number.toString()).toEqual("60");
 });

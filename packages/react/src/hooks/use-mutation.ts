@@ -91,10 +91,7 @@ export function useMutation<
               );
 
               return transaction
-                .signSubmitAndWatch(
-                  signer,
-                  submitOptions?.txOptions ?? options?.txOptions,
-                )
+                .signSubmitAndWatch(signer, submitOptions?.txOptions ?? options?.txOptions)
                 .pipe(tapTx(mutationEventSubject, chainId, transaction));
             }),
           );

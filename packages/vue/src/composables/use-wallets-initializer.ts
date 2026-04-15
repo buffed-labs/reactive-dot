@@ -10,7 +10,5 @@ import { initializeWallets } from "@reactive-dot/core/internal/actions.js";
 export function useWalletsInitializer() {
   const walletsPromise = useWalletsPromise();
 
-  return useAsyncAction(async () =>
-    initializeWallets(await walletsPromise.value),
-  );
+  return useAsyncAction(async () => initializeWallets(await walletsPromise.value));
 }

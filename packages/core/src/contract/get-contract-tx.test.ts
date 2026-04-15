@@ -15,8 +15,7 @@ vi.mock("../../.papi/descriptors/dist/index.js", () => ({
   passet: Symbol("passet"),
 }));
 
-const mockOrigin =
-  "5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY" as SS58String;
+const mockOrigin = "5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY" as SS58String;
 const mockDest = "0x0000000000000000000000000000000000000000" as SizedHex<20>;
 const mockValue = 100n;
 const mockData = Binary.fromText("foo");
@@ -67,21 +66,13 @@ it("should use passet API when dry run result has weight_required", async () => 
     weight_required: { ref_time: 100n, proof_size: 200n },
     storage_deposit: { value: 50n },
   };
-  vi.mocked(mockPassetApi.apis.ReviveApi.call).mockResolvedValue(
-    dryRunResult as never,
-  );
+  vi.mocked(mockPassetApi.apis.ReviveApi.call).mockResolvedValue(dryRunResult as never);
 
   // Setup tx creation
   const mockTx = { signAndSubmit: vi.fn() };
   vi.mocked(mockPassetApi.tx.Revive.call).mockReturnValue(mockTx as never);
 
-  const result = await getContractTx(
-    mockClient,
-    mockOrigin,
-    mockDest,
-    mockValue,
-    mockData,
-  );
+  const result = await getContractTx(mockClient, mockOrigin, mockDest, mockValue, mockData);
 
   // Verify dry run call
   expect(mockPassetApi.apis.ReviveApi.call).toHaveBeenCalledWith(
@@ -112,30 +103,20 @@ it("should fall back to pasAh API when dry run result does NOT have weight_requi
     gas_required: { ref_time: 100n, proof_size: 200n },
     storage_deposit: { value: 50n },
   };
-  vi.mocked(mockPassetApi.apis.ReviveApi.call).mockResolvedValue(
-    passetDryRunResult as never,
-  );
+  vi.mocked(mockPassetApi.apis.ReviveApi.call).mockResolvedValue(passetDryRunResult as never);
 
   // Setup dry run result for pasAh
   const pasAhDryRunResult = {
     gas_required: { ref_time: 300n, proof_size: 400n },
     storage_deposit: { value: 60n },
   };
-  vi.mocked(mockPasAhApi.apis.ReviveApi.call).mockResolvedValue(
-    pasAhDryRunResult as never,
-  );
+  vi.mocked(mockPasAhApi.apis.ReviveApi.call).mockResolvedValue(pasAhDryRunResult as never);
 
   // Setup tx creation for pasAh
   const mockTx = { signAndSubmit: vi.fn() };
   vi.mocked(mockPasAhApi.tx.Revive.call).mockReturnValue(mockTx as never);
 
-  const result = await getContractTx(
-    mockClient,
-    mockOrigin,
-    mockDest,
-    mockValue,
-    mockData,
-  );
+  const result = await getContractTx(mockClient, mockOrigin, mockDest, mockValue, mockData);
 
   // Verify dry run call on pasAh
   expect(mockPasAhApi.apis.ReviveApi.call).toHaveBeenCalledWith(
@@ -165,22 +146,13 @@ it("should pass abort signal to dry run calls", async () => {
     weight_required: { ref_time: 100n, proof_size: 200n },
     storage_deposit: { value: 50n },
   };
-  vi.mocked(mockPassetApi.apis.ReviveApi.call).mockResolvedValue(
-    dryRunResult as never,
-  );
+  vi.mocked(mockPassetApi.apis.ReviveApi.call).mockResolvedValue(dryRunResult as never);
   vi.mocked(mockPassetApi.tx.Revive.call).mockReturnValue({} as never);
 
   const abortController = new AbortController();
   const options = { signal: abortController.signal };
 
-  await getContractTx(
-    mockClient,
-    mockOrigin,
-    mockDest,
-    mockValue,
-    mockData,
-    options,
-  );
+  await getContractTx(mockClient, mockOrigin, mockDest, mockValue, mockData, options);
 
   expect(mockPassetApi.apis.ReviveApi.call).toHaveBeenCalledWith(
     mockOrigin,

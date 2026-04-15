@@ -25,25 +25,19 @@ it("should use finalized block atom by default", () => {
 
   expect(useConfig).toHaveBeenCalled();
   expect(internal_useChainId).toHaveBeenCalledWith(undefined);
-  expect(usePausableAtomValue).toHaveBeenCalledWith(
-    finalizedBlockAtom(mockConfig, mockChainId),
-  );
+  expect(usePausableAtomValue).toHaveBeenCalledWith(finalizedBlockAtom(mockConfig, mockChainId));
 });
 
 it('should use finalized block atom when tag is "finalized"', () => {
   renderHook(() => useBlock("finalized"));
 
-  expect(usePausableAtomValue).toHaveBeenCalledWith(
-    finalizedBlockAtom(mockConfig, mockChainId),
-  );
+  expect(usePausableAtomValue).toHaveBeenCalledWith(finalizedBlockAtom(mockConfig, mockChainId));
 });
 
 it('should use best block atom when tag is "best"', () => {
   renderHook(() => useBlock("best"));
 
-  expect(usePausableAtomValue).toHaveBeenCalledWith(
-    bestBlockAtom(mockConfig, mockChainId),
-  );
+  expect(usePausableAtomValue).toHaveBeenCalledWith(bestBlockAtom(mockConfig, mockChainId));
 });
 
 it("should pass options to internal_useChainId", () => {

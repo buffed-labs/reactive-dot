@@ -6,7 +6,6 @@ export function objectId(object: unknown) {
   }
 
   return (
-    objectIds.get(object) ??
-    objectIds.set(object, globalThis.crypto.randomUUID()).get(object)!
+    objectIds.get(object) ?? objectIds.set(object, globalThis.crypto.randomUUID()).get(object)!
   );
 }

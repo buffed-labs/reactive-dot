@@ -3,9 +3,7 @@ import type { PolkadotSigner } from "polkadot-api";
 
 export type Signer = PolkadotSigner | WalletAccount;
 
-export function extractPolkadotSigner(
-  signer: Signer | undefined,
-): PolkadotSigner | undefined {
+export function extractPolkadotSigner(signer: Signer | undefined): PolkadotSigner | undefined {
   return signer === undefined
     ? signer
     : "polkadotSigner" in signer

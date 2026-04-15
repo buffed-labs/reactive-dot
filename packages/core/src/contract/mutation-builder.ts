@@ -1,9 +1,5 @@
 import type { Address } from "../address.js";
-import type {
-  ExtractExactProperties,
-  MaybePromise,
-  StringKeyOf,
-} from "../types.js";
+import type { ExtractExactProperties, MaybePromise, StringKeyOf } from "../types.js";
 import type { InkContract, SolidityContract } from "./contract.js";
 import type { GenericInkDescriptors, InkTxBody } from "./ink/types.js";
 import type { SolidityTxBody } from "./solidity/types.js";
@@ -14,29 +10,17 @@ export type MutationBuilder = {
   <
     TDescriptor extends GenericInkDescriptors,
     TMessageName extends StringKeyOf<
-      ExtractExactProperties<
-        TDescriptor["__types"]["messages"],
-        { mutates: true }
-      >
+      ExtractExactProperties<TDescriptor["__types"]["messages"], { mutates: true }>
     >,
   >(
     contract: InkContract<TDescriptor>,
     address: Address,
     message: TMessageName,
-    ...[body]: InkTxBody<TDescriptor, TMessageName> extends Record<
-      string,
-      never
-    >
+    ...[body]: InkTxBody<TDescriptor, TMessageName> extends Record<string, never>
       ? [body?: InkTxBody<TDescriptor, TMessageName>]
       : [body: InkTxBody<TDescriptor, TMessageName>]
   ): MaybePromise<Transaction>;
-  <
-    TAbi extends Abi,
-    TFunctionName extends ExtractAbiFunctionNames<
-      TAbi,
-      "nonpayable" | "payable"
-    >,
-  >(
+  <TAbi extends Abi, TFunctionName extends ExtractAbiFunctionNames<TAbi, "nonpayable" | "payable">>(
     contract: SolidityContract<TAbi>,
     address: Address,
     functionName: TFunctionName,

@@ -1,8 +1,5 @@
 /* v8 ignore start */
-import {
-  getDynamicBuilder,
-  getLookupFn,
-} from "@polkadot-api/metadata-builders";
+import { getDynamicBuilder, getLookupFn } from "@polkadot-api/metadata-builders";
 import {
   Bytes,
   enhanceCodec,
@@ -92,8 +89,7 @@ export async function unstable_getBlockExtrinsics(
 
   const version$ = enhanceCodec(
     u8,
-    (value: { signed: boolean; version: number }) =>
-      (+!!value.signed << 7) | value.version,
+    (value: { signed: boolean; version: number }) => (+!!value.signed << 7) | value.version,
     (value) => ({
       version: value & ~(1 << 7),
       signed: !!(value & (1 << 7)),
@@ -108,9 +104,7 @@ export async function unstable_getBlockExtrinsics(
     metadata.extrinsic.signature,
   ) as Codec<MultiSignature>;
 
-  const rawExtra$ = dynamicBuilder.buildDefinition(
-    metadata.extrinsic.extra,
-  ) as Codec<unknown[]>;
+  const rawExtra$ = dynamicBuilder.buildDefinition(metadata.extrinsic.extra) as Codec<unknown[]>;
 
   const extra$ = enhanceCodec(
     rawExtra$,
@@ -127,17 +121,15 @@ export async function unstable_getBlockExtrinsics(
       Object.fromEntries(
         metadata.extrinsic.signedExtensions.map((signedExtension, index) => {
           const name = signedExtension.identifier.replace(/^Check/, "");
-          return [
-            name.slice(0, 1).toLowerCase() + name.slice(1),
-            extra[index],
-          ] as const;
+          return [name.slice(0, 1).toLowerCase() + name.slice(1), extra[index]] as const;
         }),
       ) as Extra,
   );
 
-  const rawCall$ = dynamicBuilder.buildDefinition(
-    metadata.extrinsic.call,
-  ) as Codec<{ type: string; value: { type: string; value: unknown } }>;
+  const rawCall$ = dynamicBuilder.buildDefinition(metadata.extrinsic.call) as Codec<{
+    type: string;
+    value: { type: string; value: unknown };
+  }>;
 
   const call$ = enhanceCodec(
     rawCall$,
@@ -193,9 +185,7 @@ export async function unstable_getBlockExtrinsics(
         version: { signed },
       } = simpleVersion$.dec(extrinsicBytes);
 
-      const rawExtrinsic = (
-        signed ? signedExtrinsic$.dec : inherentExtrinsic$.dec
-      )(extrinsicBytes);
+      const rawExtrinsic = (signed ? signedExtrinsic$.dec : inherentExtrinsic$.dec)(extrinsicBytes);
 
       return { ...rawExtrinsic.version, ...rawExtrinsic.body } as Extrinsic;
     },
@@ -206,15 +196,9 @@ export async function unstable_getBlockExtrinsics(
   return blockBody.map(extrinsic$.dec);
 }
 
-const dynamicBuilders = new WeakMap<
-  PolkadotClient,
-  ReturnType<typeof getDynamicBuilder>
->();
+const dynamicBuilders = new WeakMap<PolkadotClient, ReturnType<typeof getDynamicBuilder>>();
 
-async function getOrCreateDynamicBuilder(
-  client: PolkadotClient,
-  metadata: V15,
-) {
+async function getOrCreateDynamicBuilder(client: PolkadotClient, metadata: V15) {
   if (dynamicBuilders.has(client)) {
     return dynamicBuilders.get(client)!;
   }
