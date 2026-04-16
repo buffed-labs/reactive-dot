@@ -10,20 +10,20 @@ import type {
 export type When<TBoolean extends boolean, TTrue, TFalse> =
   true extends NoInfer<TBoolean> ? TTrue : TFalse;
 
-type ChainOptions<TChainId extends ChainId | undefined> = {
+interface ChainOptions<TChainId extends ChainId | undefined> {
   /**
    * Override default chain ID
    */
   chainId: TChainId | undefined;
-};
+}
 
 export type ChainHookOptions<TChainId extends ChainId | undefined = ChainId | undefined> = Partial<
   ChainOptions<TChainId>
 >;
 
-export type QueryOptions<TChainId extends ChainId | undefined> = ChainOptions<TChainId> & {
+export interface QueryOptions<TChainId extends ChainId | undefined> extends ChainOptions<TChainId> {
   query: QueryArgument<TChainId>;
-};
+}
 
 export type QueryArgument<TChainId extends ChainId | undefined> =
   | Query<QueryInstruction[], ChainDescriptorOf<TChainId>>
@@ -32,14 +32,14 @@ export type QueryArgument<TChainId extends ChainId | undefined> =
     ) => Query<QueryInstruction[], ChainDescriptorOf<TChainId>> | Falsy)
   | Falsy;
 
-export type SuspenseOptions<TUse extends boolean> = {
+export interface SuspenseOptions<TUse extends boolean> {
   /**
    * Whether to suspend while the data is loading. Return a "stable" `Promise` if set to `false`.
    *
    * @default true
    */
   use?: TUse;
-};
+}
 
 export type InferQueryArgumentResult<
   TChainId extends ChainId | undefined,

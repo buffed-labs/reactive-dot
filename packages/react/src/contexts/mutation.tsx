@@ -4,8 +4,8 @@ import type { TxEvent } from "polkadot-api";
 import { createContext } from "react";
 import { Subject } from "rxjs";
 
-export type MutationEvent = BaseMutationEvent & {
+export interface MutationEvent extends BaseMutationEvent {
   value: Exclude<AsyncValue<TxEvent, MutationError>, typeof idle>;
-};
+}
 
 export const MutationEventSubjectContext = createContext(new Subject<MutationEvent>());

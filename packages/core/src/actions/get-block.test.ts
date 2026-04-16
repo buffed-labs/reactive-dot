@@ -3,7 +3,9 @@ import type { PolkadotClient } from "polkadot-api";
 import { of } from "rxjs";
 import { expect, it } from "vitest";
 
-type DummyBlock = { id: string };
+interface DummyBlock {
+  id: string;
+}
 
 it("should return the best block when options.tag is 'best'", () =>
   new Promise<void>((resolve) => {

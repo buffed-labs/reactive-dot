@@ -2,7 +2,7 @@ import type { PolkadotSignerAccount } from "./account.js";
 import { Wallet, type WalletOptions } from "./wallet.js";
 import { BehaviorSubject, skip, type Subscription } from "rxjs";
 
-type AccountStore<T extends Pick<PolkadotSignerAccount, "id">> = {
+interface AccountStore<T extends Pick<PolkadotSignerAccount, "id">> {
   add(account: Omit<T, "id">): void;
   clear(): void;
   delete(account: { id: T["id"] }): void;
@@ -10,7 +10,7 @@ type AccountStore<T extends Pick<PolkadotSignerAccount, "id">> = {
   has(account: { id: T["id"] }): boolean;
   has(accountId: T["id"]): boolean;
   values(): Iterable<T>;
-};
+}
 
 const finalizationRegistry = new FinalizationRegistry((subscription: Subscription) =>
   subscription.unsubscribe(),

@@ -121,9 +121,9 @@ function SpendableBalances() {
   );
 }
 
-type SpendableBalanceProps = {
+interface SpendableBalanceProps {
   account: PolkadotAccount;
-};
+}
 
 function SpendableBalance({ account }: SpendableBalanceProps) {
   return (
@@ -180,10 +180,10 @@ function PendingPoolRewards() {
   );
 }
 
-type PendingRewardsProps = {
+interface PendingRewardsProps {
   account: PolkadotAccount;
   rewards: bigint;
-};
+}
 
 function PendingRewards({ account, rewards }: PendingRewardsProps) {
   return (

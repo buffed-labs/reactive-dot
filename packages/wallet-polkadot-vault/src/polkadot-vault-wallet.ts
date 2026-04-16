@@ -21,18 +21,18 @@ export type VaultRequest = VaultRequestPayload & {
   response: PromiseWithResolvers<string>;
 };
 
-type VaultAccount = {
+interface VaultAccount {
   id: string;
   publicKey: Uint8Array;
   genesisHash: `0x${string}`;
   name?: string;
-};
+}
 
-type JsonVaultAccount = {
+interface JsonVaultAccount {
   publicKey: `0x${string}`;
   genesisHash: `0x${string}`;
   name?: string;
-};
+}
 
 export class PolkadotVaultWallet extends LocalWallet<VaultAccount, JsonVaultAccount> {
   override readonly id = "polkadot-vault";

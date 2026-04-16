@@ -6,7 +6,7 @@ import type { SolidityTxBody } from "./solidity/types.js";
 import type { Abi, ExtractAbiFunctionNames } from "abitype";
 import type { Transaction } from "polkadot-api";
 
-export type MutationBuilder = {
+export interface MutationBuilder {
   <
     TDescriptor extends GenericInkDescriptors,
     TMessageName extends StringKeyOf<
@@ -28,4 +28,4 @@ export type MutationBuilder = {
       ? [body?: SolidityTxBody<TAbi, TFunctionName>]
       : [body: SolidityTxBody<TAbi, TFunctionName>]
   ): MaybePromise<Transaction>;
-};
+}

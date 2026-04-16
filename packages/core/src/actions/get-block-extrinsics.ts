@@ -46,11 +46,11 @@ type Extra = Partial<{
   [key: string]: unknown;
 }>;
 
-type Call = {
+interface Call {
   module: string;
   func: string;
   args: unknown;
-};
+}
 
 type Extrinsic = { version: number; call: Call } & (
   | { signed: false }

@@ -1,6 +1,6 @@
 import { use } from "react";
 
-type AwaitProps<T> = {
+interface AwaitProps<T> {
   /**
    * The promise to await.
    */
@@ -12,7 +12,7 @@ type AwaitProps<T> = {
    * @returns A React node to render
    */
   children: (result: T) => React.ReactNode;
-};
+}
 
 /**
  * Component for awaiting a promise and rendering its result.

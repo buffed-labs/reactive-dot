@@ -11,7 +11,7 @@ import { type DenominatedNumber } from "@reactive-dot/utils";
 import { combineLatest, from, map } from "rxjs";
 import { computed, type MaybeRefOrGetter, toValue } from "vue";
 
-type SystemAccount = {
+interface SystemAccount {
   nonce: number;
   consumers: number;
   providers: number;
@@ -22,11 +22,11 @@ type SystemAccount = {
     frozen: bigint;
     flags: bigint;
   };
-};
+}
 
-type Options = ChainComposableOptions & {
+interface Options extends ChainComposableOptions {
   includesExistentialDeposit?: MaybeRefOrGetter<boolean>;
-};
+}
 
 /**
  * Composable for getting an account's spendable balance.

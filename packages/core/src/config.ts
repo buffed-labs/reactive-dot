@@ -5,15 +5,15 @@ import type { Wallet, WalletProvider } from "./wallets/index.js";
 import type { JsonRpcProvider } from "polkadot-api";
 import type { ChainDefinition } from "polkadot-api";
 
-export type ChainConfig = {
+export interface ChainConfig {
   readonly descriptor: ChainDefinition | UnsafeDescriptor;
   readonly provider: Gettable<JsonRpcProvider | LightClientProvider>;
-};
+}
 
-export type Config<
+export interface Config<
   TChains extends Readonly<Record<string, ChainConfig>> = Readonly<Record<string, ChainConfig>>,
   TTargetChainIds extends Extract<keyof TChains, string>[] = Extract<keyof TChains, string>[],
-> = {
+> {
   readonly chains: TChains;
   readonly targetChains?: TTargetChainIds;
   readonly wallets?: Array<WalletProvider | Wallet>;
@@ -31,7 +31,7 @@ export type Config<
    * @defaultValue false
    */
   readonly ssr?: boolean;
-};
+}
 
 export function defineConfig<
   const TChains extends Readonly<Record<string, ChainConfig>>,

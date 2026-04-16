@@ -9,11 +9,11 @@ import type { ExcludeProperties, Finality, FlatHead, StringKeyOf } from "../../t
 import type { UnwrapResult } from "./result.js";
 import type { GenericInkDescriptors } from "./types.js";
 
-type StorageReadInstruction = BaseInstruction<"storage"> & {
+interface StorageReadInstruction extends BaseInstruction<"storage"> {
   path: string;
   key: unknown | undefined;
   at: Finality | undefined;
-};
+}
 
 type MultiStorageReadInstruction = MultiInstruction<StorageReadInstruction, "key", "keys">;
 
@@ -22,12 +22,12 @@ export type InferStorageReadInstructionPayload<
   TDescriptor extends GenericInkDescriptors,
 > = TDescriptor["__types"]["storage"][TInstruction["path"]]["value"];
 
-type MessageSendInstruction = BaseInstruction<"message"> & {
+interface MessageSendInstruction extends BaseInstruction<"message"> {
   name: string;
   body: unknown;
   origin: Address | undefined;
   at: Finality | undefined;
-};
+}
 
 type MultiMessageSendInstruction = MultiInstruction<MessageSendInstruction, "body", "bodies">;
 

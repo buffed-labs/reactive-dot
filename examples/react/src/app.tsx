@@ -50,7 +50,9 @@ export function App() {
   );
 }
 
-type ExampleProps = { chainName: string };
+interface ExampleProps {
+  chainName: string;
+}
 
 function Example({ chainName }: ExampleProps) {
   const resetQueryError = useQueryErrorResetter();

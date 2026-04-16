@@ -27,7 +27,7 @@ const mockContract = {
   },
 } as unknown as InkContract;
 
-type MockBlockEvents = {
+interface MockBlockEvents {
   block: unknown;
   events: Array<{
     payload: {
@@ -36,7 +36,7 @@ type MockBlockEvents = {
       topics: string[];
     };
   }>;
-};
+}
 
 const contractEmitted$ = new Subject<MockBlockEvents>();
 const mockApi = {

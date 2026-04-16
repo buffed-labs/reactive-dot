@@ -1,9 +1,9 @@
 import type { SimpleStorage } from "./simple-storage.js";
 
-export type StorageOptions = {
+export interface StorageOptions {
   prefix: string;
   storage: SimpleStorage;
-};
+}
 
 export class Storage<TKey extends string = string> implements SimpleStorage {
   readonly prefix: string;

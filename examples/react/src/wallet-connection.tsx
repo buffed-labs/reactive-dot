@@ -27,9 +27,9 @@ export function WalletConnection() {
   );
 }
 
-type WalletItemProps = {
+interface WalletItemProps {
   wallet: Wallet;
-};
+}
 
 function WalletItem({ wallet }: WalletItemProps) {
   const connectedWallets = useConnectedWallets();

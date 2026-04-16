@@ -1,4 +1,4 @@
-export function omit<TRecord extends Record<string, unknown>, TKey extends keyof TRecord>(
+export function omit<TRecord extends object, TKey extends keyof TRecord>(
   object: TRecord,
   keys: TKey[],
 ) {

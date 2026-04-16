@@ -8,25 +8,25 @@ import {
 import { Binary } from "polkadot-api";
 import { map } from "rxjs";
 
-type LedgerAccount = {
+interface LedgerAccount {
   id: string;
   publicKey: Uint8Array;
   name?: string;
   path: number;
-};
+}
 
-type JsonLedgerAccount = Omit<LedgerAccount, "publicKey" | "id"> & {
+interface JsonLedgerAccount extends Omit<LedgerAccount, "publicKey" | "id"> {
   publicKey: `0x${string}`;
-};
+}
 
-type NetworkInfo = {
+interface NetworkInfo {
   tokenSymbol: string;
   tokenDecimals: number;
-};
+}
 
-type LedgerWalletOptions = WalletOptions & {
+interface LedgerWalletOptions extends WalletOptions {
   unstable_getNetworkInfo?: () => NetworkInfo | Promise<NetworkInfo>;
-};
+}
 
 export class LedgerWallet extends LocalWallet<
   LedgerAccount,

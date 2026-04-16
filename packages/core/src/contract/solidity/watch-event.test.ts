@@ -12,13 +12,13 @@ const transferEvent = AbiEvent.from(
 
 const bsEvent = AbiEvent.from("event Bs(address indexed clown)");
 
-type MockEvent = {
+interface MockEvent {
   payload: {
     contract: SizedHex<20>;
     data: Uint8Array;
     topics: SizedHex<32>[];
   };
-};
+}
 
 type MockBlock = Record<string, never>;
 

@@ -280,10 +280,10 @@ export function queryObservable<
 
 export const chainQueryCacheKeyPrefix = "chain-query";
 
-export type QueryInstructionMetadata = {
+export interface QueryInstructionMetadata {
   chainId: ChainId;
   instruction: SimpleQueryInstruction;
-};
+}
 
 export function queryInstruction(
   instruction: SimpleQueryInstruction,
@@ -326,10 +326,10 @@ export const inkQueryCacheKeyPrefix = "ink-query";
 
 export const solidityQueryCacheKeyPrefix = "solidity-query";
 
-export type QueryContractInstructionMetadata = {
+export interface QueryContractInstructionMetadata {
   chainId: ChainId;
   instruction: Parameters<Parameters<DataStore["invalidateContractQueries"]>[0]>[0];
-};
+}
 
 export function queryContractInstruction(
   chainId: MaybeRefOrGetter<ChainId>,

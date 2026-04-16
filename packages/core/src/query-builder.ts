@@ -61,19 +61,19 @@ type InferPapiConstantEntry<T> = T extends (...args: infer _) => Promise<infer P
   ? Promise<Payload>
   : unknown;
 
-export type BaseInstruction<TName extends string> = {
+export interface BaseInstruction<TName extends string> {
   type: TName;
   directives: {
     defer: boolean | undefined;
   };
-};
+}
 
-export type BaseMultiInstruction = {
+export interface BaseMultiInstruction {
   multi: true;
   directives: {
     stream: boolean | undefined;
   };
-};
+}
 
 export type MultiInstruction<
   TInstruction extends BaseInstruction<string>,
@@ -86,45 +86,45 @@ export type MultiInstruction<
       : never;
   };
 
-export type ConstantFetchInstruction = BaseInstruction<"constant"> & {
+export interface ConstantFetchInstruction extends BaseInstruction<"constant"> {
   pallet: string;
   constant: string;
-};
+}
 
-export type StorageReadInstruction = BaseInstruction<"storage"> & {
+export interface StorageReadInstruction extends BaseInstruction<"storage"> {
   pallet: string;
   storage: string;
   keys: unknown[];
   at: At | undefined;
-};
+}
 
 export type MultiStorageReadInstruction = MultiInstruction<StorageReadInstruction, "keys">;
 
-export type StorageEntriesReadInstruction = BaseInstruction<"storage-entries"> & {
+export interface StorageEntriesReadInstruction extends BaseInstruction<"storage-entries"> {
   pallet: string;
   storage: string;
   args: unknown[];
   at: At | undefined;
-};
+}
 
-export type ApiCallInstruction = BaseInstruction<"runtime-api"> & {
+export interface ApiCallInstruction extends BaseInstruction<"runtime-api"> {
   api: string;
   method: string;
   args: unknown[];
   at: Finality | undefined;
-};
+}
 
-type InkContractReadInstruction = BaseInstruction<"contract"> & {
+interface InkContractReadInstruction extends BaseInstruction<"contract"> {
   contract: InkContract;
   address: Address;
   instructions: InkQuery["instructions"];
-};
+}
 
-type SolidityContractReadInstruction = BaseInstruction<"contract"> & {
+interface SolidityContractReadInstruction extends BaseInstruction<"contract"> {
   contract: SolidityContract;
   address: Address;
   instructions: SolidityQuery["instructions"];
-};
+}
 
 export type ContractReadInstruction = InkContractReadInstruction | SolidityContractReadInstruction;
 

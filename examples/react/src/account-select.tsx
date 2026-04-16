@@ -2,9 +2,9 @@ import type { WalletAccount } from "@reactive-dot/core/wallets.js";
 import { useConnectedWallets, useAccounts } from "@reactive-dot/react";
 import { type ReactNode, useState } from "react";
 
-type AccountSelectProps = {
+interface AccountSelectProps {
   children: (account: WalletAccount) => ReactNode;
-};
+}
 
 export function AccountSelect({ children }: AccountSelectProps) {
   const connectedWallets = useConnectedWallets();

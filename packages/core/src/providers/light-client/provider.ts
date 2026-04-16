@@ -11,20 +11,20 @@ import { getSmProvider } from "polkadot-api/sm-provider";
 
 const getProviderSymbol = Symbol("getProvider");
 
-export type LightClientProvider = {
+export interface LightClientProvider {
   [getProviderSymbol]: () => JsonRpcProvider;
-};
+}
 
 type AddChainOptions<TWellknownChainId> = { chainSpec: string } | { id: TWellknownChainId };
 
-type LightClientOptions = {
+interface LightClientOptions {
   /**
    * Connect to the first available {@link https://github.com/paritytech/substrate-connect | Substrate Connect} provider.
    */
   useExtensionProvider?: boolean;
-};
+}
 
-type RelayLightClientProvider<T extends WellknownRelayChainId> = LightClientProvider & {
+interface RelayLightClientProvider<T extends WellknownRelayChainId> extends LightClientProvider {
   addParachain<
     TParachainId extends keyof (typeof wellknownChains)[T][1] extends never
       ? WellknownParachainId
@@ -32,13 +32,13 @@ type RelayLightClientProvider<T extends WellknownRelayChainId> = LightClientProv
   >(
     options: AddChainOptions<TParachainId>,
   ): LightClientProvider;
-};
+}
 
-type RootLightClientProvider = {
+interface RootLightClientProvider {
   addRelayChain<TRelayChainId extends WellknownRelayChainId>(
     options: AddChainOptions<TRelayChainId>,
   ): RelayLightClientProvider<TRelayChainId>;
-};
+}
 
 export function createLightClientProvider({
   useExtensionProvider = true,

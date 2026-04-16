@@ -1,9 +1,9 @@
 import type { PolkadotClient } from "polkadot-api";
 import { map } from "rxjs";
 
-export type GetBlockOptions = {
+export interface GetBlockOptions {
   tag?: "best" | "finalized";
-};
+}
 
 export function getBlock<TOptions extends GetBlockOptions>(
   client: PolkadotClient,

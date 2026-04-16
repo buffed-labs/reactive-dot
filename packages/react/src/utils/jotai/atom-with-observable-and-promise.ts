@@ -7,10 +7,10 @@ const empty = Symbol("empty");
 
 type Data<T> = { value: T | Promise<T> | typeof empty } | { error: unknown };
 
-export type ObservableAndPromiseAtom<T> = {
+export interface ObservableAndPromiseAtom<T> {
   observableAtom: Atom<T | Promise<T>>;
   promiseAtom: Atom<T | Promise<T>>;
-};
+}
 
 export function atomWithObservableAndPromise<
   TValue,
