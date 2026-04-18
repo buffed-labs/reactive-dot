@@ -50,9 +50,7 @@ beforeEach(() => {
     storage: inMemorySimpleStorage,
   });
 
-  mockGetNetworkInfo = vi
-    .fn()
-    .mockResolvedValue({ tokenSymbol: "DOT", tokenDecimals: 10 });
+  mockGetNetworkInfo = vi.fn().mockResolvedValue({ tokenSymbol: "DOT", tokenDecimals: 10 });
   wallet = new LedgerWallet({ storage: inMemoryStorage });
 
   vi.clearAllMocks();

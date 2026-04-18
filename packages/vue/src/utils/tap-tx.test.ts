@@ -50,8 +50,8 @@ describe("tapTx", () => {
 
     await expect(lastValueFrom(result$)).rejects.toBe(err);
     expect(mutationRef.value).toMatchObject({ status: "error" });
-    expect(
-      (mutationRef.value as Extract<MutationEvent, { status: "error" }>).error,
-    ).toBeInstanceOf(MutationError);
+    expect((mutationRef.value as Extract<MutationEvent, { status: "error" }>).error).toBeInstanceOf(
+      MutationError,
+    );
   });
 });

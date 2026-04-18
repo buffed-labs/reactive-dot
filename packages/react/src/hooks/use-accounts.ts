@@ -16,10 +16,7 @@ import type { ChainSpecData } from "@polkadot-api/substrate-client";
 import { type ChainId, type Config } from "@reactive-dot/core";
 import { getAccounts } from "@reactive-dot/core/internal/actions.js";
 
-type UseAccountsOptions<TUse extends boolean> = (
-  | ChainHookOptions
-  | { chainId: null }
-) &
+type UseAccountsOptions<TUse extends boolean> = (ChainHookOptions | { chainId: null }) &
   SuspenseOptions<TUse> & {
     chainSpec?: ChainSpecData;
   };
@@ -31,9 +28,7 @@ type UseAccountsOptions<TUse extends boolean> = (
  * @param options - Additional options
  * @returns The currently connected accounts
  */
-export function useAccounts<TUse extends boolean = true>(
-  options?: UseAccountsOptions<TUse>,
-) {
+export function useAccounts<TUse extends boolean = true>(options?: UseAccountsOptions<TUse>) {
   return useMaybeUse(
     useStablePromise(
       useAtomValue(
@@ -71,9 +66,7 @@ export const accountsAtom = atomFamilyWithErrorCatcher(
         getAccounts(
           get(connectedWalletsAtom(config)),
           chainSpec ??
-            (chainId === undefined
-              ? undefined
-              : get(chainSpecDataAtom(config, chainId))),
+            (chainId === undefined ? undefined : get(chainSpecDataAtom(config, chainId))),
           undefined,
           config.includeEvmAccounts !== undefined
             ? { includeEvmAccounts: config.includeEvmAccounts }

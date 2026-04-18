@@ -22,17 +22,13 @@ vi.mock("./wellknown-chains.js", () => ({
     polkadot: [
       vi.fn().mockResolvedValue({ chainSpec: "polkadot-spec" }),
       {
-        polkadot_asset_hub: vi
-          .fn()
-          .mockResolvedValue({ chainSpec: "asset-hub-spec" }),
+        polkadot_asset_hub: vi.fn().mockResolvedValue({ chainSpec: "asset-hub-spec" }),
       },
     ],
     kusama: [
       vi.fn().mockResolvedValue({ chainSpec: "kusama-spec" }),
       {
-        polkadot_asset_hub: vi
-          .fn()
-          .mockResolvedValue({ chainSpec: "asset-hub-kusama-spec" }),
+        polkadot_asset_hub: vi.fn().mockResolvedValue({ chainSpec: "asset-hub-kusama-spec" }),
       },
     ],
   },
@@ -135,9 +131,7 @@ describe("Light Client Provider", () => {
   it("should create client from light client provider", () => {
     const provider = createLightClientProvider();
     const relayChain = provider.addRelayChain({ id: "polkadot" });
-    const client = createClientFromLightClientProvider(
-      relayChain as LightClientProvider,
-    );
+    const client = createClientFromLightClientProvider(relayChain as LightClientProvider);
 
     expect(client).toEqual({ mockClient: true });
   });

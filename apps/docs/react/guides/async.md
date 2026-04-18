@@ -105,10 +105,7 @@ function UserBalance({ address }: { address: string }) {
 
   // highlight-start
   // Falls back to previous value or undefined while loading
-  const balance = usePromiseValue(
-    balancePromise,
-    (previousValue) => previousValue ?? undefined,
-  );
+  const balance = usePromiseValue(balancePromise, (previousValue) => previousValue ?? undefined);
   // highlight-end
 
   if (balance === undefined) {
@@ -137,12 +134,7 @@ When building reusable hooks, consider using [`usePromiseValue`](/react/api/reac
 Load multiple promises in parallel and suspend until all resolve:
 
 ```tsx
-import {
-  useSpendableBalance,
-  useBlock,
-  useLazyLoadQuery,
-  usePromises,
-} from "@reactive-dot/react";
+import { useSpendableBalance, useBlock, useLazyLoadQuery, usePromises } from "@reactive-dot/react";
 import { Binary } from "polkadot-api";
 import { Suspense } from "react";
 
@@ -151,10 +143,7 @@ function UserProfile({ address }: { address: string }) {
   const [balance, block, identity] = usePromises([
     useSpendableBalance(address, { use: false }),
     useBlock({ use: false }),
-    useLazyLoadQuery(
-      (query) => query.storage("Identity", "IdentityOf", [address]),
-      { use: false },
-    ),
+    useLazyLoadQuery((query) => query.storage("Identity", "IdentityOf", [address]), { use: false }),
   ]);
   // highlight-end
 
@@ -162,9 +151,7 @@ function UserProfile({ address }: { address: string }) {
     <div>
       <p>Balance: {balance.toLocaleString()}</p>
       <p>Block: {block.number.toLocaleString()}</p>
-      <p>
-        Identity: {identity ? Binary.toText(identity.info.display) : "None"}
-      </p>
+      <p>Identity: {identity ? Binary.toText(identity.info.display) : "None"}</p>
     </div>
   );
 }
@@ -317,19 +304,14 @@ function UserDashboard({ address }: { address: string }) {
   const [balance, block, identity] = usePromises([
     useSpendableBalance(address, { use: false }),
     useBlock({ use: false }),
-    useLazyLoadQuery(
-      (query) => query.storage("Identity", "IdentityOf", [address]),
-      { use: false },
-    ),
+    useLazyLoadQuery((query) => query.storage("Identity", "IdentityOf", [address]), { use: false }),
   ]);
 
   return (
     <div>
       <p>Balance: {balance.toLocaleString()}</p>
       <p>Block: #{block.number.toLocaleString()}</p>
-      <p>
-        Identity: {identity ? Binary.toText(identity.info.display) : "None"}
-      </p>
+      <p>Identity: {identity ? Binary.toText(identity.info.display) : "None"}</p>
     </div>
   );
 }

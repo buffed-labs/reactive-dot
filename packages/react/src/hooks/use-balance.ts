@@ -123,11 +123,7 @@ const spendableBalanceAtom = atomFamilyWithErrorCatcher(
                   ? existentialDepositPayload.observableAtom
                   : existentialDepositPayload.promiseAtom,
               ),
-              get(
-                asObservable
-                  ? accountPayload.observableAtom
-                  : accountPayload.promiseAtom,
-              ),
+              get(asObservable ? accountPayload.observableAtom : accountPayload.promiseAtom),
             ]),
             ([
               chainSpecData,
@@ -136,8 +132,7 @@ const spendableBalanceAtom = atomFamilyWithErrorCatcher(
                 data: { free, reserved, frozen },
               },
             ]) => {
-              const nativeTokenInfo =
-                nativeTokenInfoFromChainSpecData(chainSpecData);
+              const nativeTokenInfo = nativeTokenInfoFromChainSpecData(chainSpecData);
 
               return new DenominatedNumber(
                 spendableBalance({
@@ -172,12 +167,7 @@ const spendableBalancesAtom = atomFamilyWithErrorCatcher(
   ) => {
     const createAtom = (asObservable: boolean) => {
       const balanceAtom = (address: Address) =>
-        spendableBalanceAtom(
-          config,
-          chainId,
-          address,
-          includesExistentialDeposit,
-        );
+        spendableBalanceAtom(config, chainId, address, includesExistentialDeposit);
 
       return withErrorCatcher(
         atom((get) =>
@@ -199,10 +189,5 @@ const spendableBalancesAtom = atomFamilyWithErrorCatcher(
     };
   },
   (config, chainId, addresses, includesExistentialDeposit) =>
-    [
-      objectId(config),
-      chainId,
-      addresses.join(),
-      includesExistentialDeposit,
-    ].join(),
+    [objectId(config), chainId, addresses.join(), includesExistentialDeposit].join(),
 );

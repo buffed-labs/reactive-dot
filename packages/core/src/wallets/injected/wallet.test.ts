@@ -164,12 +164,8 @@ describe("accounts$", () => {
     await wallet.connect();
 
     expect(await firstValueFrom(wallet.accounts$)).toEqual(firstAccountSet);
-    expect(await firstValueFrom(wallet.accounts$.pipe(skip(1)))).toEqual(
-      secondAccountSet,
-    );
-    expect(await firstValueFrom(wallet.accounts$.pipe(skip(2)))).toEqual(
-      thirdAccountSet,
-    );
+    expect(await firstValueFrom(wallet.accounts$.pipe(skip(1)))).toEqual(secondAccountSet);
+    expect(await firstValueFrom(wallet.accounts$.pipe(skip(2)))).toEqual(thirdAccountSet);
   });
 });
 

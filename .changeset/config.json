@@ -2,10 +2,7 @@
   "$schema": "https://unpkg.com/@changesets/config@3.0.3/schema.json",
   "access": "public",
   "baseBranch": "main",
-  "changelog": [
-    "@changesets/changelog-github",
-    { "repo": "buffed-labs/reactive-dot" }
-  ],
+  "changelog": ["@changesets/changelog-github", { "repo": "buffed-labs/reactive-dot" }],
   "privatePackages": false,
   "linked": [["@reactive-dot/core", "@reactive-dot/react", "@reactive-dot/vue"]]
 }

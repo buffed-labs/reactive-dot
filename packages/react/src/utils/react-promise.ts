@@ -23,10 +23,6 @@ export class FulfilledPromise<T> extends Promise<T> {
   }
 
   [Symbol.hasInstance](instance: unknown) {
-    return (
-      instance instanceof Promise &&
-      "status" in instance &&
-      instance.status === "fulfilled"
-    );
+    return instance instanceof Promise && "status" in instance && instance.status === "fulfilled";
   }
 }

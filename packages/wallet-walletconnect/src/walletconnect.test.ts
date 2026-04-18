@@ -93,9 +93,7 @@ describe("initiateConnectionHandshake", () => {
     // @ts-expect-error this is actually possible
     mockProvider.client = undefined;
 
-    await expect(walletConnect.initiateConnectionHandshake()).rejects.toThrow(
-      BaseError,
-    );
+    await expect(walletConnect.initiateConnectionHandshake()).rejects.toThrow(BaseError);
   });
 
   it("should throw an error if neither chainIds nor optionalChainIds are provided", async () => {
@@ -111,9 +109,7 @@ describe("initiateConnectionHandshake", () => {
 
     await walletConnect.initialize();
 
-    await expect(walletConnect.initiateConnectionHandshake()).rejects.toThrow(
-      BaseError,
-    );
+    await expect(walletConnect.initiateConnectionHandshake()).rejects.toThrow(BaseError);
   });
 
   it("should call connect on the client with the correct parameters", async () => {
@@ -151,9 +147,7 @@ describe("initiateConnectionHandshake", () => {
 
     vi.mocked(mockProvider.client.connect).mockResolvedValue(mockConnectResult);
 
-    await expect(walletConnect.initiateConnectionHandshake()).rejects.toThrow(
-      BaseError,
-    );
+    await expect(walletConnect.initiateConnectionHandshake()).rejects.toThrow(BaseError);
   });
 
   it("should return the URI and a promise that resolves when the session is settled", async () => {
@@ -241,9 +235,7 @@ describe("connect", () => {
       uri: "test-uri",
       approval: vi
         .fn()
-        .mockReturnValue(
-          new Promise((resolve) => setTimeout(() => resolve({}), 1000)),
-        ),
+        .mockReturnValue(new Promise((resolve) => setTimeout(() => resolve({}), 1000))),
     };
 
     vi.mocked(mockProvider.client.connect).mockResolvedValue(mockConnectResult);
@@ -253,13 +245,11 @@ describe("connect", () => {
       closeModal: vi.fn(),
       subscribeModal: vi
         .fn()
-        .mockImplementation(
-          (callback: (args: { open: boolean }) => unknown) => {
-            // Simulate the modal closing immediately
-            callback({ open: false });
-            return () => {};
-          },
-        ),
+        .mockImplementation((callback: (args: { open: boolean }) => unknown) => {
+          // Simulate the modal closing immediately
+          callback({ open: false });
+          return () => {};
+        }),
     };
 
     vi.mocked(WalletConnectModal).mockImplementation(

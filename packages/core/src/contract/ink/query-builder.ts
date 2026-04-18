@@ -5,12 +5,7 @@ import type {
   InstructionResponseWithDirectives,
   MultiInstruction,
 } from "../../query-builder.js";
-import type {
-  ExcludeProperties,
-  Finality,
-  FlatHead,
-  StringKeyOf,
-} from "../../types.js";
+import type { ExcludeProperties, Finality, FlatHead, StringKeyOf } from "../../types.js";
 import type { UnwrapResult } from "./result.js";
 import type { GenericInkDescriptors } from "./types.js";
 
@@ -20,11 +15,7 @@ type StorageReadInstruction = BaseInstruction<"storage"> & {
   at: Finality | undefined;
 };
 
-type MultiStorageReadInstruction = MultiInstruction<
-  StorageReadInstruction,
-  "key",
-  "keys"
->;
+type MultiStorageReadInstruction = MultiInstruction<StorageReadInstruction, "key", "keys">;
 
 export type InferStorageReadInstructionPayload<
   TInstruction extends StorageReadInstruction | MultiStorageReadInstruction,
@@ -38,22 +29,14 @@ type MessageSendInstruction = BaseInstruction<"message"> & {
   at: Finality | undefined;
 };
 
-type MultiMessageSendInstruction = MultiInstruction<
-  MessageSendInstruction,
-  "body",
-  "bodies"
->;
+type MultiMessageSendInstruction = MultiInstruction<MessageSendInstruction, "body", "bodies">;
 
 export type InferMessageSendInstructionPayload<
   TInstruction extends MessageSendInstruction | MultiMessageSendInstruction,
   TDescriptor extends GenericInkDescriptors,
-> = UnwrapResult<
-  TDescriptor["__types"]["messages"][TInstruction["name"]]["response"]
->;
+> = UnwrapResult<TDescriptor["__types"]["messages"][TInstruction["name"]]["response"]>;
 
-export type SimpleInkQueryInstruction =
-  | StorageReadInstruction
-  | MessageSendInstruction;
+export type SimpleInkQueryInstruction = StorageReadInstruction | MessageSendInstruction;
 
 export type InkQueryInstruction =
   | SimpleInkQueryInstruction
@@ -103,9 +86,7 @@ export class InkQuery<
 > {
   readonly #instructions: TInstructions;
 
-  constructor(
-    instructions: TInstructions = [] as InkQueryInstruction[] as TInstructions,
-  ) {
+  constructor(instructions: TInstructions = [] as InkQueryInstruction[] as TInstructions) {
     this.#instructions = instructions;
   }
 
@@ -113,10 +94,7 @@ export class InkQuery<
     return Object.freeze(this.#instructions.slice()) as TInstructions;
   }
 
-  rootStorage<TDefer extends boolean = false>(options?: {
-    at?: Finality;
-    defer?: TDefer;
-  }) {
+  rootStorage<TDefer extends boolean = false>(options?: { at?: Finality; defer?: TDefer }) {
     return this.#append({
       type: "storage",
       path: "" as const,
@@ -127,17 +105,11 @@ export class InkQuery<
   }
 
   storage<
-    const TPath extends Exclude<
-      StringKeyOf<TDescriptor["__types"]["storage"]>,
-      ""
-    >,
+    const TPath extends Exclude<StringKeyOf<TDescriptor["__types"]["storage"]>, "">,
     const TDefer extends boolean = false,
   >(
     path: TPath,
-    ...[
-      key,
-      options,
-    ]: TDescriptor["__types"]["storage"][TPath]["key"] extends undefined
+    ...[key, options]: TDescriptor["__types"]["storage"][TPath]["key"] extends undefined
       ? [
           key?: TDescriptor["__types"]["storage"][TPath]["key"],
           options?: { at?: Finality; defer?: TDefer },
@@ -157,10 +129,7 @@ export class InkQuery<
   }
 
   storages<
-    const TPath extends Exclude<
-      StringKeyOf<TDescriptor["__types"]["storage"]>,
-      ""
-    >,
+    const TPath extends Exclude<StringKeyOf<TDescriptor["__types"]["storage"]>, "">,
     const TDefer extends boolean = false,
     const TStream extends boolean = false,
   >(
@@ -244,9 +213,7 @@ export class InkQuery<
     } satisfies MultiMessageSendInstruction);
   }
 
-  #append<const TInstruction extends InkQueryInstruction>(
-    instruction: TInstruction,
-  ) {
+  #append<const TInstruction extends InkQueryInstruction>(instruction: TInstruction) {
     return new InkQuery([...this.#instructions, instruction]) as InkQuery<
       TDescriptor,
       [...TInstructions, TInstruction]

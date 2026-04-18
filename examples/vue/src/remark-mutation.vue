@@ -13,8 +13,6 @@ const { execute, data, status } = useMutation((tx) =>
     <button @click="execute()">Hello</button>
     <p v-if="status === 'pending'">Submitting transaction...</p>
     <p v-else-if="status === 'error'">Error submitting transaction</p>
-    <p v-else-if="status === 'success'">
-      Submitted tx {{ data?.txHash }} is {{ data?.type }}
-    </p>
+    <p v-else-if="status === 'success'">Submitted tx {{ data?.txHash }} is {{ data?.type }}</p>
   </article>
 </template>

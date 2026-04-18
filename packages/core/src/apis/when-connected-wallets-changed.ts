@@ -10,7 +10,5 @@ import { switchMap } from "rxjs";
  * @returns The currently connected wallets observable
  */
 export function whenConnectedWalletsChanged(config: Config) {
-  return whenWalletsChanged(config).pipe(
-    switchMap((wallets) => getConnectedWallets(wallets)),
-  );
+  return whenWalletsChanged(config).pipe(switchMap((wallets) => getConnectedWallets(wallets)));
 }

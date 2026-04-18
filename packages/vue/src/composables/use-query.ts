@@ -1,20 +1,8 @@
-import type {
-  ChainComposableOptions,
-  InferQueryArgumentResult,
-  QueryArgument,
-} from "../types.js";
-import {
-  refresh,
-  type Refreshable,
-  refreshable,
-} from "../utils/refreshable.js";
+import type { ChainComposableOptions, InferQueryArgumentResult, QueryArgument } from "../types.js";
+import { refresh, type Refreshable, refreshable } from "../utils/refreshable.js";
 import { useAsyncData } from "./use-async-data.js";
 import { internal_useChainId } from "./use-chain-id.js";
-import {
-  lazyValue,
-  mapLazyValue,
-  useLazyValuesCache,
-} from "./use-lazy-value.js";
+import { lazyValue, mapLazyValue, useLazyValuesCache } from "./use-lazy-value.js";
 import { useTypedApiPromise } from "./use-typed-api.js";
 import { type Address, type ChainId, pending, Query } from "@reactive-dot/core";
 import {
@@ -101,9 +89,7 @@ export function queryObservable<
     const unwrappedQuery = unref(query);
 
     const queryValue =
-      typeof unwrappedQuery !== "function"
-        ? unwrappedQuery
-        : unwrappedQuery(new Query());
+      typeof unwrappedQuery !== "function" ? unwrappedQuery : unwrappedQuery(new Query());
 
     if (!queryValue) {
       return;
@@ -198,27 +184,18 @@ export function queryObservable<
                   }
                 })();
 
-                return maybeDeferInstructionResponse(
-                  response,
-                  instruction.directives.defer,
-                );
+                return maybeDeferInstructionResponse(response, instruction.directives.defer);
               }),
             );
 
           if (!("multi" in instruction)) {
-            return processContractInstructions(
-              instruction.address,
-              instruction.instructions,
-            );
+            return processContractInstructions(instruction.address, instruction.instructions);
           }
 
           const { addresses, ...rest } = instruction;
 
           return addresses.map((address) => {
-            const response = processContractInstructions(
-              address,
-              rest.instructions,
-            );
+            const response = processContractInstructions(address, rest.instructions);
 
             if (!rest.directives.stream) {
               return response;
@@ -228,9 +205,7 @@ export function queryObservable<
               refreshable(
                 computed(() =>
                   combineLatestNested(
-                    response as unknown as ComputedRef<
-                      Promise<unknown> | Observable<unknown>
-                    >[],
+                    response as unknown as ComputedRef<Promise<unknown> | Observable<unknown>>[],
                   ),
                 ),
                 () =>
@@ -248,9 +223,7 @@ export function queryObservable<
           return queryInstruction(instruction, chainId, typedApiPromise, cache);
         }
 
-        return (
-          "keys" in instruction ? instruction.keys : instruction.args
-        ).map((args) => {
+        return ("keys" in instruction ? instruction.keys : instruction.args).map((args) => {
           const { multi, ...rest } = instruction;
           const argsObj = "keys" in rest ? { keys: args } : { args };
 
@@ -284,9 +257,7 @@ export function queryObservable<
       }
 
       return combineLatestNested(
-        responses.value as unknown as ComputedRef<
-          Promise<unknown> | Observable<unknown>
-        >[],
+        responses.value as unknown as ComputedRef<Promise<unknown> | Observable<unknown>>[],
       ).pipe(map(flatHead));
     }),
     () => {
@@ -304,9 +275,7 @@ export function queryObservable<
         >[],
       );
     },
-  ) as Refreshable<
-    ComputedRef<Observable<InferQueryArgumentResult<TChainId, TQuery>>>
-  >;
+  ) as Refreshable<ComputedRef<Observable<InferQueryArgumentResult<TChainId, TQuery>>>>;
 }
 
 export const chainQueryCacheKeyPrefix = "chain-query";
@@ -326,25 +295,18 @@ export function queryInstruction(
     computed(() => [
       chainQueryCacheKeyPrefix,
       toValue(chainId),
-      stringify(
-        toValue(omit(instruction, ["directives" as keyof typeof instruction])),
-      ),
+      stringify(toValue(omit(instruction, ["directives" as keyof typeof instruction]))),
     ]),
     () => {
       switch (preflight(toValue(instruction))) {
         case "promise":
           return toValue(typedApiPromise).then(
-            (typedApi) =>
-              executeQuery(typedApi, toValue(instruction)) as Promise<unknown>,
+            (typedApi) => executeQuery(typedApi, toValue(instruction)) as Promise<unknown>,
           );
         case "observable":
           return from(toValue(typedApiPromise)).pipe(
             switchMap(
-              (typedApi) =>
-                executeQuery(
-                  typedApi,
-                  toValue(instruction),
-                ) as Observable<unknown>,
+              (typedApi) => executeQuery(typedApi, toValue(instruction)) as Observable<unknown>,
             ),
           );
       }
@@ -366,9 +328,7 @@ export const solidityQueryCacheKeyPrefix = "solidity-query";
 
 export type QueryContractInstructionMetadata = {
   chainId: ChainId;
-  instruction: Parameters<
-    Parameters<DataStore["invalidateContractQueries"]>[0]
-  >[0];
+  instruction: Parameters<Parameters<DataStore["invalidateContractQueries"]>[0]>[0];
 };
 
 export function queryContractInstruction(
@@ -388,9 +348,7 @@ export function queryContractInstruction(
           kind: contract instanceof InkContract ? "ink" : "solidity",
           contract,
           address: toValue(address),
-        } as Parameters<
-          Parameters<DataStore["invalidateContractQueries"]>[0]
-        >[0],
+        } as Parameters<Parameters<DataStore["invalidateContractQueries"]>[0]>[0],
       }) satisfies QueryContractInstructionMetadata,
   );
 
@@ -403,9 +361,7 @@ export function queryContractInstruction(
         toValue(chainId),
         contract.id,
         toValue(address),
-        stringify(
-          omit(instruction, ["directives" as keyof typeof instruction]),
-        ),
+        stringify(omit(instruction, ["directives" as keyof typeof instruction])),
       ]),
       async () =>
         queryInk(
@@ -425,9 +381,7 @@ export function queryContractInstruction(
         toValue(chainId),
         contract.id,
         toValue(address),
-        stringify(
-          omit(instruction, ["directives" as keyof typeof instruction]),
-        ),
+        stringify(omit(instruction, ["directives" as keyof typeof instruction])),
       ]),
       async () =>
         querySolidity(
@@ -460,14 +414,11 @@ function maybeDeferInstructionResponse<T>(
   return combineLatestNested(originalAtom).pipe(startWith(pending));
 }
 
-function asDeferred<T>(
-  promiseOrObservable: Refreshable<ComputedRef<Promise<T> | Observable<T>>>,
-) {
+function asDeferred<T>(promiseOrObservable: Refreshable<ComputedRef<Promise<T> | Observable<T>>>) {
   return mapLazyValue(promiseOrObservable, (promiseOrObservable) =>
-    (promiseOrObservable instanceof Promise
-      ? from(promiseOrObservable)
-      : promiseOrObservable
-    ).pipe(startWith(pending)),
+    (promiseOrObservable instanceof Promise ? from(promiseOrObservable) : promiseOrObservable).pipe(
+      startWith(pending),
+    ),
   );
 }
 

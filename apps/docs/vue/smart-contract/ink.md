@@ -90,14 +90,11 @@ import { myContract } from "./contracts.ts";
 import { useQuery } from "@reactive-dot/vue";
 
 const { data } = useQuery((builder) =>
-  builder.contracts(
-    myContract,
-    [CONTRACT_ADDRESS_1, CONTRACT_ADDRESS_2],
-    (builder) =>
-      builder
-        .storage("symbol")
-        .storages("balance", [ACCOUNT_1_ADDRESS, ACCOUNT_2_ADDRESS])
-        .messages("free_balance", [ACCOUNT_1_ADDRESS, ACCOUNT_2_ADDRESS]),
+  builder.contracts(myContract, [CONTRACT_ADDRESS_1, CONTRACT_ADDRESS_2], (builder) =>
+    builder
+      .storage("symbol")
+      .storages("balance", [ACCOUNT_1_ADDRESS, ACCOUNT_2_ADDRESS])
+      .messages("free_balance", [ACCOUNT_1_ADDRESS, ACCOUNT_2_ADDRESS]),
   ),
 );
 </script>

@@ -45,8 +45,6 @@ export function watchContractEvent<
       ),
     );
 
-    onWatcherCleanup(() =>
-      subscriptionPromise.then((subscription) => subscription.unsubscribe()),
-    );
+    onWatcherCleanup(() => subscriptionPromise.then((subscription) => subscription.unsubscribe()));
   });
 }

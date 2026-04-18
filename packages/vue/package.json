@@ -3,8 +3,8 @@
   "version": "0.72.0",
   "description": "Vue library for ReactiveDOT",
   "keywords": [
-    "substrate",
     "polkadot",
+    "substrate",
     "vue"
   ],
   "homepage": "https://reactivedot.dev/",
@@ -19,11 +19,11 @@
     "url": "https://github.com/buffed-labs/reactive-dot.git",
     "directory": "packages/vue"
   },
-  "type": "module",
   "files": [
     "src",
     "build"
   ],
+  "type": "module",
   "exports": "./build/index.js",
   "scripts": {
     "dev": "tsc --build --watch",

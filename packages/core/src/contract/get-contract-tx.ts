@@ -1,11 +1,6 @@
 import type { pasAh, passet } from "../../.papi/descriptors/dist/index.js";
 import { omitUndefinedProperties } from "../utils/omit-undefined-properties.js";
-import {
-  type PolkadotClient,
-  type SizedHex,
-  type SS58String,
-  type TypedApi,
-} from "polkadot-api";
+import { type PolkadotClient, type SizedHex, type SS58String, type TypedApi } from "polkadot-api";
 
 export async function getContractTx(
   client: PolkadotClient,
@@ -75,7 +70,6 @@ async function getPasAhApi(client: PolkadotClient) {
   const { pasAh } = await import("../../.papi/descriptors/dist/index.js");
 
   return (
-    pasAhApiCache.get(client) ??
-    pasAhApiCache.set(client, client.getTypedApi(pasAh)).get(client)!
+    pasAhApiCache.get(client) ?? pasAhApiCache.set(client, client.getTypedApi(pasAh)).get(client)!
   );
 }

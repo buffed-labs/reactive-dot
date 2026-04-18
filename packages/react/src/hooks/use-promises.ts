@@ -9,9 +9,7 @@ import { use } from "react";
  * @returns An array of resolved promise values
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function usePromises<T extends readonly Promise<any>[] | []>(
-  promises: T,
-) {
+export function usePromises<T extends readonly Promise<any>[] | []>(promises: T) {
   const results = [];
 
   for (const promise of promises) {

@@ -9,15 +9,11 @@ import { onWatcherCleanup, shallowReadonly, toValue, watchEffect } from "vue";
 /**
  * @internal
  */
-export function useAsyncData<
-  T extends Promise<unknown> | Observable<unknown> | Falsy,
->(future: ReturnType<typeof lazyValue<T>>) {
+export function useAsyncData<T extends Promise<unknown> | Observable<unknown> | Falsy>(
+  future: ReturnType<typeof lazyValue<T>>,
+) {
   type Value =
-    T extends Promise<infer Value>
-      ? Value
-      : T extends Observable<infer Value>
-        ? Value
-        : never;
+    T extends Promise<infer Value> ? Value : T extends Observable<infer Value> ? Value : never;
 
   const state = useAsyncState<Value>();
 
@@ -79,11 +75,7 @@ export function useAsyncData<
     refresh: () => refresh(future),
   } as AsyncState<Value>;
 
-  const {
-    promise: promiseLike,
-    resolve,
-    reject,
-  } = Promise.withResolvers<AsyncState<Value>>();
+  const { promise: promiseLike, resolve, reject } = Promise.withResolvers<AsyncState<Value>>();
 
   watchEffect(() => {
     switch (returnState.status.value) {
@@ -97,9 +89,7 @@ export function useAsyncData<
 
   return {
     ...returnState,
-    then: (
-      onfulfilled: () => unknown,
-      onrejected: (reason: unknown) => unknown,
-    ) => promiseLike.then(onfulfilled, onrejected),
+    then: (onfulfilled: () => unknown, onrejected: (reason: unknown) => unknown) =>
+      promiseLike.then(onfulfilled, onrejected),
   } as PromiseLikeAsyncState<Value>;
 }

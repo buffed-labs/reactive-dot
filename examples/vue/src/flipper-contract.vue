@@ -17,8 +17,6 @@ const { data: flipped, refresh } = useQuery((builder) =>
   <article>
     <h3>Flipper</h3>
     <p>Flipped: {{ flipped }}</p>
-    <AccountGuard
-      ><FlipperContractMutation :address="address" @flip="refresh()"
-    /></AccountGuard>
+    <AccountGuard><FlipperContractMutation :address="address" @flip="refresh()" /></AccountGuard>
   </article>
 </template>

@@ -10,10 +10,7 @@ import { stringify } from "@reactive-dot/core/internal.js";
 import { getAccounts } from "@reactive-dot/core/internal/actions.js";
 import { computed, type MaybeRefOrGetter, toValue } from "vue";
 
-type UseAccountsOptions = (
-  | ChainComposableOptions
-  | { chainId: MaybeRefOrGetter<null> }
-) & {
+type UseAccountsOptions = (ChainComposableOptions | { chainId: MaybeRefOrGetter<null> }) & {
   chainSpec?: MaybeRefOrGetter<ChainSpecData>;
 };
 
@@ -57,9 +54,7 @@ function useAccountsPromise(options?: UseAccountsOptions) {
       return getAccounts(
         connectedWalletsObservable.value,
         toValue(options?.chainSpec) ??
-          (safeChainId.value === undefined
-            ? undefined
-            : chainSpecPromise.value),
+          (safeChainId.value === undefined ? undefined : chainSpecPromise.value),
         undefined,
         includeEvmAccounts !== undefined ? { includeEvmAccounts } : undefined,
       );

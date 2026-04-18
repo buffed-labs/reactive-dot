@@ -1,17 +1,8 @@
 import { type Address, BaseError } from "@reactive-dot/core";
-import {
-  DeepLinkWallet,
-  type PolkadotSignerAccount,
-} from "@reactive-dot/core/wallets.js";
-import type {
-  WalletConnectModal,
-  WalletConnectModalConfig,
-} from "@walletconnect/modal";
+import { DeepLinkWallet, type PolkadotSignerAccount } from "@reactive-dot/core/wallets.js";
+import type { WalletConnectModal, WalletConnectModalConfig } from "@walletconnect/modal";
 import type { ISignClient, SessionTypes } from "@walletconnect/types";
-import type {
-  IUniversalProvider,
-  UniversalProviderOpts,
-} from "@walletconnect/universal-provider";
+import type { IUniversalProvider, UniversalProviderOpts } from "@walletconnect/universal-provider";
 import { getPolkadotSignerFromPjs } from "polkadot-api/pjs-signer";
 import { BehaviorSubject, map } from "rxjs";
 
@@ -28,9 +19,7 @@ export class WalletConnect extends DeepLinkWallet {
 
   readonly #optionalChainIds: string[];
 
-  readonly #session = new BehaviorSubject<SessionTypes.Struct | undefined>(
-    undefined,
-  );
+  readonly #session = new BehaviorSubject<SessionTypes.Struct | undefined>(undefined);
 
   #requestId = 0;
 
@@ -62,8 +51,7 @@ export class WalletConnect extends DeepLinkWallet {
   }
 
   async initialize() {
-    const { UniversalProvider } =
-      await import("@walletconnect/universal-provider");
+    const { UniversalProvider } = await import("@walletconnect/universal-provider");
 
     this.#provider ??= await UniversalProvider.init(this.#providerOptions);
 
@@ -72,9 +60,7 @@ export class WalletConnect extends DeepLinkWallet {
     }
   }
 
-  readonly connected$ = this.#session.pipe(
-    map((session) => session !== undefined),
-  );
+  readonly connected$ = this.#session.pipe(map((session) => session !== undefined));
 
   async initiateConnectionHandshake() {
     await this.initialize();
@@ -84,9 +70,7 @@ export class WalletConnect extends DeepLinkWallet {
     }
 
     if (this.#chainIds.length === 0 && this.#optionalChainIds.length === 0) {
-      throw new BaseError(
-        "Either chainIds or optionalChainIds must be provided",
-      );
+      throw new BaseError("Either chainIds or optionalChainIds must be provided");
     }
 
     const connectOptions: Parameters<ISignClient["connect"]>[0] = {};
@@ -111,8 +95,7 @@ export class WalletConnect extends DeepLinkWallet {
       };
     }
 
-    const { uri, approval } =
-      await this.#provider.client.connect(connectOptions);
+    const { uri, approval } = await this.#provider.client.connect(connectOptions);
 
     if (uri === undefined) {
       throw new BaseError("No URI provided by connection");
@@ -142,14 +125,12 @@ export class WalletConnect extends DeepLinkWallet {
     await modal.openModal({ uri });
 
     const modalClosePromise = new Promise<false>((resolve) => {
-      const unsubscribe = modal.subscribeModal(
-        (modalState: { open: boolean }) => {
-          if (!modalState.open) {
-            resolve(false);
-            unsubscribe();
-          }
-        },
-      );
+      const unsubscribe = modal.subscribeModal((modalState: { open: boolean }) => {
+        if (!modalState.open) {
+          resolve(false);
+          unsubscribe();
+        }
+      });
     });
 
     const connected = await Promise.race([connectedPromise, modalClosePromise]);
@@ -175,12 +156,7 @@ export class WalletConnect extends DeepLinkWallet {
       return Object.values(session.namespaces)
         .flatMap((namespace) => namespace.accounts)
         .map(
-          (account) =>
-            account.split(":") as [
-              chainType: string,
-              chainId: string,
-              address: Address,
-            ],
+          (account) => account.split(":") as [chainType: string, chainId: string, address: Address],
         )
         .map(
           ([chainType, chainId, address]): PolkadotSignerAccount => ({

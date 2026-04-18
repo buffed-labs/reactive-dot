@@ -1,9 +1,8 @@
 export class BaseError extends Error {
   static from<T>(error: T, message?: string) {
-    return new this(
-      message ?? (error instanceof Error ? error.message : undefined),
-      { cause: error },
-    );
+    return new this(message ?? (error instanceof Error ? error.message : undefined), {
+      cause: error,
+    });
   }
 }
 

@@ -28,11 +28,7 @@ export function whenAccountsChanged<TConfig extends Config>(
     options?.chainSpec ??
       (chainId === undefined
         ? undefined
-        : defer(() =>
-            getClient(config, { chainId }).then((client) =>
-              client.getChainSpecData(),
-            ),
-          )),
+        : defer(() => getClient(config, { chainId }).then((client) => client.getChainSpecData()))),
     undefined,
     config.includeEvmAccounts === undefined
       ? undefined

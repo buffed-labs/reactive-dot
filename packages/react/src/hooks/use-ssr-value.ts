@@ -8,9 +8,7 @@ import { useState, useEffect } from "react";
 export function useSsrValue<T>(clientValue: T, serverValue: T) {
   const enabled = useConfig().ssr ?? false;
 
-  const [currentValue, setCurrentValue] = useState(
-    enabled ? serverValue : clientValue,
-  );
+  const [currentValue, setCurrentValue] = useState(enabled ? serverValue : clientValue);
 
   useEffect(
     () => {

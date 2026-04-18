@@ -1,4 +1,1 @@
-export {
-  PolkadotVaultWallet,
-  type VaultRequest,
-} from "./polkadot-vault-wallet.js";
+export { PolkadotVaultWallet, type VaultRequest } from "./polkadot-vault-wallet.js";

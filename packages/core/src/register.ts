@@ -4,7 +4,5 @@ import type { Config } from "./config.js";
 export interface Register {}
 
 export type ResolvedRegister = {
-  config: Register extends { config: infer config extends Config }
-    ? config
-    : Config;
+  config: Register extends { config: infer config extends Config } ? config : Config;
 };

@@ -1,9 +1,4 @@
-import {
-  canRefresh,
-  refresh,
-  refreshable,
-  type Refreshable,
-} from "./refreshable.js";
+import { canRefresh, refresh, refreshable, type Refreshable } from "./refreshable.js";
 import { expect, it, test, vi } from "vitest";
 
 it("should call the refresh function when refresh is called", () => {

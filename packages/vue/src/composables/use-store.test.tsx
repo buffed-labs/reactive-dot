@@ -66,9 +66,7 @@ test("invalidateQuery", async () => {
   const { result } = withSetup(
     () =>
       [
-        useQuery((query) =>
-          query.runtimeApi("foo", "bar", []).runtimeApi("x", "y", []),
-        ),
+        useQuery((query) => query.runtimeApi("foo", "bar", []).runtimeApi("x", "y", [])),
         useStore(),
       ] as const,
     {
@@ -115,8 +113,7 @@ test("invalidateChainQueries", async () => {
 
   await act(() =>
     result[1].invalidateChainQueries(
-      (instruction) =>
-        instruction.type === "runtime-api" && instruction.api === "foo",
+      (instruction) => instruction.type === "runtime-api" && instruction.api === "foo",
     ),
   );
 
@@ -138,12 +135,8 @@ test("invalidateContractQueries", async () => {
       [
         useQuery((query) =>
           query
-            .contract(mockContract, "0x", (query) =>
-              query.message("foo").message("bar"),
-            )
-            .contract(mockContract, "0x1", (query) =>
-              query.message("foo").message("bar"),
-            ),
+            .contract(mockContract, "0x", (query) => query.message("foo").message("bar"))
+            .contract(mockContract, "0x1", (query) => query.message("foo").message("bar")),
         ),
         useStore(),
       ] as const,

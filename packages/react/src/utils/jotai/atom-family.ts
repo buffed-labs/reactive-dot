@@ -16,19 +16,13 @@ export function atomFamily<TArguments extends unknown[], TAtomType>(
   const _getKey =
     getKey ??
     ((...args: TArguments) =>
-      args.length === 0
-        ? empty
-        : args.length === 1
-          ? args[0]
-          : args.map(objectId).join());
+      args.length === 0 ? empty : args.length === 1 ? args[0] : args.map(objectId).join());
 
   return Object.assign(
     (...args: TArguments) => {
       const key = _getKey(...args);
 
-      return (
-        atoms.get(key) ?? atoms.set(key, initializeAtom(...args)).get(key)!
-      );
+      return atoms.get(key) ?? atoms.set(key, initializeAtom(...args)).get(key)!;
     },
     {
       delete: (...args: TArguments) => atoms.delete(_getKey(...args)),

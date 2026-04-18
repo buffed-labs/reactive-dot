@@ -1,10 +1,5 @@
 <script setup lang="ts">
-import {
-  useAccounts,
-  useNativeToken,
-  useQuery,
-  useSpendableBalance,
-} from "@reactive-dot/vue";
+import { useAccounts, useNativeToken, useQuery, useSpendableBalance } from "@reactive-dot/vue";
 import { computed } from "vue";
 
 const { data: nativeToken } = await useNativeToken();
@@ -14,9 +9,7 @@ const { data } = await useQuery((builder) =>
   builder.storage("System", "Number").storage("Balances", "TotalIssuance"),
 );
 
-const totalIssuance = computed(() =>
-  nativeToken.value.amountFromPlanck(data.value[1]),
-);
+const totalIssuance = computed(() => nativeToken.value.amountFromPlanck(data.value[1]));
 
 const { data: balances } = await useSpendableBalance(
   computed(() => accounts.value.map((account) => account.address)),

@@ -28,9 +28,7 @@ describe("usePromises", () => {
 
   it("should preserve promise order in results", async () => {
     const { result } = await act(() =>
-      renderHook(() =>
-        usePromises([stablePromise1, stablePromise2, stablePromise3]),
-      ),
+      renderHook(() => usePromises([stablePromise1, stablePromise2, stablePromise3])),
     );
 
     await act(() => Promise.resolve());
@@ -42,12 +40,7 @@ describe("usePromises", () => {
     const stablePromise4 = Promise.resolve(null);
     const { result } = await act(() =>
       renderHook(() =>
-        usePromises([
-          stablePromise1,
-          stablePromise2,
-          stablePromise3,
-          stablePromise4,
-        ]),
+        usePromises([stablePromise1, stablePromise2, stablePromise3, stablePromise4]),
       ),
     );
 

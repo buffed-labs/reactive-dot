@@ -65,8 +65,7 @@ it("filters the right events", async () => {
 
   const transferTopics = firstValidTopics(transferEventTopics);
   const bsTopics = firstValidTopics(bsEventTopics);
-  const dataHex =
-    "0x12342235243524123421342131324123421412341324124123412341234123412343231";
+  const dataHex = "0x12342235243524123421342131324123421412341324124123412341234123412343231";
   const dataBytes = Binary.fromHex(dataHex);
 
   eventSubject = from([
@@ -98,15 +97,9 @@ it("filters the right events", async () => {
     },
   ]);
 
-  const subscription = watchSolidityContractEvent(
-    mockApi,
-    mockContract,
-    "0x",
-    "Transfer",
-  );
+  const subscription = watchSolidityContractEvent(mockApi, mockContract, "0x", "Transfer");
 
-  expect(await lastValueFrom(subscription.pipe(toArray())))
-    .toMatchInlineSnapshot(`
+  expect(await lastValueFrom(subscription.pipe(toArray()))).toMatchInlineSnapshot(`
     [
       {
         "block": {},
@@ -139,8 +132,7 @@ it("filters by contract address", async () => {
   });
 
   const transferTopics = firstValidTopics(transferEventTopics);
-  const dataHex =
-    "0x12342235243524123421342131324123421412341324124123412341234123412343231";
+  const dataHex = "0x12342235243524123421342131324123421412341324124123412341234123412343231";
   const dataBytes = Binary.fromHex(dataHex);
 
   eventSubject = from([
@@ -172,15 +164,9 @@ it("filters by contract address", async () => {
     },
   ]);
 
-  const subscription = watchSolidityContractEvent(
-    mockApi,
-    mockContract,
-    "0x123456",
-    "Transfer",
-  );
+  const subscription = watchSolidityContractEvent(mockApi, mockContract, "0x123456", "Transfer");
 
-  expect(await lastValueFrom(subscription.pipe(toArray())))
-    .toMatchInlineSnapshot(`
+  expect(await lastValueFrom(subscription.pipe(toArray()))).toMatchInlineSnapshot(`
     [
       {
         "block": {},
@@ -207,10 +193,7 @@ it("filters by contract address", async () => {
 });
 
 function firstValidTopics(
-  topics: [
-    selector: `0x${string}`,
-    ...(`0x${string}` | readonly `0x${string}`[] | null)[],
-  ],
+  topics: [selector: `0x${string}`, ...(`0x${string}` | readonly `0x${string}`[] | null)[]],
 ) {
   return topics.map((topic) =>
     topic === null || typeof topic === "string"

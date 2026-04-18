@@ -27,9 +27,7 @@ describe("useNativeTokenAmountFromPlanck", () => {
   });
 
   it("should return conversion function when no planck value provided", async () => {
-    const { result } = await act(() =>
-      renderHook(() => useNativeTokenAmountFromPlanck()),
-    );
+    const { result } = await act(() => renderHook(() => useNativeTokenAmountFromPlanck()));
 
     expect(result.current).toBeTypeOf("function");
 
@@ -42,27 +40,21 @@ describe("useNativeTokenAmountFromPlanck", () => {
 
 describe("useNativeTokenAmountFromNumber", () => {
   it("should convert number value to DenominatedNumber", async () => {
-    const { result } = await act(() =>
-      renderHook(() => useNativeTokenAmountFromNumber(1)),
-    );
+    const { result } = await act(() => renderHook(() => useNativeTokenAmountFromNumber(1)));
 
     expect(result.current).toBeInstanceOf(DenominatedNumber);
     expect(result.current.toLocaleString("en-NZ")).toBe("DOT 1.00");
   });
 
   it("should convert string number to DenominatedNumber", async () => {
-    const { result } = await act(() =>
-      renderHook(() => useNativeTokenAmountFromNumber("1.5")),
-    );
+    const { result } = await act(() => renderHook(() => useNativeTokenAmountFromNumber("1.5")));
 
     expect(result.current).toBeInstanceOf(DenominatedNumber);
     expect(result.current.toLocaleString("en-NZ")).toBe("DOT 1.50");
   });
 
   it("should return conversion function when no number provided", async () => {
-    const { result } = await act(() =>
-      renderHook(() => useNativeTokenAmountFromNumber()),
-    );
+    const { result } = await act(() => renderHook(() => useNativeTokenAmountFromNumber()));
 
     expect(result.current).toBeTypeOf("function");
 

@@ -15,8 +15,6 @@ export class InjectedWalletProvider extends WalletProvider {
       );
     }
 
-    return getInjectedExtensions().map(
-      (name) => new InjectedWallet(name, this.options),
-    );
+    return getInjectedExtensions().map((name) => new InjectedWallet(name, this.options));
   }
 }

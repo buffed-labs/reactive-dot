@@ -37,9 +37,7 @@ export function useStore(): DataStore {
 
           for (const atom of atoms) {
             if ("write" in atom.promiseAtom) {
-              set(
-                atom.promiseAtom as WritableAtom<unknown, unknown[], unknown>,
-              );
+              set(atom.promiseAtom as WritableAtom<unknown, unknown[], unknown>);
             }
           }
         },
@@ -58,9 +56,7 @@ export function useStore(): DataStore {
               atom.__meta.config === config &&
               shouldInvalidate(atom.__meta.instruction)
             ) {
-              set(
-                atom.promiseAtom as WritableAtom<unknown, unknown[], unknown>,
-              );
+              set(atom.promiseAtom as WritableAtom<unknown, unknown[], unknown>);
             }
           }
         },
@@ -79,9 +75,7 @@ export function useStore(): DataStore {
               atom.__meta.config === config &&
               shouldInvalidate(atom.__meta.instruction)
             ) {
-              set(
-                atom.promiseAtom as WritableAtom<unknown, unknown[], unknown>,
-              );
+              set(atom.promiseAtom as WritableAtom<unknown, unknown[], unknown>);
             }
           }
         },

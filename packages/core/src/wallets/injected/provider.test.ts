@@ -21,10 +21,7 @@ it("should get wallets from extensions", async () => {
 
   expect(getInjectedExtensions).toHaveBeenCalled();
   expect(wallets).toEqual(
-    expect.arrayContaining([
-      expect.any(InjectedWallet),
-      expect.any(InjectedWallet),
-    ]),
+    expect.arrayContaining([expect.any(InjectedWallet), expect.any(InjectedWallet)]),
   );
 });
 

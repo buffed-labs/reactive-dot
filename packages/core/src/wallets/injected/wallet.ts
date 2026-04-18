@@ -1,18 +1,13 @@
 import { BaseError } from "../../errors.js";
 import type { PolkadotSignerAccount } from "../account.js";
 import { Wallet, type WalletOptions } from "../wallet.js";
-import type {
-  InjectedExtension,
-  InjectedPolkadotAccount,
-} from "polkadot-api/pjs-signer";
+import type { InjectedExtension, InjectedPolkadotAccount } from "polkadot-api/pjs-signer";
 import { BehaviorSubject, map, Observable, of, switchMap } from "rxjs";
 
 export type InjectedWalletOptions = WalletOptions & { originName?: string };
 
 export class InjectedWallet extends Wallet<InjectedWalletOptions, "connected"> {
-  readonly #extension$ = new BehaviorSubject<InjectedExtension | undefined>(
-    undefined,
-  );
+  readonly #extension$ = new BehaviorSubject<InjectedExtension | undefined>(undefined);
 
   get id() {
     return `injected/${this.name}`;
@@ -36,18 +31,13 @@ export class InjectedWallet extends Wallet<InjectedWalletOptions, "connected"> {
     }
   }
 
-  readonly connected$ = this.#extension$.pipe(
-    map((extension) => extension !== undefined),
-  );
+  readonly connected$ = this.#extension$.pipe(map((extension) => extension !== undefined));
 
   async connect() {
     if (this.#extension$.getValue() === undefined) {
-      const { connectInjectedExtension } =
-        await import("polkadot-api/pjs-signer");
+      const { connectInjectedExtension } = await import("polkadot-api/pjs-signer");
 
-      this.#extension$.next(
-        await connectInjectedExtension(this.name, this.options?.originName),
-      );
+      this.#extension$.next(await connectInjectedExtension(this.name, this.options?.originName));
       this.storage.setItem("connected", JSON.stringify(true));
     }
   }
@@ -66,11 +56,7 @@ export class InjectedWallet extends Wallet<InjectedWalletOptions, "connected"> {
 
       return new Observable<PolkadotSignerAccount[]>((subscriber) => {
         subscriber.next(this.#withIds(extension.getAccounts()));
-        subscriber.add(
-          extension.subscribe((accounts) =>
-            subscriber.next(this.#withIds(accounts)),
-          ),
-        );
+        subscriber.add(extension.subscribe((accounts) => subscriber.next(this.#withIds(accounts))));
       });
     }),
   );

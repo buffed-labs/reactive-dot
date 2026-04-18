@@ -56,9 +56,7 @@ it("sign submit and watch", async () => {
         wrapper: ({ children }) => (
           <ReactiveDotProvider config={defineConfig({ chains: {} })}>
             <ChainProvider chainId="test_chain">
-              <SignerProvider signer={{} as PolkadotSigner}>
-                {children}
-              </SignerProvider>
+              <SignerProvider signer={{} as PolkadotSigner}>{children}</SignerProvider>
             </ChainProvider>
           </ReactiveDotProvider>
         ),
@@ -101,9 +99,7 @@ it.each(["input", "variables"] as const)(`accepts %s`, async (key) => {
         wrapper: ({ children }) => (
           <ReactiveDotProvider config={defineConfig({ chains: {} })}>
             <ChainProvider chainId="test_chain">
-              <SignerProvider signer={{} as PolkadotSigner}>
-                {children}
-              </SignerProvider>
+              <SignerProvider signer={{} as PolkadotSigner}>{children}</SignerProvider>
             </ChainProvider>
           </ReactiveDotProvider>
         ),
@@ -140,9 +136,7 @@ it("catches error", async () => {
         wrapper: ({ children }) => (
           <ReactiveDotProvider config={defineConfig({ chains: {} })}>
             <ChainProvider chainId="test_chain">
-              <SignerProvider signer={{} as PolkadotSigner}>
-                {children}
-              </SignerProvider>
+              <SignerProvider signer={{} as PolkadotSigner}>{children}</SignerProvider>
             </ChainProvider>
           </ReactiveDotProvider>
         ),

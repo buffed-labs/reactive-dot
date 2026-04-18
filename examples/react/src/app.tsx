@@ -81,10 +81,7 @@ function Example({ chainName }: ExampleProps) {
 
   return (
     <div>
-      <ErrorBoundary
-        FallbackComponent={ErrorFallback}
-        onReset={() => resetQueryError()}
-      >
+      <ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => resetQueryError()}>
         <Suspense fallback={<h2>Loading {chainName}...</h2>}>
           <h2>{chainName}</h2>
           <Query />

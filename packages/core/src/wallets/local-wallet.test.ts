@@ -16,11 +16,7 @@ interface TestJsonAccount {
   address: string;
 }
 
-class TestLocalWallet extends LocalWallet<
-  TestAccount,
-  TestJsonAccount,
-  WalletOptions
-> {
+class TestLocalWallet extends LocalWallet<TestAccount, TestJsonAccount, WalletOptions> {
   override readonly id = "test-wallet";
   override readonly name = "Test Local Wallet";
 
@@ -77,10 +73,7 @@ describe("initialize", () => {
       { name: "Alice", address: "0x123" },
       { name: "Bob", address: "0x456" },
     ];
-    mockStorage.set(
-      "test/wallet/test-wallet/accounts",
-      JSON.stringify(accounts),
-    );
+    mockStorage.set("test/wallet/test-wallet/accounts", JSON.stringify(accounts));
 
     wallet.initialize();
 

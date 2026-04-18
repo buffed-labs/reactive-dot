@@ -36,17 +36,12 @@ export const mockedTypedApi = {
       test_storage: {
         watchValue: (key?: unknown) => {
           if (key === delayKey) {
-            return from(delay.promise).pipe(
-              map(() => ({ block: {}, value: "storage-value" })),
-            );
+            return from(delay.promise).pipe(map(() => ({ block: {}, value: "storage-value" })));
           }
 
           return of({
             block: {},
-            value:
-              key === undefined
-                ? "storage-value"
-                : `storage-value-${String(key)}`,
+            value: key === undefined ? "storage-value" : `storage-value-${String(key)}`,
           });
         },
       },
@@ -66,66 +61,40 @@ export const mockedTypedApi = {
 };
 
 export function mockInternals() {
-  vi.doMock(
-    "@reactive-dot/core/internal/actions.js",
-    async (getOriginalModule) => ({
-      ...(await getOriginalModule()),
-      getInkClient: vi.fn(),
-      queryInk: vi.fn(
-        async (
-          _,
-          __,
-          address: Address,
-          instruction: SimpleInkQueryInstruction,
-        ) => {
-          if (Object.values(instruction).includes(delayKey)) {
-            await delay.promise;
-          }
+  vi.doMock("@reactive-dot/core/internal/actions.js", async (getOriginalModule) => ({
+    ...(await getOriginalModule()),
+    getInkClient: vi.fn(),
+    queryInk: vi.fn(async (_, __, address: Address, instruction: SimpleInkQueryInstruction) => {
+      if (Object.values(instruction).includes(delayKey)) {
+        await delay.promise;
+      }
 
-          return [
-            `contract-${address}`,
-            Object.fromEntries(
-              Object.entries(instruction).filter(
-                ([_, value]) => value !== undefined,
-              ),
-            ),
-          ];
-        },
-      ),
-      querySolidity: vi.fn(
-        async (
-          _,
-          __,
-          address: Address,
-          instruction: SimpleSolidityQueryInstruction,
-        ) => {
-          if (Object.values(instruction.args).includes(delayKey)) {
-            await delay.promise;
-          }
-
-          return [
-            `contract-${address}`,
-            Object.fromEntries(
-              Object.entries(instruction).filter(
-                ([_, value]) => value !== undefined,
-              ),
-            ),
-          ];
-        },
-      ),
+      return [
+        `contract-${address}`,
+        Object.fromEntries(Object.entries(instruction).filter(([_, value]) => value !== undefined)),
+      ];
     }),
-  );
+    querySolidity: vi.fn(
+      async (_, __, address: Address, instruction: SimpleSolidityQueryInstruction) => {
+        if (Object.values(instruction.args).includes(delayKey)) {
+          await delay.promise;
+        }
+
+        return [
+          `contract-${address}`,
+          Object.fromEntries(
+            Object.entries(instruction).filter(([_, value]) => value !== undefined),
+          ),
+        ];
+      },
+    ),
+  }));
 }
 
-export const singleQuery = new Query().constant(
-  "test_pallet",
-  "test_constant",
-) as Query;
+export const singleQuery = new Query().constant("test_pallet", "test_constant") as Query;
 
-export const singleContractQuery = new Query().contract(
-  testInkContract,
-  "0x",
-  (query) => query.rootStorage(),
+export const singleContractQuery = new Query().contract(testInkContract, "0x", (query) =>
+  query.rootStorage(),
 ) as Query;
 
 export const multiQueries = new Query()
@@ -140,14 +109,8 @@ export const multiQueries = new Query()
       .storage("test_storage", "test_key")
       .storages("test_storage", ["test_key1", "test_key2"])
       .message("test_message", { data: "test-data" })
-      .messages("test_message", [
-        { data: "test-data1" },
-        { data: "test-data2" },
-      ])
-      .messages("test_message", [
-        { data: "test-data1" },
-        { data: "test-data2" },
-      ]),
+      .messages("test_message", [{ data: "test-data1" }, { data: "test-data2" }])
+      .messages("test_message", [{ data: "test-data1" }, { data: "test-data2" }]),
   )
   .contracts(testInkContract, ["0x", "0x1"], (query) =>
     query
@@ -155,20 +118,13 @@ export const multiQueries = new Query()
       .storage("test_storage", "test_key")
       .storages("test_storage", ["test_key1", "test_key2"])
       .message("test_message", { data: "test-data" })
-      .messages("test_message", [
-        { data: "test-data1" },
-        { data: "test-data2" },
-      ]),
+      .messages("test_message", [{ data: "test-data1" }, { data: "test-data2" }]),
   )
   .contract(testSolidityContract, "0x", (query) =>
-    query
-      .func("test_func", ["test-data"])
-      .funcs("test_func", [["test-data1"], ["test-data2"]]),
+    query.func("test_func", ["test-data"]).funcs("test_func", [["test-data1"], ["test-data2"]]),
   )
   .contracts(testSolidityContract, ["0x", "0x1"], (query) =>
-    query
-      .func("test_func", ["test-data"])
-      .funcs("test_func", [["test-data1"], ["test-data2"]]),
+    query.func("test_func", ["test-data"]).funcs("test_func", [["test-data1"], ["test-data2"]]),
   ) as Query;
 
 export const streamingQueries = new Query()
@@ -197,30 +153,18 @@ export const streamingQueries = new Query()
         stream: true,
       }),
   )
-  .contract(
-    testInkContract,
-    "0x",
-    (query) => query.storages("test_storage", [delayKey]),
-    { defer: true },
-  )
+  .contract(testInkContract, "0x", (query) => query.storages("test_storage", [delayKey]), {
+    defer: true,
+  })
+  .contracts(testInkContract, ["0x", "0x"], (query) => query.storages("test_storage", [delayKey]), {
+    defer: true,
+  })
+  .contracts(testInkContract, ["0x", "0x"], (query) => query.storages("test_storage", [delayKey]), {
+    stream: true,
+  })
   .contracts(
     testInkContract,
     ["0x", "0x"],
-    (query) => query.storages("test_storage", [delayKey]),
-    { defer: true },
-  )
-  .contracts(
-    testInkContract,
-    ["0x", "0x"],
-    (query) => query.storages("test_storage", [delayKey]),
-    { stream: true },
-  )
-  .contracts(
-    testInkContract,
-    ["0x", "0x"],
-    (query) =>
-      query
-        .storages("test_storage", [delayKey])
-        .storages("test_storage", [delayKey]),
+    (query) => query.storages("test_storage", [delayKey]).storages("test_storage", [delayKey]),
     { stream: true },
   ) as Query;

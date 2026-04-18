@@ -12,35 +12,26 @@ type AccountStore<T extends Pick<PolkadotSignerAccount, "id">> = {
   values(): Iterable<T>;
 };
 
-const finalizationRegistry = new FinalizationRegistry(
-  (subscription: Subscription) => subscription.unsubscribe(),
+const finalizationRegistry = new FinalizationRegistry((subscription: Subscription) =>
+  subscription.unsubscribe(),
 );
 
 /**
  * @experimental
  */
 export abstract class LocalWallet<
-  TAccount extends Pick<PolkadotSignerAccount, "id"> = Pick<
-    PolkadotSignerAccount,
-    "id"
-  >,
+  TAccount extends Pick<PolkadotSignerAccount, "id"> = Pick<PolkadotSignerAccount, "id">,
   TJsonAccount = TAccount,
   TOptions extends WalletOptions = WalletOptions,
   TStorageKey extends string = string,
 > extends Wallet<TOptions, "accounts" | TStorageKey> {
-  protected abstract accountId(
-    account: Omit<TAccount, "id">,
-  ): PolkadotSignerAccount["id"];
+  protected abstract accountId(account: Omit<TAccount, "id">): PolkadotSignerAccount["id"];
 
   protected abstract accountToJson(account: Omit<TAccount, "id">): TJsonAccount;
 
-  protected abstract accountFromJson(
-    jsonAccount: TJsonAccount,
-  ): Omit<TAccount, "id">;
+  protected abstract accountFromJson(jsonAccount: TJsonAccount): Omit<TAccount, "id">;
 
-  protected localAccounts$: BehaviorSubject<TAccount[]> = new BehaviorSubject<
-    TAccount[]
-  >([]);
+  protected localAccounts$: BehaviorSubject<TAccount[]> = new BehaviorSubject<TAccount[]>([]);
 
   constructor(options?: TOptions) {
     super(options);
@@ -52,9 +43,7 @@ export abstract class LocalWallet<
         .subscribe((accounts) =>
           this.storage.setItem(
             "accounts",
-            JSON.stringify(
-              accounts.map(({ id, ...account }) => this.accountToJson(account)),
-            ),
+            JSON.stringify(accounts.map(({ id, ...account }) => this.accountToJson(account))),
           ),
         ),
     );
@@ -88,18 +77,14 @@ export abstract class LocalWallet<
       this.localAccounts$.next([]);
     },
     delete: (identifiable: string | { id: string }) => {
-      const id =
-        typeof identifiable === "string" ? identifiable : identifiable.id;
+      const id = typeof identifiable === "string" ? identifiable : identifiable.id;
 
       this.localAccounts$.next(
-        this.localAccounts$.value.filter(
-          (storedAccount) => storedAccount.id !== id,
-        ),
+        this.localAccounts$.value.filter((storedAccount) => storedAccount.id !== id),
       );
     },
     has: (identifiable: string | { id: string }) => {
-      const id =
-        typeof identifiable === "string" ? identifiable : identifiable.id;
+      const id = typeof identifiable === "string" ? identifiable : identifiable.id;
 
       return this.localAccounts$.value.some((account) => account.id === id);
     },

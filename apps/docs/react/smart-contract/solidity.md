@@ -80,9 +80,7 @@ function Component() {
 
   const results = useLazyLoadQuery((builder) =>
     builder.contracts(myContract, contracts, (builder) =>
-      builder
-        .func("totalSupply")
-        .funcs("balanceOf", [[ACCOUNT_1_ADDRESS], [ACCOUNT_2_ADDRESS]]),
+      builder.func("totalSupply").funcs("balanceOf", [[ACCOUNT_1_ADDRESS], [ACCOUNT_2_ADDRESS]]),
     ),
   );
 
@@ -105,12 +103,7 @@ function Component() {
 The [`useContractMutation`](/react/api/react/functions/useContractMutation) hook allows you to mutate data on a smart contract, from a payable or nonpayable (write) message.
 
 ```tsx title="WriteComponent.tsx"
-import {
-  idle,
-  MutationError,
-  pending,
-  defineContract,
-} from "@reactive-dot/core";
+import { idle, MutationError, pending, defineContract } from "@reactive-dot/core";
 import { useContractMutation } from "@reactive-dot/react";
 
 const myContract = defineContract({
@@ -149,8 +142,7 @@ function Component() {
 
             return (
               <p>
-                Submitted tx with hash: {status.txHash}, current state:{" "}
-                {status.type}
+                Submitted tx with hash: {status.txHash}, current state: {status.type}
               </p>
             );
         }
@@ -185,17 +177,12 @@ const myContract = defineContract({
 });
 
 function Component() {
-  useContractEventListener(
-    myContract,
-    CONTRACT_ADDRESS,
-    "Transfer",
-    (event) => {
-      console.log("block", event.block.number);
-      console.log("from", event.data.from);
-      console.log("to", event.data.to);
-      console.log("value", event.data.value);
-    },
-  );
+  useContractEventListener(myContract, CONTRACT_ADDRESS, "Transfer", (event) => {
+    console.log("block", event.block.number);
+    console.log("from", event.data.from);
+    console.log("to", event.data.to);
+    console.log("value", event.data.value);
+  });
 
   return null;
 }

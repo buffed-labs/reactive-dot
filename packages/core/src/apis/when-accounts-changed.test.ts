@@ -22,16 +22,11 @@ it("fetches wallets", async () => {
 
   whenAccountsChanged(defineConfig({ chains: {}, wallets: [wallet] }));
 
-  expect(getAccounts).toHaveBeenCalledWith(
-    expect.any(Observable),
-    undefined,
-    undefined,
-    undefined,
-  );
+  expect(getAccounts).toHaveBeenCalledWith(expect.any(Observable), undefined, undefined, undefined);
 
-  expect(
-    lastValueFrom(toObservable(vi.mocked(getAccounts).mock.calls[0]![0])),
-  ).resolves.toEqual([wallet]);
+  expect(lastValueFrom(toObservable(vi.mocked(getAccounts).mock.calls[0]![0]))).resolves.toEqual([
+    wallet,
+  ]);
 });
 
 it("fetches wallets with chain-spec", () => {
@@ -45,10 +40,9 @@ it("fetches wallets with chain-spec", () => {
 
   const wallet = new MockWallet();
 
-  whenAccountsChanged(
-    defineConfig({ chains: { test: {} as never }, wallets: [wallet] }),
-    { chainId: "test" },
-  );
+  whenAccountsChanged(defineConfig({ chains: { test: {} as never }, wallets: [wallet] }), {
+    chainId: "test",
+  });
 
   expect(getAccounts).toHaveBeenCalledWith(
     expect.any(Observable),
@@ -57,9 +51,7 @@ it("fetches wallets with chain-spec", () => {
     undefined,
   );
 
-  expect(
-    lastValueFrom(toObservable(vi.mocked(getAccounts).mock.calls[0]![1])),
-  ).resolves.toEqual({
+  expect(lastValueFrom(toObservable(vi.mocked(getAccounts).mock.calls[0]![1]))).resolves.toEqual({
     name: "Polkadot",
     genesisHash: "0x",
     properties: {},
@@ -78,27 +70,17 @@ it("uses the provided chainSpec when supplied", async () => {
     chainSpec,
   });
 
-  expect(getAccounts).toHaveBeenCalledWith(
-    expect.any(Observable),
-    chainSpec,
-    undefined,
-    undefined,
-  );
+  expect(getAccounts).toHaveBeenCalledWith(expect.any(Observable), chainSpec, undefined, undefined);
 });
 
 it("fetches wallets with EVM accounts", () => {
   const wallet = new MockWallet();
 
-  whenAccountsChanged(
-    defineConfig({ chains: {}, wallets: [wallet], includeEvmAccounts: true }),
-  );
+  whenAccountsChanged(defineConfig({ chains: {}, wallets: [wallet], includeEvmAccounts: true }));
 
-  expect(getAccounts).toHaveBeenCalledWith(
-    expect.any(Observable),
-    undefined,
-    undefined,
-    { includeEvmAccounts: true },
-  );
+  expect(getAccounts).toHaveBeenCalledWith(expect.any(Observable), undefined, undefined, {
+    includeEvmAccounts: true,
+  });
 });
 
 class MockWallet extends Wallet {

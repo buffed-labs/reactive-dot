@@ -1,3 +1,0 @@
-{
-  "plugins": ["@trivago/prettier-plugin-sort-imports"]
-}

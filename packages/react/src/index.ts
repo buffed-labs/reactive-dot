@@ -7,10 +7,7 @@ export { ReactiveDotProvider } from "./contexts/provider.js";
 export { QueryOptionsProvider } from "./contexts/query-options.js";
 export { SignerProvider } from "./contexts/signer.js";
 export { useAccounts } from "./hooks/use-accounts.js";
-export {
-  useSpendableBalance,
-  useSpendableBalances,
-} from "./hooks/use-balance.js";
+export { useSpendableBalance, useSpendableBalances } from "./hooks/use-balance.js";
 export { useBlock } from "./hooks/use-block.js";
 export { useChainId, useChainIds } from "./hooks/use-chain-id.js";
 export { useChainSpecData } from "./hooks/use-chain-spec-data.js";
@@ -18,10 +15,7 @@ export { useClient } from "./hooks/use-client.js";
 export { useConfig } from "./hooks/use-config.js";
 export { useContractEventListener } from "./hooks/use-contract-event-listener.js";
 export { useContractMutation } from "./hooks/use-contract-mutation.js";
-export {
-  useMutationEffect,
-  useMutationListener,
-} from "./hooks/use-mutation-listener.js";
+export { useMutationEffect, useMutationListener } from "./hooks/use-mutation-listener.js";
 export { useMutation } from "./hooks/use-mutation.js";
 export {
   useNativeTokenAmountFromNumber,
@@ -32,10 +26,7 @@ export { usePromises } from "./hooks/use-promises.js";
 export { useQueryErrorResetter } from "./hooks/use-query-error-resetter.js";
 export { useQueryLoader } from "./hooks/use-query-loader.js";
 export { useQueryRefresher } from "./hooks/use-query-refresher.js";
-export {
-  useLazyLoadQuery,
-  useLazyLoadQueryWithRefresh,
-} from "./hooks/use-query.js";
+export { useLazyLoadQuery, useLazyLoadQueryWithRefresh } from "./hooks/use-query.js";
 export { useSigner } from "./hooks/use-signer.js";
 export { useStore } from "./hooks/use-store.js";
 export { useTypedApi } from "./hooks/use-typed-api.js";

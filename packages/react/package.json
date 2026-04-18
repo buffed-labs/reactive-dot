@@ -3,9 +3,9 @@
   "version": "0.72.0",
   "description": "React library for ReactiveDOT",
   "keywords": [
-    "substrate",
     "polkadot",
-    "react"
+    "react",
+    "substrate"
   ],
   "homepage": "https://reactivedot.dev/",
   "bugs": {
@@ -19,11 +19,11 @@
     "url": "https://github.com/buffed-labs/reactive-dot.git",
     "directory": "packages/react"
   },
-  "type": "module",
   "files": [
     "src",
     "build"
   ],
+  "type": "module",
   "exports": "./build/index.js",
   "scripts": {
     "dev": "tsc --build --watch",

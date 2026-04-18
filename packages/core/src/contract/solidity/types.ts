@@ -16,19 +16,10 @@ export type SolidityTxBody<
     "inputs"
   >["length"] extends 0
     ?
-        | AbiParametersToPrimitiveTypes<
-            ExtractAbiFunction<TAbi, TFunctionName>["inputs"],
-            "inputs"
-          >
+        | AbiParametersToPrimitiveTypes<ExtractAbiFunction<TAbi, TFunctionName>["inputs"], "inputs">
         | undefined
-    : AbiParametersToPrimitiveTypes<
-        ExtractAbiFunction<TAbi, TFunctionName>["inputs"],
-        "inputs"
-      >;
-  value: ExtractAbiFunction<
-    TAbi,
-    TFunctionName
-  >["stateMutability"] extends "payable"
+    : AbiParametersToPrimitiveTypes<ExtractAbiFunction<TAbi, TFunctionName>["inputs"], "inputs">;
+  value: ExtractAbiFunction<TAbi, TFunctionName>["stateMutability"] extends "payable"
     ? bigint
     : undefined;
 }>;

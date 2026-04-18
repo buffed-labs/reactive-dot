@@ -5,9 +5,7 @@ import { type PropsWithChildren } from "react";
 export function AccountGuard({ children }: PropsWithChildren) {
   return (
     <AccountSelect>
-      {(selectedAccount) => (
-        <SignerProvider signer={selectedAccount}>{children}</SignerProvider>
-      )}
+      {(selectedAccount) => <SignerProvider signer={selectedAccount}>{children}</SignerProvider>}
     </AccountSelect>
   );
 }

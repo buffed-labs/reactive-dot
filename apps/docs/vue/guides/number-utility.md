@@ -59,9 +59,7 @@ import { useNativeToken } from "@reactive-dot/vue";
 
 const { data: nativeToken } = await useNativeToken();
 
-console.log(
-  nativeToken.value.amountFromPlanck(10_000_000_000n).toLocaleString("en-NZ"),
-); // DOT 1.00
+console.log(nativeToken.value.amountFromPlanck(10_000_000_000n).toLocaleString("en-NZ")); // DOT 1.00
 // Or
 console.log(nativeToken.value.amountFromNumber(1).toLocaleString("en-NZ")); // DOT 1.00
 </script>
@@ -85,8 +83,6 @@ const { data: spendableBalances } = await useSpendableBalances([
   ACCOUNT_ADDRESS_3,
 ]);
 
-console.log(
-  spendableBalances.map((balance) => balance.toLocaleString("en-NZ")),
-); // ["DOT 10.00", "DOT 20.00", "DOT 30.00"]
+console.log(spendableBalances.map((balance) => balance.toLocaleString("en-NZ"))); // ["DOT 10.00", "DOT 20.00", "DOT 30.00"]
 </script>
 ```

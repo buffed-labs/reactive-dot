@@ -12,13 +12,9 @@ import { useEffect, useState } from "react";
  */
 export function usePromiseValue<TValue, TFallback = typeof pending>(
   promise: Promise<TValue>,
-  fallback: (
-    prev?: TValue | TFallback,
-  ) => TValue | TFallback = defaultFallback as () => TFallback,
+  fallback: (prev?: TValue | TFallback) => TValue | TFallback = defaultFallback as () => TFallback,
 ) {
-  const [value, setValue] = useState<TValue | TFallback | ErrorContainer>(() =>
-    fallback(),
-  );
+  const [value, setValue] = useState<TValue | TFallback | ErrorContainer>(() => fallback());
 
   if (value instanceof ErrorContainer) {
     throw value.error;

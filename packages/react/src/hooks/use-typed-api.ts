@@ -6,10 +6,7 @@ import { clientAtom } from "./use-client.js";
 import { useConfig } from "./use-config.js";
 import { useStablePromise } from "./use-stable-promise.js";
 import { BaseError, type ChainId, type Config } from "@reactive-dot/core";
-import {
-  UnsafeDescriptor,
-  type ChainDescriptorOf,
-} from "@reactive-dot/core/internal.js";
+import { UnsafeDescriptor, type ChainDescriptorOf } from "@reactive-dot/core/internal.js";
 import { atom } from "jotai";
 import { soon } from "jotai-eager";
 import type { ChainDefinition, TypedApi } from "polkadot-api";
@@ -26,9 +23,7 @@ export function useTypedApi<TChainId extends ChainId | undefined>(
   options?: ChainHookOptions<TChainId>,
 ) {
   return use(
-    useStablePromise(
-      useAtomValue(typedApiAtom(useConfig(), internal_useChainId(options))),
-    ),
+    useStablePromise(useAtomValue(typedApiAtom(useConfig(), internal_useChainId(options)))),
   ) as TypedApi<ChainDescriptorOf<TChainId>>;
 }
 
@@ -50,9 +45,7 @@ export const typedApiAtom = atomFamilyWithErrorCatcher(
           (client) =>
             (chainConfig.descriptor instanceof UnsafeDescriptor
               ? client.getUnsafeApi()
-              : client.getTypedApi(
-                  chainConfig.descriptor,
-                )) as TypedApi<ChainDefinition>,
+              : client.getTypedApi(chainConfig.descriptor)) as TypedApi<ChainDefinition>,
         );
       }),
     ),

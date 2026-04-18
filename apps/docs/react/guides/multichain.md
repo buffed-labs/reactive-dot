@@ -120,9 +120,7 @@ function Component() {
   // Since the `Bounties` pallet doesn't exist on Westend, this will:
   // 1. Trigger a TypeScript error
   // 2. Cause a runtime error if Westend is selected
-  const bountyCount = useLazyLoadQuery((builder) =>
-    builder.storage("Bounties", "BountyCount"),
-  );
+  const bountyCount = useLazyLoadQuery((builder) => builder.storage("Bounties", "BountyCount"));
 
   // ...
 }
@@ -132,10 +130,9 @@ To resolve this, you can explicitly specify the chain to query, which will overr
 
 ```tsx
 function Component() {
-  const bountyCount = useLazyLoadQuery(
-    (builder) => builder.storage("Bounties", "BountyCount"),
-    { chainId: "polkadot" },
-  );
+  const bountyCount = useLazyLoadQuery((builder) => builder.storage("Bounties", "BountyCount"), {
+    chainId: "polkadot",
+  });
 
   // ...
 }
@@ -159,15 +156,12 @@ function useBountiesChainId() {
 }
 
 function BountiesPalletRequiredComponent() {
-  const bountyCount = useLazyLoadQuery(
-    (builder) => builder.storage("Bounties", "BountyCount"),
-    {
-      // This will:
-      // 1. Throw an error if the chain ID does not support bounties
-      // 2. Restrict the possible chain types for better intellisense
-      chainId: useBountiesChainId(),
-    },
-  );
+  const bountyCount = useLazyLoadQuery((builder) => builder.storage("Bounties", "BountyCount"), {
+    // This will:
+    // 1. Throw an error if the chain ID does not support bounties
+    // 2. Restrict the possible chain types for better intellisense
+    chainId: useBountiesChainId(),
+  });
 
   // ...
 }

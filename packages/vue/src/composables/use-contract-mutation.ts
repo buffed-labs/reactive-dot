@@ -1,8 +1,5 @@
 import { mutationEventKey } from "../keys.js";
-import type {
-  BackwardCompatInputOptions,
-  ChainComposableOptions,
-} from "../types.js";
+import type { BackwardCompatInputOptions, ChainComposableOptions } from "../types.js";
 import { tapTx } from "../utils/tap-tx.js";
 import { useAsyncAction } from "./use-async-action.js";
 import { useChainId } from "./use-chain-id.js";
@@ -20,10 +17,7 @@ import {
   type SolidityMutationBuilder,
   type TxOptionsOf,
 } from "@reactive-dot/core/internal.js";
-import {
-  getInkClient,
-  getInkContractTx,
-} from "@reactive-dot/core/internal/actions.js";
+import { getInkClient, getInkContractTx } from "@reactive-dot/core/internal/actions.js";
 import { from, switchMap } from "rxjs";
 import { inject, toValue } from "vue";
 
@@ -92,10 +86,7 @@ export function useContractMutation<
         ...[body]
       ) =>
         getInkContractTx(
-          ...(await Promise.all([
-            await toValue(clientPromise),
-            await getInkClient(contract),
-          ])),
+          ...(await Promise.all([await toValue(clientPromise), await getInkClient(contract)])),
           signer,
           address,
           message,
@@ -121,16 +112,10 @@ export function useContractMutation<
         Promise.resolve(
           action(
             // @ts-expect-error TODO: fix this
-            (
-              ...args: Parameters<InkMutationBuilder | SolidityMutationBuilder>
-            ) =>
+            (...args: Parameters<InkMutationBuilder | SolidityMutationBuilder>) =>
               args[0] instanceof InkContract
-                ? inkMutationBuilder(
-                    ...(args as Parameters<InkMutationBuilder>),
-                  )
-                : solidityMutationBuilder(
-                    ...(args as Parameters<SolidityMutationBuilder>),
-                  ),
+                ? inkMutationBuilder(...(args as Parameters<InkMutationBuilder>))
+                : solidityMutationBuilder(...(args as Parameters<SolidityMutationBuilder>)),
             submitOptions === undefined
               ? undefined
               : "input" in submitOptions
@@ -143,10 +128,7 @@ export function useContractMutation<
       ).pipe(
         switchMap((tx) =>
           tx
-            .signSubmitAndWatch(
-              signer,
-              submitOptions?.txOptions ?? toValue(options?.txOptions),
-            )
+            .signSubmitAndWatch(signer, submitOptions?.txOptions ?? toValue(options?.txOptions))
             .pipe(tapTx(mutationEventRef, chainId.value, tx)),
         ),
       );

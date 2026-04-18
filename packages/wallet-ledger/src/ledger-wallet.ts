@@ -84,9 +84,7 @@ export class LedgerWallet extends LocalWallet<
     ),
   );
 
-  readonly connected$ = this.accounts$.pipe(
-    map((accounts) => accounts.length > 0),
-  );
+  readonly connected$ = this.accounts$.pipe(map((accounts) => accounts.length > 0));
 
   #ledgerSigner?: LedgerSigner;
 

@@ -1,10 +1,7 @@
 import { useAsyncData } from "./use-async-data.js";
 import { useConfig } from "./use-config.js";
 import { useLazyValue } from "./use-lazy-value.js";
-import {
-  aggregateWallets,
-  getConnectedWallets,
-} from "@reactive-dot/core/internal/actions.js";
+import { aggregateWallets, getConnectedWallets } from "@reactive-dot/core/internal/actions.js";
 
 /**
  * Composable for getting all available wallets.
@@ -21,9 +18,7 @@ export function useWallets() {
 export function useWalletsPromise() {
   const config = useConfig();
 
-  return useLazyValue(["wallets"], () =>
-    aggregateWallets(config.value.wallets ?? []),
-  );
+  return useLazyValue(["wallets"], () => aggregateWallets(config.value.wallets ?? []));
 }
 
 /**
@@ -39,7 +34,5 @@ export function useConnectedWallets() {
  * @internal
  */
 export function useConnectedWalletsObservable() {
-  return useLazyValue(["connected-wallets"], () =>
-    getConnectedWallets(useWalletsPromise().value),
-  );
+  return useLazyValue(["connected-wallets"], () => getConnectedWallets(useWalletsPromise().value));
 }

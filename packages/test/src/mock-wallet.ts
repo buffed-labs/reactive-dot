@@ -1,7 +1,4 @@
-import {
-  type PolkadotSignerAccount,
-  Wallet,
-} from "@reactive-dot/core/wallets.js";
+import { type PolkadotSignerAccount, Wallet } from "@reactive-dot/core/wallets.js";
 import { BehaviorSubject, delay, map } from "rxjs";
 
 export class MockWallet extends Wallet {

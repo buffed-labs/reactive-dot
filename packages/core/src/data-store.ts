@@ -29,9 +29,7 @@ export interface DataStore {
    * @experimental
    */
   invalidateChainQueries<TChainId extends ChainId | undefined>(
-    shouldInvalidate: (
-      instruction: MappedOmit<SimpleQueryInstruction, "directives">,
-    ) => boolean,
+    shouldInvalidate: (instruction: MappedOmit<SimpleQueryInstruction, "directives">) => boolean,
     options?: {
       chainId?: TChainId;
     },

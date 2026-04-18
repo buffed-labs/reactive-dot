@@ -12,14 +12,10 @@ export function getConnectedWallets(wallets: MaybeAsync<Wallet[]>) {
 
       return combineLatest(
         wallets.map((wallet) =>
-          wallet.connected$.pipe(
-            map((connected) => [wallet, connected] as const),
-          ),
+          wallet.connected$.pipe(map((connected) => [wallet, connected] as const)),
         ),
       );
     }),
-    map((wallets) =>
-      wallets.filter(([_, connected]) => connected).map(([wallet]) => wallet),
-    ),
+    map((wallets) => wallets.filter(([_, connected]) => connected).map(([wallet]) => wallet)),
   );
 }

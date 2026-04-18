@@ -87,14 +87,11 @@ import { useLazyLoadQuery } from "@reactive-dot/react";
 
 function Component() {
   const results = useLazyLoadQuery((builder) =>
-    builder.contracts(
-      myContract,
-      [CONTRACT_ADDRESS_1, CONTRACT_ADDRESS_2],
-      (builder) =>
-        builder
-          .storage("symbol")
-          .storages("balance", [ACCOUNT_1_ADDRESS, ACCOUNT_2_ADDRESS])
-          .messages("free_balance", [ACCOUNT_1_ADDRESS, ACCOUNT_2_ADDRESS]),
+    builder.contracts(myContract, [CONTRACT_ADDRESS_1, CONTRACT_ADDRESS_2], (builder) =>
+      builder
+        .storage("symbol")
+        .storages("balance", [ACCOUNT_1_ADDRESS, ACCOUNT_2_ADDRESS])
+        .messages("free_balance", [ACCOUNT_1_ADDRESS, ACCOUNT_2_ADDRESS]),
     ),
   );
 
@@ -145,8 +142,7 @@ function Component() {
 
             return (
               <p>
-                Submitted tx with hash: {status.txHash}, current state:{" "}
-                {status.type}
+                Submitted tx with hash: {status.txHash}, current state: {status.type}
               </p>
             );
         }
@@ -165,17 +161,12 @@ import { myContract } from "./contracts.ts";
 import { useContractEventListener } from "@reactive-dot/react";
 
 function Component() {
-  useContractEventListener(
-    myContract,
-    CONTRACT_ADDRESS,
-    "Transfer",
-    (event) => {
-      console.log("block", event.block.number);
-      console.log("from", event.data.from);
-      console.log("to", event.data.to);
-      console.log("value", event.data.value);
-    },
-  );
+  useContractEventListener(myContract, CONTRACT_ADDRESS, "Transfer", (event) => {
+    console.log("block", event.block.number);
+    console.log("from", event.data.from);
+    console.log("to", event.data.to);
+    console.log("value", event.data.value);
+  });
 
   return null;
 }

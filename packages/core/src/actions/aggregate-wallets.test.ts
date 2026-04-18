@@ -34,10 +34,7 @@ class MockProvider extends WalletProvider {
 }
 
 it("aggregates wallets from provider", async () => {
-  const wallets = await aggregateWallets([
-    new MockWallet(),
-    new MockProvider(),
-  ]);
+  const wallets = await aggregateWallets([new MockWallet(), new MockProvider()]);
 
   expect(wallets).toHaveLength(11);
 

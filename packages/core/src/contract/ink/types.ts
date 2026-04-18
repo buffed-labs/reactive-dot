@@ -1,9 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-object-type */
-import type {
-  ExtractExactProperties,
-  StringKeyOf,
-  UndefinedToOptional,
-} from "../../types.js";
+import type { ExtractExactProperties, StringKeyOf, UndefinedToOptional } from "../../types.js";
 import type {
   Event,
   InkCallableDescriptor,
@@ -19,10 +15,7 @@ export type MessageOfDescriptor<
 export type InkTxBody<
   TDescriptor extends GenericInkDescriptors,
   TMessageName extends StringKeyOf<
-    ExtractExactProperties<
-      TDescriptor["__types"]["messages"],
-      { mutates: true }
-    >
+    ExtractExactProperties<TDescriptor["__types"]["messages"], { mutates: true }>
   >,
 > = UndefinedToOptional<{
   data: {} extends MessageOfDescriptor<TDescriptor, TMessageName>["message"]

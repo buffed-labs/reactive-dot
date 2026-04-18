@@ -52,9 +52,7 @@ export function TotalStaked({ addresses }: { addresses: string[] }) {
     ),
   );
 
-  return (
-    <p>Total staked: {ledgers.reduce((prev, curr) => prev + curr.total, 0n)}</p>
-  );
+  return <p>Total staked: {ledgers.reduce((prev, curr) => prev + curr.total, 0n)}</p>;
 }
 ```
 
@@ -91,8 +89,7 @@ export function TotalStaked({ addresses }: { addresses: string[] }) {
 
   return (
     <p>
-      Total staked:{" "}
-      {loadedLedgers.reduce((prev, curr) => prev + curr.total, 0n)}
+      Total staked: {loadedLedgers.reduce((prev, curr) => prev + curr.total, 0n)}
       {hasMore ? "..." : ""}
     </p>
   );

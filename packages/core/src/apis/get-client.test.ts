@@ -12,12 +12,9 @@ afterEach(() => {
 it("gets client from config", () => {
   vi.mocked(baseGetClient).mockImplementation(vi.fn(async (config) => config));
 
-  const client = getClient(
-    defineConfig({ chains: { test: { id: "target" } as never } }),
-    {
-      chainId: "test",
-    },
-  );
+  const client = getClient(defineConfig({ chains: { test: { id: "target" } as never } }), {
+    chainId: "test",
+  });
 
   expect(client).resolves.toEqual({ id: "target" });
 });

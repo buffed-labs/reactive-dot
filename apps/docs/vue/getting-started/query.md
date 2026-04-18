@@ -12,9 +12,7 @@ The [`useQuery`](/vue/api/vue/functions/useQuery) composable allow you to read a
 
 ```vue title="async-component.vue"
 <script setup lang="ts">
-const { data: activeEra } = await useQuery((builder) =>
-  builder.storage("Staking", "ActiveEra"),
-);
+const { data: activeEra } = await useQuery((builder) => builder.storage("Staking", "ActiveEra"));
 </script>
 
 <template>
@@ -68,16 +66,8 @@ import { useQuery } from "@reactive-dot/vue";
 
 const { data } = await useQuery((builder) =>
   builder
-    .runtimeApis("NominationPoolsApi", "pending_rewards", [
-      [ADDRESS_1],
-      [ADDRESS_2],
-      [ADDRESS_3],
-    ])
-    .storages("NominationPools", "Metadata", [
-      [POOL_ID_1],
-      [POOL_ID_2],
-      [POOL_ID_3],
-    ]),
+    .runtimeApis("NominationPoolsApi", "pending_rewards", [[ADDRESS_1], [ADDRESS_2], [ADDRESS_3]])
+    .storages("NominationPools", "Metadata", [[POOL_ID_1], [POOL_ID_2], [POOL_ID_3]]),
 );
 </script>
 ```
@@ -93,9 +83,7 @@ import { useQuery } from "@reactive-dot/vue";
 const { status } = await useQuery((builder) =>
   address.value === undefined
     ? undefined
-    : builder.runtimeApi("NominationPoolsApi", "pending_rewards", [
-        address.value,
-      ]),
+    : builder.runtimeApi("NominationPoolsApi", "pending_rewards", [address.value]),
 );
 
 // Status will be "idle" if the query hasn't been executed
@@ -154,9 +142,7 @@ const {
     @click="
       // Only the 2nd account rewards will be refreshed
       store.invalidateQuery((builder) =>
-        builder.runtimeApi('NominationPoolsApi', 'pending_rewards', [
-          ACCOUNT_ADDRESS_2,
-        ]),
+        builder.runtimeApi('NominationPoolsApi', 'pending_rewards', [ACCOUNT_ADDRESS_2]),
       )
     "
     :disabled="status === 'pending'"

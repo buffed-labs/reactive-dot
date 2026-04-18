@@ -34,9 +34,7 @@ it("should execute a promise-based action and update state", async () => {
 it("should execute an observable-based action and update state", async () => {
   const delay = Promise.withResolvers<void>();
 
-  const action = vi.fn((value: string) =>
-    from(delay.promise.then(() => `Result: ${value}`)),
-  );
+  const action = vi.fn((value: string) => from(delay.promise.then(() => `Result: ${value}`)));
   const { execute, data, error, status } = useAsyncAction(action);
 
   expect(status.value).toBe("idle");

@@ -21,10 +21,7 @@
 }
 
 :root {
-  --docusaurus-highlighted-code-line-bg: light-dark(
-    rgba(0, 0, 0, 0.1),
-    rgba(0, 0, 0, 0.3)
-  );
+  --docusaurus-highlighted-code-line-bg: light-dark(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3));
   --ifm-color-primary: light-dark(#212121, #eaeaea);
   --ifm-color-primary-dark: light-dark(#1e1e1e, #d3d3d3);
   --ifm-color-primary-darker: light-dark(#1c1c1c, #c7c7c7);
@@ -34,14 +31,9 @@
   --ifm-color-primary-lightest: light-dark(#2b2b2b, #ffffff);
   --ifm-font-family-base: "DM Sans", ui-sans-serif, sans-serif;
   --ifm-heading-font-family: "DM Serif Display", ui-serif, serif;
-  --ifm-font-family-monospace:
-    "Monaspace Neon", ui-monospace, ui-monospace, monospace;
+  --ifm-font-family-monospace: "Monaspace Neon", ui-monospace, ui-monospace, monospace;
 }
 
 .navbar__link {
-  --ifm-navbar-link-color: color-mix(
-    in srgb,
-    var(--ifm-font-color-base) 70%,
-    transparent
-  );
+  --ifm-navbar-link-color: color-mix(in srgb, var(--ifm-font-color-base) 70%, transparent);
 }

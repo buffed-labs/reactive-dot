@@ -21,10 +21,7 @@ export type ReactiveDotProviderProps = PropsWithChildren<{
  * @param props - Component props
  * @returns React element
  */
-export function ReactiveDotProvider({
-  config,
-  children,
-}: ReactiveDotProviderProps) {
+export function ReactiveDotProvider({ config, children }: ReactiveDotProviderProps) {
   return (
     <JotaiProvider store={useLocalStore()}>
       <Suspense>

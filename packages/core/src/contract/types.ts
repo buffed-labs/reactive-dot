@@ -112,12 +112,7 @@ export type ContractPallets = PalletsTypedef<
       /**
        * A mapping from a contract's code hash to its code.
        */
-      PristineCode: StorageDescriptor<
-        [Key: SizedHex<32>],
-        Uint8Array,
-        true,
-        never
-      >;
+      PristineCode: StorageDescriptor<[Key: SizedHex<32>], Uint8Array, true, never>;
       /**
        * A mapping from a contract's code hash to its code info.
        */
@@ -154,12 +149,7 @@ export type ContractPallets = PalletsTypedef<
       /**
        * The immutable data associated with a given account.
        */
-      ImmutableDataOf: StorageDescriptor<
-        [Key: SizedHex<20>],
-        Uint8Array,
-        true,
-        never
-      >;
+      ImmutableDataOf: StorageDescriptor<[Key: SizedHex<20>], Uint8Array, true, never>;
       /**
        * Evicted contracts that await child trie deletion.
        *
@@ -187,12 +177,7 @@ export type ContractPallets = PalletsTypedef<
        * of an `H160`. Register your `AccountId32` using [`Pallet::map_account`] in order to
        * use it with this pallet.
        */
-      AddressSuffix: StorageDescriptor<
-        [Key: SizedHex<20>],
-        SizedHex<12>,
-        true,
-        never
-      >;
+      AddressSuffix: StorageDescriptor<[Key: SizedHex<20>], SizedHex<12>, true, never>;
     };
   },
   {
@@ -242,6 +227,4 @@ export type GenericDefinition<TPallet, TApis> = {
   genesis: any;
 };
 
-export type ContractCompatApi = TypedApi<
-  GenericDefinition<ContractPallets, ContractApis>
->;
+export type ContractCompatApi = TypedApi<GenericDefinition<ContractPallets, ContractApis>>;

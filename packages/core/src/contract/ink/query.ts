@@ -2,10 +2,7 @@ import { toH160Hex, toSs58String, type Address } from "../../address.js";
 import { QueryError } from "../../errors.js";
 import { fallbackOrigin } from "../consts.js";
 import type { ContractCompatApi } from "../types.js";
-import type {
-  InferQueryInstructionPayload,
-  SimpleInkQueryInstruction,
-} from "./query-builder.js";
+import type { InferQueryInstructionPayload, SimpleInkQueryInstruction } from "./query-builder.js";
 import { unwrapResult } from "./result.js";
 import type { GenericInkDescriptors } from "./types.js";
 import type { InkClient } from "@polkadot-api/ink-contracts";
@@ -27,10 +24,7 @@ export async function queryInk<
 
   switch (instruction.type) {
     case "storage": {
-      const storage =
-        instruction.path === ""
-          ? client.storage()
-          : client.storage(instruction.path);
+      const storage = instruction.path === "" ? client.storage() : client.storage(instruction.path);
 
       const key = storage.encode(instruction.key);
 
@@ -46,10 +40,7 @@ export async function queryInk<
 
       return response.value === undefined
         ? undefined
-        : (storage.decode(response.value) as InferQueryInstructionPayload<
-            Instruction,
-            Descriptor
-          >);
+        : (storage.decode(response.value) as InferQueryInstructionPayload<Instruction, Descriptor>);
     }
     case "message": {
       const message = client.message(instruction.name);
@@ -74,9 +65,10 @@ export async function queryInk<
         throw QueryError.from(response.result.value);
       }
 
-      return unwrapResult(
-        message.decode(response.result.value),
-      ) as InferQueryInstructionPayload<Instruction, Descriptor>;
+      return unwrapResult(message.decode(response.result.value)) as InferQueryInstructionPayload<
+        Instruction,
+        Descriptor
+      >;
     }
   }
 }

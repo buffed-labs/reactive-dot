@@ -1,13 +1,8 @@
-import {
-  extractPolkadotSigner,
-  type Signer,
-} from "@reactive-dot/core/internal.js";
+import { extractPolkadotSigner, type Signer } from "@reactive-dot/core/internal.js";
 import type { PolkadotSigner } from "polkadot-api";
 import { createContext, type PropsWithChildren } from "react";
 
-export const SignerContext = createContext<PolkadotSigner | undefined>(
-  undefined,
-);
+export const SignerContext = createContext<PolkadotSigner | undefined>(undefined);
 
 export type SignerProviderProps = PropsWithChildren<{
   /**
@@ -25,8 +20,6 @@ export type SignerProviderProps = PropsWithChildren<{
  */
 export function SignerProvider(props: SignerProviderProps) {
   return (
-    <SignerContext value={extractPolkadotSigner(props.signer)}>
-      {props.children}
-    </SignerContext>
+    <SignerContext value={extractPolkadotSigner(props.signer)}>{props.children}</SignerContext>
   );
 }

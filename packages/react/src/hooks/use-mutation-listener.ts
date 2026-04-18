@@ -1,7 +1,4 @@
-import {
-  type MutationEvent,
-  MutationEventSubjectContext,
-} from "../contexts/mutation.js";
+import { type MutationEvent, MutationEventSubjectContext } from "../contexts/mutation.js";
 import { use, useEffect, useEffectEvent } from "react";
 
 /**
@@ -13,9 +10,7 @@ import { use, useEffect, useEffectEvent } from "react";
 export function useMutationListener(listener: (event: MutationEvent) => void) {
   const mutationEventSubject = use(MutationEventSubjectContext);
 
-  const onMutation = useEffectEvent<typeof listener>((event) =>
-    listener(event),
-  );
+  const onMutation = useEffectEvent<typeof listener>((event) => listener(event));
 
   useEffect(() => {
     const subscription = mutationEventSubject.subscribe({ next: onMutation });

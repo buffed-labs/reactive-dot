@@ -49,11 +49,7 @@ function WalletItem({ wallet }: WalletItemProps) {
           Disconnect{disconnectingState === pending && <>...</>}
         </button>
       ) : (
-        <button
-          type="button"
-          onClick={() => connect()}
-          disabled={connectingState === pending}
-        >
+        <button type="button" onClick={() => connect()} disabled={connectingState === pending}>
           Connect{connectingState === pending && <>...</>}
         </button>
       )}

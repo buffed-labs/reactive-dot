@@ -5,12 +5,7 @@ import QuerySection from "./query-section.vue";
 import SolidityContracts from "./solidity-contracts.vue";
 import WalletConnection from "./wallet-connection.vue";
 import type { ChainId } from "@reactive-dot/core";
-import {
-  provideChain,
-  useChainIds,
-  useQueryErrorResetter,
-  watchMutation,
-} from "@reactive-dot/vue";
+import { provideChain, useChainIds, useQueryErrorResetter, watchMutation } from "@reactive-dot/vue";
 import { onErrorCaptured, ref } from "vue";
 
 const chainIds = useChainIds();

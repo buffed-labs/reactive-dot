@@ -45,10 +45,7 @@ const testContract = defineContract({
 
 it("sign submit and watch", async () => {
   const { result } = withSetup(
-    () =>
-      useContractMutation((mutate) =>
-        mutate(testContract, "0x", "test_message", {}),
-      ),
+    () => useContractMutation((mutate) => mutate(testContract, "0x", "test_message", {})),
     {
       [configKey]: defineConfig({ chains: {} }),
       [chainIdKey]: "test_chain",
@@ -108,14 +105,7 @@ it.each(["input", "variables"] as const)(`accepts %s`, async (key) => {
     timeout: 3000,
   });
 
-  expect(getInkContractTx).toHaveBeenCalledWith(
-    undefined,
-    undefined,
-    {},
-    "0x",
-    "test_message",
-    {},
-  );
+  expect(getInkContractTx).toHaveBeenCalledWith(undefined, undefined, {}, "0x", "test_message", {});
 
   vi.advanceTimersByTime(4000);
 
@@ -124,10 +114,7 @@ it.each(["input", "variables"] as const)(`accepts %s`, async (key) => {
 
 it("catches error", async () => {
   const { result } = withSetup(
-    () =>
-      useContractMutation((mutate) =>
-        mutate(testContract, "0x", "test_message", {}),
-      ),
+    () => useContractMutation((mutate) => mutate(testContract, "0x", "test_message", {})),
     {
       [configKey]: defineConfig({ chains: {} }),
       [chainIdKey]: "test_chain",

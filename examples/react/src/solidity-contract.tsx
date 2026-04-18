@@ -12,10 +12,8 @@ export function SolidityContracts() {
   const [fetchKey, setFetchKey] = useState(0);
   const value = useLazyLoadQuery(
     (builder) =>
-      builder.contract(
-        solidityStorage,
-        "0xF919bfbEa8f4Aad2126C7e2a4a91ba06c0cb1462",
-        (builder) => builder.func("retrieve"),
+      builder.contract(solidityStorage, "0xF919bfbEa8f4Aad2126C7e2a4a91ba06c0cb1462", (builder) =>
+        builder.func("retrieve"),
       ),
     { fetchKey },
   );
@@ -44,22 +42,15 @@ export function SolidityContracts() {
 function ValueSetter() {
   const [value, setValue] = useState("");
   const [_, submit] = useContractMutation((mutate, value: bigint) =>
-    mutate(
-      solidityStorage,
-      "0xF919bfbEa8f4Aad2126C7e2a4a91ba06c0cb1462",
-      "store",
-      { args: [value] },
-    ),
+    mutate(solidityStorage, "0xF919bfbEa8f4Aad2126C7e2a4a91ba06c0cb1462", "store", {
+      args: [value],
+    }),
   );
 
   return (
     <label>
       New Number:
-      <input
-        type="number"
-        value={value}
-        onChange={(e) => setValue(e.target.value)}
-      />
+      <input type="number" value={value} onChange={(e) => setValue(e.target.value)} />
       <button type="button" onClick={() => submit({ input: BigInt(value) })}>
         Submit
       </button>

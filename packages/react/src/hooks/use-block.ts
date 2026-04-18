@@ -29,9 +29,7 @@ export function useBlock<TUse extends boolean = true>(
   return useMaybeUse(
     useStablePromise(
       usePausableAtomValue(
-        tag === "finalized"
-          ? finalizedBlockAtom(config, chainId)
-          : bestBlockAtom(config, chainId),
+        tag === "finalized" ? finalizedBlockAtom(config, chainId) : bestBlockAtom(config, chainId),
       ),
     ),
     options,

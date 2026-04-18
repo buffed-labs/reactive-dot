@@ -27,12 +27,10 @@ it("should return the finalized block when options.tag is 'finalized'", () =>
       finalizedBlock$: of(fakeBlock),
     } as unknown as PolkadotClient;
 
-    getBlock(client, { tag: "finalized" } as GetBlockOptions).subscribe(
-      (result) => {
-        expect(result).toBe(fakeBlock);
-        resolve();
-      },
-    );
+    getBlock(client, { tag: "finalized" } as GetBlockOptions).subscribe((result) => {
+      expect(result).toBe(fakeBlock);
+      resolve();
+    });
   }));
 
 it("should return the finalized block when no options are provided", () =>

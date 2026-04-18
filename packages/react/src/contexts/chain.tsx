@@ -15,7 +15,5 @@ export type ChainProviderProps = PropsWithChildren<{
  * @returns React element
  */
 export function ChainProvider(props: ChainProviderProps) {
-  return (
-    <ChainIdContext value={props.chainId}>{props.children}</ChainIdContext>
-  );
+  return <ChainIdContext value={props.chainId}>{props.children}</ChainIdContext>;
 }

@@ -11,8 +11,7 @@ export const vaultQrEncryption = {
   unsigned: 0xff,
 } as const;
 
-export type VaultQrEncryption =
-  (typeof vaultQrEncryption)[keyof typeof vaultQrEncryption];
+export type VaultQrEncryption = (typeof vaultQrEncryption)[keyof typeof vaultQrEncryption];
 
 export const vaultQrPayloadType = {
   legacyTx: 0x00,
@@ -25,8 +24,7 @@ export const vaultQrPayloadType = {
   derivationsImport: 0xce,
 } as const;
 
-export type VaultQrPayloadType =
-  (typeof vaultQrPayloadType)[keyof typeof vaultQrPayloadType];
+export type VaultQrPayloadType = (typeof vaultQrPayloadType)[keyof typeof vaultQrPayloadType];
 
 export const createQrTransaction = (
   encryption: VaultQrEncryption,

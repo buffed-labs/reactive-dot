@@ -9,9 +9,7 @@ test("Await component", async () => {
   const result = await act(() =>
     render(
       <Suspense fallback={<div data-testid="fallback">Loading...</div>}>
-        <Await promise={promise}>
-          {(result) => <div data-testid="target">{result}</div>}
-        </Await>
+        <Await promise={promise}>{(result) => <div data-testid="target">{result}</div>}</Await>
       </Suspense>,
     ),
   );

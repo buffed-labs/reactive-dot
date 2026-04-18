@@ -106,10 +106,9 @@ To resolve this, you can explicitly specify the chain to query, which will overr
 <script setup lang="ts">
 import { useQuery } from "@reactive-dot/vue";
 
-const bountyCount = useQuery(
-  (builder) => builder.storage("Bounties", "BountyCount"),
-  { chainId: "polkadot" },
-);
+const bountyCount = useQuery((builder) => builder.storage("Bounties", "BountyCount"), {
+  chainId: "polkadot",
+});
 
 // ...
 </script>

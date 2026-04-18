@@ -15,9 +15,7 @@ export type LightClientProvider = {
   [getProviderSymbol]: () => JsonRpcProvider;
 };
 
-type AddChainOptions<TWellknownChainId> =
-  | { chainSpec: string }
-  | { id: TWellknownChainId };
+type AddChainOptions<TWellknownChainId> = { chainSpec: string } | { id: TWellknownChainId };
 
 type LightClientOptions = {
   /**
@@ -26,16 +24,15 @@ type LightClientOptions = {
   useExtensionProvider?: boolean;
 };
 
-type RelayLightClientProvider<T extends WellknownRelayChainId> =
-  LightClientProvider & {
-    addParachain<
-      TParachainId extends keyof (typeof wellknownChains)[T][1] extends never
-        ? WellknownParachainId
-        : keyof (typeof wellknownChains)[T][1],
-    >(
-      options: AddChainOptions<TParachainId>,
-    ): LightClientProvider;
-  };
+type RelayLightClientProvider<T extends WellknownRelayChainId> = LightClientProvider & {
+  addParachain<
+    TParachainId extends keyof (typeof wellknownChains)[T][1] extends never
+      ? WellknownParachainId
+      : keyof (typeof wellknownChains)[T][1],
+  >(
+    options: AddChainOptions<TParachainId>,
+  ): LightClientProvider;
+};
 
 type RootLightClientProvider = {
   addRelayChain<TRelayChainId extends WellknownRelayChainId>(
@@ -93,22 +90,20 @@ export function createLightClientProvider({
                       [options.id]()
                       .then((chain) => chain.chainSpec);
 
-              const parachainPromise = Promise.all([
-                getRelayChain(),
-                chainSpecPromise,
-              ]).then(([relayChain, chainSpec]) =>
-                "addChain" in relayChain
-                  ? relayChain.addChain(chainSpec)
-                  : (async () => {
-                      const smoldot = await getSmoldot();
+              const parachainPromise = Promise.all([getRelayChain(), chainSpecPromise]).then(
+                ([relayChain, chainSpec]) =>
+                  "addChain" in relayChain
+                    ? relayChain.addChain(chainSpec)
+                    : (async () => {
+                        const smoldot = await getSmoldot();
 
-                      return isSubstrateConnectProvider(smoldot)
-                        ? smoldot.addChain(chainSpec)
-                        : smoldot.addChain({
-                            chainSpec,
-                            potentialRelayChains: [relayChain],
-                          });
-                    })(),
+                        return isSubstrateConnectProvider(smoldot)
+                          ? smoldot.addChain(chainSpec)
+                          : smoldot.addChain({
+                              chainSpec,
+                              potentialRelayChains: [relayChain],
+                            });
+                      })(),
               );
 
               return getSmProvider(() => parachainPromise);
@@ -120,15 +115,11 @@ export function createLightClientProvider({
   } as RootLightClientProvider;
 }
 
-export function isLightClientProvider(
-  value: unknown,
-): value is LightClientProvider {
+export function isLightClientProvider(value: unknown): value is LightClientProvider {
   return lightClientProviders.has(value as LightClientProvider);
 }
 
-export function createClientFromLightClientProvider(
-  provider: LightClientProvider,
-) {
+export function createClientFromLightClientProvider(provider: LightClientProvider) {
   return createClient(provider[getProviderSymbol]());
 }
 
@@ -140,13 +131,12 @@ function addLightClientProvider<T extends LightClientProvider>(provider: T) {
 }
 
 function startSmoldotWorker() {
-  return import("polkadot-api/smoldot/from-worker").then(
-    ({ startFromWorker }) =>
-      startFromWorker(
-        new Worker(new URL("polkadot-api/smoldot/worker", import.meta.url), {
-          type: "module",
-        }),
-      ),
+  return import("polkadot-api/smoldot/from-worker").then(({ startFromWorker }) =>
+    startFromWorker(
+      new Worker(new URL("polkadot-api/smoldot/worker", import.meta.url), {
+        type: "module",
+      }),
+    ),
   );
 }
 
@@ -155,23 +145,19 @@ const substrateConnectSet = new WeakSet<
 >();
 
 function startSubstrateConnectWorker() {
-  return import("@substrate/smoldot-discovery").then(
-    async ({ getSmoldotExtensionProviders }) => {
-      const provider = await getSmoldotExtensionProviders().at(0)?.provider;
+  return import("@substrate/smoldot-discovery").then(async ({ getSmoldotExtensionProviders }) => {
+    const provider = await getSmoldotExtensionProviders().at(0)?.provider;
 
-      if (provider !== undefined) {
-        substrateConnectSet.add(provider);
-      }
+    if (provider !== undefined) {
+      substrateConnectSet.add(provider);
+    }
 
-      return provider;
-    },
-  );
+    return provider;
+  });
 }
 
 function isSubstrateConnectProvider(
   value: unknown,
-): value is Awaited<
-  ReturnType<typeof getSmoldotExtensionProviders>[number]["provider"]
-> {
+): value is Awaited<ReturnType<typeof getSmoldotExtensionProviders>[number]["provider"]> {
   return substrateConnectSet.has(value as never);
 }

@@ -8,10 +8,7 @@ import { useMaybeUse } from "./use-maybe-use.js";
 import { useSsrValue } from "./use-ssr-value.js";
 import { useStablePromise } from "./use-stable-promise.js";
 import type { Config } from "@reactive-dot/core";
-import {
-  aggregateWallets,
-  getConnectedWallets,
-} from "@reactive-dot/core/internal/actions.js";
+import { aggregateWallets, getConnectedWallets } from "@reactive-dot/core/internal/actions.js";
 import type { Wallet } from "@reactive-dot/core/wallets.js";
 import { type Atom, atom } from "jotai";
 
@@ -21,16 +18,11 @@ import { type Atom, atom } from "jotai";
  * @group Hooks
  * @returns Available wallets
  */
-export function useWallets<TUse extends boolean = true>(
-  options?: SuspenseOptions<TUse>,
-) {
+export function useWallets<TUse extends boolean = true>(options?: SuspenseOptions<TUse>) {
   return useMaybeUse(
     useStablePromise(
       useAtomValue(
-        useSsrValue<Atom<Wallet[] | Promise<Wallet[]>>>(
-          walletsAtom(useConfig()),
-          emptyArrayAtom,
-        ),
+        useSsrValue<Atom<Wallet[] | Promise<Wallet[]>>>(walletsAtom(useConfig()), emptyArrayAtom),
       ),
     ),
     options,
@@ -43,15 +35,9 @@ export function useWallets<TUse extends boolean = true>(
  * @group Hooks
  * @returns Connected wallets
  */
-export function useConnectedWallets<TUse extends boolean = true>(
-  options?: SuspenseOptions<TUse>,
-) {
+export function useConnectedWallets<TUse extends boolean = true>(options?: SuspenseOptions<TUse>) {
   return useMaybeUse(
-    useStablePromise(
-      useAtomValue(
-        useSsrValue(connectedWalletsAtom(useConfig()), emptyArrayAtom),
-      ),
-    ),
+    useStablePromise(useAtomValue(useSsrValue(connectedWalletsAtom(useConfig()), emptyArrayAtom))),
     options,
   );
 }
@@ -59,19 +45,13 @@ export function useConnectedWallets<TUse extends boolean = true>(
 /**
  * @internal
  */
-export const walletsAtom = atomFamilyWithErrorCatcher(
-  (withErrorCatcher, config: Config) =>
-    withErrorCatcher(atom(() => aggregateWallets(config.wallets ?? []))),
+export const walletsAtom = atomFamilyWithErrorCatcher((withErrorCatcher, config: Config) =>
+  withErrorCatcher(atom(() => aggregateWallets(config.wallets ?? []))),
 );
 
 /**
  * @internal
  */
-export const connectedWalletsAtom = atomFamilyWithErrorCatcher(
-  (withErrorCatcher, config: Config) =>
-    withErrorCatcher(
-      atomWithObservable((get) =>
-        getConnectedWallets(get(walletsAtom(config))),
-      ),
-    ),
+export const connectedWalletsAtom = atomFamilyWithErrorCatcher((withErrorCatcher, config: Config) =>
+  withErrorCatcher(atomWithObservable((get) => getConnectedWallets(get(walletsAtom(config))))),
 );

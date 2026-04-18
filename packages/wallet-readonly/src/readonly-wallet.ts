@@ -1,8 +1,5 @@
 import { BaseError } from "@reactive-dot/core";
-import {
-  LocalWallet,
-  type PolkadotSignerAccount,
-} from "@reactive-dot/core/wallets.js";
+import { LocalWallet, type PolkadotSignerAccount } from "@reactive-dot/core/wallets.js";
 import { Binary, getSs58AddressInfo } from "polkadot-api";
 import { map } from "rxjs";
 
@@ -17,10 +14,7 @@ type JsonReadonlyAccount = {
   name?: string;
 };
 
-export class ReadonlyWallet extends LocalWallet<
-  ReadonlyAccount,
-  JsonReadonlyAccount
-> {
+export class ReadonlyWallet extends LocalWallet<ReadonlyAccount, JsonReadonlyAccount> {
   override readonly id = "readonly";
 
   override readonly name = "Readonly Wallet";
@@ -54,9 +48,7 @@ export class ReadonlyWallet extends LocalWallet<
     };
   }
 
-  override readonly connected$ = this.accounts$.pipe(
-    map((accounts) => accounts.length > 0),
-  );
+  override readonly connected$ = this.accounts$.pipe(map((accounts) => accounts.length > 0));
 
   connect() {
     const input = globalThis.prompt("Enter account address");

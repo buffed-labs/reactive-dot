@@ -81,9 +81,7 @@ import { useQuery } from "@reactive-dot/vue";
 
 const { data } = useQuery((builder) =>
   builder.contracts(myContract, contracts, (builder) =>
-    builder
-      .func("totalSupply")
-      .funcs("balanceOf", [[ACCOUNT_1_ADDRESS], [ACCOUNT_2_ADDRESS]]),
+    builder.func("totalSupply").funcs("balanceOf", [[ACCOUNT_1_ADDRESS], [ACCOUNT_2_ADDRESS]]),
   ),
 );
 </script>

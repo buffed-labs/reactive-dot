@@ -95,7 +95,5 @@ const spendableBalances = useSpendableBalances([
   ACCOUNT_ADDRESS_3,
 ]);
 
-console.log(
-  spendableBalances.map((balance) => balance.toLocaleString("en-NZ")),
-); // ["DOT 10.00", "DOT 20.00", "DOT 30.00"]
+console.log(spendableBalances.map((balance) => balance.toLocaleString("en-NZ"))); // ["DOT 10.00", "DOT 20.00", "DOT 30.00"]
 ```

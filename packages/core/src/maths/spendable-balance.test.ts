@@ -15,13 +15,7 @@ test.each([
   },
 ])(
   "$spendable = $free - max($frozen - $reserved, existentialDeposit ($includesExistentialDeposit))",
-  ({
-    free,
-    frozen,
-    reserved,
-    spendable,
-    includesExistentialDeposit = false,
-  }) => {
+  ({ free, frozen, reserved, spendable, includesExistentialDeposit = false }) => {
     const existentialDeposit = 1n;
 
     expect(

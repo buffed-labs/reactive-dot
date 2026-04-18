@@ -44,11 +44,8 @@ const config: Config = {
           path: "react",
           routeBasePath: "react",
           sidebarPath: "./sidebars.ts",
-          editUrl:
-            "https://github.com/buffed-labs/reactive-dot/tree/main/apps/docs",
-          remarkPlugins: [
-            [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }],
-          ],
+          editUrl: "https://github.com/buffed-labs/reactive-dot/tree/main/apps/docs",
+          remarkPlugins: [[require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }]],
         },
         sitemap: {
           lastmod: "datetime",
@@ -68,11 +65,8 @@ const config: Config = {
         path: "vue",
         routeBasePath: "vue",
         sidebarPath: "./sidebars.ts",
-        editUrl:
-          "https://github.com/buffed-labs/reactive-dot/tree/main/apps/docs",
-        remarkPlugins: [
-          [require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }],
-        ],
+        editUrl: "https://github.com/buffed-labs/reactive-dot/tree/main/apps/docs",
+        remarkPlugins: [[require("@docusaurus/remark-plugin-npm2yarn"), { sync: true }]],
       },
     ],
     coreApi("react"),
