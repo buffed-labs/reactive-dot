@@ -18,17 +18,17 @@ import type {
 
 export type ContractAddress = Address | SizedHex<20>;
 
-export type ContractEvent<TName extends string = string, TData = unknown> = {
+export interface ContractEvent<TName extends string = string, TData = unknown> {
   block: BlockInfo;
   contract: Address;
   name: TName;
   data: TData;
-};
+}
 
-export type Gas = {
+export interface Gas {
   ref_time: bigint;
   proof_size: bigint;
-};
+}
 
 export type StorageError = Enum<{
   DoesntExist: undefined;
@@ -216,7 +216,7 @@ export type ContractPallets = PalletsTypedef<
   {}
 >;
 
-export type GenericDefinition<TPallet, TApis> = {
+export interface GenericDefinition<TPallet, TApis> {
   descriptors: Promise<any> & {
     pallets: TPallet;
     apis: TApis;
@@ -225,6 +225,6 @@ export type GenericDefinition<TPallet, TApis> = {
   metadataTypes: any;
   getMetadata: any;
   genesis: any;
-};
+}
 
 export type ContractCompatApi = TypedApi<GenericDefinition<ContractPallets, ContractApis>>;

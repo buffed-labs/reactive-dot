@@ -3,9 +3,9 @@ import type { MaybePromise } from "../types.js";
 import type { PolkadotSignerAccount } from "./account.js";
 import { firstValueFrom, type Observable } from "rxjs";
 
-export type WalletOptions = {
+export interface WalletOptions {
   storage?: Storage | undefined;
-};
+}
 
 export abstract class Wallet<
   TOptions extends WalletOptions = WalletOptions,

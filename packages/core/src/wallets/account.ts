@@ -22,11 +22,11 @@ export type PolkadotSignerAccount = PolkadotSignerAccountBase & {
   genesisHash?: InjectedPolkadotAccount["genesisHash"];
 };
 
-export type PolkadotAccount = Omit<PolkadotSignerAccount, "polkadotSigner"> & {
+export interface PolkadotAccount extends Omit<PolkadotSignerAccount, "polkadotSigner"> {
   polkadotSigner: InjectedPolkadotAccount["polkadotSigner"] | undefined;
   address: Address;
-};
+}
 
-export type WalletAccount = PolkadotAccount & {
+export interface WalletAccount extends PolkadotAccount {
   wallet: Wallet;
-};
+}

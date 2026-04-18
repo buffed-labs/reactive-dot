@@ -9,20 +9,22 @@ import type {
 import type { TxEvent } from "polkadot-api";
 import type { MaybeRef, MaybeRefOrGetter, Ref } from "vue";
 
-export type ChainComposableOptions<TChainId extends ChainId | undefined = ChainId | undefined> = {
+export interface ChainComposableOptions<
+  TChainId extends ChainId | undefined = ChainId | undefined,
+> {
   /**
    * Override default chain ID
    */
   chainId?: MaybeRefOrGetter<TChainId>;
-};
+}
 
 type DeepReadonly<T> = { [P in keyof T]: Readonly<T[P]> };
 
-export type MutableAsyncState<TData, TError = unknown, TDefault = undefined> = {
+export interface MutableAsyncState<TData, TError = unknown, TDefault = undefined> {
   data: Ref<TData | TDefault>;
   error: Ref<TError | undefined>;
   status: Ref<"idle" | "pending" | "success" | "error">;
-};
+}
 
 export type AsyncState<TData, TError = unknown, TDefault = undefined> = DeepReadonly<
   MutableAsyncState<TData, TError, TDefault>

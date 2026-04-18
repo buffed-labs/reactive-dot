@@ -3,14 +3,14 @@ import { useLazyLoadQuery } from "../hooks/use-query.js";
 import type { ChainId } from "@reactive-dot/core";
 import type { ReactNode } from "react";
 
-type QueryRendererProps<
+interface QueryRendererProps<
   TChainId extends ChainId | undefined,
   TQuery extends QueryArgument<TChainId>,
-> = {
+> {
   query: TQuery;
   chainId?: TChainId;
   children: (result: InferQueryArgumentResult<TChainId, TQuery>) => ReactNode;
-};
+}
 
 /**
  * Component for rendering the result of a query.

@@ -4942,7 +4942,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@polkadot-api/descriptors@portal:.papi/descriptors::locator=%40reactive-dot%2Fexample-react%40workspace%3Aexamples%2Freact"
   peerDependencies:
-    polkadot-api: ">=2.0.1"
+    polkadot-api: ">=2.0.0"
   languageName: node
   linkType: soft
 
@@ -4950,7 +4950,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@polkadot-api/descriptors@portal:.papi/descriptors::locator=%40reactive-dot%2Fexample-vue%40workspace%3Aexamples%2Fvue"
   peerDependencies:
-    polkadot-api: ">=2.0.1"
+    polkadot-api: ">=2.0.0"
   languageName: node
   linkType: soft
 

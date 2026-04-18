@@ -4,7 +4,9 @@ import { Wallet, type WalletOptions } from "../wallet.js";
 import type { InjectedExtension, InjectedPolkadotAccount } from "polkadot-api/pjs-signer";
 import { BehaviorSubject, map, Observable, of, switchMap } from "rxjs";
 
-export type InjectedWalletOptions = WalletOptions & { originName?: string };
+export interface InjectedWalletOptions extends WalletOptions {
+  originName?: string;
+}
 
 export class InjectedWallet extends Wallet<InjectedWalletOptions, "connected"> {
   readonly #extension$ = new BehaviorSubject<InjectedExtension | undefined>(undefined);

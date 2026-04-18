@@ -8,7 +8,9 @@ import {
 } from "@reactive-dot/core/wallets.js";
 import { BehaviorSubject, map, Observable, of, switchMap } from "rxjs";
 
-export type MimirWalletOptions = WalletOptions & { originName?: string };
+export interface MimirWalletOptions extends WalletOptions {
+  originName?: string;
+}
 
 export class MimirWallet extends Wallet<MimirWalletOptions, "connected"> {
   readonly id = "mimir";

@@ -3,16 +3,16 @@ import { LocalWallet, type PolkadotSignerAccount } from "@reactive-dot/core/wall
 import { Binary, getSs58AddressInfo } from "polkadot-api";
 import { map } from "rxjs";
 
-type ReadonlyAccount = {
+interface ReadonlyAccount {
   id: string;
   publicKey: Uint8Array;
   name?: string;
-};
+}
 
-type JsonReadonlyAccount = {
+interface JsonReadonlyAccount {
   publicKey: `0x${string}`;
   name?: string;
-};
+}
 
 export class ReadonlyWallet extends LocalWallet<ReadonlyAccount, JsonReadonlyAccount> {
   override readonly id = "readonly";

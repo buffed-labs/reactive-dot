@@ -49,12 +49,12 @@ import { unwrap } from "jotai/utils";
 import { useMemo } from "react";
 import { from, type Observable, switchMap } from "rxjs";
 
-type FetchOptions = {
+interface FetchOptions {
   /**
    * A unique identifier that, when changed, forces a refresh of the current query.
    */
   fetchKey?: string | number;
-};
+}
 
 /**
  * Hook for querying data from chain, and returning the response.

@@ -17,9 +17,9 @@ export function InkContracts() {
   );
 }
 
-type ContractProps = {
+interface ContractProps {
   address: string;
-};
+}
 
 function Psp22TokenInfo({ address }: ContractProps) {
   const [timestamp, [tokenName, tokenDecimals, tokenSymbol, totalSupply]] = useLazyLoadQuery(

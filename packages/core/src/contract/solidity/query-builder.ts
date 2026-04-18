@@ -11,11 +11,11 @@ import type {
   ExtractAbiFunctionNames,
 } from "abitype";
 
-export type FunctionCallInstruction = BaseInstruction<"function"> & {
+export interface FunctionCallInstruction extends BaseInstruction<"function"> {
   name: string;
   args: unknown[];
   at: Finality | undefined;
-};
+}
 
 export type InferFunctionCallInstructionPayload<
   TInstruction extends FunctionCallInstruction,

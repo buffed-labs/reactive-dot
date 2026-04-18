@@ -1,10 +1,10 @@
 import { objectId } from "../object-id.js";
 
-export type AtomFamily<TArguments extends unknown[], TAtomType> = {
+export interface AtomFamily<TArguments extends unknown[], TAtomType> {
   (...args: TArguments): TAtomType;
   delete: (...args: TArguments) => boolean;
   values: () => MapIterator<TAtomType>;
-};
+}
 
 export function atomFamily<TArguments extends unknown[], TAtomType>(
   initializeAtom: (...args: TArguments) => TAtomType,

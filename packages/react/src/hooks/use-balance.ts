@@ -16,7 +16,7 @@ import { DenominatedNumber } from "@reactive-dot/utils";
 import { atom } from "jotai";
 import { soon, soonAll } from "jotai-eager";
 
-type SystemAccount = {
+interface SystemAccount {
   nonce: number;
   consumers: number;
   providers: number;
@@ -27,12 +27,11 @@ type SystemAccount = {
     frozen: bigint;
     flags: bigint;
   };
-};
+}
 
-type Options<TUse extends boolean> = ChainHookOptions &
-  SuspenseOptions<TUse> & {
-    includesExistentialDeposit?: boolean;
-  };
+interface Options<TUse extends boolean> extends ChainHookOptions, SuspenseOptions<TUse> {
+  includesExistentialDeposit?: boolean;
+}
 
 /**
  * Hook for getting an account's spendable balance.
